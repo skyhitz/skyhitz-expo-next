@@ -1,6 +1,6 @@
 import { Dripsy } from './dripsy'
 import { NavigationProvider } from './navigation'
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot } from 'recoil'
 
 export function Provider({ children }: { children: React.ReactNode }) {
   return (

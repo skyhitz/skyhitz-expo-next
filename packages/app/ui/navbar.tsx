@@ -4,25 +4,26 @@ import { useRecoilValue } from 'recoil'
 import { Text, TextLink, View } from 'app/design-system'
 
 const Navbar = () => {
-  // const user = useRecoilValue(userAtom)
-  const user = {}
+  const user = useRecoilValue(userAtom)
 
   return (
-    <View tw="border-black h-14 flex-row justify-between">
-      <TextLink href="/" tw="h-14 flex-row justify-start">
+    <View tw="border-black h-14 flex-row grow justify-between items-center w-full">
+      <TextLink href="/" tw="flex-row justify-start items-center">
         <View tw="flex-row items-center pl-3">
           <SkyhitzLogo />
           <Text>SKYHITZ</Text>
         </View>
       </TextLink>
-      <View tw="h-14 flex-row justify-end items-center pr-5">
-        {user ? null : (
-          <>
-            <TextLink href="/accounts/sign-in">Log in</TextLink>
-            <TextLink href="/accounts/sign-up">Sign Up</TextLink>
-          </>
-        )}
-      </View>
+      {user ? null : (
+        <View tw="flex-row justify-end items-center pr-5">
+          <TextLink tw="p-2" href="/accounts/sign-in">
+            Log in
+          </TextLink>
+          <TextLink tw="p-2" href="/accounts/sign-up">
+            Sign Up
+          </TextLink>
+        </View>
+      )}
     </View>
   )
 }
