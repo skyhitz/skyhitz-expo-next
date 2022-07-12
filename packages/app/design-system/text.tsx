@@ -5,10 +5,10 @@ import { tw as tailwind } from 'app/design-system/tailwind'
 
 type Variant = keyof Theme['text']
 
-type TextProps = { tw?: string; variant?: Variant } & Omit<ComponentProps<typeof DripsyText>, 'variant'>
-
-// Note: You can wrap <DripsyText> in a <View> with a background color
-// to verify if the text is rendered correctly and if Capsize is working well.
+type TextProps = { tw?: string; variant?: Variant } & Omit<
+  ComponentProps<typeof DripsyText>,
+  'variant'
+>
 
 function Text({ tw, sx, variant, ...props }: TextProps) {
   return (
