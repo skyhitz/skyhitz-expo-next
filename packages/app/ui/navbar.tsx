@@ -4,7 +4,8 @@ import { useRecoilValue } from 'recoil'
 import { Text, TextLink, View } from 'app/design-system'
 
 const Navbar = () => {
-  const user = useRecoilValue(userAtom)
+  // const user = useRecoilValue(userAtom)
+  const user = {}
 
   return (
     <View tw="border-black h-14 flex-row justify-between">

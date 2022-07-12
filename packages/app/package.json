@@ -9,6 +9,8 @@
     "@react-navigation/native-stack": "^6.5.0",
     "dripsy": "^3.6.0",
     "expo-linking": "^3.0.0",
+    "graphql": "^16.5.0",
+    "graphql-request": "^4.3.0",
     "moti": "canary",
     "recoil": "^0.7.4",
     "solito": "latest",

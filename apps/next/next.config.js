@@ -14,6 +14,7 @@ const withTM = require('next-transpile-modules')([
   '@motify/core',
   '@motify/components',
   'app',
+  'twrnc',
 ])
 
 module.exports = withPlugins(
