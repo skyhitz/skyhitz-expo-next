@@ -8,6 +8,10 @@ const Stack = createNativeStackNavigator<{
   'user-detail': {
     id: string
   }
+  accounts: {
+    'sign-in': string
+    'sign-up': string
+  }
 }>()
 
 export function NativeNavigation() {
