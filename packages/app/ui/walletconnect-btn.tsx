@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { Text, Pressable } from 'app/design-system'
 import WalletConnectIcon from 'app/ui/icons/walletconnect-icon'
 import QRCodeModal from '@walletconnect/qrcode-modal'
 import { signManageDataOp } from 'app/stellar'
 import { WalletConnectStore } from 'app/state/wallet-connect'
+import Button from 'app/design-system/button'
 
 const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
   let { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
@@ -18,7 +18,7 @@ const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
 
   const handleSignInWithXdr = async (publicKey: string) => {
     const xdr = await signManageDataOp(publicKey)
-    const { signedXDR } = await signXdr(xdr)
+    const { signedXDR } = await (signXdr(xdr) as Promise<{ signedXDR: string }>)
     signInWithXDR && signInWithXDR(signedXDR)
   }
 
@@ -27,19 +27,18 @@ const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
   }, [publicKey])
 
   return (
-    <Pressable
+    <Button
       tw="bg-blue rounded-full flex-row items-center justify-center text-white"
       onPress={() => connect()}
-    >
-      <Text tw="flex text-white text-center text-base font-bold py-2 mr-2">
-        {state === 'session-proposal'
+      text={
+        state === 'session-proposal'
           ? 'Waiting for approval'
           : state === 'session-created'
           ? 'Connected'
-          : 'WalletConnect'}
-      </Text>
-      <WalletConnectIcon />
-    </Pressable>
+          : 'WalletConnect'
+      }
+      rightIcon={<WalletConnectIcon />}
+    />
   )
 }
 

@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       opacity: {
         30: '.3',
+        90: '.9',
       },
       screens: {
         phone: { min: '0px', max: '640px' },
@@ -14,9 +15,12 @@ module.exports = {
       },
       colors: {
         blue: {
-          DEFAULT: '#1EAEFF',
+          DEFAULT: '#1eaeff',
           dark: '#1A1B20',
           field: 'rgb(41, 43, 51)',
+        },
+        red: {
+          DEFAULT: '#d9544f',
         },
       },
     },

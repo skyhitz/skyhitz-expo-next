@@ -16,10 +16,10 @@ const Navbar = () => {
       </TextLink>
       {user ? null : (
         <View tw="flex-row justify-end items-center pr-5">
-          <TextLink tw="p-2" href="/accounts/sign-in">
+          <TextLink tw="p-2" href="/sign-in">
             Log in
           </TextLink>
-          <TextLink tw="p-2" href="/accounts/sign-up">
+          <TextLink tw="p-2" href="/sign-up">
             Sign Up
           </TextLink>
         </View>
