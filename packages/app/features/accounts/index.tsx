@@ -18,7 +18,7 @@ import {
   usernameOrEmailValidAtom,
 } from 'app/state/atoms'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import Button from 'app/design-system/button'
+import { Button } from 'app/design-system/button'
 
 const InputContainer = ({ children }) => {
   return <View tw="self-center max-w-sm w-full">{children}</View>
@@ -104,7 +104,7 @@ export function SignIn() {
 
   const onSubmit = (e) => {
     if (e.nativeEvent.key == 'Enter') {
-      signIn()
+      // signIn()
     }
   }
 
@@ -191,10 +191,10 @@ export function SignIn() {
             </View>
 
             <Button
-              onPress={handleSignIn}
-              disabled={!validForm}
-              loading={loading}
+              disabled={false}
+              loading={false}
               text="Log In"
+              onPress={() => {}}
             />
           </InputContainer>
         </>

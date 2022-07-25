@@ -10,6 +10,7 @@ function TextInput({ tw, sx, variant, ...props }: TextProps) {
     <DripsyTextInput
       sx={{ ...sx, ...tailwind.style(tw) }}
       variant={variant}
+      style={{ outlineStyle: 'none' } as any}
       {...props}
     />
   )

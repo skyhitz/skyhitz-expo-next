@@ -1,6 +1,6 @@
-import { Text, Pressable, ActivityIndicator } from 'app/design-system'
-
-import { tw as tailwind } from 'app/design-system/tailwind'
+import { Text } from 'app/design-system/text'
+import { Pressable } from 'app/design-system/pressable'
+import { ActivityIndicator } from 'app/design-system/activity-indicator'
 
 const Button = ({
   loading,
@@ -19,8 +19,7 @@ const Button = ({
 }) => {
   return (
     <Pressable
-      sx={{ ...tailwind.style(tw) }}
-      tw="bg-blue/90 flex-row items-center justify-center"
+      tw="bg-blue/90 flex-row items-center justify-center rounded-full h-11"
       onPress={onPress}
       disabled={disabled}
     >
@@ -30,4 +29,4 @@ const Button = ({
   )
 }
 
-export default Button
+export { Button }

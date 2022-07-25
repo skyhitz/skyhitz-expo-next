@@ -12,12 +12,12 @@ import { useRecoilState } from 'recoil'
 export const SessionStore = () => {
   const [user, setUser] = useRecoilState(userAtom)
 
-  async function signUp(payload: SignUpForm) {
+  const signUp = async (payload: SignUpForm) => {
     let userPayload = await sendSignUp(payload)
     return setUser(new User(userPayload))
   }
 
-  async function signIn(token?: string, uid?: string, xdr = '') {
+  const signIn = async (token?: string, uid?: string, xdr = '') => {
     let userPayload = await sendSignIn(token, uid, xdr)
     if (userPayload) {
       return setUser(new User(userPayload))
@@ -25,17 +25,11 @@ export const SessionStore = () => {
     return null
   }
 
-  // public forceSignOutDisposer = observe(forceSignOut, ({ object }) => {
-  //   if (object.value) {
-  //     this.signOut();
-  //   }
-  // });
-
-  async function signOut() {
+  const signOut = () => {
     return setUser(null)
   }
 
-  async function refreshUser() {
+  const refreshUser = async () => {
     try {
       let userPayload = await getAuthenticatedUser()
       if (userPayload) {

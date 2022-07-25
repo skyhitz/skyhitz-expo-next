@@ -130,6 +130,11 @@ export const emailValidationErrorAtom = atom({
   default: '',
 })
 
+export const signUpBackendErrorAtom = atom({
+  key: 'signUpBackendError',
+  default: '',
+})
+
 export const usernameOrEmailValidationErrorAtom = atom({
   key: 'usernameOrEmailValidationError',
   default: '',
@@ -137,11 +142,6 @@ export const usernameOrEmailValidationErrorAtom = atom({
 
 export const usernameOrEmailBackendErrorAtom = atom({
   key: 'usernameOrEmailBackendError',
-  default: '',
-})
-
-export const signUpBackendErrorAtom = atom({
-  key: 'signUpBackendError',
   default: '',
 })
 
