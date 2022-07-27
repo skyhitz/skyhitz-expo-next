@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import WalletConnect from '@walletconnect/sign-client'
+// import WalletConnect from '@walletconnect/sign-client'
 import { atom, useRecoilState } from 'recoil'
 
 const stellarMeta = {
@@ -48,16 +48,16 @@ export const WalletConnectStore = () => {
   console.log('wallet connect store')
   const init = async () => {
     if (client) return
-    const result = await WalletConnect.init({
-      projectId: '422a527ddc3ed4c5fff60954fcc8ed83',
-      metadata: {
-        name: 'Skyhitz',
-        description: 'Skyhitz',
-        url: 'https://skyhitz.io',
-        icons: ['https://skyhitz.io/img/icon-512.png'],
-      },
-    })
-    console.log(result)
+    // const result = await WalletConnect.init({
+    //   projectId: '422a527ddc3ed4c5fff60954fcc8ed83',
+    //   metadata: {
+    //     name: 'Skyhitz',
+    //     description: 'Skyhitz',
+    //     url: 'https://skyhitz.io',
+    //     icons: ['https://skyhitz.io/img/icon-512.png'],
+    //   },
+    // })
+    // console.log(result)
     // setClient(result)
     // if (result.session) {
     //   handleSetSession(result.session)
