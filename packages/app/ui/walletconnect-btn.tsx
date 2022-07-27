@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import WalletConnectIcon from 'app/ui/icons/walletconnect-icon'
 // import QRCodeModal from '@walletconnect/qrcode-modal'
 import { signManageDataOp } from 'app/stellar'
-import { WalletConnectStore } from 'app/state/wallet-connect'
+// import { WalletConnectStore } from 'app/state/wallet-connect'
 import { Button } from 'app/design-system/button'
 import { View } from 'app/design-system'
 
 const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
   console.log('init btn')
-  // const state = 'session-proposal'
-  const { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
+  const state = 'session-proposal'
+  // const { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
 
   // useEffect(() => {
   //   if (!uri) return QRCodeModal.close()

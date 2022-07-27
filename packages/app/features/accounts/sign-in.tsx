@@ -11,7 +11,7 @@ import {
   usernameOrEmailValidAtom,
 } from 'app/state/atoms'
 import { SessionStore } from 'app/state/session'
-import WalletConnectBtn from 'app/ui/walletconnect-btn'
+// import WalletConnectBtn from 'app/ui/walletconnect-btn'
 import { useRouter } from 'solito/router'
 
 const InputContainer = ({ children }) => {
@@ -73,19 +73,19 @@ export function SignIn() {
     }
   }
 
-  const signInWithXDR = async (xdr) => {
-    setLoading(true)
-    try {
-      await signIn(undefined, undefined, xdr)
-      // check your email to access your account
-      setLoading(false)
-      return
-    } catch (e) {
-      setBackendError(e as any)
-      replace('/accounts/sign-up')
-    }
-    return setLoading(false)
-  }
+  // const signInWithXDR = async (xdr) => {
+  //   setLoading(true)
+  //   try {
+  //     await signIn(undefined, undefined, xdr)
+  //     // check your email to access your account
+  //     setLoading(false)
+  //     return
+  //   } catch (e) {
+  //     setBackendError(e as any)
+  //     replace('/accounts/sign-up')
+  //   }
+  //   return setLoading(false)
+  // }
 
   const handleSignIn = async () => {
     setLoading(true)
@@ -122,14 +122,14 @@ export function SignIn() {
           />
         )}
       </InputContainer>
-      <InputContainer>
+      {/* <InputContainer>
         <WalletConnectBtn signInWithXDR={signInWithXDR} />
         <View tw="flex-row my-8 justify-center items-center">
           <View tw="grow h-px bg-white" />
           <Text tw="px-5">or</Text>
           <View tw="grow h-px bg-white" />
         </View>
-      </InputContainer>
+      </InputContainer> */}
       <InputContainer>
         <Field>
           <TextInput
