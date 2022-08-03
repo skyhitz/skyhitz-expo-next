@@ -1,6 +1,5 @@
 import SocialLinks from './social-links'
-import { View } from 'app/design-system'
-import { TextLink } from 'solito/link'
+import { View, TextLink } from 'app/design-system'
 
 const Footer = () => {
   return (

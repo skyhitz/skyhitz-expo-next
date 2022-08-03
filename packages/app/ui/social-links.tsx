@@ -7,7 +7,7 @@ import Twitter from 'app/ui/icons/twitter'
 
 const SocialLinks = () => {
   return (
-    <View tw="flex-row space-x-2">
+    <View tw="flex-row">
       <A
         href="https://twitter.com/skyhitz"
         aria-label="Read more about Skyhitz on twitter"

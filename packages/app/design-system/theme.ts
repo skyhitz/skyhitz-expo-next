@@ -33,6 +33,9 @@ const theme = makeTheme({
     },
   },
   text: {
+    a: {
+      color: 'white'
+    },
     body: {
       fontWeight: 'default',
       ...textSizes['text-base'],
