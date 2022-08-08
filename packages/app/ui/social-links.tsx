@@ -9,7 +9,7 @@ const SocialLinks = () => {
   return (
     <View tw="flex-row">
       <A
-        style={{marginRight: "0.5rem"}}
+        style={{ marginRight: 8 }}
         href="https://twitter.com/skyhitz"
         aria-label="Read more about Skyhitz on twitter"
         // @ts-expect-error react-native-web only types
@@ -21,7 +21,7 @@ const SocialLinks = () => {
         <Twitter />
       </A>
       <A
-        style={{marginRight: "0.5rem"}}
+        style={{ marginRight: 8 }}
         href="https://discord.gg/2C3HzsPEuZ"
         aria-label="Join our server on Discord"
         // @ts-expect-error react-native-web only types
@@ -33,7 +33,7 @@ const SocialLinks = () => {
         <Discord />
       </A>
       <A
-        style={{marginRight: "0.5rem"}}
+        style={{ marginRight: 8 }}
         href="https://instagram.com/skyhitz"
         aria-label="Read more about Skyhitz on instagram"
         // @ts-expect-error react-native-web only types

@@ -6,13 +6,12 @@ import { Text, TextLink, View } from 'app/design-system'
 const Navbar = () => {
   const user = useRecoilValue(userAtom)
 
-
   return (
     <View tw="absolute top-0 border-black h-14 flex-row justify-between items-center w-full">
       <TextLink href="/" tw="flex-row justify-start items-center">
         <View tw="flex-row items-center pl-3">
           <SkyhitzLogo />
-          <Text sx={{ letterSpacing: '0.75rem' }}>SKYHITZ</Text>
+          <Text sx={{ letterSpacing: 12 }}>SKYHITZ</Text>
         </View>
       </TextLink>
       {user ? null : (

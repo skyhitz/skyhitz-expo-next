@@ -27,6 +27,9 @@ const theme = makeTheme({
       600: webFont('Inter-Bold'),
       700: webFont('Inter-Bold'),
     },
+    'Raleway-Light': {
+      default: webFont('Raleway-Light'),
+    },
   },
   fonts: {
     root: 'Inter',
