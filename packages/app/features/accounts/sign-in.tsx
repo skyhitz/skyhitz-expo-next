@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Text, TextInput, View, Button } from 'app/design-system'
 import { createParam } from 'solito'
 import BackgroundImage from 'app/ui/background-image'
-import { openEmail } from 'app/functions/email'
+import { openEmail } from 'app/utils/email'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   usernameOrEmailBackendErrorAtom,
