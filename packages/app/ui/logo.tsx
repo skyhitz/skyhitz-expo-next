@@ -1,9 +1,16 @@
-import { View } from 'app/design-system'
+import { View } from "app/design-system"
+import Svg, { Circle, Rect } from "react-native-svg"
 
 const SvgComponent = ({ width = 30 }) => {
   return (
     <View tw="w-7 flex-row justify-center items-center">
-      <svg
+      <Svg
+        preserveAspectRatio="xMidYMid"
+        width="100%"
+        height="100%"
+        viewBox="0 0 139.16 106.812"
+      ></Svg>
+      {/* <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         preserveAspectRatio="xMidYMid"
@@ -29,7 +36,7 @@ const SvgComponent = ({ width = 30 }) => {
           filter="url(#prefix__a)"
           fillRule="evenodd"
         />
-      </svg>
+      </svg> */}
     </View>
   )
 }
