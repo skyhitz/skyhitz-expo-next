@@ -1,5 +1,5 @@
-import React from "react"
-import Svg, { Path } from "react-native-svg"
+import React from 'react'
+import Svg, { Path } from 'react-native-svg'
 
 function Icon({ size = 24, color }) {
   return (
@@ -8,7 +8,7 @@ function Icon({ size = 24, color }) {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      stroke={color ? color : "currentColor"}
+      stroke={color ? color : 'currentColor'}
     >
       <Path
         strokeLinecap="round"

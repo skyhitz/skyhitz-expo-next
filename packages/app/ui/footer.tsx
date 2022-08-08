@@ -1,5 +1,5 @@
-import SocialLinks from "./social-links"
-import { View, TextLink } from "app/design-system"
+import SocialLinks from './social-links'
+import { View, TextLink } from 'app/design-system'
 
 const Footer = () => {
   return (

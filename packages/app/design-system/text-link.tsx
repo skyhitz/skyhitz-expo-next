@@ -8,7 +8,13 @@ type TextProps = { tw?: string } & Omit<ComponentProps<typeof Text>, 'variant'>
 
 function TextLink({ tw, textProps, ...props }: TextProps) {
   return (
-    <Text  textProps={{ ...textProps, style: { color: theme.text.a.color, ...tailwind.style(tw)} }} {...props} />
+    <Text
+      textProps={{
+        ...textProps,
+        style: { color: theme.text.a.color, ...tailwind.style(tw) },
+      }}
+      {...props}
+    />
   )
 }
 

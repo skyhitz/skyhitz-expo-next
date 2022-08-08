@@ -2,17 +2,16 @@ import React, { useState } from 'react'
 import { Text, TextInput, View, Button } from 'app/design-system'
 import { createParam } from 'solito'
 import BackgroundImage from 'app/ui/background-image'
-import { openEmail } from 'app/functions/email'
+import { openEmail } from 'app/utils/email'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   usernameOrEmailBackendErrorAtom,
-  usernameOrEmailErrorAtom,
   usernameOrEmailValidationErrorAtom,
   usernameOrEmailValidAtom,
 } from 'app/state/atoms'
 import { SessionStore } from 'app/state/session'
-// import WalletConnectBtn from 'app/ui/walletconnect-btn'
-import { useRouter } from 'solito/router'
+import { useMutation } from '@apollo/client'
+import { REQUEST_TOKEN } from 'app/api/user'
 
 const InputContainer = ({ children }) => {
   return <View tw="self-center max-w-sm w-full">{children}</View>
@@ -29,20 +28,21 @@ const Field = ({ children }) => {
 const { useParam } = createParam()
 
 export function SignIn() {
+  // apollo test
+  const [mutation, { data, loading, error }] = useMutation(REQUEST_TOKEN)
+  console.log(data, loading, error)
+
   const [token, setToken] = useParam('token')
   const [uid, setUid] = useParam('uid')
   const [showEmailLink, setShowEmailLink] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [usernameOrEmail, setUsernameOrEmail] = useState('')
   const { requestToken, signIn } = SessionStore()
 
-  const error = useRecoilValue(usernameOrEmailErrorAtom)
   const setValidationError = useSetRecoilState(
     usernameOrEmailValidationErrorAtom
   )
   const setBackendError = useSetRecoilState(usernameOrEmailBackendErrorAtom)
   const validForm = useRecoilValue(usernameOrEmailValidAtom)
-  const { replace } = useRouter()
 
   const handleOpenEmail = () => {
     openEmail()
@@ -73,32 +73,15 @@ export function SignIn() {
     }
   }
 
-  // const signInWithXDR = async (xdr) => {
-  //   setLoading(true)
-  //   try {
-  //     await signIn(undefined, undefined, xdr)
-  //     // check your email to access your account
-  //     setLoading(false)
-  //     return
-  //   } catch (e) {
-  //     setBackendError(e as any)
-  //     replace('/accounts/sign-up')
-  //   }
-  //   return setLoading(false)
-  // }
-
   const handleSignIn = async () => {
-    setLoading(true)
     try {
-      await requestToken(usernameOrEmail, '')
+      await mutation({ variables: { usernameOrEmail, publicKey: '' } })
       // check your email to access your account
-      setLoading(false)
       setShowEmailLink(true)
       return
     } catch (e) {
       setBackendError(e as any)
     }
-    return setLoading(false)
   }
 
   return (
@@ -122,14 +105,6 @@ export function SignIn() {
           />
         )}
       </InputContainer>
-      {/* <InputContainer>
-        <WalletConnectBtn signInWithXDR={signInWithXDR} />
-        <View tw="flex-row my-8 justify-center items-center">
-          <View tw="grow h-px bg-white" />
-          <Text tw="px-5">or</Text>
-          <View tw="grow h-px bg-white" />
-        </View>
-      </InputContainer> */}
       <InputContainer>
         <Field>
           <TextInput
@@ -150,7 +125,7 @@ export function SignIn() {
           />
         </Field>
         <View tw="h-12 items-center justify-center w-full">
-          {error && <Text tw="text-red text-sm">{error}</Text>}
+          {error && <Text tw="text-red text-sm">{error[0]}</Text>}
         </View>
 
         <Button

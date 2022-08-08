@@ -1,4 +1,4 @@
-import { ConfigInterface } from './config';
+import { ConfigInterface } from './config'
 
 export const DevelopmentConfig: ConfigInterface = {
   APP_URL: 'https://vice.skyhitz.io',
@@ -8,4 +8,4 @@ export const DevelopmentConfig: ConfigInterface = {
   ALGOLIA_SEARCH_KEY: '795d7226826c11d9d379b19029f2d1b4',
   STRIPE_PUBLISHABLE_KEY: 'pk_test_jiDVP0p6iRtILtE4FzFfMACc',
   SCHEMA: 'exp://192.168.103.24:19000/--/',
-};
+}

@@ -1,5 +1,5 @@
-import React from "react"
-import Svg, { Path } from "react-native-svg"
+import React from 'react'
+import Svg, { Path } from 'react-native-svg'
 
 function Icon({
   size = 24,
@@ -12,8 +12,8 @@ function Icon({
 }) {
   return (
     <Svg
-      fill={fill ? (color ? color : "currentColor") : "none"}
-      stroke={fill ? "none" : color ? color : "currentColor"}
+      fill={fill ? (color ? color : 'currentColor') : 'none'}
+      stroke={fill ? 'none' : color ? color : 'currentColor'}
       viewBox="0 0 24 24"
       width={size}
       height={size}

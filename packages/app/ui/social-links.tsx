@@ -1,9 +1,9 @@
-import { View } from "app/design-system"
-import { A } from "dripsy"
-import Github from "app/ui/icons/github"
-import Insta from "app/ui/icons/instagram"
-import Discord from "app/ui/icons/discord"
-import Twitter from "app/ui/icons/twitter"
+import { View } from 'app/design-system'
+import { A } from 'dripsy'
+import Github from 'app/ui/icons/github'
+import Insta from 'app/ui/icons/instagram'
+import Discord from 'app/ui/icons/discord'
+import Twitter from 'app/ui/icons/twitter'
 
 const SocialLinks = () => {
   return (
@@ -13,8 +13,8 @@ const SocialLinks = () => {
         aria-label="Read more about Skyhitz on twitter"
         // @ts-expect-error react-native-web only types
         hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
+          target: '_blank',
+          rel: 'noreferrer',
         }}
       >
         <Twitter />
@@ -24,8 +24,8 @@ const SocialLinks = () => {
         aria-label="Join our server on Discord"
         // @ts-expect-error react-native-web only types
         hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
+          target: '_blank',
+          rel: 'noreferrer',
         }}
       >
         <Discord />
@@ -35,8 +35,8 @@ const SocialLinks = () => {
         aria-label="Read more about Skyhitz on instagram"
         // @ts-expect-error react-native-web only types
         hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
+          target: '_blank',
+          rel: 'noreferrer',
         }}
       >
         <Insta />
@@ -46,8 +46,8 @@ const SocialLinks = () => {
         aria-label="Audit the code of Skyhitz on github"
         // @ts-expect-error react-native-web only types
         hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
+          target: '_blank',
+          rel: 'noreferrer',
         }}
       >
         <Github />

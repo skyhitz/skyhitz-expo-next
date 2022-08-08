@@ -14,6 +14,7 @@
   },
   "scripts": {
     "native": "cd apps/expo && expo start",
-    "web": "cd apps/next && yarn next"
+    "web": "cd apps/next && yarn next",
+    "lint-check": "eslint packages/app && prettier --check packages/app"
   }
 }
