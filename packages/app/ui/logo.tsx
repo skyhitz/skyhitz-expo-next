@@ -1,5 +1,5 @@
-import { View } from 'app/design-system'
-import Svg, { Circle, Rect } from 'react-native-svg'
+import { View } from "app/design-system"
+import Svg, { Circle, Path, Rect } from 'react-native-svg'
 
 const SvgComponent = ({ width = 30 }) => {
   return (
@@ -9,7 +9,14 @@ const SvgComponent = ({ width = 30 }) => {
         width="100%"
         height="100%"
         viewBox="0 0 139.16 106.812"
-      ></Svg>
+      >
+        <Path
+          d="M74.723 66.449C69.141 67.047 71.627 0 71.627 0s21.024 72.022 62.697 103.042c24.899 18.536-54.017-37.194-59.601-36.593zm-10.264 0c-5.584-.601-84.5 55.129-59.601 36.593C46.531 72.022 67.555 0 67.555 0s2.486 67.047-3.096 66.449z"
+          fill="#19aafe"
+          fillRule="evenodd"
+        />
+        {/*fixme: use filter*/}
+      </Svg>
       {/* <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
