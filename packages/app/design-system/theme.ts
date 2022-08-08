@@ -15,22 +15,22 @@ const webFont = (font: string) => {
 const theme = makeTheme({
   space: [],
   fontSizes: [],
-  fonts: {
-    root: 'Inter',
-    inter: 'Inter',
-  },
   customFonts: {
     Inter: {
-      default: webFont('Inter-Regular'),
-      normal: webFont('Inter-Regular'),
-      regular: webFont('Inter-Regular'),
-      400: webFont('Inter-Regular'),
+      default: webFont('Inter'),
+      normal: webFont('Inter'),
+      regular: webFont('Inter'),
+      400: webFont('Inter'),
       semibold: webFont('Inter-Semibold'),
       500: webFont('Inter-Semibold'),
       bold: webFont('Inter-Bold'),
       600: webFont('Inter-Bold'),
       700: webFont('Inter-Bold'),
     },
+  },
+  fonts: {
+    root: 'Inter',
+    inter: 'Inter',
   },
   text: {
     a: {
