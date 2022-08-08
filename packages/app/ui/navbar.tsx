@@ -8,7 +8,7 @@ const Navbar = () => {
 
 
   return (
-    <View tw="sticky top-0 border-black h-14 flex-row justify-between items-center w-full">
+    <View tw="absolute top-0 border-black h-14 flex-row justify-between items-center w-full">
       <TextLink href="/" tw="flex-row justify-start items-center">
         <View tw="flex-row items-center pl-3">
           <SkyhitzLogo />
