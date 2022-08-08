@@ -12,7 +12,7 @@ const Navbar = () => {
       <TextLink href="/" tw="flex-row justify-start items-center">
         <View tw="flex-row items-center pl-3">
           <SkyhitzLogo />
-          <Text>SKYHITZ</Text>
+          <Text sx={{ letterSpacing: '0.75rem' }}>SKYHITZ</Text>
         </View>
       </TextLink>
       {user ? null : (
