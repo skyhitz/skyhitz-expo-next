@@ -1,7 +1,7 @@
-import React from "react"
-import Svg, { Path } from "react-native-svg"
+import React from 'react'
+import Svg, { Path } from 'react-native-svg'
 
-function Icon({ size = 24, color = "currentColor" }) {
+function Icon({ size = 24, color = 'currentColor' }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path

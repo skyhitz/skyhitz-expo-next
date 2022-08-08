@@ -34,7 +34,7 @@ const theme = makeTheme({
   },
   text: {
     a: {
-      color: 'white'
+      color: 'white',
     },
     body: {
       fontWeight: 'default',

@@ -15,9 +15,9 @@ export function NavigationProvider({
           config: {
             initialRouteName: 'home',
             screens: {
-              home: '',
+              home: 'home',
               'user-detail': 'user/:id',
-              'sign-in': '',
+              'sign-in': 'sign-in',
             },
           },
         }),

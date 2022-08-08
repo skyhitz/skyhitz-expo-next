@@ -1,6 +1,5 @@
 import { atom, selector } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { client } from 'app/api/client'
 import { userDataKey } from 'app/constants/constants'
 import { User } from 'app/models/user'
 import { ProfileEdit } from 'app/models/profile'
@@ -29,20 +28,11 @@ const localStorageEffect =
         : AsyncStorage.setItem(key, JSON.stringify(newValue))
     })
   }
-const headersEffect =
-  () =>
-  ({ setSelf, onSet }) => {
-    onSet((newValue, _, isReset) => {
-      isReset
-        ? client.setHeader('authorization', '')
-        : client.setHeader('authorization', `Bearer ${newValue.jwt}`)
-    })
-  }
 
 export const userAtom = atom<null | User>({
   key: 'user',
   default: null,
-  effects: [localStorageEffect(userDataKey), headersEffect()],
+  effects: [localStorageEffect(userDataKey)],
 })
 
 export const profileAtom = atom<ProfileEdit>({

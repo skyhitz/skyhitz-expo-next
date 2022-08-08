@@ -1,5 +1,5 @@
-import { View } from "app/design-system"
-import Svg, { Circle, Rect } from "react-native-svg"
+import { View } from 'app/design-system'
+import Svg, { Circle, Rect } from 'react-native-svg'
 
 const SvgComponent = ({ width = 30 }) => {
   return (
