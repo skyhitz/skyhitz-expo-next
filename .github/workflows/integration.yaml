@@ -23,7 +23,7 @@ jobs:
 
       - name: Run eslint and prettier
         run: yarn lint-check
-   publish:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Setup repo
