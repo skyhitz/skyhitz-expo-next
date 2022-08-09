@@ -10,20 +10,17 @@ export function HomeScreen() {
       <Navbar />
       <View tw="mx-auto text-center" sx={{ width: [300, 600], mt: [56, 100] }}>
         <Text
-          tw="mt-4 text-center"
+          tw="mt-4 text-center font-raleway"
           sx={{
             fontSize: [36, 64],
             lineHeight: [40, 76],
-            fontFamily: 'Raleway-Light',
           }}
         >
           Music NFTs on Stellar
         </Text>
         <Text
-          tw="mx-auto text-center mb-9 max-w-[500px]"
+          tw="mx-auto text-center mb-9 max-w-[500px] font-raleway font-semibold"
           sx={{
-            fontFamily: 'Raleway-Light',
-            fontWeight: '600',
             fontSize: [16, 18],
             letterSpacing: 2,
             lineHeight: 24,
@@ -42,14 +39,8 @@ export function HomeScreen() {
 
 function SignUpButton() {
   return (
-    <Pressable
-      tw="mx-auto bg-white border-2 border-black rounded-full py-3 px-8"
-      sx={{ width: 'fit-content' }}
-    >
-      <Text
-        tw="text-black text-lg"
-        sx={{ fontFamily: 'Raleway-Light', fontWeight: 'bold' }}
-      >
+    <Pressable tw="mx-auto bg-white border-2 border-black rounded-full py-3 px-8">
+      <Text tw="text-black text-lg font-raleway font-medium">
         Sign up for free
       </Text>
     </Pressable>
