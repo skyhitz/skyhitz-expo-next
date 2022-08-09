@@ -1,17 +1,17 @@
-import React, { ReactNode, useState } from "react"
-import { Text, TextInput, View, Button } from "app/design-system"
-import { createParam } from "solito"
-import BackgroundImage from "app/ui/background-image"
-import { openEmail } from "app/utils/email"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import React, { ReactNode, useState } from 'react'
+import { Text, TextInput, View, Button } from 'app/design-system'
+import { createParam } from 'solito'
+import BackgroundImage from 'app/ui/background-image'
+import { openEmail } from 'app/utils/email'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   usernameOrEmailBackendErrorAtom,
   usernameOrEmailValidationErrorAtom,
   usernameOrEmailValidAtom,
-} from "app/state/atoms"
-import { useMutation } from "@apollo/client"
-import { REQUEST_TOKEN } from "app/api/user"
-import { NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native"
+} from 'app/state/atoms'
+import { useMutation } from '@apollo/client'
+import { REQUEST_TOKEN } from 'app/api/user'
+import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 
 const InputContainer = ({ children }: { children: ReactNode }) => {
   return <View tw="self-center max-w-sm w-full">{children}</View>
@@ -32,10 +32,10 @@ export function SignIn() {
   const [mutation, { data, loading, error }] = useMutation(REQUEST_TOKEN)
   console.log(data, loading, error)
 
-  const [token, setToken] = useParam("token")
-  const [uid, setUid] = useParam("uid")
+  const [token, setToken] = useParam('token')
+  const [uid, setUid] = useParam('uid')
   const [showEmailLink, setShowEmailLink] = useState(false)
-  const [usernameOrEmail, setUsernameOrEmail] = useState("")
+  const [usernameOrEmail, setUsernameOrEmail] = useState('')
 
   const setValidationError = useSetRecoilState(
     usernameOrEmailValidationErrorAtom
@@ -49,16 +49,16 @@ export function SignIn() {
 
   const validateUsernameOrEmail = (usernameOrEmail: string) => {
     if (!usernameOrEmail) {
-      setValidationError("Username is required.")
+      setValidationError('Username is required.')
       return
     }
 
     if (usernameOrEmail.length < 2) {
-      setValidationError("Enter a valid username or email.")
+      setValidationError('Enter a valid username or email.')
       return
     }
 
-    setValidationError("")
+    setValidationError('')
   }
 
   const updateUsernameOrEmail = ({ target }: any) => {
@@ -67,14 +67,15 @@ export function SignIn() {
   }
 
   const onSubmit = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-    if (e.nativeEvent.key == "Enter") {
+    if (e.nativeEvent.key == 'Enter') {
       // TODO
     }
   }
 
   const handleSignIn = async () => {
     try {
-      await mutation({ variables: { usernameOrEmail, publicKey: "" } })
+      await mutation({ variables: { usernameOrEmail, publicKey: '' } })
+
       // check your email to access your account
       setShowEmailLink(true)
       return
@@ -108,7 +109,7 @@ export function SignIn() {
         <Field>
           <TextInput
             underlineColorAndroid="transparent"
-            placeholderTextColor={"white"}
+            placeholderTextColor={'white'}
             autoCapitalize="none"
             placeholder="Username or Email address"
             autoCorrect={false}
@@ -125,7 +126,6 @@ export function SignIn() {
         <View tw="h-12 items-center justify-center w-full">
           {error && <Text tw="text-red text-sm">{error.message}</Text>}
         </View>
-
         <Button
           onPress={handleSignIn}
           disabled={!validForm}

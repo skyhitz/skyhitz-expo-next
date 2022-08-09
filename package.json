@@ -15,6 +15,6 @@
   "scripts": {
     "native": "cd apps/expo && expo start",
     "web": "cd apps/next && yarn next",
-    "check": "tsc --noEmit && eslint packages/app && prettier --check packages/app"
+    "ci": "tsc --noEmit && eslint packages/app && prettier --check packages/app"
   }
 }

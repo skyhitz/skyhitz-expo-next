@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  check:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Setup repo
@@ -22,11 +22,11 @@ jobs:
         run: yarn install
 
       - name: Run tsc, eslint and prettier
-        run: yarn check
+        run: yarn ci
   expo-preview:
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: write # Allow comments on PRs
+      pull-requests: write
     steps:
       - name: Setup repo
         uses: actions/checkout@v2

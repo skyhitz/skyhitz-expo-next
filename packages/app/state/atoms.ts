@@ -1,13 +1,80 @@
 import { atom, selector } from 'recoil'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { userDataKey } from 'app/constants/constants'
 import { User } from 'app/models/user'
 import { ProfileEdit } from 'app/models/profile'
-
 
 export const userAtom = atom<null | User>({
   key: 'user',
   default: null,
+})
+
+export const profileAtom = atom<ProfileEdit>({
+  key: 'profileEdit',
+  default: selector({
+    key: 'userSelect',
+    get: ({ get }) => {
+      const user = get(userAtom)
+      if (!user)
+        return {
+          avatarUrl: '',
+          displayName: '',
+          description: '',
+          username: '',
+          email: '',
+          loadingAvatar: false,
+          uploadError: '',
+        }
+      const { avatarUrl, displayName, description, username, email } =
+        user as unknown as ProfileEdit
+      return {
+        avatarUrl,
+        displayName,
+        description,
+        username,
+        email,
+        loadingAvatar: false,
+        uploadError: '',
+      }
+    },
+  }),
+})
+
+export const profileValidationErrorAtom = selector<string | null>({
+  key: 'profileValidationError',
+  get: ({ get }) => {
+    const { avatarUrl, displayName, description, username, email } =
+      get(profileAtom)
+    if (!avatarUrl) {
+      return 'Upload a profile picture.'
+    }
+
+    if (!displayName) {
+      return 'Add a display name.'
+    }
+
+    if (!description) {
+      return 'Add a description.'
+    }
+
+    if (!username) {
+      return 'Add a username.'
+    }
+
+    if (!email) {
+      return 'Add an email.'
+    }
+    return null
+  },
+})
+
+export const canUpdateProfileAtom = selector<boolean>({
+  key: 'canUpdateProfile',
+  get: ({ get }) => {
+    const { avatarUrl, displayName, description, username, email } =
+      get(profileAtom)
+    return (
+      !!avatarUrl && !!displayName && !!description && !!username && !!email
+    )
+  },
 })
 
 export const usernameValidationErrorAtom = atom({
