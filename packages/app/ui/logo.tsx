@@ -1,49 +1,34 @@
-import { View } from "app/design-system"
-import Svg, { Circle, Path, Rect } from 'react-native-svg'
+import { View } from 'app/design-system'
+import Svg, { LinearGradient, Path, Stop } from 'react-native-svg'
 
-const SvgComponent = ({ width = 30 }) => {
+const SvgComponent = ({ size = 30 }) => {
   return (
     <View tw="w-7 flex-row justify-center items-center">
       <Svg
+        viewBox="0 0 140 130"
+        width={size}
+        height={size}
         preserveAspectRatio="xMidYMid"
-        width="100%"
-        height="100%"
-        viewBox="0 0 139.16 106.812"
       >
+        <LinearGradient
+          id="a"
+          gradientUnits="userSpaceOnUse"
+          x1={69.6}
+          y1={106.8}
+          x2={69.6}
+        >
+          <Stop offset={-0.3} stopColor="#042c43" />
+          <Stop offset={-0.2} stopColor="#042c43" />
+          <Stop offset={0.5} stopColor="#19aafe" />
+          <Stop offset={1.3} stopColor="#fff" />
+        </LinearGradient>
         <Path
-          d="M74.723 66.449C69.141 67.047 71.627 0 71.627 0s21.024 72.022 62.697 103.042c24.899 18.536-54.017-37.194-59.601-36.593zm-10.264 0c-5.584-.601-84.5 55.129-59.601 36.593C46.531 72.022 67.555 0 67.555 0s2.486 67.047-3.096 66.449z"
-          fill="#19aafe"
-          fillRule="evenodd"
+          d="M76 67c-6 1-3-66-3-66s21 72 62 103c25 18-54-37-59-37zm-11 0c-5 0-84 55-59 37C48 73 69 1 69 1s2 67-4 66z"
+          fill="url(#a)"
         />
-        {/*fixme: use filter*/}
       </Svg>
-      {/* <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        preserveAspectRatio="xMidYMid"
-        width="100%"
-        height="100%"
-        viewBox="0 0 139.16 106.812"
-      >
-        <defs>
-          <filter id="prefix__a" filterUnits="userSpaceOnUse">
-            <feImage
-              width={139.16}
-              height={106.812}
-              preserveAspectRatio="none"
-              xlinkHref="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTM5LjE2MDAwMDAwMDAwMDA4IiBoZWlnaHQ9IjEwNi44MTIwMDAwMDAwMDAwMSI+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjY5LjU4IiB5MT0iMTA2LjgxMiIgeDI9IjY5LjU4Ij4KICA8c3RvcCBvZmZzZXQ9Ii0wLjI1IiBzdG9wLWNvbG9yPSIjMDQyYzQzIi8+CiAgPHN0b3Agb2Zmc2V0PSItMC4yMzUiIHN0b3AtY29sb3I9IiMwNDJjNDMiLz4KICA8c3RvcCBvZmZzZXQ9IjAuNDciIHN0b3AtY29sb3I9IiMxOWFhZmUiLz4KICA8c3RvcCBvZmZzZXQ9IjEuMjUiIHN0b3AtY29sb3I9IiNmZmYiLz4KPC9saW5lYXJHcmFkaWVudD4KPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIvPjwvc3ZnPg=="
-            />
-            <feComposite operator="in" in2="SourceGraphic" />
-            <feBlend in2="SourceGraphic" result="gradientFill" />
-          </filter>
-        </defs>
-        <path
-          d="M74.723 66.449C69.141 67.047 71.627 0 71.627 0s21.024 72.022 62.697 103.042c24.899 18.536-54.017-37.194-59.601-36.593zm-10.264 0c-5.584-.601-84.5 55.129-59.601 36.593C46.531 72.022 67.555 0 67.555 0s2.486 67.047-3.096 66.449z"
-          fill="#19aafe"
-          filter="url(#prefix__a)"
-          fillRule="evenodd"
-        />
-      </svg> */}
+
+      {/* <svg xml:space="preserve" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 139.2 106.8"><defs><clipPath clipPathUnits="userSpaceOnUse" id="b"><path d="M76 67c-6 1-3-66-3-66s21 72 62 103c25 18-54-37-59-37zm-11 0c-5 0-84 55-59 37C48 73 69 1 69 1s2 67-4 66z" fill="#19aafe" style="opacity:1"/></clipPath></defs><linearGradient id="a" gradientUnits="userSpaceOnUse" x1="69.6" y1="106.8" x2="69.6"><stop offset="-.3" stop-color="#042c43"/><stop offset="-.2" stop-color="#042c43"/><stop offset=".5" stop-color="#19aafe"/><stop offset="1.3" stop-color="#fff"/></linearGradient><rect width="100%" height="100%" fill="url(#a)" x=".5" style="display:inline;fill:url(#a)" clip-path="url(#b)"/></svg>> */}
     </View>
   )
 }
