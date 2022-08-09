@@ -4,105 +4,10 @@ import { userDataKey } from 'app/constants/constants'
 import { User } from 'app/models/user'
 import { ProfileEdit } from 'app/models/profile'
 
-const localStorageEffect =
-  (key) =>
-  ({ setSelf, onSet, trigger }) => {
-    // If there's a persisted value - set it on load
-    const loadPersisted = async () => {
-      const savedValue = await AsyncStorage.getItem(key)
-
-      if (savedValue != null) {
-        setSelf(JSON.parse(savedValue))
-      }
-    }
-
-    // Asynchronously set the persisted data
-    if (trigger === 'get') {
-      loadPersisted()
-    }
-
-    // Subscribe to state changes and persist them to localForage
-    onSet((newValue, _, isReset) => {
-      isReset
-        ? AsyncStorage.removeItem(key)
-        : AsyncStorage.setItem(key, JSON.stringify(newValue))
-    })
-  }
 
 export const userAtom = atom<null | User>({
   key: 'user',
   default: null,
-  effects: [localStorageEffect(userDataKey)],
-})
-
-export const profileAtom = atom<ProfileEdit>({
-  key: 'profileEdit',
-  default: selector({
-    key: 'userSelect',
-    get: ({ get }) => {
-      const user = get(userAtom)
-      if (!user)
-        return {
-          avatarUrl: '',
-          displayName: '',
-          description: '',
-          username: '',
-          email: '',
-          loadingAvatar: false,
-          uploadError: '',
-        }
-      const { avatarUrl, displayName, description, username, email } =
-        user as unknown as ProfileEdit
-      return {
-        avatarUrl,
-        displayName,
-        description,
-        username,
-        email,
-        loadingAvatar: false,
-        uploadError: '',
-      }
-    },
-  }),
-})
-
-export const profileValidationErrorAtom = selector<string | null>({
-  key: 'profileValidationError',
-  get: ({ get }) => {
-    const { avatarUrl, displayName, description, username, email } =
-      get(profileAtom)
-    if (!avatarUrl) {
-      return 'Upload a profile picture.'
-    }
-
-    if (!displayName) {
-      return 'Add a display name.'
-    }
-
-    if (!description) {
-      return 'Add a description.'
-    }
-
-    if (!username) {
-      return 'Add a username.'
-    }
-
-    if (!email) {
-      return 'Add an email.'
-    }
-    return null
-  },
-})
-
-export const canUpdateProfileAtom = selector<boolean>({
-  key: 'canUpdateProfile',
-  get: ({ get }) => {
-    const { avatarUrl, displayName, description, username, email } =
-      get(profileAtom)
-    return (
-      !!avatarUrl && !!displayName && !!description && !!username && !!email
-    )
-  },
 })
 
 export const usernameValidationErrorAtom = atom({
