@@ -51,6 +51,8 @@ jobs:
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
 
       - name: Comment preview
+        working-directory: ./apps/expo
         uses: expo/expo-github-action/preview-comment@v7
         with:
           channel: pr-${{ github.event.number }}
+          message: ""
