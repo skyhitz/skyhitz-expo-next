@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, TextInput, View, Button } from 'app/design-system'
+import { Button, Text, TextInput, View } from 'app/design-system'
 import { createParam } from 'solito'
 import BackgroundImage from 'app/ui/background-image'
 import { openEmail } from 'app/utils/email'
@@ -85,7 +85,8 @@ export function SignIn() {
   }
 
   return (
-    <BackgroundImage authBackground={true}>
+    <View>
+      <BackgroundImage />
       <InputContainer>
         {token && uid && (
           <Field>
@@ -135,6 +136,6 @@ export function SignIn() {
           text="Log In"
         />
       </InputContainer>
-    </BackgroundImage>
+    </View>
   )
 }
