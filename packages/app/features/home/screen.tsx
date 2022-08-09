@@ -5,10 +5,13 @@ import { Pressable, Text, View } from 'app/design-system'
 
 export function HomeScreen() {
   return (
-    <View tw="w-full h-full">
+    <View tw="w-full h-full flex flex-col h-full">
       <BackgroundImage />
       <Navbar />
-      <View tw="mx-auto text-center" sx={{ width: [300, 600], mt: [56, 100] }}>
+      <View
+        tw="mx-auto text-center flex-1"
+        sx={{ width: [300, 600], mt: [24, 42] }}
+      >
         <Text
           tw="mt-4 text-center font-raleway"
           sx={{
