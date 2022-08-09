@@ -4,6 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      letterSpacing: {
+        0.5: '2px',
+      },
       fontFamily: {
         raleway: ['Raleway-Light'],
       },

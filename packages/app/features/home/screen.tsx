@@ -19,10 +19,9 @@ export function HomeScreen() {
           Music NFTs on Stellar
         </Text>
         <Text
-          tw="mx-auto text-center mb-9 max-w-[500px] font-raleway font-semibold"
+          tw="mx-auto text-center mb-9 max-w-[500px] font-raleway font-semibold tracking-0.5"
           sx={{
             fontSize: [16, 18],
-            letterSpacing: 2,
             lineHeight: 24,
             marginTop: [38, 32],
           }}
