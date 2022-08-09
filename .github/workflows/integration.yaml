@@ -25,6 +25,8 @@ jobs:
         run: yarn lint-check
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # Allow comments on PRs
     steps:
       - name: Setup repo
         uses: actions/checkout@v2
@@ -39,12 +41,14 @@ jobs:
         uses: expo/expo-github-action@v7
         with:
           expo-version: latest
+          eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
         run: yarn install
 
       - name: Publish preview
+        working-directory: ./apps/expo
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
 
       - name: Comment preview
