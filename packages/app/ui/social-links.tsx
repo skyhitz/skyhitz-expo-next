@@ -1,19 +1,20 @@
-import { View } from 'app/design-system'
+import { View } from 'react-native'
 import Github from 'app/ui/icons/github'
 import Insta from 'app/ui/icons/instagram'
 import Discord from 'app/ui/icons/discord'
 import Twitter from 'app/ui/icons/twitter'
+import { tw } from 'app/design-system/tailwind'
 
 const SocialLinks = () => {
   return (
-    <View tw="flex flex-row">
-      <View tw="mr-2">
+    <View style={tw`flex flex-row`}>
+      <View style={tw`mr-2`}>
         <Twitter />
       </View>
-      <View tw="mr-2">
+      <View style={tw`mr-2`}>
         <Discord />
       </View>
-      <View tw="mr-2">
+      <View style={tw`mr-2`}>
         <Insta />
       </View>
       <View>

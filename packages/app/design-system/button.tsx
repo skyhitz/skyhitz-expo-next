@@ -1,6 +1,5 @@
-import { Text } from 'app/design-system/text'
-import { Pressable } from 'app/design-system/pressable'
-import { ActivityIndicator } from 'app/design-system/activity-indicator'
+import { ActivityIndicator, Pressable, Text } from 'react-native'
+import tailwind from 'twrnc'
 
 const Button = ({
   loading,
@@ -19,7 +18,10 @@ const Button = ({
 }) => {
   return (
     <Pressable
-      tw="bg-blue/90 flex-row items-center justify-center rounded-full h-11"
+      style={tailwind.style(
+        'bg-blue/90 flex-row items-center justify-center rounded-full h-11',
+        tw
+      )}
       onPress={onPress}
       disabled={disabled}
     >

@@ -1,15 +1,17 @@
 import SocialLinks from './social-links'
-import { TextLink, View } from 'app/design-system'
+import { Text, View } from 'react-native'
+import { Link } from 'solito/link'
+import { tw } from 'app/design-system/tailwind'
 
 const Footer = () => {
   return (
-    <View tw="flex-row justify-end h-14 items-center w-full px-8">
-      <TextLink tw="mr-5" href="/accounts/terms">
-        Terms of Use
-      </TextLink>
-      <TextLink tw="mr-5" href="/accounts/privacy">
-        Privacy Policy
-      </TextLink>
+    <View style={tw`flex-row justify-end h-14 items-center w-full px-8`}>
+      <Link href="/accounts/terms">
+        <Text style={tw`mr-5 text-white`}>Terms of Use</Text>
+      </Link>
+      <Link href="/accounts/privacy">
+        <Text style={tw`mr-5 text-white`}>Privacy Policy</Text>
+      </Link>
       <SocialLinks />
     </View>
   )

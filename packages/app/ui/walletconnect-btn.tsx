@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import WalletConnectIcon from 'app/ui/icons/walletconnect-icon'
 // import QRCodeModal from '@walletconnect/qrcode-modal'
 import { signManageDataOp } from 'app/stellar'
 // import { WalletConnectStore } from 'app/state/wallet-connect'
 import { Button } from 'app/design-system/button'
-import { View } from 'app/design-system'
+import { View } from 'react-native'
+import { tw } from 'app/design-system/tailwind'
 
 const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
   console.log('init btn')
@@ -42,7 +43,7 @@ const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
           : 'WalletConnect'
       }
       rightIcon={
-        <View tw="px-2">
+        <View style={tw`px-2`}>
           <WalletConnectIcon color="white" />
         </View>
       }

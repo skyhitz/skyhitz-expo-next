@@ -1,4 +1,3 @@
-import { Dripsy } from './dripsy'
 import { NavigationProvider } from './navigation'
 import { RecoilRoot } from 'recoil'
 import { FontProvider } from './font'
@@ -11,9 +10,7 @@ export function Provider({ children }: { children: React.ReactNode }) {
       <TwrncProvider>
         <NavigationProvider>
           <RecoilRoot>
-            <FontProvider>
-              <Dripsy>{children}</Dripsy>
-            </FontProvider>
+            <FontProvider>{children}</FontProvider>
           </RecoilRoot>
         </NavigationProvider>
       </TwrncProvider>

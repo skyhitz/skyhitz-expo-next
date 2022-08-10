@@ -1,4 +1,3 @@
-import { makeTheme } from 'dripsy'
 import { Platform } from 'react-native'
 
 import { fontFamily, textSizes } from 'app/design-system/typography'
@@ -12,7 +11,7 @@ const webFont = (font: string) => {
   })
 }
 
-const theme = makeTheme({
+const theme = {
   space: [],
   fontSizes: [],
   customFonts: {
@@ -89,12 +88,4 @@ const theme = makeTheme({
       color: 'white',
     },
   },
-})
-
-type MyTheme = typeof theme
-
-declare module 'dripsy' {
-  interface DripsyCustomTheme extends MyTheme {}
 }
-
-export { theme }

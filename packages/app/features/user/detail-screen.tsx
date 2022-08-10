@@ -1,4 +1,4 @@
-import { Text, View } from 'dripsy'
+import { Text, View } from 'react-native'
 import { createParam } from 'solito'
 import { TextLink } from 'solito/link'
 

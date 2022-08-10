@@ -1,5 +1,12 @@
 import React, { ReactNode, useState } from 'react'
-import { Text, TextInput, View, Button } from 'app/design-system'
+import {
+  Button,
+  NativeSyntheticEvent,
+  Text,
+  TextInput,
+  TextInputKeyPressEventData,
+  View,
+} from 'react-native'
 import { createParam } from 'solito'
 import BackgroundImage from 'app/ui/background-image'
 import { openEmail } from 'app/utils/email'
@@ -11,7 +18,6 @@ import {
 } from 'app/state/atoms'
 import { useMutation } from '@apollo/client'
 import { REQUEST_TOKEN } from 'app/api/user'
-import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 
 const InputContainer = ({ children }: { children: ReactNode }) => {
   return <View tw="self-center max-w-sm w-full">{children}</View>
