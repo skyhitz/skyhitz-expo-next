@@ -1,6 +1,6 @@
 import React from 'react'
 import { ImageBackground } from 'react-native'
-import { SliderOverlay, LivePush } from 'app/assets/images/Images'
+import { LivePush, SliderOverlay } from 'app/assets/images/Images'
 
 const BackgroundImage = () => (
   <ImageBackground
@@ -11,7 +11,7 @@ const BackgroundImage = () => (
       position: 'absolute',
       left: 0,
       top: 0,
-      zIndex: -1
+      zIndex: -1,
     }}
     resizeMode="cover"
   >
@@ -23,8 +23,7 @@ const BackgroundImage = () => (
       }}
       imageStyle={{ opacity: 0.9 }}
       resizeMode="repeat"
-    >
-    </ImageBackground>
+    ></ImageBackground>
   </ImageBackground>
 )
 
