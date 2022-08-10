@@ -2,8 +2,8 @@ import { NativeModules, Platform } from 'react-native'
 import * as Linking from 'expo-linking'
 
 class EmailException extends Error {
-  constructor(...params) {
-    super(...params)
+  constructor(cause: string) {
+    super(cause)
     this.name = 'EmailException'
   }
 }

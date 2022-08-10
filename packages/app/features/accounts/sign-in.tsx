@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { Text, TextInput, View, Button } from 'app/design-system'
 import { createParam } from 'solito'
 import BackgroundImage from 'app/ui/background-image'
@@ -9,15 +9,15 @@ import {
   usernameOrEmailValidationErrorAtom,
   usernameOrEmailValidAtom,
 } from 'app/state/atoms'
-import { SessionStore } from 'app/state/session'
 import { useMutation } from '@apollo/client'
 import { REQUEST_TOKEN } from 'app/api/user'
+import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 
-const InputContainer = ({ children }) => {
+const InputContainer = ({ children }: { children: ReactNode }) => {
   return <View tw="self-center max-w-sm w-full">{children}</View>
 }
 
-const Field = ({ children }) => {
+const Field = ({ children }: { children: ReactNode }) => {
   return (
     <View tw="h-12 w-full flex-row justify-start items-center bg-blue-field/30 rounded-lg">
       {children}
@@ -36,7 +36,6 @@ export function SignIn() {
   const [uid, setUid] = useParam('uid')
   const [showEmailLink, setShowEmailLink] = useState(false)
   const [usernameOrEmail, setUsernameOrEmail] = useState('')
-  const { requestToken, signIn } = SessionStore()
 
   const setValidationError = useSetRecoilState(
     usernameOrEmailValidationErrorAtom
@@ -67,15 +66,16 @@ export function SignIn() {
     validateUsernameOrEmail(target.value)
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
     if (e.nativeEvent.key == 'Enter') {
-      signIn()
+      // TODO
     }
   }
 
   const handleSignIn = async () => {
     try {
       await mutation({ variables: { usernameOrEmail, publicKey: '' } })
+
       // check your email to access your account
       setShowEmailLink(true)
       return
@@ -108,7 +108,6 @@ export function SignIn() {
       <InputContainer>
         <Field>
           <TextInput
-            variant="text.text-sm"
             underlineColorAndroid="transparent"
             placeholderTextColor={'white'}
             autoCapitalize="none"
@@ -125,9 +124,8 @@ export function SignIn() {
           />
         </Field>
         <View tw="h-12 items-center justify-center w-full">
-          {error && <Text tw="text-red text-sm">{error[0]}</Text>}
+          {error && <Text tw="text-red text-sm">{error.message}</Text>}
         </View>
-
         <Button
           onPress={handleSignIn}
           disabled={!validForm}

@@ -1,13 +1,21 @@
 {
   "expo": {
-    "name": "solito-blank",
-    "slug": "solito-blank",
+    "name": "skyhitz",
+    "slug": "skyhitz",
     "version": "1.0.0",
     "sdkVersion": "44.0.0",
-    "scheme": "solito-blank",
+    "scheme": "skyhitz",
+    "orientation": "portrait",
+    "icon": "./icon.png",
     "platforms": ["ios", "android"],
     "ios": {
-      "bundleIdentifier": "com.solito.blank"
-    }
+      "bundleIdentifier": "io.skyhitz.skyhitz",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "io.skyhitz.skyhitz",
+      "versionCode": 1
+    },
+    "owner": "skyhitz"
   }
 }

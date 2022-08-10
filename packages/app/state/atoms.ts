@@ -1,38 +1,10 @@
 import { atom, selector } from 'recoil'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { userDataKey } from 'app/constants/constants'
 import { User } from 'app/models/user'
 import { ProfileEdit } from 'app/models/profile'
-
-const localStorageEffect =
-  (key) =>
-  ({ setSelf, onSet, trigger }) => {
-    // If there's a persisted value - set it on load
-    const loadPersisted = async () => {
-      const savedValue = await AsyncStorage.getItem(key)
-
-      if (savedValue != null) {
-        setSelf(JSON.parse(savedValue))
-      }
-    }
-
-    // Asynchronously set the persisted data
-    if (trigger === 'get') {
-      loadPersisted()
-    }
-
-    // Subscribe to state changes and persist them to localForage
-    onSet((newValue, _, isReset) => {
-      isReset
-        ? AsyncStorage.removeItem(key)
-        : AsyncStorage.setItem(key, JSON.stringify(newValue))
-    })
-  }
 
 export const userAtom = atom<null | User>({
   key: 'user',
   default: null,
-  effects: [localStorageEffect(userDataKey)],
 })
 
 export const profileAtom = atom<ProfileEdit>({
