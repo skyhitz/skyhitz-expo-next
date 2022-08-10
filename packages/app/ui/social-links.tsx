@@ -1,5 +1,4 @@
 import { View } from 'app/design-system'
-import { A } from 'dripsy'
 import Github from 'app/ui/icons/github'
 import Insta from 'app/ui/icons/instagram'
 import Discord from 'app/ui/icons/discord'
@@ -7,54 +6,66 @@ import Twitter from 'app/ui/icons/twitter'
 
 const SocialLinks = () => {
   return (
-    <View tw="flex-row">
-      <A
-        style={{ marginRight: 8 }}
-        href="https://twitter.com/skyhitz"
-        aria-label="Read more about Skyhitz on twitter"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noreferrer',
-        }}
-      >
+    <View tw="flex flex-row">
+      <View tw="mr-2">
         <Twitter />
-      </A>
-      <A
-        style={{ marginRight: 8 }}
-        href="https://discord.gg/2C3HzsPEuZ"
-        aria-label="Join our server on Discord"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noreferrer',
-        }}
-      >
+      </View>
+      <View tw="mr-2">
         <Discord />
-      </A>
-      <A
-        style={{ marginRight: 8 }}
-        href="https://instagram.com/skyhitz"
-        aria-label="Read more about Skyhitz on instagram"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noreferrer',
-        }}
-      >
+      </View>
+      <View tw="mr-2">
         <Insta />
-      </A>
-      <A
-        href="https://github.com/skyhitz"
-        aria-label="Audit the code of Skyhitz on github"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: '_blank',
-          rel: 'noreferrer',
-        }}
-      >
+      </View>
+      <View>
         <Github />
-      </A>
+      </View>
+      {/*<A*/}
+      {/*  style={tw`mr-2`}*/}
+      {/*  href="https://twitter.com/skyhitz"*/}
+      {/*  aria-label="Read more about Skyhitz on twitter"*/}
+      {/*  // @ts-expect-error react-native-web only types*/}
+      {/*  hrefAttrs={{*/}
+      {/*    target: '_blank',*/}
+      {/*    rel: 'noreferrer',*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Twitter />*/}
+      {/*</A>*/}
+      {/*<A*/}
+      {/*  style={tw`mr-2`}*/}
+      {/*  href="https://discord.gg/2C3HzsPEuZ"*/}
+      {/*  aria-label="Join our server on Discord"*/}
+      {/*  // @ts-expect-error react-native-web only types*/}
+      {/*  hrefAttrs={{*/}
+      {/*    target: '_blank',*/}
+      {/*    rel: 'noreferrer',*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Discord />*/}
+      {/*</A>*/}
+      {/*<A*/}
+      {/*  style={tw`mr-2 text-white`}*/}
+      {/*  href="https://instagram.com/skyhitz"*/}
+      {/*  aria-label="Read more about Skyhitz on instagram"*/}
+      {/*  // @ts-expect-error react-native-web only types*/}
+      {/*  hrefAttrs={{*/}
+      {/*    target: '_blank',*/}
+      {/*    rel: 'noreferrer',*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Insta />*/}
+      {/*</A>*/}
+      {/*<A*/}
+      {/*  href="https://github.com/skyhitz"*/}
+      {/*  aria-label="Audit the code of Skyhitz on github"*/}
+      {/*  // @ts-expect-error react-native-web only types*/}
+      {/*  hrefAttrs={{*/}
+      {/*    target: '_blank',*/}
+      {/*    rel: 'noreferrer',*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Github />*/}
+      {/*</A>*/}
     </View>
   )
 }
