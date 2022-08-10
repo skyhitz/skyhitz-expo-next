@@ -8,27 +8,11 @@ export function HomeScreen() {
     <View tw="w-full h-full flex flex-col h-full">
       <BackgroundImage />
       <Navbar />
-      <View
-        tw="mx-auto text-center flex-1"
-        sx={{ width: [300, 600], mt: [24, 42] }}
-      >
-        <Text
-          tw="mt-4 text-center font-raleway"
-          sx={{
-            fontSize: [36, 64],
-            lineHeight: [40, 76],
-          }}
-        >
+      <View tw="mx-auto text-center flex-1 w-[300px] md:w-[600px] mt-6 md:mt-10">
+        <Text tw="mt-4 text-center font-raleway text-4xl md:text-[64px] md:leading-[76px]">
           Music NFTs on Stellar
         </Text>
-        <Text
-          tw="mx-auto text-center mb-9 max-w-[500px] font-raleway font-semibold tracking-0.5"
-          sx={{
-            fontSize: [16, 18],
-            lineHeight: 24,
-            marginTop: [38, 32],
-          }}
-        >
+        <Text tw="mx-auto text-center mb-9 max-w-[500px] font-raleway font-semibold tracking-0.5 leading-6 md:text-lg mt-9 md:mt-8">
           Upload, buy or sell music NFTs on the Stellar Network. Join a
           community of beatmakers!
         </Text>
