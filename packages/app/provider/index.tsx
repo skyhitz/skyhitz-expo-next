@@ -3,17 +3,20 @@ import { NavigationProvider } from './navigation'
 import { RecoilRoot } from 'recoil'
 import { FontProvider } from './font'
 import { SkyhitzApolloProvider } from './apollo'
+import TwrncProvider from 'app/provider/twrnc'
 
 export function Provider({ children }: { children: React.ReactNode }) {
   return (
     <SkyhitzApolloProvider>
-      <NavigationProvider>
-        <RecoilRoot>
-          <FontProvider>
-            <Dripsy>{children}</Dripsy>
-          </FontProvider>
-        </RecoilRoot>
-      </NavigationProvider>
+      <TwrncProvider>
+        <NavigationProvider>
+          <RecoilRoot>
+            <FontProvider>
+              <Dripsy>{children}</Dripsy>
+            </FontProvider>
+          </RecoilRoot>
+        </NavigationProvider>
+      </TwrncProvider>
     </SkyhitzApolloProvider>
   )
 }
