@@ -52,6 +52,9 @@ const createTextSize = ({
   marginCorrection: {
     ios: number
     android: number
+    windows?: number
+    macos?: number
+    web?: number
   }
 }) => {
   const styles = {
