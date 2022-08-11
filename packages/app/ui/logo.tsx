@@ -3,7 +3,7 @@ import Svg, { LinearGradient, Path, Stop } from 'react-native-svg'
 const SvgComponent = ({ size = 30 }) => {
   return (
     <Svg
-      viewBox="0 0 140 130"
+      viewBox="0 0 140 100"
       width={size}
       height={size}
       preserveAspectRatio="xMidYMid"
