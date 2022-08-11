@@ -1,3 +1,5 @@
+const { plugin } = require('twrnc')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [],
@@ -37,4 +39,11 @@ module.exports = {
   variants: {
     extend: {},
   },
+  plugins: [
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        btn: `bg-blue/90 flex flex-row items-center justify-center rounded-full h-12 px-4`,
+      })
+    }),
+  ],
 }
