@@ -3,11 +3,11 @@ import { TextLink, View } from 'app/design-system'
 
 const Footer = () => {
   return (
-    <View className="flex-row justify-end h-14 items-center w-full px-8">
-      <TextLink tw="mr-5" href="/accounts/terms">
+    <View className="flex flex-row justify-end items-center h-14 w-full px-8">
+      <TextLink tw="mr-5 text-base leading-none" href="/accounts/terms">
         Terms of Use
       </TextLink>
-      <TextLink tw="mr-5" href="/accounts/privacy">
+      <TextLink tw="mr-5 text-base leading-none" href="/accounts/privacy">
         Privacy Policy
       </TextLink>
       <SocialLinks />

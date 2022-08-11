@@ -1,9 +1,8 @@
 import { View } from 'app/design-system'
 import { A } from 'dripsy'
-import Github from 'app/ui/icons/github'
-import Insta from 'app/ui/icons/instagram'
-import Discord from 'app/ui/icons/discord'
-import Twitter from 'app/ui/icons/twitter'
+import Icon from '@expo/vector-icons/MaterialCommunityIcons'
+
+const ICON_SIZE = 18
 
 const SocialLinks = () => {
   return (
@@ -18,7 +17,7 @@ const SocialLinks = () => {
           rel: 'noreferrer',
         }}
       >
-        <Twitter />
+        <Icon name="twitter" size={ICON_SIZE} />
       </A>
       <A
         style={{ marginRight: 8 }}
@@ -30,7 +29,7 @@ const SocialLinks = () => {
           rel: 'noreferrer',
         }}
       >
-        <Discord />
+        <Icon name="discord" size={ICON_SIZE} />
       </A>
       <A
         style={{ marginRight: 8 }}
@@ -42,7 +41,7 @@ const SocialLinks = () => {
           rel: 'noreferrer',
         }}
       >
-        <Insta />
+        <Icon name="instagram" size={ICON_SIZE} />
       </A>
       <A
         href="https://github.com/skyhitz"
@@ -53,7 +52,7 @@ const SocialLinks = () => {
           rel: 'noreferrer',
         }}
       >
-        <Github />
+        <Icon name="github" size={ICON_SIZE} />
       </A>
     </View>
   )
