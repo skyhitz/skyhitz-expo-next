@@ -3,11 +3,17 @@ import BackgroundImage from 'app/ui/background-image'
 import Footer from 'app/ui/footer'
 import { Pressable, Text, View } from 'app/design-system'
 import { useLink } from 'solito/link'
+import { useSafeArea } from 'app/provider/safe-area/use-safe-area'
+import { StatusBar } from 'react-native'
 
 export function HomeScreen() {
+  const insets = useSafeArea()
   return (
-    <View className="w-full h-full flex flex-col h-full">
+    <View
+      className={`w-full h-full flex flex-col h-full pt-[${insets.top}px] pb-[${insets.bottom}px]`}
+    >
       <BackgroundImage />
+      <StatusBar barStyle="light-content" />
       <Navbar />
       <View className="mx-auto text-center flex-1 max-w-[300px] mt-6 sm:max-w-[600px] sm:mt-10">
         <Text className="mt-4 text-center font-raleway text-4xl sm:text-[4rem] sm:leading-[4.75rem]">
