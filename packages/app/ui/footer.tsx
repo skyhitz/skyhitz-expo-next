@@ -3,7 +3,7 @@ import { TextLink, View } from 'app/design-system'
 
 const Footer = () => {
   return (
-    <View tw="flex-row justify-end h-14 items-center w-full px-8">
+    <View className="flex-row justify-end h-14 items-center w-full px-8">
       <TextLink tw="mr-5" href="/accounts/terms">
         Terms of Use
       </TextLink>

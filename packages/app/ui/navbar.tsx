@@ -7,17 +7,17 @@ const Navbar = () => {
   const user = useRecoilValue(userAtom)
 
   return (
-    <View tw="flex-row justify-between items-center p-3 w-full flex-wrap">
+    <View className="flex-row justify-center sm:justify-between items-center p-3 w-full flex-wrap">
       <TextLink href="/" tw="flex flex-row justify-start items-center">
-        <View tw="flex flex-row items-center">
+        <View className="flex flex-row items-center">
           <SkyhitzLogo />
-          <Text tw="pl-5 text-lg font-raleway" sx={{ letterSpacing: 12 }}>
+          <Text className="pl-4 text-lg font-raleway tracking-[12px]">
             SKYHITZ
           </Text>
         </View>
       </TextLink>
       {user ? null : (
-        <View tw="flex-row justify-end items-center">
+        <View className="hidden sm:flex flex-row justify-end items-center">
           <TextLink
             tw="font-raleway text-sm font-bold tracking-0.5 mr-4"
             href="/sign-in"
@@ -25,7 +25,7 @@ const Navbar = () => {
             Log in
           </TextLink>
 
-          <View tw="bg-white rounded-full px-3">
+          <View className="bg-white rounded-full px-3">
             <TextLink
               tw="p-2 font-raleway text-sm text-black font-bold tracking-0.5"
               href="/sign-up"

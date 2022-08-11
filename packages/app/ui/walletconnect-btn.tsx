@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import WalletConnectIcon from 'app/ui/icons/walletconnect-icon'
 // import QRCodeModal from '@walletconnect/qrcode-modal'
 import { signManageDataOp } from 'app/stellar'
@@ -42,7 +42,7 @@ const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
           : 'WalletConnect'
       }
       rightIcon={
-        <View tw="px-2">
+        <View className="px-2">
           <WalletConnectIcon color="white" />
         </View>
       }
