@@ -18,11 +18,7 @@ const Button = ({
   disabled?: boolean
 }) => {
   return (
-    <Pressable
-      className={' '.concat(className ?? '')}
-      onPress={onPress}
-      disabled={disabled}
-    >
+    <Pressable className={className} onPress={onPress} disabled={disabled}>
       {loading ? <ActivityIndicator size="small" /> : <Text>{text}</Text>}
       {rightIcon && rightIcon}
     </Pressable>
