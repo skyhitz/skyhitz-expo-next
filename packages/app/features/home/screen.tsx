@@ -15,11 +15,11 @@ export function HomeScreen() {
       <BackgroundImage />
       <StatusBar barStyle="light-content" />
       <Navbar />
-      <View className="mx-auto text-center flex-1 max-w-[300px] mt-6 sm:max-w-[600px] sm:mt-10">
-        <Text className="mt-4 text-center font-raleway text-4xl sm:text-[4rem] sm:leading-[4.75rem]">
+      <View className="mx-auto text-center flex-1 max-w-xs mt-6 sm:max-w-xl sm:mt-10">
+        <Text className="mt-4 text-center font-raleway text-4xl sm:text-6xl sm:leading-tight">
           Music NFTs on Stellar
         </Text>
-        <Text className="mx-auto text-center mb-9 max-w-[500px] font-raleway font-semibold tracking-0.5 text-sm leading-6 mt-9 sm:text-base sm:mt-8">
+        <Text className="mx-auto text-center mb-9 max-w-lg font-raleway font-semibold tracking-0.5 text-sm leading-6 mt-9 sm:text-lg sm:mt-8">
           Upload, buy or sell music NFTs on the Stellar Network. Join a
           community of beatmakers!
         </Text>
