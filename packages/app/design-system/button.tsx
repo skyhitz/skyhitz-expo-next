@@ -6,20 +6,20 @@ const Button = ({
   loading,
   text,
   onPress,
-  tw,
+  className,
   rightIcon,
   disabled,
 }: {
   loading?: boolean
   text: string
   onPress: () => void
-  tw?: string
+  className?: string
   rightIcon?: JSX.Element
   disabled?: boolean
 }) => {
   return (
     <Pressable
-      tw="bg-blue/90 flex-row items-center justify-center rounded-full h-11"
+      className={' '.concat(className ?? '')}
       onPress={onPress}
       disabled={disabled}
     >

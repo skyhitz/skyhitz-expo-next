@@ -1,12 +1,15 @@
 import { ComponentProps } from 'react'
-import { Pressable as DripsyPressable } from 'dripsy'
+import { Pressable as DripsyPressable, useSx } from 'dripsy'
 
 import { tw as tailwind } from 'app/design-system/tailwind'
 
-type TextProps = { tw?: string } & ComponentProps<typeof DripsyPressable>
+type TextProps = { className?: string } & ComponentProps<typeof DripsyPressable>
 
-function Pressable({ tw, sx, ...props }: TextProps) {
-  return <DripsyPressable sx={{ ...sx, ...tailwind.style(tw) }} {...props} />
+function Pressable({ className, sx, ...props }: TextProps) {
+  useSx()
+  return (
+    <DripsyPressable sx={{ ...sx, ...tailwind.style(className) }} {...props} />
+  )
 }
 
 export { Pressable }
