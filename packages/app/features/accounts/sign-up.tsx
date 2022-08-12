@@ -94,7 +94,7 @@ interface StyledInputProps {
   autofocus?: boolean
   value?: string
   onChange?: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void
-  onChangeText?: (string) => void
+  onChangeText?: (s: string) => void
   className?: string
   valid?: boolean
   inputRef?: Ref<rTextInput>
