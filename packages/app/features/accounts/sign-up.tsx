@@ -1,6 +1,7 @@
 import { Pressable, Text, TextInput, View } from 'app/design-system'
 import {
   NativeSyntheticEvent,
+  Platform,
   TextInput as rTextInput,
   TextInputChangeEventData,
 } from 'react-native'
@@ -14,6 +15,7 @@ import {
   validateUsername,
   ValidationResult,
 } from 'app/features/accounts/validators'
+import KeyboardAvoidingView from 'app/design-system/keyboard-avoiding-view'
 
 function useValidation<T>(
   initialState: T,
@@ -42,9 +44,12 @@ export function SignUp() {
   const isFormValid = username.isValid && displayedName.isValid && email.isValid
 
   return (
-    <View className="w-full h-full flex items-center justify-center ">
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      className="absolute inset-0 flex items-center justify-center"
+    >
       <BackgroundImage />
-      <View className="w-72 md:w-96 pb-16">
+      <View className="w-72 md:w-96">
         <WalletconnectBtn />
         <Separator />
         <StyledInput
@@ -68,17 +73,19 @@ export function SignUp() {
           onChangeText={email.setState}
           valid={email.isValid}
         />
-        <Text className={'w-full text-center text-sm text-[#d9544f] mt-4 h-4'}>
-          {(username.firstChangeLatch && username.errorMsg) ??
-            (displayedName.firstChangeLatch && displayedName.errorMsg) ??
-            (email.firstChangeLatch && email.errorMsg) ??
+        <Text
+          className={'w-full text-center text-sm text-[#d9544f] mt-4 min-h-5'}
+        >
+          {(username.firstChangeLatch && username.errorMsg) ||
+            (displayedName.firstChangeLatch && displayedName.errorMsg) ||
+            (email.firstChangeLatch && email.errorMsg) ||
             ' '}
         </Text>
         <Pressable className={`btn mt-6 ${isFormValid ? '' : 'opacity-50'}`}>
           <Text className="tracking-0.5">Join</Text>
         </Pressable>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -111,7 +118,7 @@ function StyledInput({
       <TextInput
         placeholderTextColor="white"
         autoCapitalize="none"
-        className="text-white text-sm grow leading-none"
+        className="text-white text-sm grow leading-none remove-font-padding"
         value={value}
         onChange={(e) => {
           setFirstInputLatch(true)
