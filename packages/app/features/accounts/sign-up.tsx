@@ -24,7 +24,7 @@ function useValidation<T>(
   const [state, setState] = useState(initialState)
   const [firstChangeLatch, setFirstChangeLatch] = useState(false)
   const validationResult = validationFunction(state)
-  const setStateWithLatch = (s) => {
+  const setStateWithLatch = (s: T) => {
     setFirstChangeLatch(true)
     setState(s)
   }
