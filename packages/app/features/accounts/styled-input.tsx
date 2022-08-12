@@ -1,8 +1,4 @@
-import {
-  NativeSyntheticEvent,
-  TextInput as rTextInput,
-  TextInputChangeEventData,
-} from 'react-native'
+import { TextInput as rTextInput } from 'react-native'
 import { Ref, useState } from 'react'
 import { TextInput, View } from 'app/design-system'
 import Icon from '@expo/vector-icons/MaterialCommunityIcons'
@@ -11,7 +7,6 @@ interface StyledInputProps {
   placeholder: string
   autofocus?: boolean
   value?: string
-  onChange?: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void
   onChangeText?: (s: string) => void
   className?: string
   valid?: boolean
@@ -22,7 +17,6 @@ export function StyledInput({
   className,
   valid,
   value,
-  onChange,
   ...rest
 }: StyledInputProps) {
   const [firstInputLatch, setFirstInputLatch] = useState(false)
@@ -38,9 +32,8 @@ export function StyledInput({
         autoCapitalize="none"
         className="text-white text-sm grow leading-none remove-font-padding"
         value={value}
-        onChange={(e) => {
+        onChange={() => {
           setFirstInputLatch(true)
-          onChange?.apply(e)
         }}
         {...rest}
       />
