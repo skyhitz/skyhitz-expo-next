@@ -113,7 +113,7 @@ export function SignIn() {
             autoCapitalize="none"
             placeholder="Username or Email address"
             autoCorrect={false}
-            tw="w-full p-2"
+            className="w-full p-2"
             autoFocus={true}
             value={usernameOrEmail}
             onChange={updateUsernameOrEmail}
