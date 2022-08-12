@@ -5,7 +5,11 @@ import { signManageDataOp } from 'app/stellar'
 // import { WalletConnectStore } from 'app/state/wallet-connect'
 import { Pressable, Text } from 'app/design-system'
 
-const WalletConnectBtn = ({ signInWithXDR }: { signInWithXDR?: (_) => {} }) => {
+const WalletConnectBtn = ({
+  signInWithXDR,
+}: {
+  signInWithXDR?: (_: any) => {}
+}) => {
   const state = 'idle'
   // const { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
 
