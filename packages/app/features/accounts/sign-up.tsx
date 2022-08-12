@@ -8,6 +8,79 @@ import BackgroundImage from 'app/ui/background-image'
 import WalletconnectBtn from 'app/ui/walletconnect-btn'
 import { Ref, useState } from 'react'
 import Icon from '@expo/vector-icons/MaterialCommunityIcons'
+import {
+  validateDisplayName,
+  validateEmail,
+  validateUsername,
+  ValidationResult,
+} from 'app/features/accounts/validators'
+
+function useValidation<T>(
+  initialState: T,
+  validationFunction: (val: T) => ValidationResult
+) {
+  const [state, setState] = useState(initialState)
+  const [firstChangeLatch, setFirstChangeLatch] = useState(false)
+  const validationResult = validationFunction(state)
+  const setStateWithLatch = (s) => {
+    setFirstChangeLatch(true)
+    setState(s)
+  }
+
+  return {
+    state,
+    setState: setStateWithLatch,
+    ...validationResult,
+    firstChangeLatch,
+  }
+}
+
+export function SignUp() {
+  const username = useValidation('', validateUsername)
+  const displayedName = useValidation('', validateDisplayName)
+  const email = useValidation('', validateEmail)
+  const isFormValid = username.isValid && displayedName.isValid && email.isValid
+
+  return (
+    <View className="w-full h-full flex items-center justify-center ">
+      <BackgroundImage />
+      <View className="w-72 md:w-96 pb-16">
+        <WalletconnectBtn />
+        <Separator />
+        <StyledInput
+          value={username.state}
+          onChangeText={username.setState}
+          placeholder="Username"
+          autofocus={true}
+          valid={username.isValid}
+        />
+        <StyledInput
+          value={displayedName.state}
+          placeholder="Display Name"
+          className="mt-4"
+          onChangeText={displayedName.setState}
+          valid={displayedName.isValid}
+        />
+        <StyledInput
+          value={email.state}
+          placeholder="Email address"
+          className="mt-4"
+          onChangeText={email.setState}
+          valid={email.isValid}
+        />
+        <Text className={'w-full text-center text-sm text-[#d9544f] mt-4 h-4'}>
+          {(username.firstChangeLatch && username.errorMsg) ??
+            (displayedName.firstChangeLatch && displayedName.errorMsg) ??
+            (email.firstChangeLatch && email.errorMsg) ??
+            ' '}
+        </Text>
+        <Pressable className={`btn mt-6 ${isFormValid ? '' : 'opacity-50'}`}>
+          <Text className="tracking-0.5">Join</Text>
+        </Pressable>
+      </View>
+    </View>
+  )
+}
 
 interface StyledInputProps {
   placeholder: string
@@ -20,7 +93,15 @@ interface StyledInputProps {
   inputRef?: Ref<rTextInput>
 }
 
-function StyledInput({ className, valid, value, ...rest }: StyledInputProps) {
+function StyledInput({
+  className,
+  valid,
+  value,
+  onChange,
+  ...rest
+}: StyledInputProps) {
+  const [firstInputLatch, setFirstInputLatch] = useState(false)
+
   return (
     <View
       className={'flex flex-row items-center w-full h-12 rounded-lg p-2 bg-gray-700/20 '.concat(
@@ -32,53 +113,20 @@ function StyledInput({ className, valid, value, ...rest }: StyledInputProps) {
         autoCapitalize="none"
         className="text-white text-sm grow leading-none"
         value={value}
+        onChange={(e) => {
+          setFirstInputLatch(true)
+          onChange?.apply(e)
+        }}
         {...rest}
       />
       <Icon
         name={valid ? 'check-circle-outline' : 'close-circle-outline'}
         size={24}
         style={{
-          display: value === '' ? 'none' : 'flex',
+          display: firstInputLatch ? 'flex' : 'none',
         }}
         color={valid ? '#0EAC8DCC' : '#d9544f'}
       />
-    </View>
-  )
-}
-
-export function SignUp() {
-  const [username, setUsername] = useState('')
-  const [displayedName, setDisplayedName] = useState('')
-  const [email, setEmail] = useState('')
-
-  return (
-    <View className="w-full h-full flex items-center justify-center pb-16">
-      <BackgroundImage />
-      <View className="w-72 md:w-96">
-        <WalletconnectBtn />
-        <Separator />
-        <StyledInput
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Username"
-          autofocus={true}
-        />
-        <StyledInput
-          value={displayedName}
-          placeholder="Display Name"
-          className="mt-4"
-          onChangeText={setDisplayedName}
-        />
-        <StyledInput
-          value={email}
-          placeholder="Email address"
-          className="mt-4"
-          onChangeText={setEmail}
-        />
-        <Pressable className="btn mt-6 opacity-50">
-          <Text className="tracking-0.5">Join</Text>
-        </Pressable>
-      </View>
     </View>
   )
 }

@@ -1,4 +1,4 @@
-type ValidationResult = {
+export type ValidationResult = {
   isValid: boolean
   errorMsg?: string
 }
