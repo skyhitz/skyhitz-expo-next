@@ -6,7 +6,7 @@ export function Separator() {
   return (
     <View className="flex flex-row my-8 items-center w-full">
       <View className={LINE_STYLE} />
-      <Text>or</Text>
+      <Text className="px-2">or</Text>
       <View className={LINE_STYLE} />
     </View>
   )
