@@ -1,36 +1,32 @@
 import React from 'react'
 import { ImageBackground } from 'react-native'
-import { SliderOverlay, LivePush } from 'app/assets/images/Images'
+import { LivePush, SliderOverlay } from 'app/assets/images/Images'
 
-const BackgroundImage = (props: any) => (
+const BackgroundImage = () => (
   <ImageBackground
     source={LivePush}
     style={{
-      width: '100%',
-      height: '100%',
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: -1,
     }}
     resizeMode="cover"
   >
     <ImageBackground
       source={SliderOverlay}
-      style={[
-        {
-          width: '100%',
-          height: '100%',
-        },
-        props.authBackground
-          ? {
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }
-          : {},
-      ]}
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+      }}
       imageStyle={{ opacity: 0.9 }}
       resizeMode="repeat"
-    >
-      {props.children}
-    </ImageBackground>
+    ></ImageBackground>
   </ImageBackground>
 )
 

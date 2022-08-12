@@ -1,9 +1,17 @@
+const { plugin } = require('twrnc')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      letterSpacing: {
+        0.5: '2px',
+      },
+      fontFamily: {
+        raleway: ['Raleway-Light'],
+      },
       opacity: {
         30: '.3',
         90: '.9',
@@ -31,4 +39,11 @@ module.exports = {
   variants: {
     extend: {},
   },
+  plugins: [
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        btn: `bg-blue/90 flex flex-row items-center justify-center rounded-full h-12 px-4`,
+      })
+    }),
+  ],
 }

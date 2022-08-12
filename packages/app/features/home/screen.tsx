@@ -1,13 +1,58 @@
 import Navbar from 'app/ui/navbar'
 import BackgroundImage from 'app/ui/background-image'
 import Footer from 'app/ui/footer'
+import { Pressable, Text, View } from 'app/design-system'
+import { useLink } from 'solito/link'
+import { useSafeArea } from 'app/provider/safe-area/use-safe-area'
+import { StatusBar } from 'react-native'
 
 export function HomeScreen() {
+  const insets = useSafeArea()
   return (
-    <BackgroundImage>
+    <View
+      className={`w-full h-full flex flex-col h-full pt-[${insets.top}px] pb-[${insets.bottom}px]`}
+    >
+      <BackgroundImage />
+      <StatusBar barStyle="light-content" />
       <Navbar />
-      {/* <MainWrapper /> */}
+      <View className="mx-auto text-center flex-1 max-w-xs mt-6 sm:max-w-xl sm:mt-10">
+        <Text className="mt-4 text-center font-raleway text-4xl sm:text-6xl sm:leading-tight">
+          Music NFTs on Stellar
+        </Text>
+        <Text className="mx-auto text-center mb-9 max-w-lg font-raleway font-semibold tracking-0.5 text-sm leading-6 mt-9 sm:text-lg sm:mt-8">
+          Upload, buy or sell music NFTs on the Stellar Network. Join a
+          community of beatmakers!
+        </Text>
+        <View className="android:w-60 ios:w-60 mx-auto">
+          <SignUpButton />
+          <LogInButton />
+        </View>
+      </View>
       <Footer />
-    </BackgroundImage>
+    </View>
+  )
+}
+
+function SignUpButton() {
+  return (
+    <Pressable className="btn bg-white border-2 border-black">
+      <Text className="text-black text-lg font-raleway font-medium leading-none">
+        Sign up for free
+      </Text>
+    </Pressable>
+  )
+}
+
+function LogInButton() {
+  const logInBtnProps = useLink({ href: '/log-in' })
+  return (
+    <Pressable
+      className="btn w-full mt-2 sm:hidden border-2 border-black"
+      {...logInBtnProps}
+    >
+      <Text className="text-lg text-center font-raleway font-medium leading-none">
+        Sign in
+      </Text>
+    </Pressable>
   )
 }

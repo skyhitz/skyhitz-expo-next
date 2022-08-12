@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import { Text, TextInput, View, Button } from 'app/design-system'
+import { Button, Text, TextInput, View } from 'app/design-system'
 import { createParam } from 'solito'
 import BackgroundImage from 'app/ui/background-image'
 import { openEmail } from 'app/utils/email'
@@ -14,12 +14,12 @@ import { REQUEST_TOKEN } from 'app/api/user'
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native'
 
 const InputContainer = ({ children }: { children: ReactNode }) => {
-  return <View tw="self-center max-w-sm w-full">{children}</View>
+  return <View className="self-center max-w-sm w-full">{children}</View>
 }
 
 const Field = ({ children }: { children: ReactNode }) => {
   return (
-    <View tw="h-12 w-full flex-row justify-start items-center bg-blue-field/30 rounded-lg">
+    <View className="h-12 w-full flex-row justify-start items-center bg-blue-field/30 rounded-lg">
       {children}
     </View>
   )
@@ -75,7 +75,6 @@ export function SignIn() {
   const handleSignIn = async () => {
     try {
       await mutation({ variables: { usernameOrEmail, publicKey: '' } })
-
       // check your email to access your account
       setShowEmailLink(true)
       return
@@ -85,7 +84,8 @@ export function SignIn() {
   }
 
   return (
-    <BackgroundImage authBackground={true}>
+    <View>
+      <BackgroundImage />
       <InputContainer>
         {token && uid && (
           <Field>
@@ -123,8 +123,8 @@ export function SignIn() {
             onKeyPress={onSubmit}
           />
         </Field>
-        <View tw="h-12 items-center justify-center w-full">
-          {error && <Text tw="text-red text-sm">{error.message}</Text>}
+        <View className="h-12 items-center justify-center w-full">
+          {error && <Text className="text-red text-sm">{error.message}</Text>}
         </View>
         <Button
           onPress={handleSignIn}
@@ -133,6 +133,6 @@ export function SignIn() {
           text="Log In"
         />
       </InputContainer>
-    </BackgroundImage>
+    </View>
   )
 }
