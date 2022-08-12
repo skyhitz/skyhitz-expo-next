@@ -1,46 +1,21 @@
-import { Pressable, Text, TextInput, View } from 'app/design-system'
-import {
-  NativeSyntheticEvent,
-  Platform,
-  TextInput as rTextInput,
-  TextInputChangeEventData,
-} from 'react-native'
+import { Pressable, Text, View } from 'app/design-system'
+import { Platform } from 'react-native'
 import BackgroundImage from 'app/ui/background-image'
 import WalletconnectBtn from 'app/ui/walletconnect-btn'
-import { Ref, useState } from 'react'
-import Icon from '@expo/vector-icons/MaterialCommunityIcons'
 import {
   validateDisplayName,
   validateEmail,
   validateUsername,
-  ValidationResult,
 } from 'app/features/accounts/validators'
 import KeyboardAvoidingView from 'app/design-system/keyboard-avoiding-view'
-
-function useValidation<T>(
-  initialState: T,
-  validationFunction: (val: T) => ValidationResult
-) {
-  const [state, setState] = useState(initialState)
-  const [firstChangeLatch, setFirstChangeLatch] = useState(false)
-  const validationResult = validationFunction(state)
-  const setStateWithLatch = (s: T) => {
-    setFirstChangeLatch(true)
-    setState(s)
-  }
-
-  return {
-    state,
-    setState: setStateWithLatch,
-    ...validationResult,
-    firstChangeLatch,
-  }
-}
+import { Separator } from 'app/features/accounts/or-separator'
+import { StyledInput } from 'app/features/accounts/styled-input'
+import { useValidation } from 'app/hooks/use-validation'
 
 export function SignUp() {
-  const username = useValidation('', validateUsername)
-  const displayedName = useValidation('', validateDisplayName)
-  const email = useValidation('', validateEmail)
+  const username = useValidation<string>('', validateUsername)
+  const displayedName = useValidation<string>('', validateDisplayName)
+  const email = useValidation<string>('', validateEmail)
   const isFormValid = username.isValid && displayedName.isValid && email.isValid
 
   return (
@@ -86,66 +61,5 @@ export function SignUp() {
         </Pressable>
       </View>
     </KeyboardAvoidingView>
-  )
-}
-
-interface StyledInputProps {
-  placeholder: string
-  autofocus?: boolean
-  value?: string
-  onChange?: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void
-  onChangeText?: (s: string) => void
-  className?: string
-  valid?: boolean
-  inputRef?: Ref<rTextInput>
-}
-
-function StyledInput({
-  className,
-  valid,
-  value,
-  onChange,
-  ...rest
-}: StyledInputProps) {
-  const [firstInputLatch, setFirstInputLatch] = useState(false)
-
-  return (
-    <View
-      className={'flex flex-row items-center w-full h-12 rounded-lg p-2 bg-gray-700/20 '.concat(
-        className ?? ''
-      )}
-    >
-      <TextInput
-        placeholderTextColor="white"
-        autoCapitalize="none"
-        className="text-white text-sm grow leading-none remove-font-padding"
-        value={value}
-        onChange={(e) => {
-          setFirstInputLatch(true)
-          onChange?.apply(e)
-        }}
-        {...rest}
-      />
-      <Icon
-        name={valid ? 'check-circle-outline' : 'close-circle-outline'}
-        size={24}
-        style={{
-          display: firstInputLatch ? 'flex' : 'none',
-        }}
-        color={valid ? '#0EAC8DCC' : '#d9544f'}
-      />
-    </View>
-  )
-}
-
-const LINE_STYLE = 'border border-transparent border-b-white grow'
-
-function Separator() {
-  return (
-    <View className="flex flex-row my-8 items-center w-full">
-      <View className={LINE_STYLE} />
-      <Text>or</Text>
-      <View className={LINE_STYLE} />
-    </View>
   )
 }
