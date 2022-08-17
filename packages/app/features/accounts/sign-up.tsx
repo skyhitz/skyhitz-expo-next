@@ -2,21 +2,40 @@ import { Pressable, Text, View } from 'app/design-system'
 import { Platform } from 'react-native'
 import BackgroundImage from 'app/ui/background-image'
 import WalletconnectBtn from 'app/ui/walletconnect-btn'
-import {
-  validateDisplayName,
-  validateEmail,
-  validateUsername,
-} from 'app/features/accounts/validators'
 import KeyboardAvoidingView from 'app/design-system/keyboard-avoiding-view'
 import { Separator } from 'app/features/accounts/or-separator'
-import { StyledInput } from 'app/features/accounts/styled-input'
-import { useValidation } from 'app/hooks/use-validation'
+import { StyledTextInput } from 'app/features/accounts/styled-text-input'
+import { Formik, FormikProps } from 'formik'
+import * as Yup from 'yup'
+
+type FormFields = {
+  username: string
+  displayedName: string
+  email: string
+}
 
 export function SignUp() {
-  const username = useValidation<string>('', validateUsername)
-  const displayedName = useValidation<string>('', validateDisplayName)
-  const email = useValidation<string>('', validateEmail)
-  const isFormValid = username.isValid && displayedName.isValid && email.isValid
+  const initialValues: FormFields = {
+    username: '',
+    email: '',
+    displayedName: '',
+  }
+
+  const formSchema = Yup.object().shape({
+    username: Yup.string()
+      .required('Username is required.')
+      .min(2, 'Username is minimum 2 characters.')
+      .matches(
+        /^[a-zA-Z0-9_-]+$/,
+        'Usernames cannot have spaces or special characters'
+      ),
+    displayedName: Yup.string()
+      .required('Display name is required.')
+      .min(2, 'Display name is minimum 2 characters.'),
+    email: Yup.string()
+      .required('Email is required')
+      .email('Please enter a valid email.'),
+  })
 
   return (
     <KeyboardAvoidingView
@@ -27,38 +46,70 @@ export function SignUp() {
       <View className="w-72 md:w-96">
         <WalletconnectBtn />
         <Separator />
-        <StyledInput
-          value={username.state}
-          onChangeText={username.setState}
-          placeholder="Username"
-          autofocus={true}
-          valid={username.isValid}
-        />
-        <StyledInput
-          value={displayedName.state}
-          placeholder="Display Name"
-          className="mt-4"
-          onChangeText={displayedName.setState}
-          valid={displayedName.isValid}
-        />
-        <StyledInput
-          value={email.state}
-          placeholder="Email address"
-          className="mt-4"
-          onChangeText={email.setState}
-          valid={email.isValid}
-        />
-        <Text
-          className={'w-full text-center text-sm text-[#d9544f] mt-4 min-h-5'}
+        <Formik
+          validateOnMount={true}
+          initialValues={initialValues}
+          onSubmit={(values) => console.log(values)}
+          validationSchema={formSchema}
         >
-          {(username.firstChangeLatch && username.errorMsg) ||
-            (displayedName.firstChangeLatch && displayedName.errorMsg) ||
-            (email.firstChangeLatch && email.errorMsg) ||
-            ' '}
-        </Text>
-        <Pressable className={`btn mt-6 ${isFormValid ? '' : 'opacity-50'}`}>
-          <Text className="tracking-0.5">Join</Text>
-        </Pressable>
+          {({
+            values,
+            handleChange,
+            handleBlur,
+            errors,
+            touched,
+            isValid,
+            handleSubmit,
+          }: FormikProps<FormFields>) => (
+            <View>
+              <StyledTextInput
+                value={values.username}
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                className="mt-4"
+                placeholder="Username"
+                showFeedback={touched.username}
+                valid={!errors.username}
+              />
+
+              <StyledTextInput
+                value={values.displayedName}
+                onChangeText={handleChange('displayedName')}
+                onBlur={handleBlur('displayedName')}
+                className="mt-4"
+                placeholder="Displayed Name"
+                showFeedback={touched.displayedName}
+                valid={!errors.displayedName}
+              />
+
+              <StyledTextInput
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                className="mt-4"
+                placeholder="Email address"
+                showFeedback={touched.email}
+                valid={!errors.email}
+              />
+              <Text
+                className={
+                  'w-full text-center text-sm text-[#d9544f] mt-4 min-h-5'
+                }
+              >
+                {(touched.username && errors.username) ||
+                  (touched.displayedName && errors.displayedName) ||
+                  (touched.email && errors.email) ||
+                  ' '}
+              </Text>
+              <Pressable
+                onPress={() => handleSubmit()}
+                className={`btn mt-6 ${isValid ? '' : 'opacity-50'}`}
+              >
+                <Text className="tracking-0.5">Join</Text>
+              </Pressable>
+            </View>
+          )}
+        </Formik>
       </View>
     </KeyboardAvoidingView>
   )
