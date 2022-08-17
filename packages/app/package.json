@@ -11,12 +11,14 @@
     "dripsy": "^3.6.0",
     "expo-device": "~4.0.3",
     "expo-linking": "^3.0.0",
+    "formik": "^2.2.9",
     "graphql": "^16.5.0",
     "moti": "canary",
     "recoil": "^0.7.4",
     "solito": "latest",
     "stellar-base": "^8.0.1",
-    "twrnc": "^3.3.3"
+    "twrnc": "^3.3.3",
+    "yup": "^0.32.11"
   },
   "sideEffects": false,
   "devDependencies": {
