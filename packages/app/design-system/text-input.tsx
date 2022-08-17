@@ -7,11 +7,13 @@ export type TextProps = {
   className?: string
 } & ComponentProps<typeof DripsyTextInput>
 
-function TextInput({ className, sx, style ,...props }: TextProps) {
-  const hideOutline = tailwind.prefixMatch("web") ? {outlineStyle: 'none'} : {}
+function TextInput({ className, sx, style, ...props }: TextProps) {
+  const hideOutline = tailwind.prefixMatch('web')
+    ? { outlineStyle: 'none' }
+    : {}
   return (
     <DripsyTextInput
-      sx={{ ...sx, ...tailwind.style(className), ...hideOutline}}
+      sx={{ ...sx, ...tailwind.style(className), ...hideOutline }}
       {...props}
     />
   )
