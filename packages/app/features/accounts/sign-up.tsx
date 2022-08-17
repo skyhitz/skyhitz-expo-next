@@ -1,12 +1,13 @@
 import { Pressable, Text, View } from 'app/design-system'
-import { Platform } from 'react-native'
+import { Platform, TextInput } from 'react-native'
 import BackgroundImage from 'app/ui/background-image'
 import WalletconnectBtn from 'app/ui/walletconnect-btn'
 import KeyboardAvoidingView from 'app/design-system/keyboard-avoiding-view'
 import { Separator } from 'app/features/accounts/or-separator'
-import { StyledTextInput } from 'app/features/accounts/styled-text-input'
+import StyledTextInput from 'app/features/accounts/styled-text-input'
 import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
+import { useRef } from 'react'
 
 type FormFields = {
   username: string
@@ -15,6 +16,9 @@ type FormFields = {
 }
 
 export function SignUp() {
+  const displayedNameInputRef = useRef<TextInput>(null)
+  const emailInputRef = useRef<TextInput>(null)
+
   const initialValues: FormFields = {
     username: '',
     email: '',
@@ -70,6 +74,9 @@ export function SignUp() {
                 placeholder="Username"
                 showFeedback={touched.username}
                 valid={!errors.username}
+                autoFocus={true}
+                blurOnSubmit={false}
+                onSubmitEditing={() => displayedNameInputRef.current?.focus()}
               />
 
               <StyledTextInput
@@ -80,6 +87,9 @@ export function SignUp() {
                 placeholder="Displayed Name"
                 showFeedback={touched.displayedName}
                 valid={!errors.displayedName}
+                ref={displayedNameInputRef}
+                blurOnSubmit={false}
+                onSubmitEditing={() => emailInputRef.current?.focus()}
               />
 
               <StyledTextInput
@@ -90,6 +100,9 @@ export function SignUp() {
                 placeholder="Email address"
                 showFeedback={touched.email}
                 valid={!errors.email}
+                blurOnSubmit={false}
+                ref={emailInputRef}
+                onSubmitEditing={() => handleSubmit()}
               />
               <Text
                 className={

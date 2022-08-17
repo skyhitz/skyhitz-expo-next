@@ -1,5 +1,6 @@
-import { ComponentProps } from 'react'
+import React, { ComponentProps, ForwardedRef } from 'react'
 import { TextInput as DripsyTextInput } from 'dripsy'
+import { TextInput as rTextInput } from 'react-native'
 
 import { tw as tailwind } from 'app/design-system/tailwind'
 
@@ -7,7 +8,10 @@ export type TextProps = {
   className?: string
 } & ComponentProps<typeof DripsyTextInput>
 
-function TextInput({ className, sx, style, ...props }: TextProps) {
+const TextInput = React.forwardRef(function TextInput(
+  { className, sx, style, ...props }: TextProps,
+  ref: ForwardedRef<rTextInput>
+) {
   const hideOutline = tailwind.prefixMatch('web')
     ? { outlineStyle: 'none' }
     : {}
@@ -15,8 +19,9 @@ function TextInput({ className, sx, style, ...props }: TextProps) {
     <DripsyTextInput
       sx={{ ...sx, ...tailwind.style(className), ...hideOutline }}
       {...props}
+      ref={ref}
     />
   )
-}
+})
 
 export { TextInput }
