@@ -23,7 +23,7 @@ export function SignUp() {
 
   const [createUserWithEmail, { loading, error }] = useMutation(
     CREATE_USER_WITH_EMAIL,
-    { onCompleted: () => push('/') }
+    { onCompleted: () => push('/home') }
   )
   const handleSignUp = async (formData: FormFields) => {
     if (loading) return
