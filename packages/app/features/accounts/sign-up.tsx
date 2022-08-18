@@ -99,6 +99,7 @@ export function SignUp() {
                 blurOnSubmit={false}
                 onSubmitEditing={() => displayedNameInputRef.current?.focus()}
                 editable={!loading}
+                autoCapitalize="none"
               />
 
               <StyledTextInput
@@ -113,6 +114,7 @@ export function SignUp() {
                 blurOnSubmit={false}
                 onSubmitEditing={() => emailInputRef.current?.focus()}
                 editable={!loading}
+                autoCapitalize="none"
               />
 
               <StyledTextInput
@@ -127,6 +129,7 @@ export function SignUp() {
                 ref={emailInputRef}
                 onSubmitEditing={() => handleSubmit()}
                 editable={!loading}
+                autoCapitalize="none"
               />
               <Text
                 className={
