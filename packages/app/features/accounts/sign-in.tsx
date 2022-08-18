@@ -16,7 +16,7 @@ type FormFields = {
 
 export function SignIn() {
   const [requestToken, { loading, error }] = useMutation(REQUEST_TOKEN)
-  const handleSignIn = async (formData) => {
+  const handleSignIn = async (formData: FormFields) => {
     if (loading) return
     await requestToken({
       variables: {
