@@ -36,55 +36,55 @@ const theme = makeTheme({
     },
   },
   fonts: {
-    root: 'Inter',
     inter: 'Inter',
+    raleway: 'Raleway-Light',
   },
   text: {
     a: {
       color: 'white',
     },
     body: {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-base'],
       color: 'white',
     },
     'text-xs': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-xs'],
       color: 'white',
     },
     'text-sm': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-sm'],
       color: 'white',
     },
     'text-base': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-base'],
       color: 'white',
     },
     'text-lg': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-lg'],
       color: 'white',
     },
     'text-xl': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-xl'],
       color: 'white',
     },
     'text-2xl': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-2xl'],
       color: 'white',
     },
     'text-3xl': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-3xl'],
       color: 'white',
     },
     'text-4xl': {
-      fontWeight: 'default',
+      fontWeight: 'normal',
       ...textSizes['text-4xl'],
       color: 'white',
     },

@@ -34,8 +34,12 @@ export function HomeScreen() {
 }
 
 function SignUpButton() {
+  const signUpBtnProps = useLink({ href: '/sign-up' })
   return (
-    <Pressable className="btn bg-white border-2 border-black">
+    <Pressable
+      className="btn bg-white border-2 border-black"
+      {...signUpBtnProps}
+    >
       <Text className="text-black text-lg font-raleway font-medium leading-none">
         Sign up for free
       </Text>
@@ -44,7 +48,7 @@ function SignUpButton() {
 }
 
 function LogInButton() {
-  const logInBtnProps = useLink({ href: '/log-in' })
+  const logInBtnProps = useLink({ href: '/sign-in' })
   return (
     <Pressable
       className="btn w-full mt-2 sm:hidden border-2 border-black"

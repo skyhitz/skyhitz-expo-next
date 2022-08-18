@@ -2,6 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   webpack5: true,
+  exportPathMap: async function () {
+    return {
+      '/home': { page: '/' },
+    }
+  },
 }
 
 const { withExpo } = require('@expo/next-adapter')

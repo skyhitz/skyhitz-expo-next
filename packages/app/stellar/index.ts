@@ -1,10 +1,10 @@
 import { Config } from 'app/config'
 import {
-  TransactionBuilder,
   Account,
-  Networks,
   BASE_FEE,
+  Networks,
   Operation,
+  TransactionBuilder,
 } from 'stellar-base'
 
 export function getHorizonConfig() {
@@ -14,12 +14,12 @@ export function getHorizonConfig() {
         network: 'testnet',
         networkPassphrase: Networks['TESTNET'],
         horizonUrl: 'https://horizon-testnet.stellar.org',
-        ipfsUrl: (cid) => `https://ipfs.io/ipfs/${cid}`,
-        explorerAssetUrl: (code, issuer) =>
+        ipfsUrl: (cid: any) => `https://ipfs.io/ipfs/${cid}`,
+        explorerAssetUrl: (code: any, issuer: any) =>
           `https://stellar.expert/explorer/testnet/asset/${code}-${issuer}`,
-        explorerAssetHoldersUrl: (code, issuer) =>
+        explorerAssetHoldersUrl: (code: any, issuer: any) =>
           `https://stellar.expert/explorer/testnet/asset/${code}-${issuer}?filter=asset-holders`,
-        dexAssetUrl: (code, issuer) =>
+        dexAssetUrl: (code: any, issuer: any) =>
           `https://stellarterm.com/exchange/${code}-${issuer}/XLM-native/testnet`,
       }
     default:
@@ -27,12 +27,12 @@ export function getHorizonConfig() {
         network: 'pubnet',
         networkPassphrase: Networks['PUBLIC'],
         horizonUrl: 'https://horizon.stellar.org',
-        ipfsUrl: (cid) => `https://ipfs.io/ipfs/${cid}`,
-        explorerAssetUrl: (code, issuer) =>
+        ipfsUrl: (cid: any) => `https://ipfs.io/ipfs/${cid}`,
+        explorerAssetUrl: (code: any, issuer: any) =>
           `https://stellar.expert/explorer/public/asset/${code}-${issuer}`,
-        explorerAssetHoldersUrl: (code, issuer) =>
+        explorerAssetHoldersUrl: (code: any, issuer: any) =>
           `https://stellar.expert/explorer/public/asset/${code}-${issuer}?filter=asset-holders`,
-        dexAssetUrl: (code, issuer) =>
+        dexAssetUrl: (code: any, issuer: any) =>
           `https://stellarterm.com/exchange/${code}-${issuer}/XLM-native`,
       }
   }
@@ -56,12 +56,12 @@ export const getFee = async (
   }
 }
 
-export async function getAccount(publicKey) {
+export async function getAccount(publicKey: string) {
   const { id, sequence } = await getAccountData(publicKey)
   return new Account(id, sequence)
 }
 
-async function buildTransactionWithFee(accountPublicKey) {
+async function buildTransactionWithFee(accountPublicKey: string) {
   const [account, fee] = await Promise.all([
     await getAccount(accountPublicKey),
     await getFee(),

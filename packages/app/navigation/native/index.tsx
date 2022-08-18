@@ -3,6 +3,7 @@ import { SignIn } from 'app/features/accounts/sign-in'
 
 import { HomeScreen } from 'app/features/home/screen'
 import { UserDetailScreen } from 'app/features/user/detail-screen'
+import { SignUp } from 'app/features/accounts/sign-up'
 
 const Stack = createNativeStackNavigator<{
   home: undefined
@@ -10,6 +11,7 @@ const Stack = createNativeStackNavigator<{
     id: string
   }
   'sign-in': undefined
+  'sign-up': undefined
 }>()
 
 export function NativeNavigation() {
@@ -38,6 +40,13 @@ export function NativeNavigation() {
         component={SignIn}
         options={{
           title: 'Log In',
+        }}
+      />
+      <Stack.Screen
+        name="sign-up"
+        component={SignUp}
+        options={{
+          title: 'Sign Up',
         }}
       />
     </Stack.Navigator>
