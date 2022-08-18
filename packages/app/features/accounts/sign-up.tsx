@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from 'app/design-system'
+import { ActivityIndicator, Pressable, Text, View } from 'app/design-system'
 import { Platform, TextInput } from 'react-native'
 import BackgroundImage from 'app/ui/background-image'
 import WalletconnectBtn from 'app/ui/walletconnect-btn'
@@ -22,6 +22,7 @@ export function SignUp() {
     CREATE_USER_WITH_EMAIL
   )
   const handleSignUp = async (formData: FormFields) => {
+    if (loading) return
     await createUserWithEmail({
       variables: {
         displayName: formData.displayedName,
@@ -93,6 +94,7 @@ export function SignUp() {
                 autoFocus={true}
                 blurOnSubmit={false}
                 onSubmitEditing={() => displayedNameInputRef.current?.focus()}
+                editable={!loading}
               />
 
               <StyledTextInput
@@ -106,6 +108,7 @@ export function SignUp() {
                 ref={displayedNameInputRef}
                 blurOnSubmit={false}
                 onSubmitEditing={() => emailInputRef.current?.focus()}
+                editable={!loading}
               />
 
               <StyledTextInput
@@ -119,6 +122,7 @@ export function SignUp() {
                 blurOnSubmit={false}
                 ref={emailInputRef}
                 onSubmitEditing={() => handleSubmit()}
+                editable={!loading}
               />
               <Text
                 className={
@@ -133,9 +137,15 @@ export function SignUp() {
               </Text>
               <Pressable
                 onPress={() => handleSubmit()}
-                className={`btn mt-6 ${isValid ? '' : 'opacity-50'}`}
+                className={`btn mt-6 ${
+                  isValid && !loading ? '' : 'opacity-50'
+                }`}
               >
-                <Text className="tracking-0.5">Join</Text>
+                {loading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text className="tracking-0.5">Join</Text>
+                )}
               </Pressable>
             </View>
           )}
