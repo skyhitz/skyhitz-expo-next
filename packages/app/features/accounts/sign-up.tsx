@@ -8,6 +8,8 @@ import StyledTextInput from 'app/features/accounts/styled-text-input'
 import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { useRef } from 'react'
+import { useMutation } from '@apollo/client'
+import { CREATE_USER_WITH_EMAIL } from 'app/api/user'
 
 type FormFields = {
   username: string
@@ -16,6 +18,20 @@ type FormFields = {
 }
 
 export function SignUp() {
+  const [createUserWithEmail, { loading, error }] = useMutation(
+    CREATE_USER_WITH_EMAIL
+  )
+  const handleSignUp = async (formData: FormFields) => {
+    await createUserWithEmail({
+      variables: {
+        displayName: formData.displayedName,
+        username: formData.username,
+        email: formData.email,
+        publicKey: '',
+      },
+    })
+  }
+
   const displayedNameInputRef = useRef<TextInput>(null)
   const emailInputRef = useRef<TextInput>(null)
 
@@ -53,7 +69,7 @@ export function SignUp() {
         <Formik
           validateOnMount={true}
           initialValues={initialValues}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={handleSignUp}
           validationSchema={formSchema}
         >
           {({
@@ -112,6 +128,7 @@ export function SignUp() {
                 {(touched.username && errors.username) ||
                   (touched.displayedName && errors.displayedName) ||
                   (touched.email && errors.email) ||
+                  error?.message ||
                   ' '}
               </Text>
               <Pressable
