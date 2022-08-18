@@ -10,6 +10,7 @@ import * as Yup from 'yup'
 import { useRef } from 'react'
 import { useMutation } from '@apollo/client'
 import { CREATE_USER_WITH_EMAIL } from 'app/api/user'
+import { useRouter } from 'solito/router'
 
 type FormFields = {
   username: string
@@ -18,8 +19,11 @@ type FormFields = {
 }
 
 export function SignUp() {
+  const { push } = useRouter()
+
   const [createUserWithEmail, { loading, error }] = useMutation(
-    CREATE_USER_WITH_EMAIL
+    CREATE_USER_WITH_EMAIL,
+    { onCompleted: () => push('/') }
   )
   const handleSignUp = async (formData: FormFields) => {
     if (loading) return
