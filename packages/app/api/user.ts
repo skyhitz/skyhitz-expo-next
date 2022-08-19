@@ -24,3 +24,18 @@ export const CREATE_USER_WITH_EMAIL = gql`
     }
   }
 `
+export const SIGN_IN = gql`
+  mutation signIn($token: String!, $uid: String!, $signedXDR: String) {
+    signIn(token: $token, uid: $uid, signedXDR: $signedXDR) {
+      avatarUrl
+      displayName
+      username
+      id
+      jwt
+      publishedAt
+      email
+      description
+      publicKey
+    }
+  }
+`
