@@ -4,9 +4,15 @@ import { HomeScreen } from "app/features/home/screen"
 import { SignUp } from "app/features/accounts/sign-up"
 import { SearchScreen } from "app/features/dashboard/search"
 import { useRecoilValue } from "recoil"
-import { userAtom } from "app/state/atoms"
+import { appInitializedAtom, userAtom } from "app/state/atoms"
+import { useAuthStatus } from "app/hooks/useAuthStatus"
+import { useLogIn } from "app/hooks/useLogIn"
+import { SplashScreen } from "../../features/splash/splash-screen"
+import { useRouter } from "solito/router"
+import { useEffect } from "react"
 
 const Stack = createNativeStackNavigator<{
+  splash: undefined
   home: undefined
   search: undefined
   "sign-in": undefined
@@ -15,6 +21,14 @@ const Stack = createNativeStackNavigator<{
 
 export function NativeNavigation() {
   const user = useRecoilValue(userAtom)
+  const initialized = useRecoilValue(appInitializedAtom)
+  const { push } = useRouter()
+
+  useEffect(() => {
+    if (initialized && !user) {
+      push("/home")
+    }
+  }, [user, push, initialized])
 
   return (
     <Stack.Navigator
@@ -32,6 +46,14 @@ export function NativeNavigation() {
         />
       ) : (
         <>
+          <Stack.Screen
+            name="splash"
+            component={SplashScreen}
+            options={{
+              title: "Splash",
+            }}
+          />
+
           <Stack.Screen
             name="home"
             component={HomeScreen}

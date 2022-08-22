@@ -1,8 +1,12 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 import { UserData } from "app/models/user";
-import { ProfileEdit } from "app/models/profile";
 
 export const userAtom = atom<null | UserData>({
   key: "user",
   default: null,
+});
+
+export const appInitializedAtom = atom<boolean>({
+  key: "initialized",
+  default: false,
 });

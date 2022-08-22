@@ -1,12 +1,12 @@
-import { View, Text } from "dripsy"
-import { userAtom } from "app/state/atoms"
-import { useRecoilValue } from "recoil"
-import useLogOut from "app/hooks/useLogOut"
-import { Pressable } from "app/design-system/pressable"
+import { View, Text } from "dripsy";
+import { userAtom } from "app/state/atoms";
+import { useRecoilValue } from "recoil";
+import useLogOut from "app/hooks/useLogOut";
+import { Pressable } from "app/design-system/pressable";
 
 export function SearchScreen() {
-  const user = useRecoilValue(userAtom)
-  const logOut = useLogOut()
+  const user = useRecoilValue(userAtom);
+  const logOut = useLogOut();
 
   return (
     <View sx={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -27,5 +27,5 @@ export function SearchScreen() {
         </Text>
       </Pressable>
     </View>
-  )
+  );
 }

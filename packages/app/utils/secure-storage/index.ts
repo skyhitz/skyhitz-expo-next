@@ -5,7 +5,7 @@ export const SecureStorage = {
     await SecureStore.setItemAsync(key, value);
   },
   clear: async (key: string) => {
-    await SecureStore.deleteItemAsync(key)
+    await SecureStore.deleteItemAsync(key);
   },
   get: async (key: string) => {
     const value = await SecureStore.getItemAsync(key);

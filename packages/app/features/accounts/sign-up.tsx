@@ -1,38 +1,38 @@
-import { ActivityIndicator, Pressable, Text, View } from "app/design-system"
-import { Platform, TextInput } from "react-native"
-import BackgroundImage from "app/ui/background-image"
-import WalletconnectBtn from "app/ui/walletconnect-btn"
-import KeyboardAvoidingView from "app/design-system/keyboard-avoiding-view"
-import { Separator } from "app/features/accounts/or-separator"
-import StyledTextInput from "app/features/accounts/styled-text-input"
-import { Formik, FormikProps } from "formik"
-import * as Yup from "yup"
-import { useEffect, useRef } from "react"
-import { useMutation } from "@apollo/client"
-import { CREATE_USER_WITH_EMAIL } from "app/api/user"
-import useLogIn from "app/hooks/useLogIn"
+import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
+import { Platform, TextInput } from "react-native";
+import BackgroundImage from "app/ui/background-image";
+import WalletconnectBtn from "app/ui/walletconnect-btn";
+import KeyboardAvoidingView from "app/design-system/keyboard-avoiding-view";
+import { Separator } from "app/features/accounts/or-separator";
+import StyledTextInput from "app/features/accounts/styled-text-input";
+import { Formik, FormikProps } from "formik";
+import * as Yup from "yup";
+import { useEffect, useRef } from "react";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER_WITH_EMAIL } from "app/api/user";
+import { useLogIn } from "app/hooks/useLogIn";
 
 type FormFields = {
-  username: string
-  displayedName: string
-  email: string
-}
+  username: string;
+  displayedName: string;
+  email: string;
+};
 
 export function SignUp() {
-  const logIn = useLogIn()
+  const logIn = useLogIn();
 
   const [createUserWithEmail, { loading, error, data }] = useMutation(
     CREATE_USER_WITH_EMAIL
-  )
+  );
 
   useEffect(() => {
     if (data) {
-      logIn(data.createUserWithEmail)
+      logIn(data.createUserWithEmail);
     }
-  }, [data, logIn])
+  }, [data, logIn]);
 
   const handleSignUp = async (formData: FormFields) => {
-    if (loading) return
+    if (loading) return;
     await createUserWithEmail({
       variables: {
         displayName: formData.displayedName,
@@ -40,17 +40,17 @@ export function SignUp() {
         email: formData.email,
         publicKey: "",
       },
-    })
-  }
+    });
+  };
 
-  const displayedNameInputRef = useRef<TextInput>(null)
-  const emailInputRef = useRef<TextInput>(null)
+  const displayedNameInputRef = useRef<TextInput>(null);
+  const emailInputRef = useRef<TextInput>(null);
 
   const initialValues: FormFields = {
     username: "",
     email: "",
     displayedName: "",
-  }
+  };
 
   const formSchema = Yup.object().shape({
     username: Yup.string()
@@ -66,7 +66,7 @@ export function SignUp() {
     email: Yup.string()
       .required("Email is required")
       .email("Please enter a valid email."),
-  })
+  });
 
   return (
     <KeyboardAvoidingView
@@ -165,5 +165,5 @@ export function SignUp() {
         </Formik>
       </View>
     </KeyboardAvoidingView>
-  )
+  );
 }

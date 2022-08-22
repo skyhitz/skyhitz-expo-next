@@ -24,7 +24,6 @@ const { useParam } = createParam()
 export function SignIn() {
   // apollo test
   const [mutation, { data, loading, error }] = useMutation(REQUEST_TOKEN)
-  console.log(data, loading, error)
 
   const [token, setToken] = useParam("token")
   const [uid, setUid] = useParam("uid")
