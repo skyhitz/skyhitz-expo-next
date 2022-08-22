@@ -30,3 +30,18 @@ export const CREATE_USER_WITH_EMAIL = gql`
     }
   }
 `;
+
+export const GET_USER = gql`
+  query authenticatedUser{
+    authenticatedUser {
+      avatarUrl
+      displayName
+      email
+      username
+      id
+      description
+      jwt
+      publicKey
+    }
+  }
+`

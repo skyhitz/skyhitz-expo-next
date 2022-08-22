@@ -11,7 +11,9 @@ export default function useLogIn(): (UserData) => void {
 
     const logIn = async (user: UserData) => {
         setUserData(user)
-        await SecureStorage.save("token", user.jwt!)
+        if (user.jwt){
+            await SecureStorage.save("token", user.jwt!)
+        }
         push("/dashboard/search")
     }
 

@@ -21,12 +21,7 @@ export const SkyhitzApolloProvider = ({
   const authLink = setContext(async (_, { headers }) => {
     // get the authentication token if it exists
     const token = await SecureStorage.get("token")
-    console.log("token", token)
     // return the headers to the context so httpLink can read them
-    console.log({
-      ...headers,
-      authorization: token ? `Bearer ${token}` : "",
-    })
     return {
       headers: {
         ...headers,
