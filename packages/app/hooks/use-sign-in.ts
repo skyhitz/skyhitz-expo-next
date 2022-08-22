@@ -5,7 +5,7 @@ import { SIGN_IN } from 'app/api/user'
 import { UserData } from 'app/models'
 
 export const useSignIn = (param: SignInParam | undefined) => {
-  const [signIn, { data }] = useMutation<UserData>(SIGN_IN)
+  const [signIn, { data, error }] = useMutation<UserData>(SIGN_IN)
 
   useEffect(() => {
     if (!param) return
@@ -18,5 +18,5 @@ export const useSignIn = (param: SignInParam | undefined) => {
     }).catch(console.error)
   }, [param, signIn])
 
-  return data
+  return { user: data, error }
 }
