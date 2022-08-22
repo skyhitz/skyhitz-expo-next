@@ -1,17 +1,14 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { SignIn } from 'app/features/accounts/sign-in'
-
-import { HomeScreen } from 'app/features/home/screen'
-import { UserDetailScreen } from 'app/features/user/detail-screen'
-import { SignUp } from 'app/features/accounts/sign-up'
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { SignIn } from "app/features/accounts/sign-in"
+import { HomeScreen } from "app/features/home/screen"
+import { SignUp } from "app/features/accounts/sign-up"
+import { SearchScreen } from "app/features/dashboard/search"
 
 const Stack = createNativeStackNavigator<{
   home: undefined
-  'user-detail': {
-    id: string
-  }
-  'sign-in': undefined
-  'sign-up': undefined
+  search: undefined
+  "sign-in": undefined
+  "sign-up": undefined
 }>()
 
 export function NativeNavigation() {
@@ -25,28 +22,28 @@ export function NativeNavigation() {
         name="home"
         component={HomeScreen}
         options={{
-          title: 'Home',
+          title: "Home",
         }}
       />
       <Stack.Screen
-        name="user-detail"
-        component={UserDetailScreen}
+        name="search"
+        component={SearchScreen}
         options={{
-          title: 'User',
+          title: "Search",
         }}
       />
       <Stack.Screen
         name="sign-in"
         component={SignIn}
         options={{
-          title: 'Log In',
+          title: "Log In",
         }}
       />
       <Stack.Screen
         name="sign-up"
         component={SignUp}
         options={{
-          title: 'Sign Up',
+          title: "Sign Up",
         }}
       />
     </Stack.Navigator>

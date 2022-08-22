@@ -1,5 +1,5 @@
-import React from 'react'
-import Svg, { Path } from 'react-native-svg'
+import React from "react";
+import Svg, { Path } from "react-native-svg";
 
 function Icon({ size = 24, color }) {
   return (
@@ -8,7 +8,7 @@ function Icon({ size = 24, color }) {
       height={size}
       fill="none"
       viewBox="0 0 24 24"
-      stroke={color ? color : 'currentColor'}
+      stroke={color ? color : "currentColor"}
       transform="scale(-1 1)"
     >
       <Path
@@ -18,7 +18,7 @@ function Icon({ size = 24, color }) {
         d="M9 5l7 7-7 7"
       />
     </Svg>
-  )
+  );
 }
 
-export default Icon
+export default Icon;

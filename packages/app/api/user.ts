@@ -1,10 +1,10 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const REQUEST_TOKEN = gql`
   mutation requestToken($usernameOrEmail: String!, $publicKey: String!) {
     requestToken(usernameOrEmail: $usernameOrEmail, publicKey: $publicKey)
   }
-`
+`;
 
 export const CREATE_USER_WITH_EMAIL = gql`
   mutation createUserWithEmail(
@@ -19,8 +19,14 @@ export const CREATE_USER_WITH_EMAIL = gql`
       username: $username
       publicKey: $publicKey
     ) {
+      avatarUrl
+      displayName
+      email
+      username
+      id
+      description
       jwt
       publicKey
     }
   }
-`
+`;

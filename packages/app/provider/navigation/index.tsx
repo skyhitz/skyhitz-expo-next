@@ -1,6 +1,6 @@
-import { NavigationContainer } from '@react-navigation/native'
-import * as Linking from 'expo-linking'
-import { useMemo } from 'react'
+import { NavigationContainer } from "@react-navigation/native"
+import * as Linking from "expo-linking"
+import { useMemo } from "react"
 
 export function NavigationProvider({
   children,
@@ -11,14 +11,14 @@ export function NavigationProvider({
     <NavigationContainer
       linking={useMemo(
         () => ({
-          prefixes: [Linking.createURL('/')],
+          prefixes: [Linking.createURL("/")],
           config: {
-            initialRouteName: 'home',
+            initialRouteName: "home",
             screens: {
-              home: 'home',
-              'user-detail': 'user/:id',
-              'sign-in': 'sign-in',
-              'sign-up': 'sign-up',
+              home: "home",
+              search: "dashboard/search",
+              "sign-in": "sign-in",
+              "sign-up": "sign-up",
             },
           },
         }),

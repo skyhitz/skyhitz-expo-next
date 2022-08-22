@@ -1,12 +1,12 @@
-import React from 'react'
-import { ImageBackground } from 'react-native'
-import { LivePush, SliderOverlay } from 'app/assets/images/Images'
+import React from "react";
+import { ImageBackground } from "react-native";
+import { LivePush, SliderOverlay } from "app/assets/images/Images";
 
 const BackgroundImage = () => (
   <ImageBackground
     source={LivePush}
     style={{
-      position: 'absolute',
+      position: "absolute",
       left: 0,
       top: 0,
       right: 0,
@@ -18,7 +18,7 @@ const BackgroundImage = () => (
     <ImageBackground
       source={SliderOverlay}
       style={{
-        position: 'absolute',
+        position: "absolute",
         left: 0,
         top: 0,
         right: 0,
@@ -28,6 +28,6 @@ const BackgroundImage = () => (
       resizeMode="repeat"
     ></ImageBackground>
   </ImageBackground>
-)
+);
 
-export default BackgroundImage
+export default BackgroundImage;

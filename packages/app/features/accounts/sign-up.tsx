@@ -1,16 +1,16 @@
-import { ActivityIndicator, Pressable, Text, View } from 'app/design-system'
-import { Platform, TextInput } from 'react-native'
-import BackgroundImage from 'app/ui/background-image'
-import WalletconnectBtn from 'app/ui/walletconnect-btn'
-import KeyboardAvoidingView from 'app/design-system/keyboard-avoiding-view'
-import { Separator } from 'app/features/accounts/or-separator'
-import StyledTextInput from 'app/features/accounts/styled-text-input'
-import { Formik, FormikProps } from 'formik'
-import * as Yup from 'yup'
-import { useRef } from 'react'
-import { useMutation } from '@apollo/client'
-import { CREATE_USER_WITH_EMAIL } from 'app/api/user'
-import { useRouter } from 'solito/router'
+import { ActivityIndicator, Pressable, Text, View } from "app/design-system"
+import { Platform, TextInput } from "react-native"
+import BackgroundImage from "app/ui/background-image"
+import WalletconnectBtn from "app/ui/walletconnect-btn"
+import KeyboardAvoidingView from "app/design-system/keyboard-avoiding-view"
+import { Separator } from "app/features/accounts/or-separator"
+import StyledTextInput from "app/features/accounts/styled-text-input"
+import { Formik, FormikProps } from "formik"
+import * as Yup from "yup"
+import { useEffect, useRef } from "react"
+import { useMutation } from "@apollo/client"
+import { CREATE_USER_WITH_EMAIL } from "app/api/user"
+import useLogIn from "app/hooks/useLogIn"
 
 type FormFields = {
   username: string
@@ -19,12 +19,18 @@ type FormFields = {
 }
 
 export function SignUp() {
-  const { push } = useRouter()
+  const logIn = useLogIn()
 
-  const [createUserWithEmail, { loading, error }] = useMutation(
-    CREATE_USER_WITH_EMAIL,
-    { onCompleted: () => push('/home') }
+  const [createUserWithEmail, { loading, error, data }] = useMutation(
+    CREATE_USER_WITH_EMAIL
   )
+
+  useEffect(() => {
+    if (data) {
+      logIn(data.createUserWithEmail)
+    }
+  }, [data, logIn])
+
   const handleSignUp = async (formData: FormFields) => {
     if (loading) return
     await createUserWithEmail({
@@ -32,7 +38,7 @@ export function SignUp() {
         displayName: formData.displayedName,
         username: formData.username,
         email: formData.email,
-        publicKey: '',
+        publicKey: "",
       },
     })
   }
@@ -41,30 +47,30 @@ export function SignUp() {
   const emailInputRef = useRef<TextInput>(null)
 
   const initialValues: FormFields = {
-    username: '',
-    email: '',
-    displayedName: '',
+    username: "",
+    email: "",
+    displayedName: "",
   }
 
   const formSchema = Yup.object().shape({
     username: Yup.string()
-      .required('Username is required.')
-      .min(2, 'Username is minimum 2 characters.')
+      .required("Username is required.")
+      .min(2, "Username is minimum 2 characters.")
       .matches(
         /^[a-zA-Z0-9_-]+$/,
-        'Usernames cannot have spaces or special characters'
+        "Usernames cannot have spaces or special characters"
       ),
     displayedName: Yup.string()
-      .required('Display name is required.')
-      .min(2, 'Display name is minimum 2 characters.'),
+      .required("Display name is required.")
+      .min(2, "Display name is minimum 2 characters."),
     email: Yup.string()
-      .required('Email is required')
-      .email('Please enter a valid email.'),
+      .required("Email is required")
+      .email("Please enter a valid email."),
   })
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
       className="absolute inset-0 flex items-center justify-center"
     >
       <BackgroundImage />
@@ -89,8 +95,8 @@ export function SignUp() {
             <View>
               <StyledTextInput
                 value={values.username}
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
+                onChangeText={handleChange("username")}
+                onBlur={handleBlur("username")}
                 className="mt-4"
                 placeholder="Username"
                 showFeedback={touched.username}
@@ -104,8 +110,8 @@ export function SignUp() {
 
               <StyledTextInput
                 value={values.displayedName}
-                onChangeText={handleChange('displayedName')}
-                onBlur={handleBlur('displayedName')}
+                onChangeText={handleChange("displayedName")}
+                onBlur={handleBlur("displayedName")}
                 className="mt-4"
                 placeholder="Displayed Name"
                 showFeedback={touched.displayedName}
@@ -119,8 +125,8 @@ export function SignUp() {
 
               <StyledTextInput
                 value={values.email}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
                 className="mt-4"
                 placeholder="Email address"
                 showFeedback={touched.email}
@@ -133,19 +139,19 @@ export function SignUp() {
               />
               <Text
                 className={
-                  'w-full text-center text-sm text-[#d9544f] mt-4 min-h-5'
+                  "w-full text-center text-sm text-[#d9544f] mt-4 min-h-5"
                 }
               >
                 {(touched.username && errors.username) ||
                   (touched.displayedName && errors.displayedName) ||
                   (touched.email && errors.email) ||
                   error?.message ||
-                  ' '}
+                  " "}
               </Text>
               <Pressable
                 onPress={() => handleSubmit()}
                 className={`btn mt-6 ${
-                  isValid && !loading ? '' : 'opacity-50'
+                  isValid && !loading ? "" : "opacity-50"
                 }`}
               >
                 {loading ? (

@@ -1,5 +1,5 @@
-import { DripsyProvider } from 'dripsy'
-import { theme } from 'app/design-system/theme'
+import { DripsyProvider } from "dripsy";
+import { theme } from "app/design-system/theme";
 
 export function Dripsy({ children }: { children: React.ReactNode }) {
   return (
@@ -10,5 +10,5 @@ export function Dripsy({ children }: { children: React.ReactNode }) {
     >
       {children}
     </DripsyProvider>
-  )
+  );
 }

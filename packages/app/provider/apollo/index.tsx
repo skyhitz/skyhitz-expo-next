@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react"
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-} from '@apollo/client'
-import { Config } from '../../config'
-import { setContext } from '@apollo/client/link/context'
-import { SecureStorage } from 'app/utils/secure-storage'
+} from "@apollo/client"
+import { Config } from "../../config"
+import { setContext } from "@apollo/client/link/context"
+import { SecureStorage } from "app/utils/secure-storage"
 
 const httpLink = createHttpLink({
   uri: Config.GRAPHQL_URL,
@@ -20,12 +20,17 @@ export const SkyhitzApolloProvider = ({
 }) => {
   const authLink = setContext(async (_, { headers }) => {
     // get the authentication token if it exists
-    const token = await SecureStorage.get('token')
+    const token = await SecureStorage.get("token")
+    console.log("token", token)
     // return the headers to the context so httpLink can read them
+    console.log({
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    })
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : '',
+        authorization: token ? `Bearer ${token}` : "",
       },
     }
   })
