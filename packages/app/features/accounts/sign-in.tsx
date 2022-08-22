@@ -7,27 +7,28 @@ import { Separator } from 'app/features/accounts/or-separator'
 import StyledTextInput from 'app/features/accounts/styled-text-input'
 import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
+import { SchemaOf } from 'yup'
 import { useMutation } from '@apollo/client'
 import { REQUEST_TOKEN } from 'app/api/user'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSignInParam } from 'app/hooks/use-sign-in-param'
 import { useSignIn } from 'app/hooks/use-sign-in'
 import { useRouter } from 'solito/router'
-
-type FormFields = {
-  email: string
-}
+import { SignInForm as FormData } from 'app/types'
 
 export function SignIn() {
   const { push } = useRouter()
   const signInParam = useSignInParam()
-  useSignIn(signInParam, (user) => {
-    console.log(user)
-    alert()
-    push('/home')
-  })
+  const user = useSignIn(signInParam)
 
   const [wasEmailSend, setWasEmailSet] = useState(false)
+
+  useEffect(() => {
+    if (user) {
+      alert(user)
+      push('/home')
+    }
+  }, [user, push])
 
   return (
     <KeyboardAvoidingView
@@ -53,24 +54,22 @@ function SignInForm({ onEmailSend }: SignInFormProps) {
   const [requestToken, { loading, error }] = useMutation(REQUEST_TOKEN, {
     onCompleted: onEmailSend,
   })
-  const handleSignIn = async (formData: FormFields) => {
+  const handleSignIn = async (formData: FormData) => {
     if (loading) return
     await requestToken({
       variables: {
-        email: formData.email,
+        usernameOrEmail: formData.usernameOrEmail,
         publicKey: '',
       },
     })
   }
 
-  const initialValues: FormFields = {
-    email: '',
+  const initialValues: FormData = {
+    usernameOrEmail: '',
   }
-
-  const formSchema = Yup.object().shape({
-    email: Yup.string()
-      .required('Email is required')
-      .email('Please enter a valid email.'),
+  //TODO: stricter validation
+  const formSchema: SchemaOf<FormData> = Yup.object().shape({
+    usernameOrEmail: Yup.string().required('Username or Email is required'),
   })
 
   return (
@@ -91,23 +90,25 @@ function SignInForm({ onEmailSend }: SignInFormProps) {
           touched,
           isValid,
           handleSubmit,
-        }: FormikProps<FormFields>) => (
+        }: FormikProps<FormData>) => (
           <View>
             <StyledTextInput
-              value={values.email}
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
+              value={values.usernameOrEmail}
+              onChangeText={handleChange('usernameOrEmail')}
+              onBlur={handleBlur('usernameOrEmail')}
               className="mt-4"
               placeholder="Email address"
-              showFeedback={touched.email}
-              valid={!errors.email}
+              showFeedback={touched.usernameOrEmail}
+              valid={!errors.usernameOrEmail}
               blurOnSubmit={false}
               onSubmitEditing={() => handleSubmit()}
               editable={!loading}
               autoCapitalize="none"
             />
             <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
-              {(touched.email && errors.email) || error?.message || ' '}
+              {(touched.usernameOrEmail && errors.usernameOrEmail) ||
+                error?.message ||
+                ' '}
             </Text>
             <Pressable
               onPress={() => handleSubmit()}
