@@ -11,28 +11,14 @@ import { SchemaOf } from 'yup'
 import { useMutation } from '@apollo/client'
 import { REQUEST_TOKEN } from 'app/api/user'
 import { useEffect, useState } from 'react'
-import { useSignInParam } from 'app/hooks/use-sign-in-param'
+import { SignInParam, useSignInParam } from 'app/hooks/use-sign-in-param'
 import { useSignIn } from 'app/hooks/use-sign-in'
 import { SignInForm as FormData } from 'app/types'
 import { openEmail } from 'app/utils/email'
 
 export function SignIn() {
   const signInParam = useSignInParam()
-  const { user, error } = useSignIn(signInParam)
-
   const [wasEmailSend, setWasEmailSet] = useState(false)
-
-  useEffect(() => {
-    if (user) {
-      console.log(user)
-    }
-  }, [user])
-
-  useEffect(() => {
-    if (error) {
-      console.log(error.message)
-    }
-  }, [error])
 
   return (
     <KeyboardAvoidingView
@@ -43,6 +29,8 @@ export function SignIn() {
 
       {wasEmailSend ? (
         <OpenEmailView />
+      ) : signInParam ? (
+        <AuthenticationView signInParam={signInParam} />
       ) : (
         <SignInForm onEmailSend={() => setWasEmailSet(true)} />
       )}
@@ -143,6 +131,35 @@ function OpenEmailView() {
       <Pressable onPress={() => openEmail()} className="btn mt-4">
         <Text className="tracking-0.5">Open Email</Text>
       </Pressable>
+    </View>
+  )
+}
+
+function AuthenticationView({ signInParam }: { signInParam: SignInParam }) {
+  const { user, error } = useSignIn(signInParam)
+
+  useEffect(() => {
+    if (user) {
+      console.log(user)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (error) {
+      console.log(error.message)
+    }
+  }, [error])
+
+  return (
+    <View className="w-72">
+      <Text className="text-center align-center text-sm w-full rounded-lg p-3 bg-gray-700/20">
+        {user ? 'Success' : 'Authentication...'}
+      </Text>
+      {error && (
+        <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
+          {error.message}
+        </Text>
+      )}
     </View>
   )
 }
