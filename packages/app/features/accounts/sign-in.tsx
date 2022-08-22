@@ -25,7 +25,7 @@ export function SignIn() {
 
   useEffect(() => {
     if (user) {
-      alert(user)
+      alert(user.jwt)
       push('/home')
     }
   }, [user, push])
@@ -67,9 +67,11 @@ function SignInForm({ onEmailSend }: SignInFormProps) {
   const initialValues: FormData = {
     usernameOrEmail: '',
   }
-  //TODO: stricter validation
+
   const formSchema: SchemaOf<FormData> = Yup.object().shape({
-    usernameOrEmail: Yup.string().required('Username or Email is required'),
+    usernameOrEmail: Yup.string()
+      .required('Username or email is required')
+      .min(2, 'Enter a valid username or email'),
   })
 
   return (
@@ -104,6 +106,7 @@ function SignInForm({ onEmailSend }: SignInFormProps) {
               onSubmitEditing={() => handleSubmit()}
               editable={!loading}
               autoCapitalize="none"
+              keyboardType={'email-address'}
             />
             <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
               {(touched.usernameOrEmail && errors.usernameOrEmail) ||
