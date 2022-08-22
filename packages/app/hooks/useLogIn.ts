@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 import { userAtom } from "app/state/atoms";
 import { SecureStorage } from "app/utils/secure-storage";
 
-export function useLogIn(): (UserData) => void {
+export function useLogIn(): (_: UserData) => void {
   const setUserData = useSetRecoilState(userAtom);
 
   const logIn = async (user: UserData) => {

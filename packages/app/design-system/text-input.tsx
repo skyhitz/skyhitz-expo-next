@@ -9,7 +9,7 @@ export type TextProps = {
 } & ComponentProps<typeof DripsyTextInput>;
 
 const TextInput = React.forwardRef(function TextInput(
-  { className, sx, style, ...props }: TextProps,
+  { className, sx, ...props }: TextProps,
   ref: ForwardedRef<rTextInput>
 ) {
   const hideOutline = tailwind.prefixMatch("web")

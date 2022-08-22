@@ -23,9 +23,9 @@ export function useAuthStatus() {
     if (error) {
       // if the token is not valid, remove it from the storage
       const removeToken = async () => {
-        await SecureStorage.clear("token")
-      }
-      removeToken()
+        await SecureStorage.clear("token");
+      };
+      removeToken();
     }
   }, [data, error, setInitialized, setUser]);
 

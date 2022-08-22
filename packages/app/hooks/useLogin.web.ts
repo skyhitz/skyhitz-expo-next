@@ -4,7 +4,7 @@ import { userAtom } from "app/state/atoms";
 import { SecureStorage } from "app/utils/secure-storage";
 import { useRouter } from "solito/router";
 
-export function useLogIn(): (UserData) => void {
+export function useLogIn(): (_: UserData) => void {
   const setUserData = useSetRecoilState(userAtom);
   const { push } = useRouter();
 
