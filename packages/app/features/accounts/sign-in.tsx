@@ -13,22 +13,26 @@ import { REQUEST_TOKEN } from 'app/api/user'
 import { useEffect, useState } from 'react'
 import { useSignInParam } from 'app/hooks/use-sign-in-param'
 import { useSignIn } from 'app/hooks/use-sign-in'
-import { useRouter } from 'solito/router'
 import { SignInForm as FormData } from 'app/types'
+import { openEmail } from 'app/utils/email'
 
 export function SignIn() {
-  const { push } = useRouter()
   const signInParam = useSignInParam()
-  const user = useSignIn(signInParam)
+  const { user, error } = useSignIn(signInParam)
 
   const [wasEmailSend, setWasEmailSet] = useState(false)
 
   useEffect(() => {
     if (user) {
-      alert(user.jwt)
-      push('/home')
+      console.log(user)
     }
-  }, [user, push])
+  }, [user])
+
+  useEffect(() => {
+    if (error) {
+      console.log(error.message)
+    }
+  }, [error])
 
   return (
     <KeyboardAvoidingView
@@ -136,10 +140,7 @@ function OpenEmailView() {
       <Text className="flex flex-row items-center text-sm w-full h-12 rounded-lg p-2 bg-gray-700/20">
         We send you an email to access your account!
       </Text>
-      <Pressable
-        onPress={() => console.log('todo: open email')}
-        className="btn mt-4"
-      >
+      <Pressable onPress={() => openEmail()} className="btn mt-4">
         <Text className="tracking-0.5">Open Email</Text>
       </Pressable>
     </View>
