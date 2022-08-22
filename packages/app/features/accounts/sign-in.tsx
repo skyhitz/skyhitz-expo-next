@@ -10,7 +10,7 @@ import * as Yup from 'yup'
 import { SchemaOf } from 'yup'
 import { useMutation } from '@apollo/client'
 import { REQUEST_TOKEN } from 'app/api/user'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SignInParam, useSignInParam } from 'app/hooks/use-sign-in-param'
 import { useSignIn } from 'app/hooks/use-sign-in'
 import { SignInForm as FormData } from 'app/types'
@@ -18,7 +18,7 @@ import { openEmail } from 'app/utils/email'
 
 export function SignIn() {
   const signInParam = useSignInParam()
-  const [wasEmailSend, setWasEmailSet] = useState(false)
+  const [emailSend, setEmailSend] = useState(false)
 
   return (
     <KeyboardAvoidingView
@@ -27,12 +27,12 @@ export function SignIn() {
     >
       <BackgroundImage />
 
-      {wasEmailSend ? (
+      {emailSend ? (
         <OpenEmailView />
       ) : signInParam ? (
         <AuthenticationView signInParam={signInParam} />
       ) : (
-        <SignInForm onEmailSend={() => setWasEmailSet(true)} />
+        <SignInForm onEmailSend={() => setEmailSend(true)} />
       )}
     </KeyboardAvoidingView>
   )
@@ -137,18 +137,6 @@ function OpenEmailView() {
 
 function AuthenticationView({ signInParam }: { signInParam: SignInParam }) {
   const { user, error } = useSignIn(signInParam)
-
-  useEffect(() => {
-    if (user) {
-      console.log(user)
-    }
-  }, [user])
-
-  useEffect(() => {
-    if (error) {
-      console.log(error.message)
-    }
-  }, [error])
 
   return (
     <View className="w-72">

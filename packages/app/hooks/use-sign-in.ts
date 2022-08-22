@@ -15,7 +15,7 @@ export const useSignIn = (param: SignInParam | undefined) => {
         uid: param.uid,
         token: param.token,
       },
-    }).catch(console.error)
+    })
   }, [param, signIn])
 
   return { user: data, error }
