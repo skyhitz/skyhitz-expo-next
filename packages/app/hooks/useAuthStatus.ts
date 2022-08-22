@@ -5,6 +5,7 @@ import { GET_USER } from "app/api/user";
 import { useSetRecoilState } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
 
+// checks if there is saved token and fetch user if possible
 export function useAuthStatus() {
   const [getUserLazy, { error, data }] = useLazyQuery(GET_USER);
   const setInitialized = useSetRecoilState(appInitializedAtom);
@@ -20,6 +21,7 @@ export function useAuthStatus() {
     }
 
     if (error) {
+      // if the token is not valid, remove it from the storage
       const removeToken = async () => {
         await SecureStorage.clear("token")
       }

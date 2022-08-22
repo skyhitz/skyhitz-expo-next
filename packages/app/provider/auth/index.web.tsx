@@ -14,11 +14,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (user) {
+      // redirect to dashboard if the token was correct
       push("/dashboard/search")
     }
   }, [user, push])
 
   if (!initialized) {
+    // if the app is initializing, return splash screen
     return <SplashScreen />
   }
 

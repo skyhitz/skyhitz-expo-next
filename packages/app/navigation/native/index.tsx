@@ -26,6 +26,7 @@ export function NativeNavigation() {
 
   useEffect(() => {
     if (initialized && !user) {
+      // if the app was initialized, redirect from splash to home screen
       push("/home")
     }
   }, [user, push, initialized])
