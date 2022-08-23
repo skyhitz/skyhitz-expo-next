@@ -6,8 +6,8 @@ import { useSetRecoilState } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
 
 type Props = {
-  onUserAuth?: () => void
-}
+  onUserAuth?: () => void;
+};
 // checks if there is saved token and fetch user if possible
 export function useAuthStatus(options?: Props) {
   const setInitialized = useSetRecoilState(appInitializedAtom);
@@ -15,14 +15,14 @@ export function useAuthStatus(options?: Props) {
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
   const onUserAuthenticated = (data) => {
     setUser(data?.authenticatedUser);
-    options?.onUserAuth?.call(null)
+    options?.onUserAuth?.call(null);
     setInitialized(true);
-    setSkipQuery(true)
+    setSkipQuery(true);
   };
 
   const onAuthError = async () => {
     setInitialized(true);
-    setSkipQuery(true)
+    setSkipQuery(true);
     // if the token is not valid, remove it from the storage
     await SecureStorage.clear("token");
   };

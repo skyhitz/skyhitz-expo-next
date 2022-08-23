@@ -1,18 +1,18 @@
-import { SignInParam } from "app/hooks/use-sign-in-param"
-import { ActivityIndicator, Text, View } from "app/design-system"
-import { useMutation } from "@apollo/client"
-import { UserData } from "app/models"
-import { SIGN_IN } from "app/api/user"
-import { useEffect } from "react"
-import { useLogIn } from "app/hooks/useLogIn"
+import { SignInParam } from "app/hooks/use-sign-in-param";
+import { ActivityIndicator, Text, View } from "app/design-system";
+import { useMutation } from "@apollo/client";
+import { UserData } from "app/models";
+import { SIGN_IN } from "app/api/user";
+import { useEffect } from "react";
+import { useLogIn } from "app/hooks/useLogIn";
 
 export function AuthenticationView({
   signInParam,
 }: {
-  signInParam: SignInParam
+  signInParam: SignInParam;
 }) {
-  const [signIn, { data, error }] = useMutation<{ signIn: UserData }>(SIGN_IN)
-  const logIn = useLogIn()
+  const [signIn, { data, error }] = useMutation<{ signIn: UserData }>(SIGN_IN);
+  const logIn = useLogIn();
 
   useEffect(() => {
     signIn({
@@ -21,14 +21,14 @@ export function AuthenticationView({
         uid: signInParam.uid,
         token: signInParam.token,
       },
-    })
-  }, [signInParam, signIn])
+    });
+  }, [signInParam, signIn]);
 
   useEffect(() => {
     if (data) {
-      logIn(data.signIn)
+      logIn(data.signIn);
     }
-  }, [data, logIn])
+  }, [data, logIn]);
 
   return (
     <View className="w-72 flex items-center">
@@ -43,5 +43,5 @@ export function AuthenticationView({
         </>
       )}
     </View>
-  )
+  );
 }
