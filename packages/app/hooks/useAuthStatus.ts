@@ -1,44 +1,50 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SecureStorage } from "app/utils/secure-storage";
-import { useLazyQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_USER } from "app/api/user";
 import { useSetRecoilState } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
 
+type Props = {
+  onUserAuth?: () => void
+}
 // checks if there is saved token and fetch user if possible
-export function useAuthStatus() {
-  const [getUserLazy, { error, data }] = useLazyQuery(GET_USER);
+export function useAuthStatus(options?: Props) {
   const setInitialized = useSetRecoilState(appInitializedAtom);
   const setUser = useSetRecoilState(userAtom);
+  const [skipQuery, setSkipQuery] = useState<boolean>(true);
+  const onUserAuthenticated = (data) => {
+    setUser(data?.authenticatedUser);
+    options?.onUserAuth?.call(null)
+    setInitialized(true);
+    setSkipQuery(true)
+  };
 
-  useEffect(() => {
-    if (data || error) {
-      setInitialized(true);
-    }
+  const onAuthError = async () => {
+    setInitialized(true);
+    setSkipQuery(true)
+    // if the token is not valid, remove it from the storage
+    await SecureStorage.clear("token");
+  };
 
-    if (data) {
-      setUser(data?.authenticatedUser);
-    }
-
-    if (error) {
-      // if the token is not valid, remove it from the storage
-      const removeToken = async () => {
-        await SecureStorage.clear("token");
-      };
-      removeToken();
-    }
-  }, [data, error, setInitialized, setUser]);
+  // using skip parameter instead of useLazyQuery, because of this issue:
+  // https://github.com/apollographql/react-apollo/issues/3505
+  useQuery(GET_USER, {
+    skip: skipQuery,
+    onCompleted: onUserAuthenticated,
+    onError: onAuthError,
+  });
 
   useEffect(() => {
     const checkToken = async () => {
       const token = await SecureStorage.get("token");
       if (token) {
         // check if token is valid
-        getUserLazy();
+        setSkipQuery(false);
       } else {
         setInitialized(true);
       }
     };
     checkToken();
-  }, [getUserLazy, setInitialized]);
+  }, [setInitialized, setSkipQuery]);
 }

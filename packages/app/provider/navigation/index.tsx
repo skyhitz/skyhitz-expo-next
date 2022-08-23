@@ -1,12 +1,15 @@
-import { NavigationContainer } from "@react-navigation/native";
-import * as Linking from "expo-linking";
-import { useMemo } from "react";
+import { NavigationContainer } from "@react-navigation/native"
+import * as Linking from "expo-linking"
+import { useMemo } from "react"
+import { useAuthStatus } from "app/hooks/useAuthStatus"
 
 export function NavigationProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
+  useAuthStatus()
+
   return (
     <NavigationContainer
       linking={useMemo(
@@ -28,5 +31,5 @@ export function NavigationProvider({
     >
       {children}
     </NavigationContainer>
-  );
+  )
 }

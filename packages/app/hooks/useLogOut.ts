@@ -5,10 +5,10 @@ import { SecureStorage } from "app/utils/secure-storage";
 export default function useLogOut(): () => void {
   const setUserData = useSetRecoilState(userAtom);
 
-  const logIn = async () => {
+  const logOut = async () => {
     setUserData(null);
     await SecureStorage.clear("token");
   };
 
-  return logIn;
+  return logOut;
 }
