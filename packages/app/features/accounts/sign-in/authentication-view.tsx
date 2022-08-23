@@ -1,6 +1,6 @@
 import { SignInParam } from 'app/hooks/use-sign-in-param'
 import { useSignIn } from 'app/hooks/use-sign-in'
-import { Text, View } from 'app/design-system'
+import { ActivityIndicator, Text, View } from 'app/design-system'
 
 export function AuthenticationView({
   signInParam,
@@ -10,15 +10,19 @@ export function AuthenticationView({
   const { user, error } = useSignIn(signInParam)
 
   return (
-    <View className="w-72">
-      <Text className="text-center align-center text-sm w-full rounded-lg p-3 bg-gray-700/20">
-        {user ? 'Success' : 'Authentication...'}
-      </Text>
-      {error && (
-        <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
+    <View className="w-72 flex items-center">
+      {!user && !error && (
+        <>
+          <ActivityIndicator size={'large'} />
+          <Text className="text-lg text-center mt-2">Authentication</Text>
+        </>
+      )}
+      {error && !user && (
+        <Text className="w-full text-center text-[#d9544f] text-lg">
           {error.message}
         </Text>
       )}
+      {user && <Text className="text-lg w-full text-center">Success!</Text>}
     </View>
   )
 }
