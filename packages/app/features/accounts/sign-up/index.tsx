@@ -130,6 +130,7 @@ export function SignUp() {
                 onSubmitEditing={() => handleSubmit()}
                 editable={!loading}
                 autoCapitalize="none"
+                keyboardType={'email-address'}
               />
               <Text
                 className={
