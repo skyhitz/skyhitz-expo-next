@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { GET_USER } from "app/api/user";
 import { useSetRecoilState } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
+import { UserData } from "app/models";
 
 type Props = {
   onUserAuth?: () => void;
@@ -13,7 +14,7 @@ export function useAuthStatus(options?: Props) {
   const setInitialized = useSetRecoilState(appInitializedAtom);
   const setUser = useSetRecoilState(userAtom);
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
-  const onUserAuthenticated = (data) => {
+  const onUserAuthenticated = (data: {authenticatedUser: UserData}) => {
     setUser(data?.authenticatedUser);
     options?.onUserAuth?.call(null);
     setInitialized(true);
