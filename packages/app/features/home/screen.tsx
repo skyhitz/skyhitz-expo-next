@@ -5,6 +5,7 @@ import { Pressable, Text, View } from 'app/design-system'
 import { useLink } from 'solito/link'
 import { useSafeArea } from 'app/provider/safe-area/use-safe-area'
 import { StatusBar } from 'react-native'
+import { SecureStorage } from 'app/utils/secure-storage'
 
 export function HomeScreen() {
   const insets = useSafeArea()
@@ -26,6 +27,7 @@ export function HomeScreen() {
         <View className="android:w-60 ios:w-60 mx-auto">
           <SignUpButton />
           <LogInButton />
+          <TestBtn />
         </View>
       </View>
       <Footer />
@@ -56,6 +58,28 @@ function LogInButton() {
     >
       <Text className="text-lg text-center font-raleway font-medium leading-none">
         Sign in
+      </Text>
+    </Pressable>
+  )
+}
+
+function TestBtn() {
+  const { onPress, ...rest } = useLink({ href: '/dashboard/search' })
+  const additionalPressLogic = () => {
+    console.log(process.env.TOKEN)
+    SecureStorage.save(
+      'token',
+      '' // paste jwt here to test
+    ).then(() => onPress())
+  }
+  return (
+    <Pressable
+      className="btn w-full mt-2 sm:hidden border-2 border-black bg-red"
+      onPress={additionalPressLogic}
+      {...rest}
+    >
+      <Text className="text-lg text-center font-raleway font-medium leading-none">
+        Test
       </Text>
     </Pressable>
   )
