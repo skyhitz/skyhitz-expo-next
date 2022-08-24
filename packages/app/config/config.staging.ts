@@ -1,7 +1,7 @@
 import { ConfigInterface } from "./config";
 
 export const StagingConfig: ConfigInterface = {
-  APP_URL: "https://www.skyhitz-expo-next.vercel.app",
+  APP_URL: "https://skyhitz-expo-next.vercel.app",
   GRAPHQL_URL: "https://spi.skyhitz.io/api/graphql",
   HORIZON_URL: "https://horizon-testnet.stellar.org",
   ALGOLIA_APP_ID: "HSVI9OH0KZ",
