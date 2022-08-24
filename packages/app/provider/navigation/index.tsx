@@ -9,6 +9,8 @@ export function NavigationProvider({
 }) {
   return (
     <NavigationContainer
+      // TODO: find how to do it right
+      // @ts-ignore
       linking={useMemo(
         () => ({
           prefixes: [Linking.createURL('/')],
@@ -19,6 +21,13 @@ export function NavigationProvider({
               'user-detail': 'user/:id',
               'sign-in': 'sign-in',
               'sign-up': 'sign-up',
+              dashboard: {
+                screens: {
+                  search: 'dashboard/search',
+                  chart: 'dashboard/chart',
+                  profile: 'dashboard/profile',
+                },
+              },
             },
           },
         }),
