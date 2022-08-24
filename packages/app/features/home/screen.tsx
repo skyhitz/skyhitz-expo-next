@@ -10,7 +10,7 @@ export function HomeScreen() {
   const insets = useSafeArea()
   return (
     <View
-      className={`w-full h-full flex flex-col h-full pt-[${insets.top}px] pb-[${insets.bottom}px]`}
+      className={`w-full h-full flex flex-col pt-[${insets.top}px] pb-[${insets.bottom}px]`}
     >
       <BackgroundImage />
       <StatusBar barStyle="light-content" />
