@@ -13,7 +13,11 @@
     ],
     "ios": {
       "bundleIdentifier": "io.skyhitz.skyhitz",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "associatedDomains": [
+        "applinks:skyhitz.io",
+        "applinks:skyhitz-expo-next.vercel.app"
+      ]
     },
     "android": {
       "package": "io.skyhitz.skyhitz",
@@ -21,7 +25,6 @@
       "intentFilters": [
         {
           "action": "VIEW",
-          "autoVerify": true,
           "data": [
             {
               "scheme": "https",

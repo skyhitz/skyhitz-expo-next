@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appIDs": "io.skyhitz.skyhitz",
+        "appIDs": ["io.skyhitz.skyhitz"],
         "components": [
             {
               "/": "sign-in"
