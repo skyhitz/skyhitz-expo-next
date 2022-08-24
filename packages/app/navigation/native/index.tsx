@@ -1,33 +1,50 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SignIn } from "app/features/accounts/sign-in";
-import { HomeScreen } from "app/features/home/screen";
-import { SignUp } from "app/features/accounts/sign-up";
-import { SearchScreen } from "app/features/dashboard/search";
-import { useRecoilValue } from "recoil";
-import { appInitializedAtom, userAtom } from "app/state/atoms";
-import { SplashScreen } from "../../features/splash/splash-screen";
-import { useRouter } from "solito/router";
-import { useEffect } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { SignIn } from "app/features/accounts/sign-in"
+import { HomeScreen } from "app/features/home/screen"
+import { SignUp } from "app/features/accounts/sign-up"
+import { SearchScreen } from "app/features/dashboard/search"
+import { useRecoilValue } from "recoil"
+import { appInitializedAtom, userAtom } from "app/state/atoms"
+import { SplashScreen } from "../../features/splash/splash-screen"
+import { useRouter } from "solito/router"
+import { useEffect } from "react"
+import { Linking } from "react-native"
+import { Config } from "app/config"
 
 const Stack = createNativeStackNavigator<{
-  splash: undefined;
-  home: undefined;
-  search: undefined;
-  "sign-in": undefined;
-  "sign-up": undefined;
-}>();
+  splash: undefined
+  home: undefined
+  search: undefined
+  "sign-in": undefined
+  "sign-up": undefined
+}>()
 
 export function NativeNavigation() {
-  const user = useRecoilValue(userAtom);
-  const initialized = useRecoilValue(appInitializedAtom);
-  const { push } = useRouter();
+  const user = useRecoilValue(userAtom)
+  const initialized = useRecoilValue(appInitializedAtom)
+  const { push } = useRouter()
+
+  useEffect(() => {
+    Linking.addEventListener("url", (event) => {
+      const path = event.url.replace(Config.APP_URL, "")
+      push(path)
+    })
+    const getInitialUrl = async () => {
+      const link = await Linking.getInitialURL()
+      if (link) {
+        const path = link.replace(Config.APP_URL, "")
+        push(path)
+      }
+    }
+    getInitialUrl()
+  }, [push])
 
   useEffect(() => {
     if (initialized && !user) {
       // if the app was initialized, redirect from splash to home screen
-      push("/home");
+      push("/home")
     }
-  }, [user, push, initialized]);
+  }, [user, push, initialized])
 
   return (
     <Stack.Navigator
@@ -78,5 +95,5 @@ export function NativeNavigation() {
         </>
       )}
     </Stack.Navigator>
-  );
+  )
 }

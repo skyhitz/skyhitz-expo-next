@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": "io.skyhitz.skyhitz",
+        "components": [
+            {
+              "/": "sign-in"
+            }
+        ]
+      },
+      {
+        "appID": "io.skyhitz.skyhitz",
+        "paths": ["/sign-in"]
+      }
+    ]
+  }
+}
