@@ -12,13 +12,13 @@ export function Provider({ children }: { children: React.ReactNode }) {
   return (
     <SkyhitzApolloProvider>
       <SafeArea>
-        <NavigationProvider>
-          <RecoilRoot>
-            <FontProvider>
-              <Dripsy>{children}</Dripsy>
-            </FontProvider>
-          </RecoilRoot>
-        </NavigationProvider>
+        <RecoilRoot>
+          <FontProvider>
+            <Dripsy>
+              <NavigationProvider>{children}</NavigationProvider>
+            </Dripsy>
+          </FontProvider>
+        </RecoilRoot>
       </SafeArea>
     </SkyhitzApolloProvider>
   )
