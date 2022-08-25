@@ -8,6 +8,7 @@ import Icon from '@expo/vector-icons/MaterialCommunityIcons'
 import { Entry, EntryPayload } from 'app/models'
 import { tw } from 'app/design-system/tailwind'
 import { BeatEntry } from 'app/models/beat-entry'
+import useBeatHorizonPrice from 'app/hooks/use-beat-horizon-price'
 
 export default function RecentlyAddedList() {
   const [nextPage, setNextPage] = useState(0)
@@ -85,16 +86,19 @@ function FavoriteButton({
 
 function Price({
   className,
+  code,
+  issuer,
 }: {
   code?: string
   issuer?: string
   className?: string
 }) {
-  const [value] = useState(1)
+  const price = useBeatHorizonPrice(code, issuer)
+
   return (
     <View className={`flex flex-row items-center ${className}`}>
       <Dollar size={10} color={'white'} className="mr-1" />
-      {value > 0 && <Text className="mr-1 font-bold">{value}</Text>}
+      {price > 0 && <Text className="mr-1 font-bold">{price}</Text>}
     </View>
   )
 }
