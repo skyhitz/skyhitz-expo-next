@@ -67,3 +67,16 @@ yarn
 ```
 
 You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
+
+## Graphql
+
+To add graphql query/mutation simply create file in the proper folder:
+
+- `packages/app/api/queries/your_query.graphql` for queries
+- `packages/app/api/mutations/your_mutation.graphql` for mutations
+
+Then run the following script and let codegen generate graphql types for you:
+
+```sh
+yarn graphql:gen
+```
