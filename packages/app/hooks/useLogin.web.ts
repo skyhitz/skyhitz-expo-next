@@ -1,14 +1,14 @@
-import { UserData } from "app/models/user";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "app/state/atoms";
 import { SecureStorage } from "app/utils/secure-storage";
 import { useRouter } from "solito/router";
+import { User } from "app/api/graphql";
 
-export function useLogIn(): (_: UserData) => void {
+export function useLogIn(): (_: User) => void {
   const setUserData = useSetRecoilState(userAtom);
   const { push } = useRouter();
 
-  const logIn = async (user: UserData) => {
+  const logIn = async (user: User) => {
     push("/dashboard/search");
     setUserData(user);
     if (user.jwt) {

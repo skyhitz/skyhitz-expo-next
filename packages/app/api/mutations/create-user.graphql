@@ -1,0 +1,22 @@
+mutation createUserWithEmail(
+  $displayName: String!
+  $email: String!
+  $username: String!
+  $publicKey: String!
+) {
+  createUserWithEmail(
+    displayName: $displayName
+    email: $email
+    username: $username
+    publicKey: $publicKey
+  ) {
+    avatarUrl
+    displayName
+    email
+    username
+    id
+    description
+    jwt
+    publicKey
+  }
+}

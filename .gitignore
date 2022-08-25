@@ -72,3 +72,6 @@ web-build/
 
 .turbo
 build/**
+
+## codegen
+packages/app/graphql.schema.json

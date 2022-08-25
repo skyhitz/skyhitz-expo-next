@@ -1,3 +1,3 @@
-import { SignIn } from 'app/features/accounts/sign-in'
+import { SignIn } from "app/features/accounts/sign-in";
 
-export default SignIn
+export default SignIn;

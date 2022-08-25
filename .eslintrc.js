@@ -1,18 +1,23 @@
 module.exports = {
   plugins: ["unused-imports"],
-  extends: 'next',
+  extends: "next",
   settings: {
     next: {
-      rootDir: 'apps/next/',
+      rootDir: "apps/next/",
     },
   },
   root: true,
-  "rules": {
-		"no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
-		"unused-imports/no-unused-imports": "error",
-		"unused-imports/no-unused-vars": [
-			"warn",
-			{ "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
-		]
-	}
-}
+  rules: {
+    "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        vars: "all",
+        varsIgnorePattern: "^_",
+        args: "after-used",
+        argsIgnorePattern: "^_",
+      },
+    ],
+  },
+};

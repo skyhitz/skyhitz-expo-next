@@ -1,5 +1,3 @@
-import { useMutation } from "@apollo/client";
-import { REQUEST_TOKEN } from "app/api/user";
 import { SignInForm as FormData } from "app/types";
 import * as Yup from "yup";
 import { SchemaOf } from "yup";
@@ -8,13 +6,14 @@ import WalletconnectBtn from "app/ui/walletconnect-btn";
 import { Separator } from "app/features/accounts/or-separator";
 import { Formik, FormikProps } from "formik";
 import StyledTextInput from "app/features/accounts/styled-text-input";
+import { useRequestTokenMutation } from "app/api/graphql";
 
 type SignInFormProps = {
   onEmailSend: () => void;
 };
 
 export function SignInForm({ onEmailSend }: SignInFormProps) {
-  const [requestToken, { loading, error }] = useMutation(REQUEST_TOKEN, {
+  const [requestToken, { loading, error }] = useRequestTokenMutation({
     onCompleted: onEmailSend,
   });
   const handleSignIn = async (formData: FormData) => {

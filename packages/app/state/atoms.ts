@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { UserData } from "app/models/user";
+import { User } from "app/api/graphql";
 
-export const userAtom = atom<null | UserData>({
+export const userAtom = atom<User | null>({
   key: "user",
   default: null,
 });
