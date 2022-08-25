@@ -7,15 +7,46 @@
     "scheme": "skyhitz",
     "orientation": "portrait",
     "icon": "./icon.png",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
       "bundleIdentifier": "io.skyhitz.skyhitz",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "associatedDomains": [
+        "applinks:skyhitz.io",
+        "applinks:skyhitz-expo-next.vercel.app"
+      ]
     },
     "android": {
       "package": "io.skyhitz.skyhitz",
-      "versionCode": 1
+      "versionCode": 1,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "skyhitz.io"
+            },
+            {
+              "scheme": "https",
+              "host": "skyhitz-expo-next.vercel.app"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
-    "owner": "skyhitz"
+    "owner": "skyhitz",
+    "extra": {
+      "eas": {
+        "projectId": "3e16a450-cf3f-11e7-9580-7f3555e72bdc"
+      }
+    }
   }
 }

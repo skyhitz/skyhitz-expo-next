@@ -1,0 +1,48 @@
+{
+    "cli": {
+      "version": ">= 0.54.1"
+    },
+    "build": {
+      "development": {
+        "distribution": "internal",
+        "releaseChannel": "development",
+        "developmentClient": true,
+        "android": {
+          "gradleCommand": ":app:assembleDebug",
+          "buildType": "apk"
+        },
+        "ios": {
+          "buildConfiguration": "Debug",
+          "simulator": true
+        },
+        "env": {
+          "NEXT_PUBLIC_EXPO_SKYHITZ_ENV": "development"
+        }
+      },
+      "preview": {
+        "distribution": "internal",
+        "releaseChannel": "preview",
+        "ios": {
+          "simulator": true
+        },
+        "env": {
+            "NEXT_PUBLIC_EXPO_SKYHITZ_ENV": "development"
+        }
+      },
+      "production": {
+        "releaseChannel": "production",
+        "android": {
+          "autoIncrement": "versionCode"
+        },
+        "ios": {
+          "autoIncrement": "version"
+        },
+        "env": {
+            "NEXT_PUBLIC_EXPO_SKYHITZ_ENV": "production"
+        }
+      }
+    },
+    "submit": {
+      "production": {}
+    }
+  }

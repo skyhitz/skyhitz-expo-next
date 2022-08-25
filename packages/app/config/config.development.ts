@@ -1,7 +1,7 @@
 import { ConfigInterface } from "./config";
 
 export const DevelopmentConfig: ConfigInterface = {
-  APP_URL: "https://vice.skyhitz.io",
+  APP_URL: "https://skyhitz-expo-next.vercel.app",
   GRAPHQL_URL: "http://localhost:4000/api/graphql",
   HORIZON_URL: "https://horizon-testnet.stellar.org",
   ALGOLIA_APP_ID: "HSVI9OH0KZ",

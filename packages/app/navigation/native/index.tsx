@@ -8,6 +8,8 @@ import { appInitializedAtom, userAtom } from "app/state/atoms";
 import { SplashScreen } from "../../features/splash/splash-screen";
 import { useRouter } from "solito/router";
 import { useEffect } from "react";
+import { Linking } from "react-native";
+import { Config } from "app/config";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -21,6 +23,21 @@ export function NativeNavigation() {
   const user = useRecoilValue(userAtom);
   const initialized = useRecoilValue(appInitializedAtom);
   const { push } = useRouter();
+
+  useEffect(() => {
+    Linking.addEventListener("url", (event) => {
+      const path = event.url.replace(Config.APP_URL, "");
+      push(path);
+    });
+    const getInitialUrl = async () => {
+      const link = await Linking.getInitialURL();
+      if (link) {
+        const path = link.replace(Config.APP_URL, "");
+        push(path);
+      }
+    };
+    getInitialUrl();
+  }, [push]);
 
   useEffect(() => {
     if (initialized && !user) {
