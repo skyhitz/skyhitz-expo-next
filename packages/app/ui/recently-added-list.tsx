@@ -7,17 +7,7 @@ import Dollar from 'app/ui/icons/dollar'
 import Icon from '@expo/vector-icons/MaterialCommunityIcons'
 import { Entry, EntryPayload } from 'app/models'
 import { tw } from 'app/design-system/tailwind'
-
-type BeatEntry = {
-  imageUrl: string
-  videoUrl: string
-  description: string
-  title: string
-  id: string
-  artist: string
-  code: string
-  issuer: string
-}
+import { BeatEntry } from 'app/models/beat-entry'
 
 export default function RecentlyAddedList() {
   const [nextPage, setNextPage] = useState(0)
