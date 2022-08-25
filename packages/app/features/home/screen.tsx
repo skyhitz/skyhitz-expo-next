@@ -5,6 +5,7 @@ import { Pressable, Text, View } from "app/design-system";
 import { useLink } from "solito/link";
 import { useSafeArea } from "app/provider/safe-area/use-safe-area";
 import { StatusBar } from "react-native";
+import { SecureStorage } from "app/utils/secure-storage";
 
 export function HomeScreen() {
   const insets = useSafeArea();
