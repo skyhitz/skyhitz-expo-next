@@ -1,16 +1,12 @@
-import React from 'react'
-import WalletConnectIcon from 'app/ui/icons/walletconnect-icon'
+import React from "react";
+import WalletConnectIcon from "app/ui/icons/walletconnect-icon";
 // import QRCodeModal from '@walletconnect/qrcode-modal'
-import { signManageDataOp } from 'app/stellar'
+// import { signManageDataOp } from "app/stellar"
 // import { WalletConnectStore } from 'app/state/wallet-connect'
-import { Pressable, Text } from 'app/design-system'
+import { Pressable, Text } from "app/design-system";
 
-const WalletConnectBtn = ({
-  signInWithXDR,
-}: {
-  signInWithXDR?: (_: any) => {}
-}) => {
-  const state = 'idle'
+const WalletConnectBtn = ({}: { signInWithXDR?: (_: any) => {} }) => {
+  // const state = "idle"
   // const { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
 
   // useEffect(() => {
@@ -21,13 +17,13 @@ const WalletConnectBtn = ({
   //   })
   // }, [uri])
 
-  const handleSignInWithXdr = async (publicKey: string) => {
-    const xdr = await signManageDataOp(publicKey)
-    // const { signedXDR } = await (signXdr(xdr) as Promise<{ signedXDR: string }>)
-    // signInWithXDR && signInWithXDR(signedXDR)
-  }
+  // const handleSignInWithXdr = async (publicKey: string) => {
+  //   const xdr = await signManageDataOp(publicKey)
+  // const { signedXDR } = await (signXdr(xdr) as Promise<{ signedXDR: string }>)
+  // signInWithXDR && signInWithXDR(signedXDR)
+  // }
 
-  const handleConnect = () => {}
+  const handleConnect = () => {};
 
   // useEffect(() => {
   //   if (publicKey && signInWithXDR) handleSignInWithXdr(publicKey)
@@ -45,7 +41,7 @@ const WalletConnectBtn = ({
       </Text>
       <WalletConnectIcon color="white" />
     </Pressable>
-  )
-}
+  );
+};
 
-export default WalletConnectBtn
+export default WalletConnectBtn;

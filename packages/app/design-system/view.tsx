@@ -1,15 +1,13 @@
-import { ComponentProps } from 'react'
-import { useSx, View as DripsyView } from 'dripsy'
-import { tw as tailwind } from 'app/design-system/tailwind'
+import { ComponentProps } from "react";
+import { useSx, View as DripsyView } from "dripsy";
+import { tw as tailwind } from "app/design-system/tailwind";
 
-export type ViewProps = { className?: string } & ComponentProps<
-  typeof DripsyView
->
+type ViewProps = { className?: string } & ComponentProps<typeof DripsyView>;
 
 function View({ className, sx, ...props }: ViewProps) {
-  useSx()
+  useSx();
 
-  return <DripsyView sx={{ ...sx, ...tailwind.style(className) }} {...props} />
+  return <DripsyView sx={{ ...sx, ...tailwind.style(className) }} {...props} />;
 }
 
-export { View }
+export { View };

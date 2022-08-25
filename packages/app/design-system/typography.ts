@@ -1,25 +1,25 @@
-import { precomputeValues } from '@capsizecss/core'
-import { Platform, PixelRatio } from 'react-native'
+import { precomputeValues } from "@capsizecss/core";
+import { Platform, PixelRatio } from "react-native";
 
 export const fontFamily = (font: string) => {
-  if (Platform.OS === 'web') {
-    return font.replace(/\-/g, ' ')
+  if (Platform.OS === "web") {
+    return font.replace(/\-/g, " ");
   }
 
-  return font
-}
+  return font;
+};
 
 const capsize = (options: Parameters<typeof precomputeValues>[0]) => {
-  const values = precomputeValues(options)
-  const fontSize = parseFloat(values.fontSize)
-  const baselineTrimEm = parseFloat(values.baselineTrim)
-  const capHeightTrimEm = parseFloat(values.capHeightTrim)
-  const fontScale = PixelRatio.getFontScale()
+  const values = precomputeValues(options);
+  const fontSize = parseFloat(values.fontSize);
+  const baselineTrimEm = parseFloat(values.baselineTrim);
+  const capHeightTrimEm = parseFloat(values.capHeightTrim);
+  const fontScale = PixelRatio.getFontScale();
 
   return {
     fontSize,
     lineHeight:
-      values.lineHeight !== 'normal'
+      values.lineHeight !== "normal"
         ? parseFloat(values.lineHeight)
         : undefined,
     marginBottom: PixelRatio.roundToNearestPixel(
@@ -28,8 +28,8 @@ const capsize = (options: Parameters<typeof precomputeValues>[0]) => {
     marginTop: PixelRatio.roundToNearestPixel(
       capHeightTrimEm * fontSize * fontScale
     ),
-  } as const
-}
+  } as const;
+};
 
 // Sourced from https://seek-oss.github.io/capsize
 const fontMetrics = {
@@ -38,7 +38,7 @@ const fontMetrics = {
   descent: -680,
   lineGap: 0,
   unitsPerEm: 2816,
-}
+};
 
 const createTextSize = ({
   fontSize,
@@ -46,16 +46,16 @@ const createTextSize = ({
   letterSpacing,
   marginCorrection,
 }: {
-  fontSize: number
-  lineHeight: number
-  letterSpacing: number
+  fontSize: number;
+  lineHeight: number;
+  letterSpacing: number;
   marginCorrection: {
-    ios: number
-    android: number
-    windows?: number
-    macos?: number
-    web?: number
-  }
+    ios: number;
+    android: number;
+    windows?: number;
+    macos?: number;
+    web?: number;
+  };
 }) => {
   const styles = {
     letterSpacing,
@@ -64,9 +64,9 @@ const createTextSize = ({
       fontSize,
       leading,
     }),
-  } as const
+  } as const;
 
-  const marginCorrectionForPlatform = marginCorrection[Platform.OS] ?? 0
+  const marginCorrectionForPlatform = marginCorrection[Platform.OS] ?? 0;
 
   return {
     ...styles,
@@ -76,11 +76,11 @@ const createTextSize = ({
     marginBottom: PixelRatio.roundToNearestPixel(
       styles.marginBottom - marginCorrectionForPlatform
     ),
-  }
-}
+  };
+};
 
 export const textSizes = {
-  'text-xs': createTextSize({
+  "text-xs": createTextSize({
     fontSize: 12,
     letterSpacing: 0.6,
     lineHeight: 15,
@@ -89,7 +89,7 @@ export const textSizes = {
       ios: -0.3,
     },
   }),
-  'text-sm': createTextSize({
+  "text-sm": createTextSize({
     fontSize: 14,
     letterSpacing: 0.6,
     lineHeight: 17,
@@ -98,7 +98,7 @@ export const textSizes = {
       ios: -0.3,
     },
   }),
-  'text-base': createTextSize({
+  "text-base": createTextSize({
     fontSize: 16,
     letterSpacing: 0.5,
     lineHeight: 19,
@@ -107,7 +107,7 @@ export const textSizes = {
       ios: -0.5,
     },
   }),
-  'text-lg': createTextSize({
+  "text-lg": createTextSize({
     fontSize: 18,
     letterSpacing: 0.5,
     lineHeight: 21,
@@ -116,7 +116,7 @@ export const textSizes = {
       ios: 0,
     },
   }),
-  'text-xl': createTextSize({
+  "text-xl": createTextSize({
     fontSize: 20,
     letterSpacing: 0.6,
     lineHeight: 23,
@@ -125,7 +125,7 @@ export const textSizes = {
       ios: -0.5,
     },
   }),
-  'text-2xl': createTextSize({
+  "text-2xl": createTextSize({
     fontSize: 24,
     letterSpacing: 0.6,
     lineHeight: 27,
@@ -134,7 +134,7 @@ export const textSizes = {
       ios: -0.3,
     },
   }),
-  'text-3xl': createTextSize({
+  "text-3xl": createTextSize({
     fontSize: 30,
     letterSpacing: 0.6,
     lineHeight: 33,
@@ -143,7 +143,7 @@ export const textSizes = {
       ios: -0.3,
     },
   }),
-  'text-4xl': createTextSize({
+  "text-4xl": createTextSize({
     fontSize: 36,
     letterSpacing: 0.6,
     lineHeight: 41,
@@ -152,4 +152,4 @@ export const textSizes = {
       ios: -0.3,
     },
   }),
-} as const
+} as const;

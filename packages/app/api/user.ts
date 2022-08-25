@@ -1,10 +1,10 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const REQUEST_TOKEN = gql`
   mutation requestToken($usernameOrEmail: String!, $publicKey: String!) {
     requestToken(usernameOrEmail: $usernameOrEmail, publicKey: $publicKey)
   }
-`
+`;
 
 export const CREATE_USER_WITH_EMAIL = gql`
   mutation createUserWithEmail(
@@ -19,11 +19,33 @@ export const CREATE_USER_WITH_EMAIL = gql`
       username: $username
       publicKey: $publicKey
     ) {
+      avatarUrl
+      displayName
+      email
+      username
+      id
+      description
       jwt
       publicKey
     }
   }
-`
+`;
+
+export const GET_USER = gql`
+  query authenticatedUser {
+    authenticatedUser {
+      avatarUrl
+      displayName
+      email
+      username
+      id
+      description
+      jwt
+      publicKey
+    }
+  }
+`;
+
 export const SIGN_IN = gql`
   mutation signIn($token: String!, $uid: String!, $signedXDR: String) {
     signIn(token: $token, uid: $uid, signedXDR: $signedXDR) {
@@ -38,4 +60,4 @@ export const SIGN_IN = gql`
       publicKey
     }
   }
-`
+`;

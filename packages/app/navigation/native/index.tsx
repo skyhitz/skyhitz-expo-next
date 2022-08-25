@@ -10,16 +10,25 @@ import SearchView from 'app/features/dashboard/search-view'
 import { SafeAreaView } from 'app/design-system/safe-area-view'
 
 const Stack = createNativeStackNavigator<{
-  home: undefined
-  'user-detail': {
-    id: string
-  }
-  'sign-in': undefined
-  'sign-up': undefined
-  dashboard: undefined
-}>()
+  splash: undefined;
+  home: undefined;
+  "sign-in": undefined;
+  "sign-up": undefined;
+  dashboard: undefined;
+}>();
 
 export function NativeNavigation() {
+  const user = useRecoilValue(userAtom);
+  const initialized = useRecoilValue(appInitializedAtom);
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (initialized && !user) {
+      // if the app was initialized, redirect from splash to home screen
+      push("/home");
+    }
+  }, [user, push, initialized]);
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -38,6 +47,13 @@ export function NativeNavigation() {
         component={UserDetailScreen}
         options={{
           title: 'User',
+        }}
+      />
+      <Stack.Screen
+        name="splash"
+        component={SplashScreen}
+        options={{
+          title: "Splash",
         }}
       />
       <Stack.Screen
@@ -62,7 +78,7 @@ export function NativeNavigation() {
         }}
       />
     </Stack.Navigator>
-  )
+  );
 }
 
 const Tab = createBottomTabNavigator<{

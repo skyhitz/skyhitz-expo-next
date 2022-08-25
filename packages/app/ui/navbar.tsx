@@ -1,10 +1,10 @@
-import SkyhitzLogo from './logo'
-import { userAtom } from 'app/state/atoms'
-import { useRecoilValue } from 'recoil'
-import { Text, TextLink, View } from 'app/design-system'
+import SkyhitzLogo from "./logo";
+import { userAtom } from "app/state/atoms";
+import { useRecoilValue } from "recoil";
+import { Text, TextLink, View } from "app/design-system";
 
 const Navbar = () => {
-  const user = useRecoilValue(userAtom)
+  const user = useRecoilValue(userAtom);
 
   return (
     <View className="flex-row justify-center sm:justify-between items-center p-3 w-full flex-wrap">
@@ -36,7 +36,7 @@ const Navbar = () => {
         </View>
       )}
     </View>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

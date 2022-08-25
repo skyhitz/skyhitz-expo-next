@@ -1,8 +1,8 @@
-import { Text, View } from 'app/design-system'
+import { Text, View } from "app/design-system";
 
 const Line = () => (
   <View className="border border-transparent border-b-white grow" />
-)
+);
 
 export function Separator() {
   return (
@@ -11,5 +11,5 @@ export function Separator() {
       <Text className="px-2">or</Text>
       <Line />
     </View>
-  )
+  );
 }

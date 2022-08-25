@@ -1,19 +1,19 @@
-import { Provider } from 'app/provider'
-import Head from 'next/head'
-import React from 'react'
-import type { SolitoAppProps } from 'solito'
-import 'raf/polyfill'
+import { Provider } from "app/provider"
+import Head from "next/head"
+import React from "react"
+import type { SolitoAppProps } from "solito"
+import "raf/polyfill"
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   return (
     <>
       <Head>
-        <title>Solito Example App</title>
+        <title>Skyhitz</title>
         <meta
           name="description"
-          content="Expo + Next.js with Solito. By Fernando Rojo."
+          content="Upload, buy or sell music NFTs on the Stellar Network. Join a music community of beatmakers!"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/icon.png" />
       </Head>
       <Provider>
         <Component {...pageProps} />

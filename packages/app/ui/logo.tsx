@@ -1,4 +1,4 @@
-import Svg, { LinearGradient, Path, Stop } from 'react-native-svg'
+import Svg, { LinearGradient, Path, Stop } from "react-native-svg";
 
 const SvgComponent = ({ size = 30 }) => {
   return (
@@ -25,7 +25,7 @@ const SvgComponent = ({ size = 30 }) => {
         fill="url(#a)"
       />
     </Svg>
-  )
-}
+  );
+};
 
-export default SvgComponent
+export default SvgComponent;

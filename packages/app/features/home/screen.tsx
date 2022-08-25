@@ -1,14 +1,13 @@
-import Navbar from 'app/ui/navbar'
-import BackgroundImage from 'app/ui/background-image'
-import Footer from 'app/ui/footer'
-import { Pressable, Text, View } from 'app/design-system'
-import { useLink } from 'solito/link'
-import { useSafeArea } from 'app/provider/safe-area/use-safe-area'
-import { StatusBar } from 'react-native'
-import { SecureStorage } from 'app/utils/secure-storage'
+import Navbar from "app/ui/navbar";
+import BackgroundImage from "app/ui/background-image";
+import Footer from "app/ui/footer";
+import { Pressable, Text, View } from "app/design-system";
+import { useLink } from "solito/link";
+import { useSafeArea } from "app/provider/safe-area/use-safe-area";
+import { StatusBar } from "react-native";
 
 export function HomeScreen() {
-  const insets = useSafeArea()
+  const insets = useSafeArea();
   return (
     <View
       className={`w-full h-full flex flex-col pt-[${insets.top}px] pb-[${insets.bottom}px]`}
@@ -32,11 +31,11 @@ export function HomeScreen() {
       </View>
       <Footer />
     </View>
-  )
+  );
 }
 
 function SignUpButton() {
-  const signUpBtnProps = useLink({ href: '/sign-up' })
+  const signUpBtnProps = useLink({ href: "/sign-up" });
   return (
     <Pressable
       className="btn bg-white border-2 border-black"
@@ -46,11 +45,11 @@ function SignUpButton() {
         Sign up for free
       </Text>
     </Pressable>
-  )
+  );
 }
 
 function LogInButton() {
-  const logInBtnProps = useLink({ href: '/sign-in' })
+  const logInBtnProps = useLink({ href: "/sign-in" });
   return (
     <Pressable
       className="btn w-full mt-2 sm:hidden border-2 border-black"
@@ -60,7 +59,7 @@ function LogInButton() {
         Sign in
       </Text>
     </Pressable>
-  )
+  );
 }
 
 function TestBtn() {

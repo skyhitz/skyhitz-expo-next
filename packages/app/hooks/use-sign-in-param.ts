@@ -1,18 +1,18 @@
-import { createParam } from 'solito'
-import { useMemo } from 'react'
+import { createParam } from "solito";
+import { useMemo } from "react";
 
 export type SignInParam = {
-  token: string
-  uid: string
-}
+  token: string;
+  uid: string;
+};
 
-const { useParam } = createParam<SignInParam>()
+const { useParam } = createParam<SignInParam>();
 
 export const useSignInParam = (): SignInParam | undefined => {
-  const [token] = useParam('token')
-  const [uid] = useParam('uid')
+  const [token] = useParam("token");
+  const [uid] = useParam("uid");
 
   return useMemo(() => {
-    if (token && uid) return { token, uid }
-  }, [token, uid])
-}
+    if (token && uid) return { token, uid };
+  }, [token, uid]);
+};
