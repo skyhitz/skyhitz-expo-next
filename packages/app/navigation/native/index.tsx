@@ -12,6 +12,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ChartScreen } from "app/features/dashboard/chart";
 import { ProfileScreen } from "app/features/dashboard/profile";
 import DashboardTabBar from "app/ui/dashboard-tab-bar";
+import { Linking } from "react-native";
+import { Config } from "app/config";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -26,6 +28,21 @@ export function NativeNavigation() {
   const user = useRecoilValue(userAtom);
   const initialized = useRecoilValue(appInitializedAtom);
   const { push } = useRouter();
+
+  useEffect(() => {
+    Linking.addEventListener("url", (event) => {
+      const path = event.url.replace(Config.APP_URL, "");
+      push(path);
+    });
+    const getInitialUrl = async () => {
+      const link = await Linking.getInitialURL();
+      if (link) {
+        const path = link.replace(Config.APP_URL, "");
+        push(path);
+      }
+    };
+    getInitialUrl();
+  }, [push]);
 
   useEffect(() => {
     if (initialized && !user) {
