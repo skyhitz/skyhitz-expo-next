@@ -1,21 +1,14 @@
-import { View } from 'app/design-system'
-import { useSafeArea } from 'app/provider/safe-area/use-safe-area'
-import React, { ForwardedRef } from 'react'
-import { ViewProps } from 'app/design-system/view'
-import { View as rView } from 'react-native'
+import React from 'react'
+import {
+  NativeSafeAreaViewProps,
+  SafeAreaView as NativeSafeAreaView,
+} from 'react-native-safe-area-context'
+import { tw } from 'app/design-system/tailwind'
 
-export const SafeAreaView = React.forwardRef(function SafeAreaView(
-  { className, ...rest }: ViewProps,
-  ref: ForwardedRef<rView>
-) {
-  const insets = useSafeArea()
-  return (
-    <View
-      ref={ref}
-      className={`pt-[${insets.top}px] pb-[${insets.bottom}px] ${
-        className ?? ''
-      }`}
-      {...rest}
-    />
-  )
-})
+export function SafeAreaView({
+  className,
+  style,
+  ...rest
+}: NativeSafeAreaViewProps & { className?: string }) {
+  return <NativeSafeAreaView style={[tw.style(className), style]} {...rest} />
+}

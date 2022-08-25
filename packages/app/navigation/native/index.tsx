@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { SignIn } from 'app/features/accounts/sign-in'
-
 import { HomeScreen } from 'app/features/home/screen'
 import { UserDetailScreen } from 'app/features/user/detail-screen'
 import { SignUp } from 'app/features/accounts/sign-up'
@@ -73,7 +72,7 @@ const Tab = createBottomTabNavigator<{
 }>()
 
 const SearchScreen = () => (
-  <SafeAreaView className={'flex-1 flex h-full w-full bg-blue-dark'}>
+  <SafeAreaView className="flex-1 flex h-full w-full bg-blue-dark">
     <SearchView />
   </SafeAreaView>
 )
