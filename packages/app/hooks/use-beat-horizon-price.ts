@@ -1,14 +1,10 @@
-import { Config } from 'app/config'
 import { useEffect, useState } from 'react'
+import { getHorizonPriceLink } from 'app/utils/horizon-links'
 
 async function fetchPriceFromHorizon(code: string, issuer: string) {
-  let response = await fetch(
-    `${Config.HORIZON_URL}/order_book?selling_asset_type=credit_alphanum12&selling_asset_code=${code}&selling_asset_issuer=${issuer}&buying_asset_type=native`
-  )
+  let response = await fetch(getHorizonPriceLink(code, issuer))
 
   let { asks } = await response.json()
-  // TODO: remove
-  console.log(asks)
 
   if (asks && asks[0]) {
     let { price, amount }: { price: string; amount: string } = asks[0]
