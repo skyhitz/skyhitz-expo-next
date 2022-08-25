@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { SecureStorage } from "app/utils/secure-storage";
 import { useSetRecoilState } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
-import { useAuthenticatedUserQuery, User } from "app/api/graphql";
+import {
+  AuthenticatedUserQuery,
+  useAuthenticatedUserQuery,
+} from "app/api/graphql";
 
 type Props = {
   onUserAuth?: () => void;
@@ -12,9 +15,11 @@ export function useAuthStatus(options?: Props) {
   const setInitialized = useSetRecoilState(appInitializedAtom);
   const setUser = useSetRecoilState(userAtom);
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
-  const onUserAuthenticated = (data: { authenticatedUser: User }) => {
-    setUser(data?.authenticatedUser);
-    options?.onUserAuth?.call(null);
+  const onUserAuthenticated = (data: AuthenticatedUserQuery) => {
+    if (data.authenticatedUser) {
+      setUser(data?.authenticatedUser);
+      options?.onUserAuth?.call(null);
+    }
     setInitialized(true);
     setSkipQuery(true);
   };
