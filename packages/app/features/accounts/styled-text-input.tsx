@@ -1,13 +1,13 @@
-import { TextInput, View } from 'app/design-system'
-import { TextInput as rTextInput } from 'react-native'
-import Icon from '@expo/vector-icons/MaterialCommunityIcons'
-import { TextProps } from 'app/design-system/text-input'
-import React, { ForwardedRef } from 'react'
+import { TextInput, View } from "app/design-system";
+import { TextInput as rTextInput } from "react-native";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { TextProps } from "app/design-system/text-input";
+import React, { ForwardedRef } from "react";
 
 type StyledInputProps = TextProps & {
-  valid?: boolean
-  showFeedback?: boolean
-}
+  valid?: boolean;
+  showFeedback?: boolean;
+};
 
 const StyledTextInput = React.forwardRef(function StyledTextInput(
   { className, valid, value, showFeedback, ...rest }: StyledInputProps,
@@ -15,8 +15,8 @@ const StyledTextInput = React.forwardRef(function StyledTextInput(
 ) {
   return (
     <View
-      className={'flex flex-row items-center w-full h-12 rounded-lg p-2 bg-gray-700/20 '.concat(
-        className ?? ''
+      className={"flex flex-row items-center w-full h-12 rounded-lg p-2 bg-gray-700/20 ".concat(
+        className ?? ""
       )}
     >
       <TextInput
@@ -29,13 +29,13 @@ const StyledTextInput = React.forwardRef(function StyledTextInput(
       />
       {showFeedback && (
         <Icon
-          name={valid ? 'check-circle-outline' : 'close-circle-outline'}
+          name={valid ? "check-circle-outline" : "close-circle-outline"}
           size={24}
-          color={valid ? '#0EAC8DCC' : '#d9544f'}
+          color={valid ? "#0EAC8DCC" : "#d9544f"}
         />
       )}
     </View>
-  )
-})
+  );
+});
 
-export default StyledTextInput
+export default StyledTextInput;

@@ -1,5 +1,5 @@
-import { Pressable, Text, View } from 'app/design-system'
-import { openEmail } from 'app/utils/email'
+import { Pressable, Text, View } from "app/design-system";
+import { openEmail } from "app/utils/email";
 
 export function OpenEmailView() {
   return (
@@ -11,5 +11,5 @@ export function OpenEmailView() {
         <Text className="tracking-0.5">Open Email</Text>
       </Pressable>
     </View>
-  )
+  );
 }

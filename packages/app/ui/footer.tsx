@@ -1,5 +1,5 @@
-import SocialLinks from './social-links'
-import { TextLink, View } from 'app/design-system'
+import SocialLinks from "./social-links";
+import { TextLink, View } from "app/design-system";
 
 const Footer = () => {
   return (
@@ -12,7 +12,7 @@ const Footer = () => {
       </TextLink>
       <SocialLinks />
     </View>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
