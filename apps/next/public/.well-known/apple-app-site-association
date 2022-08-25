@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appIDs": ["io.skyhitz.skyhitz"],
+        "appIDs": ["GUHNL23262.io.skyhitz.skyhitz"],
         "components": [
             {
               "/": "sign-in"
@@ -11,7 +11,7 @@
         ]
       },
       {
-        "appID": "io.skyhitz.skyhitz",
+        "appID": "GUHNL23262.io.skyhitz.skyhitz",
         "paths": ["/sign-in"]
       }
     ]
