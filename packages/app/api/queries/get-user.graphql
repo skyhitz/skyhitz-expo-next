@@ -1,0 +1,12 @@
+query authenticatedUser {
+  authenticatedUser {
+    avatarUrl
+    displayName
+    email
+    username
+    id
+    description
+    jwt
+    publicKey
+  }
+}

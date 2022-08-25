@@ -8,9 +8,8 @@ import StyledTextInput from "app/features/accounts/styled-text-input";
 import { Formik, FormikProps } from "formik";
 import * as Yup from "yup";
 import { useEffect, useRef } from "react";
-import { useMutation } from "@apollo/client";
-import { CREATE_USER_WITH_EMAIL } from "app/api/user";
 import { useLogIn } from "app/hooks/useLogIn";
+import { useCreateUserWithEmailMutation } from "app/api/graphql";
 
 type FormFields = {
   username: string;
@@ -21,12 +20,11 @@ type FormFields = {
 export function SignUp() {
   const logIn = useLogIn();
 
-  const [createUserWithEmail, { loading, error, data }] = useMutation(
-    CREATE_USER_WITH_EMAIL
-  );
+  const [createUserWithEmail, { loading, error, data }] =
+    useCreateUserWithEmailMutation();
 
   useEffect(() => {
-    if (data) {
+    if (data?.createUserWithEmail) {
       logIn(data.createUserWithEmail);
     }
   }, [data, logIn]);

@@ -1,17 +1,15 @@
 import { SignInParam } from "app/hooks/use-sign-in-param";
 import { ActivityIndicator, Text, View } from "app/design-system";
-import { useMutation } from "@apollo/client";
-import { UserData } from "app/models";
-import { SIGN_IN } from "app/api/user";
 import { useEffect } from "react";
 import { useLogIn } from "app/hooks/useLogIn";
+import { useSignInMutation } from "app/api/graphql";
 
 export function AuthenticationView({
   signInParam,
 }: {
   signInParam: SignInParam;
 }) {
-  const [signIn, { data, error }] = useMutation<{ signIn: UserData }>(SIGN_IN);
+  const [signIn, { data, error }] = useSignInMutation();
   const logIn = useLogIn();
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export function AuthenticationView({
   }, [signInParam, signIn]);
 
   useEffect(() => {
-    if (data) {
+    if (data?.signIn) {
       logIn(data.signIn);
     }
   }, [data, logIn]);

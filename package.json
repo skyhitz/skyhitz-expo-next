@@ -16,6 +16,7 @@
   "scripts": {
     "native": "cd apps/expo && expo start",
     "web": "cd apps/next && yarn next",
-    "ci": "tsc --noEmit && eslint packages/app && prettier --check packages/app"
+    "ci": "tsc --noEmit && eslint packages/app && prettier --check packages/app",
+    "graphql:gen": "cd packages/app && graphql-codegen --config codegen.yml"
   }
 }
