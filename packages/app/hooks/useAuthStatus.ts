@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { SecureStorage } from "app/utils/secure-storage";
-import { useQuery } from "@apollo/client";
-import { GET_USER } from "app/api/user";
 import { useSetRecoilState } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
-import { UserData } from "app/models";
+import {
+  AuthenticatedUserQuery,
+  useAuthenticatedUserQuery,
+} from "app/api/graphql";
 
 type Props = {
   onUserAuth?: () => void;
@@ -14,9 +15,11 @@ export function useAuthStatus(options?: Props) {
   const setInitialized = useSetRecoilState(appInitializedAtom);
   const setUser = useSetRecoilState(userAtom);
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
-  const onUserAuthenticated = (data: { authenticatedUser: UserData }) => {
-    setUser(data?.authenticatedUser);
-    options?.onUserAuth?.call(null);
+  const onUserAuthenticated = (data: AuthenticatedUserQuery) => {
+    if (data.authenticatedUser) {
+      setUser(data?.authenticatedUser);
+      options?.onUserAuth?.call(null);
+    }
     setInitialized(true);
     setSkipQuery(true);
   };
@@ -30,7 +33,7 @@ export function useAuthStatus(options?: Props) {
 
   // using skip parameter instead of useLazyQuery, because of this issue:
   // https://github.com/apollographql/react-apollo/issues/3505
-  useQuery(GET_USER, {
+  useAuthenticatedUserQuery({
     skip: skipQuery,
     onCompleted: onUserAuthenticated,
     onError: onAuthError,

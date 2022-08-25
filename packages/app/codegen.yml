@@ -1,0 +1,12 @@
+overwrite: true
+schema: "https://spi.skyhitz.io/api/graphql"
+documents: "api"
+generates:
+  api/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
