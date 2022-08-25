@@ -2,12 +2,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SignIn } from "app/features/accounts/sign-in";
 import { HomeScreen } from "app/features/home/screen";
-import { UserDetailScreen } from "app/features/user/detail-screen";
 import { SignUp } from "app/features/accounts/sign-up";
 import BackgroundImage from "app/ui/background-image";
 import DashboardTabBar from "app/ui/dashboard-tab-bar";
-import SearchView from "app/features/dashboard/search-view";
-import { SafeAreaView } from "app/design-system/safe-area-view";
+import { appInitializedAtom, userAtom } from "app/state/atoms";
+import { useRouter } from "solito/router";
+import { useRecoilValue } from "recoil";
+import { useEffect } from "react";
+import { SplashScreen } from "app/features/splash/splash-screen";
+import { SearchScreen } from "app/features/dashboard/search";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -40,13 +43,6 @@ export function NativeNavigation() {
         component={HomeScreen}
         options={{
           title: "Home",
-        }}
-      />
-      <Stack.Screen
-        name="user-detail"
-        component={UserDetailScreen}
-        options={{
-          title: "User",
         }}
       />
       <Stack.Screen
@@ -86,12 +82,6 @@ const Tab = createBottomTabNavigator<{
   chart: undefined;
   profile: undefined;
 }>();
-
-const SearchScreen = () => (
-  <SafeAreaView className="flex-1 flex h-full w-full bg-blue-dark">
-    <SearchView />
-  </SafeAreaView>
-);
 
 function DashboardNavigation() {
   return (

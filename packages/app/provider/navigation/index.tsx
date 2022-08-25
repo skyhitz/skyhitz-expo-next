@@ -22,7 +22,6 @@ export function NavigationProvider({
             screens: {
               splash: "splash",
               home: "home",
-              "user-detail": "user/:id",
               "sign-in": "sign-in",
               "sign-up": "sign-up",
               dashboard: {

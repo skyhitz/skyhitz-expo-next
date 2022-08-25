@@ -1,31 +1,10 @@
-import { View, Text } from "dripsy";
-import { userAtom } from "app/state/atoms";
-import { useRecoilValue } from "recoil";
-import useLogOut from "app/hooks/useLogOut";
-import { Pressable } from "app/design-system/pressable";
+import { SafeAreaView } from "app/design-system/safe-area-view";
+import SearchView from "app/features/dashboard/search-view";
 
 export function SearchScreen() {
-  const user = useRecoilValue(userAtom);
-  const logOut = useLogOut();
-
   return (
-    <View sx={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text
-        sx={{ textAlign: "center", mb: 16, fontWeight: "bold", color: "black" }}
-      >{`User ID: ${user?.id}`}</Text>
-
-      <Pressable onPress={logOut}>
-        <Text
-          sx={{
-            textAlign: "center",
-            mb: 16,
-            fontWeight: "bold",
-            color: "black",
-          }}
-        >
-          LogOut
-        </Text>
-      </Pressable>
-    </View>
+    <SafeAreaView className="flex-1 flex h-full w-full bg-blue-dark">
+      <SearchView />
+    </SafeAreaView>
   );
 }
