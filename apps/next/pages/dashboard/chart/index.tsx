@@ -1,3 +1,4 @@
+import React from "react";
 import { ChartScreen } from "app/features/dashboard/chart";
 import { AuthGuard } from "app/utils/auth-guard";
 
