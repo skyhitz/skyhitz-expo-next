@@ -1,3 +1,3 @@
-import BackgroundImage from 'app/ui/background-image'
+import BackgroundImage from "app/ui/background-image";
 
-export default BackgroundImage
+export default BackgroundImage;

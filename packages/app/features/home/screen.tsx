@@ -63,14 +63,14 @@ function LogInButton() {
 }
 
 function TestBtn() {
-  const { onPress, ...rest } = useLink({ href: '/dashboard/search' })
+  const { onPress, ...rest } = useLink({ href: "/dashboard/search" });
   const additionalPressLogic = () => {
-    console.log(process.env.TOKEN)
+    console.log(process.env.TOKEN);
     SecureStorage.save(
-      'token',
-      '' // paste jwt here to test
-    ).then(() => onPress())
-  }
+      "token",
+      "" // paste jwt here to test
+    ).then(() => onPress());
+  };
   return (
     <Pressable
       className="btn w-full mt-2 sm:hidden border-2 border-black bg-red"
@@ -81,5 +81,5 @@ function TestBtn() {
         Test
       </Text>
     </Pressable>
-  )
+  );
 }

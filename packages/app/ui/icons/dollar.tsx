@@ -1,15 +1,15 @@
 import React from "react";
-import Svg, { Path, G } from "react-native-svg";
-import { tw } from 'app/design-system/tailwind';
+import Svg, { G, Path } from "react-native-svg";
+import { tw } from "app/design-system/tailwind";
 
 function Icon({
   size = 24,
   color,
   className,
 }: {
-  size: number
-  color: string
-  className?: string
+  size: number;
+  color: string;
+  className?: string;
 }) {
   return (
     <Svg

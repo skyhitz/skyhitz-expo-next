@@ -21,15 +21,15 @@ export function NavigationProvider({
             initialRouteName: "splash",
             screens: {
               splash: "splash",
-              home: 'home',
-              'user-detail': 'user/:id',
-              'sign-in': 'sign-in',
-              'sign-up': 'sign-up',
+              home: "home",
+              "user-detail": "user/:id",
+              "sign-in": "sign-in",
+              "sign-up": "sign-up",
               dashboard: {
                 screens: {
-                  search: 'dashboard/search',
-                  chart: 'dashboard/chart',
-                  profile: 'dashboard/profile',
+                  search: "dashboard/search",
+                  chart: "dashboard/chart",
+                  profile: "dashboard/profile",
                 },
               },
             },

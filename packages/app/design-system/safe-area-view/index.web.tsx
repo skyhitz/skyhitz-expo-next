@@ -1,3 +1,3 @@
-import React from 'react'
+import React from "react";
 
-export const SafeAreaView = React.Fragment
+export const SafeAreaView = React.Fragment;

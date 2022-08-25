@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const RECENTLY_ADDED = gql`
   query recentlyAdded($page: Int) {
@@ -13,4 +13,4 @@ export const RECENTLY_ADDED = gql`
       issuer
     }
   }
-`
+`;
