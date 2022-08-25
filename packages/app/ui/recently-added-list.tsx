@@ -98,7 +98,7 @@ function Price({
   return (
     <View className={`flex flex-row items-center ${className}`}>
       <Dollar size={10} color={'white'} className="mr-1" />
-      {price > 0 && <Text className="mr-1 font-bold">{price}</Text>}
+      {price > 0 && <Text className="mr-1 text-sm">{price}</Text>}
     </View>
   )
 }
