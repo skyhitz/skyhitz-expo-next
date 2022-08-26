@@ -1,0 +1,12 @@
+query recentlyAdded($page: Int) {
+    recentlyAdded(page: $page) {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+    }
+}
