@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ChartScreen } from "app/features/dashboard/chart";
 import { ProfileScreen } from "app/features/dashboard/profile";
-import DashboardTabBar from "app/ui/dashboard-tab-bar";
+import DashboardTabBar from "app/ui/dashboardTabBar";
 import { Linking } from "react-native";
 import { Config } from "app/config";
 

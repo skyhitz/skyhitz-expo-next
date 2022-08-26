@@ -1,9 +1,10 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { View } from "app/design-system";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Image, StyleProp, ViewStyle } from "react-native";
 import { Link } from "solito/link";
 import { tw } from "app/design-system/tailwind";
-import { useSafeArea } from "app/provider/safe-area/use-safe-area";
+import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 
 const LinkStyle: StyleProp<ViewStyle> = {
   flex: 1,
