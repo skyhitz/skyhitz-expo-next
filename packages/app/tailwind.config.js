@@ -34,9 +34,12 @@ module.exports = {
         white: {
           DEFAULT: "#ffffff",
         },
-        darkGrey: "rgb(43, 48, 51)",
+        grey: {
+          DEFAULT: "#858586",
+          dark: "#2B3033",
+          light: "#dbdbdb",
+        },
         lightGreen: "#5CE67E",
-        grey: "#858586",
         lightBrandBlue: "#1dadff",
         backgroundTrackColor: "rgba(30,174,255, 0.3)",
         tabIconDefault: "rgba(255,255,255, 0.65)",
@@ -51,7 +54,6 @@ module.exports = {
         lightBlueBtn: "rgba(0, 174, 239,0.9)",
         searchTextColor: "#000000",
         transparent: "rgba(0,0,0,0)",
-        lightGrey: "#dbdbdb",
         facebookBtnBackground: "#44619D",
         joinBtnBackground: "#00aeef",
         loginTextColor: "#000000",
