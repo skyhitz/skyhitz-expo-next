@@ -13,12 +13,9 @@ export default function RecentlyAddedList() {
 
   useEffect(() => {
     if (queryData && queryData.recentlyAdded) {
-      let recentlyAdded: Entry[] = [];
-      for (let entry of queryData.recentlyAdded) {
-        if (entry) {
-          recentlyAdded.push(entry);
-        }
-      }
+      const recentlyAdded: Entry[] = queryData.recentlyAdded.filter(
+        (entry): entry is Entry => entry !== null
+      );
       setData((d) => d.concat(recentlyAdded));
       setNextPage((p) => p + 1);
     }
