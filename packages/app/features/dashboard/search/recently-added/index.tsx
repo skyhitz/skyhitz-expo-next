@@ -3,6 +3,7 @@ import { Text } from "app/design-system";
 import { useEffect, useState } from "react";
 import { Entry, useRecentlyAddedQuery } from "app/api/graphql";
 import { BeatListEntry } from "app/features/dashboard/search/recently-added/list-entry";
+import { isSome } from "app/utils";
 
 export default function RecentlyAddedList() {
   const [nextPage, setNextPage] = useState(0);
@@ -13,10 +14,7 @@ export default function RecentlyAddedList() {
 
   useEffect(() => {
     if (queryData && queryData.recentlyAdded) {
-      const recentlyAdded: Entry[] = queryData.recentlyAdded.filter(
-        (entry): entry is Entry => entry !== null
-      );
-      setData((prev) => prev.concat(recentlyAdded));
+      setData((prev) => prev.concat(queryData.recentlyAdded!.filter(isSome)));
       setNextPage((prev) => prev + 1);
     }
   }, [queryData, setData, setNextPage]);
