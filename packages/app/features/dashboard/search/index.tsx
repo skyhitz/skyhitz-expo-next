@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { TabBar, Tabs } from "app/features/dashboard/search/tabs";
 import { View } from "app/design-system";
 import { SearchInputField } from "app/features/dashboard/search/search-input-field";
+import RecentlyAddedList from "app/features/dashboard/search/recently-added";
 
 export function SearchScreen() {
   const [searchFraze, setSearchFraze] = useState("");
@@ -19,7 +20,9 @@ export function SearchScreen() {
         }}
       />
       <TabBar selected={tab} onTabClick={setTab} />
-      <View className="flex-1"></View>
+      <View className="flex-1">
+        <RecentlyAddedList />
+      </View>
     </SafeAreaView>
   );
 }
