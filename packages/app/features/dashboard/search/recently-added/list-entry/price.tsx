@@ -1,13 +1,7 @@
 import { Text, View } from "app/design-system";
 import Dollar from "app/ui/icons/dollar";
 
-export function Price({
-  className,
-}: {
-  code?: string | null;
-  issuer?: string | null;
-  className?: string;
-}) {
+export function Price({ className }: { className?: string }) {
   const price = 25;
 
   return (

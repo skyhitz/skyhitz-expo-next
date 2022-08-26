@@ -3,6 +3,7 @@ import { TextInput, TextProps } from "app/design-system/text-input";
 import { TextInput as rTextInput } from "react-native";
 import { Pressable, View } from "app/design-system";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { tw } from "app/design-system/tailwind";
 
 export const SearchInputField = React.forwardRef(function SearchInputField(
   {
@@ -14,7 +15,7 @@ export const SearchInputField = React.forwardRef(function SearchInputField(
 ) {
   return (
     <View className="w-full bg-white rounded-lg px-2 py-1 flex flex-row">
-      <Icon name="magnify" color="black" size={24} />
+      <Icon name="magnify" color={tw.color("black")} size={24} />
       <TextInput
         placeholder="Search"
         placeholderTextColor="black"
@@ -23,8 +24,12 @@ export const SearchInputField = React.forwardRef(function SearchInputField(
         ref={ref}
       />
       {showX && (
-        <Pressable onPress={() => onXClick?.()}>
-          <Icon name="close-circle-outline" color="black" size={24} />
+        <Pressable onPress={() => onXClick?.call(null)}>
+          <Icon
+            name="close-circle-outline"
+            color={tw.color("black")}
+            size={24}
+          />
         </Pressable>
       )}
     </View>

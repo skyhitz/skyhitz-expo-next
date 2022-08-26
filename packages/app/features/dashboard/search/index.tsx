@@ -4,6 +4,7 @@ import { TabBar, Tabs } from "app/features/dashboard/search/tabs";
 import { View } from "app/design-system";
 import { SearchInputField } from "app/features/dashboard/search/search-input-field";
 import RecentlyAddedList from "app/features/dashboard/search/recently-added";
+import { isEmpty } from "ramda";
 
 export function SearchScreen() {
   const [searchFraze, setSearchFraze] = useState("");
@@ -14,7 +15,7 @@ export function SearchScreen() {
       <SearchInputField
         value={searchFraze}
         onChangeText={setSearchFraze}
-        showX={searchFraze !== ""}
+        showX={isEmpty(searchFraze)}
         onXClick={() => {
           setSearchFraze("");
         }}

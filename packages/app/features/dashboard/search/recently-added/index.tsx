@@ -16,8 +16,8 @@ export default function RecentlyAddedList() {
       const recentlyAdded: Entry[] = queryData.recentlyAdded.filter(
         (entry): entry is Entry => entry !== null
       );
-      setData((d) => d.concat(recentlyAdded));
-      setNextPage((p) => p + 1);
+      setData((prev) => prev.concat(recentlyAdded));
+      setNextPage((prev) => prev + 1);
     }
   }, [queryData, setData, setNextPage]);
 
@@ -25,7 +25,7 @@ export default function RecentlyAddedList() {
     <FlatList
       ListHeaderComponent={ListHeader}
       data={data}
-      keyExtractor={(item, index) => item.id ?? index.toString()}
+      keyExtractor={(item) => item.id!}
       renderItem={({ item }) => <BeatListEntry entry={item} />}
       onEndReached={() => refetch({ page: nextPage })}
     />

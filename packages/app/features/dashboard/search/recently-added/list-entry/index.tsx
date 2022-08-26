@@ -5,11 +5,11 @@ import { imageUrlSmall } from "app/utils/entry";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Price } from "app/features/dashboard/search/recently-added/list-entry/price";
 import { FavoriteButton } from "app/features/dashboard/search/recently-added/list-entry/favoriteButton";
+import { tw } from "app/design-system/tailwind";
 
 export function BeatListEntry({ entry }: { entry: Entry }) {
   return (
     <View className="w-full flex flex-row py-2">
-      {/* eslint-disable-next-line jsx-a11y/alt-text */}
       <Image
         style={{ width: 40, height: 40 }}
         source={{
@@ -23,9 +23,9 @@ export function BeatListEntry({ entry }: { entry: Entry }) {
         </Text>
       </View>
       <View className="ml-auto flex flex-row items-center">
-        <Price code={entry.code} issuer={entry.issuer} className="mr-3" />
+        <Price className="mr-3" />
         <FavoriteButton size={20} />
-        <Icon name="dots-vertical" size={30} color="white" />
+        <Icon name="dots-vertical" size={30} color={tw.color("white")} />
       </View>
     </View>
   );

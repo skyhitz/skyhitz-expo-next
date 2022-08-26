@@ -19,5 +19,6 @@ module.exports = {
         argsIgnorePattern: "^_",
       },
     ],
+    "jsx-a11y/alt-text": [0],
   },
 };

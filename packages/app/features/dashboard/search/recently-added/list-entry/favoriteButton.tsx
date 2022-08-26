@@ -16,7 +16,7 @@ export function FavoriteButton({
       {active ? (
         <Icon name="heart" size={size} color={tw.color("blue")} />
       ) : (
-        <Icon name="heart-outline" size={size} color="white" />
+        <Icon name="heart-outline" size={size} color={tw.color("white")} />
       )}
     </Pressable>
   );
