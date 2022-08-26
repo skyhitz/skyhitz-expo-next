@@ -28,6 +28,7 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
         <Icon name="magnify" size={32} color="white" />
       </Link>
       <Link viewProps={{ style: LinkStyle }} href={"/dashboard/chart"}>
+        {/* eslint-disable-next-line jsx-a11y/alt-text */}
         <Image
           style={tw`w-8 h-8 rounded-full border border-white`}
           source={require("app/assets/images/icon.png")}
