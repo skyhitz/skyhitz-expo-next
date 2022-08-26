@@ -21,7 +21,10 @@ export function ChartScreen() {
   }, [queryData, setData, setNextPage]);
 
   return (
-    <SafeAreaView className="w-full max-w-6xl mx-auto flex-1 flex p-4 bg-blue-dark">
+    <SafeAreaView
+      edges={["top"]}
+      className="w-full max-w-6xl mx-auto flex-1 flex p-4 pb-0 bg-blue-dark"
+    >
       <FlatList
         ListHeaderComponent={ListHeader}
         data={data}
