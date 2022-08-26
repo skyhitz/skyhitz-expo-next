@@ -1,5 +1,5 @@
 import { View } from "app/design-system";
-import { DashboardNavigation } from "app/ui/dashboard-navigation.web";
+import { DashboardNavigation } from "app/ui/navigation/dashboardNavigation";
 import React from "react";
 import { useNextRouter } from "solito/build/router/use-next-router";
 
