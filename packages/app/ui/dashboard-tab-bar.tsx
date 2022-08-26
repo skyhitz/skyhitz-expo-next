@@ -3,6 +3,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Image, StyleProp, ViewStyle } from "react-native";
 import { Link } from "solito/link";
 import { tw } from "app/design-system/tailwind";
+import { useSafeArea } from "app/provider/safe-area/use-safe-area";
 
 const LinkStyle: StyleProp<ViewStyle> = {
   flex: 1,
@@ -14,12 +15,15 @@ const LinkStyle: StyleProp<ViewStyle> = {
 };
 
 export default function DashboardTabBar({ column }: { column?: boolean }) {
+  const insets = useSafeArea();
   const rootViewStyle = column
     ? "flex-col"
     : "flex-row border-t-2 border-white";
 
   return (
-    <View className={`flex bg-blue-dark  ${rootViewStyle}`}>
+    <View
+      className={`flex bg-blue-dark  ${rootViewStyle} pb-[${insets.bottom}px]`}
+    >
       <Link viewProps={{ style: LinkStyle }} href={"/dashboard/search"}>
         <Icon name="magnify" size={32} color="white" />
       </Link>
