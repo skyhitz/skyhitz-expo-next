@@ -5,9 +5,13 @@ import { SignUp } from "app/features/accounts/sign-up";
 import { SearchScreen } from "app/features/dashboard/search";
 import { useRecoilValue } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
-import { SplashScreen } from "../../features/splash/splash-screen";
+import { SplashScreen } from "app/features/splash/splash-screen";
 import { useRouter } from "solito/router";
 import { useEffect } from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { ChartScreen } from "app/features/dashboard/chart";
+import { ProfileScreen } from "app/features/dashboard/profile";
+import DashboardTabBar from "app/ui/dashboard-tab-bar";
 import { Linking } from "react-native";
 import { Config } from "app/config";
 
@@ -17,6 +21,7 @@ const Stack = createNativeStackNavigator<{
   search: undefined;
   "sign-in": undefined;
   "sign-up": undefined;
+  dashboard: undefined;
 }>();
 
 export function NativeNavigation() {
@@ -54,10 +59,10 @@ export function NativeNavigation() {
     >
       {user ? (
         <Stack.Screen
-          name="search"
-          component={SearchScreen}
+          name="dashboard"
+          component={DashboardNavigation}
           options={{
-            title: "Search",
+            title: "Dashboard",
           }}
         />
       ) : (
@@ -95,5 +100,26 @@ export function NativeNavigation() {
         </>
       )}
     </Stack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator<{
+  search: undefined;
+  chart: undefined;
+  profile: undefined;
+}>();
+
+function DashboardNavigation() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      tabBar={() => <DashboardTabBar />}
+    >
+      <Tab.Screen component={SearchScreen} name="search" />
+      <Tab.Screen component={ChartScreen} name="chart" />
+      <Tab.Screen component={ProfileScreen} name="profile" />
+    </Tab.Navigator>
   );
 }
