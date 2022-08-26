@@ -1,4 +1,4 @@
-import SocialLinks from "./social-links";
+import SocialLinks from "./socialLinks";
 import { TextLink, View } from "app/design-system";
 
 const Footer = () => {

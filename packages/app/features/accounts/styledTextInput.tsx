@@ -1,7 +1,7 @@
 import { TextInput, View } from "app/design-system";
 import { TextInput as rTextInput } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { TextProps } from "app/design-system/text-input";
+import { TextProps } from "app/design-system/textInput";
 import React, { ForwardedRef } from "react";
 
 type StyledInputProps = TextProps & {

@@ -1,11 +1,11 @@
 import { Platform } from "react-native";
-import BackgroundImage from "app/ui/background-image";
-import KeyboardAvoidingView from "app/design-system/keyboard-avoiding-view";
+import BackgroundImage from "app/ui/backgroundImage";
+import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { useState } from "react";
-import { useSignInParam } from "app/hooks/use-sign-in-param";
-import { AuthenticationView } from "app/features/accounts/sign-in/authentication-view";
-import { OpenEmailView } from "app/features/accounts/sign-in/open-email-view";
-import { SignInForm } from "app/features/accounts/sign-in/sign-in-form";
+import { useSignInParam } from "app/hooks/useSignInParam";
+import { AuthenticationView } from "app/features/accounts/sign-in/authenticationView";
+import { OpenEmailView } from "app/features/accounts/sign-in/openEmailView";
+import { SignInForm } from "app/features/accounts/sign-in/signInForm";
 
 export function SignIn() {
   const signInParam = useSignInParam();

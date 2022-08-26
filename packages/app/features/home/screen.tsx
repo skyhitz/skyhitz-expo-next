@@ -1,9 +1,9 @@
 import Navbar from "app/ui/navbar";
-import BackgroundImage from "app/ui/background-image";
+import BackgroundImage from "app/ui/backgroundImage";
 import Footer from "app/ui/footer";
 import { Pressable, Text, View } from "app/design-system";
 import { useLink } from "solito/link";
-import { useSafeArea } from "app/provider/safe-area/use-safe-area";
+import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 import { StatusBar } from "react-native";
 
 export function HomeScreen() {

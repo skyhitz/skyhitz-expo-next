@@ -1,6 +1,6 @@
 import { Text } from "app/design-system/text";
 import { Pressable } from "app/design-system/pressable";
-import { ActivityIndicator } from "app/design-system/activity-indicator";
+import { ActivityIndicator } from "app/design-system/activityIndicator";
 
 const Button = ({
   loading,

@@ -1,4 +1,4 @@
-import { SignInParam } from "app/hooks/use-sign-in-param";
+import { SignInParam } from "app/hooks/useSignInParam";
 import { ActivityIndicator, Text, View } from "app/design-system";
 import { useEffect } from "react";
 import { useLogIn } from "app/hooks/useLogIn";
