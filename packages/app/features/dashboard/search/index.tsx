@@ -9,7 +9,7 @@ export function SearchScreen() {
   const [tab, setTab] = useState<Tabs>("Beats");
 
   return (
-    <SafeAreaView className="w-full max-w-6xl mx-auto flex-1 flex p-4">
+    <SafeAreaView className="w-full max-w-6xl mx-auto flex-1 flex p-4 bg-blue-dark">
       <SearchInputField
         value={searchFraze}
         onChangeText={setSearchFraze}
