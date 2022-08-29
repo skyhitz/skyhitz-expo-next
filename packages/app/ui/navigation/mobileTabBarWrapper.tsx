@@ -7,10 +7,9 @@ import { FullScreenPlayer } from "app/features/player/fullScreenPlayer";
 export function MobileTabBarWrapper() {
   return (
     <View className="flex flex-column">
-      <FullScreenPlayer />
-
       <MiniPlayerBar />
       <DashboardTabBar />
+      <FullScreenPlayer />
     </View>
   );
 }

@@ -6,17 +6,17 @@ import { Dimensions } from "react-native";
 import { LikesList } from "./components/likesLIst";
 import { PlayerButtonsRow } from "./components/playerButtonsRow";
 import { PlayerSlider } from "./components/playerSlider";
+import { SafeAreaView } from "app/design-system/safe-area-view";
 
 const { height } = Dimensions.get("window");
 
 export function FullScreenPlayer() {
-  console.log(height);
   return (
-    <View
-      className={`flex flex-column px-4 bg-blue-dark items-center z-10 h-${
+    <SafeAreaView
+      className={`flex flex-column px-4 bg-blue-dark items-center z-10 absolute w-full h-${
         height / 4
       }`}
-      style={{ transform: [{ translateY: -(height / 4 - 250) }] }}
+      style={{ transform: [{ translateY: -height + 100 }] }}
     >
       <Pressable
         className="w-full flex flex-row items-center py-4"
@@ -49,7 +49,25 @@ export function FullScreenPlayer() {
         className="bg-blue px-5 py-2 mb-5 rounded-xl"
       />
       <PlayerButtonsRow size="large" />
-      <LikesList likers={[]} />
-    </View>
+      {/* TODO replace, it's mocked */}
+      <LikesList
+        likers={[
+          {
+            id: "1",
+            avatarUrl: "https://avatars.dicebear.com/api/male/john.jpg",
+          },
+          { id: "2", displayName: "Long Name Text" },
+          { id: "3", displayName: "Short" },
+          { id: "4", displayName: "Short" },
+          { id: "5", displayName: "Short" },
+          { id: "6", displayName: "Short" },
+          { id: "7", displayName: "Short" },
+          { id: "8", displayName: "Short" },
+          { id: "9", displayName: "Short" },
+          { id: "10", displayName: "Short" },
+          { id: "11", displayName: "Short" },
+        ]}
+      />
+    </SafeAreaView>
   );
 }

@@ -1,5 +1,6 @@
 import { User } from "app/api/graphql";
 import { Text, View, Image } from "app/design-system";
+import { compose, join, map, split, take } from "ramda";
 
 type Props = {
   user: User;
@@ -9,16 +10,24 @@ export function UserAvatar({ user }: Props) {
     return (
       <Image
         source={{ uri: user.avatarUrl }}
-        className="h-10 w-10 rounded-2xl"
-        onError={() => this.loadFallback()}
+        className="h-10 w-10 rounded-full"
+        resizeMode="cover"
       />
     );
   }
 
-  const initials = "TODO";
+  let initials = "";
+  if (user.displayName) {
+    initials = compose(
+      join(""),
+      take(2),
+      map((part) => part[0]),
+      split(" ")
+    )(user.displayName);
+  }
 
   return (
-    <View className="h-10 w-10 rounded-2xl bg-blue-light items-center justify-center flex">
+    <View className="h-10 w-10 rounded-full bg-blue-light items-center justify-center flex">
       <Text className="text-sm text-center">{initials}</Text>
     </View>
   );

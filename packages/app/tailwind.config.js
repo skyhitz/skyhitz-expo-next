@@ -28,6 +28,7 @@ module.exports = {
           field: "#292b33",
           transparent: "#292b33e6",
           track: "#1e4aff4d",
+          light: "#00aeefe6"
         },
         red: {
           DEFAULT: "#d9544f",
@@ -41,7 +42,6 @@ module.exports = {
           light: "#dbdbdb",
         },
         lightGreen: "#5CE67E",
-        lightBrandBlue: "#1dadff",
         tabIconDefault: "rgba(255,255,255, 0.65)",
         tabIconSelected: "#eee",
         tabBar: "#fefefe",
@@ -51,7 +51,6 @@ module.exports = {
         noticeText: "#fff",
         loadingScreenBackground: "#17191C",
         profileOverlayBackground: "rgba(0,0,0,0.3)",
-        lightBlueBtn: "rgba(0, 174, 239,0.9)",
         searchTextColor: "#000000",
         transparent: "rgba(0,0,0,0)",
         facebookBtnBackground: "#44619D",
