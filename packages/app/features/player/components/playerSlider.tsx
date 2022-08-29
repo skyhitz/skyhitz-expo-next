@@ -10,7 +10,7 @@ export function PlayerSlider() {
 
   return (
     <View className="flex flex-row items-center justify-between w-full">
-      <Text className="color-white text-xs mr-3">
+      <Text className="text-white text-xs mr-3">
         {Math.floor(currentTime / 60)}:
         {(currentTime % 60).toFixed().padStart(2, "0")}
       </Text>
@@ -31,7 +31,7 @@ export function PlayerSlider() {
         maximumTrackTintColor={tw.color("blue-track")}
         thumbTintColor={tw.color("white")}
       />
-      <Text className="color-white text-xs ml-3">
+      <Text className="text-white text-xs ml-3">
         {(songTime / 60).toFixed()}:{(songTime % 60).toFixed()}
       </Text>
     </View>

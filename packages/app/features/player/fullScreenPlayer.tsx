@@ -10,17 +10,21 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 
 const { height } = Dimensions.get("window");
 
-export function FullScreenPlayer() {
+type Props = {
+  onTogglePress: () => void;
+};
+
+export function FullScreenPlayer({ onTogglePress }: Props) {
   return (
     <SafeAreaView
-      className={`flex flex-column px-4 bg-blue-dark items-center z-10 absolute w-full h-${
+      className={`flex flex-column px-4 bg-blue-dark items-center absolute w-full h-${
         height / 4
       }`}
-      style={{ transform: [{ translateY: -height + 100 }] }}
+      style={{ transform: [{ translateY: -height }] }}
     >
       <Pressable
         className="w-full flex flex-row items-center py-4"
-        onPress={() => console.log("hide")}
+        onPress={onTogglePress}
       >
         <ChevronDown size={24} color={tw.color("white")} />
       </Pressable>
