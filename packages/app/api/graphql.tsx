@@ -1,5 +1,6 @@
-import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
+import { gql } from "@apollo/client";
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -314,6 +315,25 @@ export type AuthenticatedUserQuery = {
   } | null;
 };
 
+export type RecentlyAddedQueryVariables = Exact<{
+  page?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type RecentlyAddedQuery = {
+  __typename?: "Query";
+  recentlyAdded?: Array<{
+    __typename?: "Entry";
+    imageUrl?: string | null;
+    videoUrl?: string | null;
+    description?: string | null;
+    title?: string | null;
+    id?: string | null;
+    artist?: string | null;
+    code?: string | null;
+    issuer?: string | null;
+  } | null> | null;
+};
+
 export const CreateUserWithEmailDocument = gql`
   mutation createUserWithEmail(
     $displayName: String!
@@ -553,4 +573,69 @@ export type AuthenticatedUserLazyQueryHookResult = ReturnType<
 export type AuthenticatedUserQueryResult = Apollo.QueryResult<
   AuthenticatedUserQuery,
   AuthenticatedUserQueryVariables
+>;
+export const RecentlyAddedDocument = gql`
+  query recentlyAdded($page: Int) {
+    recentlyAdded(page: $page) {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
+  }
+`;
+
+/**
+ * __useRecentlyAddedQuery__
+ *
+ * To run a query within a React component, call `useRecentlyAddedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecentlyAddedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecentlyAddedQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useRecentlyAddedQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    RecentlyAddedQuery,
+    RecentlyAddedQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<RecentlyAddedQuery, RecentlyAddedQueryVariables>(
+    RecentlyAddedDocument,
+    options
+  );
+}
+export function useRecentlyAddedLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    RecentlyAddedQuery,
+    RecentlyAddedQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<RecentlyAddedQuery, RecentlyAddedQueryVariables>(
+    RecentlyAddedDocument,
+    options
+  );
+}
+export type RecentlyAddedQueryHookResult = ReturnType<
+  typeof useRecentlyAddedQuery
+>;
+export type RecentlyAddedLazyQueryHookResult = ReturnType<
+  typeof useRecentlyAddedLazyQuery
+>;
+export type RecentlyAddedQueryResult = Apollo.QueryResult<
+  RecentlyAddedQuery,
+  RecentlyAddedQueryVariables
 >;
