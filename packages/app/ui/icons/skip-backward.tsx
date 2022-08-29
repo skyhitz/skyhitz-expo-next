@@ -1,7 +1,12 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 
-function Icon({ size = 24, color }) {
+type Props = {
+  size?: number;
+  color?: string;
+};
+
+export default function Icon({ size = 24, color }: Props) {
   return (
     <Svg
       width={size}
@@ -18,5 +23,3 @@ function Icon({ size = 24, color }) {
     </Svg>
   );
 }
-
-export default Icon;
