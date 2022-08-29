@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitAny": true,
     "paths": {
       "app/*": ["./packages/app/*"]
     }
