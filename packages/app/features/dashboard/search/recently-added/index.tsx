@@ -2,7 +2,7 @@ import { FlatList } from "react-native";
 import { Text } from "app/design-system";
 import { useEffect, useState } from "react";
 import { Entry, useRecentlyAddedQuery } from "app/api/graphql";
-import { BeatListEntry } from "app/features/dashboard/search/recently-added/list-entry";
+import { BeatListEntry } from "app/ui/beat-list-entry";
 import { isSome } from "app/utils";
 
 export default function RecentlyAddedList() {

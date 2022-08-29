@@ -1,0 +1,12 @@
+query topChart($page: Int) {
+  topChart(page: $page) {
+    imageUrl
+    videoUrl
+    description
+    title
+    id
+    artist
+    code
+    issuer
+  }
+}
