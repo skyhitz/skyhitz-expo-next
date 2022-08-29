@@ -334,6 +334,25 @@ export type RecentlyAddedQuery = {
   } | null> | null;
 };
 
+export type TopChartQueryVariables = Exact<{
+  page?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type TopChartQuery = {
+  __typename?: "Query";
+  topChart?: Array<{
+    __typename?: "Entry";
+    imageUrl?: string | null;
+    videoUrl?: string | null;
+    description?: string | null;
+    title?: string | null;
+    id?: string | null;
+    artist?: string | null;
+    code?: string | null;
+    issuer?: string | null;
+  } | null> | null;
+};
+
 export const CreateUserWithEmailDocument = gql`
   mutation createUserWithEmail(
     $displayName: String!
@@ -638,4 +657,64 @@ export type RecentlyAddedLazyQueryHookResult = ReturnType<
 export type RecentlyAddedQueryResult = Apollo.QueryResult<
   RecentlyAddedQuery,
   RecentlyAddedQueryVariables
+>;
+export const TopChartDocument = gql`
+  query topChart($page: Int) {
+    topChart(page: $page) {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
+  }
+`;
+
+/**
+ * __useTopChartQuery__
+ *
+ * To run a query within a React component, call `useTopChartQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTopChartQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTopChartQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useTopChartQuery(
+  baseOptions?: Apollo.QueryHookOptions<TopChartQuery, TopChartQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<TopChartQuery, TopChartQueryVariables>(
+    TopChartDocument,
+    options
+  );
+}
+export function useTopChartLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TopChartQuery,
+    TopChartQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<TopChartQuery, TopChartQueryVariables>(
+    TopChartDocument,
+    options
+  );
+}
+export type TopChartQueryHookResult = ReturnType<typeof useTopChartQuery>;
+export type TopChartLazyQueryHookResult = ReturnType<
+  typeof useTopChartLazyQuery
+>;
+export type TopChartQueryResult = Apollo.QueryResult<
+  TopChartQuery,
+  TopChartQueryVariables
 >;
