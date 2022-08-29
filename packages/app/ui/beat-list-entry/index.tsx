@@ -27,13 +27,18 @@ export function BeatListEntry({
           {spot}
         </Text>
       )}
-      <View className="ml-2 flex justify-center">
-        <Text className="text-sm font-bold leading-6">{entry.title}</Text>
-        <Text className="text-xs text-neutral-400 leading-6">
+      <View className="ml-2 flex justify-center flex-1 pr-2">
+        <Text
+          numberOfLines={1}
+          className="text-sm font-bold leading-6 whitespace-nowrap"
+        >
+          {entry.title}
+        </Text>
+        <Text numberOfLines={1} className="text-xs text-neutral-400 leading-6">
           {entry.artist}
         </Text>
       </View>
-      <View className="ml-auto flex flex-row items-center">
+      <View className="flex flex-row items-center">
         <Price className="mr-3" />
         <FavoriteButton size={20} />
         <Icon name="dots-vertical" size={30} color={tw.color("white")} />
