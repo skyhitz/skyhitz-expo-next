@@ -5,6 +5,10 @@ import { MiniPlayerBar } from "app/features/player/miniPlayerBar";
 import { FullScreenPlayer } from "app/features/player/fullScreenPlayer";
 import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
 
+/// TODO that's really basic animation.
+/// it needs to be refactored in future
+/// to look like the one from spotify
+
 const enteringAnimation = SlideInDown.springify()
   .damping(60)
   .stiffness(150)

@@ -21,10 +21,9 @@ export function PlayerSlider() {
         maximumValue={1}
         value={value}
         onSlidingStart={(_) => {
-          console.log("sliding started");
+          //TODO
         }}
         onSlidingComplete={(value) => {
-          console.log("sliding ended");
           setValue(value);
         }}
         minimumTrackTintColor={tw.color("blue")}

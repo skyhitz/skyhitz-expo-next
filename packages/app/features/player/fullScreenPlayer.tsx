@@ -49,7 +49,9 @@ export function FullScreenPlayer({ onTogglePress }: Props) {
 
       <Button
         text="Buy Now"
-        onPress={() => console.log("buy")}
+        onPress={() => {
+          //TODO
+        }}
         className="bg-blue px-5 py-2 mb-5 rounded-xl"
       />
       <PlayerButtonsRow size="large" />

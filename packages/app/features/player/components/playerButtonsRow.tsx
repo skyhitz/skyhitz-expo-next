@@ -26,11 +26,15 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
     >
       <Pressable onPress={() => setShuffleActive(!shuffleActive)}>
         <ShuffleIcon
-          color={shuffleActive ? tw.color("lightBrandBlue") : tw.color("white")}
+          color={shuffleActive ? tw.color("blue-light") : tw.color("white")}
           size={14 + sizeModificator}
         />
       </Pressable>
-      <Pressable onPress={() => console.log("prev")}>
+      <Pressable
+        onPress={() => {
+          //TODO
+        }}
+      >
         <PrevIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
       <Pressable onPress={() => setIsPlaying(!isPlaying)}>
@@ -40,12 +44,16 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
           <PlayIcon color={tw.color("white")} size={22 + sizeModificator} />
         )}
       </Pressable>
-      <Pressable onPress={() => console.log("next")}>
+      <Pressable
+        onPress={() => {
+          //TODO
+        }}
+      >
         <NextIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
       <Pressable onPress={() => setRandomActive(!randomActive)}>
         <LoopIcon
-          color={randomActive ? tw.color("lightBrandBlue") : tw.color("white")}
+          color={randomActive ? tw.color("blue-light") : tw.color("white")}
           size={14 + sizeModificator}
         />
       </Pressable>
