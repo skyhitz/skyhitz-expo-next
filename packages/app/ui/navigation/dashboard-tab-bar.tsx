@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import { View } from "app/design-system";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Image, StyleProp, ViewStyle } from "react-native";
