@@ -1,10 +1,10 @@
 import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
 import { Platform, TextInput } from "react-native";
-import BackgroundImage from "app/ui/background-image";
-import WalletconnectBtn from "app/ui/walletconnect-btn";
-import KeyboardAvoidingView from "app/design-system/keyboard-avoiding-view";
-import { Separator } from "app/features/accounts/or-separator";
-import StyledTextInput from "app/features/accounts/styled-text-input";
+import BackgroundImage from "app/ui/backgroundImage";
+import WalletconnectBtn from "app/ui/walletconnectBtn";
+import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
+import { Separator } from "app/features/accounts/orSeparator";
+import StyledTextInput from "app/features/accounts/styledTextInput";
 import { Formik, FormikProps } from "formik";
 import * as Yup from "yup";
 import { useEffect, useRef } from "react";
