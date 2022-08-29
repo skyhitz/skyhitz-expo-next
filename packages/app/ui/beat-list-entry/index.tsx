@@ -28,10 +28,7 @@ export function BeatListEntry({
         </Text>
       )}
       <View className="ml-2 flex justify-center flex-1 pr-2">
-        <Text
-          numberOfLines={1}
-          className="text-sm font-bold leading-6 whitespace-nowrap"
-        >
+        <Text numberOfLines={1} className="text-sm font-bold leading-6">
           {entry.title}
         </Text>
         <Text numberOfLines={1} className="text-xs text-neutral-400 leading-6">
