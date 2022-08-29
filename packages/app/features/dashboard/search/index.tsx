@@ -6,6 +6,7 @@ import RecentlyAddedList from "app/features/dashboard/search/recently-added";
 import { isEmpty } from "ramda";
 import { BeatmakersSearchResultList } from "app/features/dashboard/search/search-result-lists/beatmakersSearchResultList";
 import { BeatsSearchResultList } from "app/features/dashboard/search/search-result-lists/beatsSearchResultList";
+import BeatmakersEmptyState from "app/features/dashboard/search/beatmakersEmptyState";
 
 export function SearchScreen() {
   const [searchFraze, setSearchFraze] = useState("");
@@ -26,14 +27,14 @@ export function SearchScreen() {
         }}
       />
       <TabBar selected={tab} onTabClick={setTab} />
-      {!searchFraze && <RecentlyAddedList />}
-      {!isEmpty(searchFraze) &&
-        ((tab === "Beatmakers" && (
-          <BeatmakersSearchResultList searchFraze={searchFraze} />
-        )) ||
-          (tab === "Beats" && (
-            <BeatsSearchResultList searchFraze={searchFraze} />
-          )))}
+      {!searchFraze && tab === "Beats" && <RecentlyAddedList />}
+      {!searchFraze && tab === "Beatmakers" && <BeatmakersEmptyState />}
+      {!!searchFraze && tab === "Beats" && (
+        <BeatsSearchResultList searchFraze={searchFraze} />
+      )}
+      {!!searchFraze && tab === "Beatmakers" && (
+        <BeatmakersSearchResultList searchFraze={searchFraze} />
+      )}
     </SafeAreaView>
   );
 }
