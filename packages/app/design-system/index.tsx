@@ -6,3 +6,4 @@ export { TextInput } from "app/design-system/textInput";
 export { ActivityIndicator } from "app/design-system/activityIndicator";
 export { Button } from "app/design-system/button";
 export { Image } from "app/design-system/image";
+export { Modal } from "app/design-system/modal";
