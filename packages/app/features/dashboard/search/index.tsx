@@ -4,6 +4,7 @@ import { TabBar, Tabs } from "app/features/dashboard/search/tabs";
 import { SearchInputField } from "app/features/dashboard/search/search-input-field";
 import RecentlyAddedList from "app/features/dashboard/search/recently-added";
 import { isEmpty } from "ramda";
+import { BeatmakersSearchResultList } from "app/features/dashboard/search/beatmakersSearchResultList";
 
 export function SearchScreen() {
   const [searchFraze, setSearchFraze] = useState("");
@@ -16,14 +17,18 @@ export function SearchScreen() {
     >
       <SearchInputField
         value={searchFraze}
+        autoCapitalize="none"
         onChangeText={setSearchFraze}
-        showX={isEmpty(searchFraze)}
+        showX={!isEmpty(searchFraze)}
         onXClick={() => {
           setSearchFraze("");
         }}
       />
       <TabBar selected={tab} onTabClick={setTab} />
-      <RecentlyAddedList />
+      {!searchFraze && <RecentlyAddedList />}
+      {!isEmpty(searchFraze) && tab === "Beatmakers" && (
+        <BeatmakersSearchResultList />
+      )}
     </SafeAreaView>
   );
 }
