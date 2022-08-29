@@ -10,7 +10,8 @@ export function BeatmakersSearchResultList({
   searchFraze: string;
 }) {
   const searchFn = useMemo(() => {
-    return (_fraze) => usersIndex.search<User>(_fraze).then(({ hits }) => hits);
+    return (_fraze: string) =>
+      usersIndex.search<User>(_fraze).then(({ hits }) => hits);
   }, []);
 
   return (

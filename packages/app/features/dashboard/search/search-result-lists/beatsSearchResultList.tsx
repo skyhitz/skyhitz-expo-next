@@ -10,7 +10,7 @@ export function BeatsSearchResultList({
   searchFraze: string;
 }) {
   const searchFn = useMemo(() => {
-    return (_fraze) =>
+    return (_fraze: string) =>
       entriesIndex.search<Entry>(_fraze).then(({ hits }) => hits);
   }, []);
 
