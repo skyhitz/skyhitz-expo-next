@@ -26,7 +26,6 @@ type Result<T> = {
  * @returns {onNextPage} -> function to call after end of the list is reached
  *
  * */
-///
 export function usePagination<T, R>({
   queryHook,
   transformResponse,
