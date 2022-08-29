@@ -1,5 +1,5 @@
 import React, { ForwardedRef } from "react";
-import { TextInput, TextProps } from "app/design-system/text-input";
+import { TextInput, TextProps } from "app/design-system/textInput";
 import { TextInput as rTextInput } from "react-native";
 import { Pressable, View } from "app/design-system";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";

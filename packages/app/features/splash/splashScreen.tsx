@@ -1,4 +1,4 @@
-import BackgroundImage from "app/ui/background-image";
+import BackgroundImage from "app/ui/backgroundImage";
 
 export function SplashScreen() {
   return <BackgroundImage />;

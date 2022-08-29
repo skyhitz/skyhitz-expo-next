@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/atoms";
 import { useRouter } from "solito/router";
-import { SplashScreen } from "app/features/splash/splash-screen";
+import { SplashScreen } from "app/features/splash/splashScreen";
 
 export function AuthGuard({ children }: { children: ReactNode }) {
   const user = useRecoilValue(userAtom);

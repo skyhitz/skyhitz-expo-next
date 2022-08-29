@@ -2,10 +2,10 @@ import { SignInForm as FormData } from "app/types";
 import * as Yup from "yup";
 import { SchemaOf } from "yup";
 import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
-import WalletconnectBtn from "app/ui/walletconnect-btn";
-import { Separator } from "app/features/accounts/or-separator";
+import WalletconnectBtn from "app/ui/walletconnectBtn";
+import { Separator } from "app/features/accounts/orSeparator";
 import { Formik, FormikProps } from "formik";
-import StyledTextInput from "app/features/accounts/styled-text-input";
+import StyledTextInput from "app/features/accounts/styledTextInput";
 import { useRequestTokenMutation } from "app/api/graphql";
 
 type SignInFormProps = {
