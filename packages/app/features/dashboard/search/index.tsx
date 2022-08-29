@@ -27,7 +27,7 @@ export function SearchScreen() {
       <TabBar selected={tab} onTabClick={setTab} />
       {!searchFraze && <RecentlyAddedList />}
       {!isEmpty(searchFraze) && tab === "Beatmakers" && (
-        <BeatmakersSearchResultList />
+        <BeatmakersSearchResultList searchFraze={searchFraze} />
       )}
     </SafeAreaView>
   );
