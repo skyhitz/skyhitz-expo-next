@@ -27,6 +27,7 @@ module.exports = {
           dark: "#1A1B20",
           field: "#292b33",
           transparent: "#292b33e6",
+          track: "#1e4aff4d",
         },
         red: {
           DEFAULT: "#d9544f",
@@ -41,7 +42,6 @@ module.exports = {
         },
         lightGreen: "#5CE67E",
         lightBrandBlue: "#1dadff",
-        backgroundTrackColor: "rgba(30,174,255, 0.3)",
         tabIconDefault: "rgba(255,255,255, 0.65)",
         tabIconSelected: "#eee",
         tabBar: "#fefefe",

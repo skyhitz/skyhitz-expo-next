@@ -5,3 +5,4 @@ export { Pressable } from "app/design-system/pressable";
 export { TextInput } from "app/design-system/text-input";
 export { ActivityIndicator } from "app/design-system/activity-indicator";
 export { Button } from "app/design-system/button";
+export { Image } from "app/design-system/image";

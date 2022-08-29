@@ -9,36 +9,44 @@ import LoopIcon from "app/ui/icons/repeat";
 import { Pressable } from "app/design-system/pressable";
 import { tw } from "app/design-system/tailwind";
 
-export function PlayerButtonsRow() {
+type Props = {
+  size?: "default" | "large";
+};
+
+export function PlayerButtonsRow({ size = "default" }: Props) {
   const [shuffleActive, setShuffleActive] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [randomActive, setRandomActive] = useState<boolean>(false);
+  const classes = size === "default" ? " h-10 max-w-60" : " h-20";
+  const sizeModificator = size === "large" ? 6 : 0;
 
   return (
-    <View className="flex flex-row w-full h-10 justify-evenly items-center max-w-60">
+    <View
+      className={"flex flex-row w-full justify-evenly items-center" + classes}
+    >
       <Pressable onPress={() => setShuffleActive(!shuffleActive)}>
         <ShuffleIcon
           color={shuffleActive ? tw.color("lightBrandBlue") : tw.color("white")}
-          size={14}
+          size={14 + sizeModificator}
         />
       </Pressable>
       <Pressable onPress={() => console.log("prev")}>
-        <PrevIcon color={tw.color("white")} size={18} />
+        <PrevIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
       <Pressable onPress={() => setIsPlaying(!isPlaying)}>
         {isPlaying ? (
-          <PauseIcon color={tw.color("white")} size={22} />
+          <PauseIcon color={tw.color("white")} size={22 + sizeModificator} />
         ) : (
-          <PlayIcon color={tw.color("white")} size={22} />
+          <PlayIcon color={tw.color("white")} size={22 + sizeModificator} />
         )}
       </Pressable>
       <Pressable onPress={() => console.log("next")}>
-        <NextIcon color={tw.color("white")} size={18} />
+        <NextIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
       <Pressable onPress={() => setRandomActive(!randomActive)}>
         <LoopIcon
           color={randomActive ? tw.color("lightBrandBlue") : tw.color("white")}
-          size={14}
+          size={14 + sizeModificator}
         />
       </Pressable>
     </View>
