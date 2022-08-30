@@ -1,16 +1,19 @@
 import { User } from "app/api/graphql";
-import { Text, View, Image } from "app/design-system";
+import { Image, Text, View } from "app/design-system";
 import { compose, head, join, map, split, take, toUpper } from "ramda";
 
 type Props = {
   user: User;
+  big?: boolean;
 };
-export function UserAvatar({ user }: Props) {
+export function UserAvatar({ user, big }: Props) {
+  const sizeClassNames = big ? "h-20 w-20" : "h-10 w-10";
+
   if (user.avatarUrl) {
     return (
       <Image
         source={{ uri: user.avatarUrl }}
-        className="h-10 w-10 rounded-full"
+        className={`${sizeClassNames} rounded-full`}
         resizeMode="cover"
       />
     );
@@ -26,9 +29,16 @@ export function UserAvatar({ user }: Props) {
     )(user.displayName);
   }
 
+  const borderClassName = big ? "border border-white" : "";
+  const textSizeClassName = big ? "text-lg" : "text-sm";
+
   return (
-    <View className="h-10 w-10 rounded-full bg-blue-light items-center justify-center flex">
-      <Text className="text-sm text-center">{initials}</Text>
+    <View
+      className={`${sizeClassNames} ${borderClassName} rounded-full bg-blue-light items-center justify-center flex`}
+    >
+      <Text className={`${textSizeClassName} text-center text-black`}>
+        {initials}
+      </Text>
     </View>
   );
 }
