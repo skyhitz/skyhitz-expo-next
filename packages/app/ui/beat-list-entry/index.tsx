@@ -1,46 +1,9 @@
-import { Modal, Text, View } from "app/design-system";
+import { Image, Text, View } from "app/design-system";
 import { Entry } from "app/api/graphql";
-import { Image } from "react-native";
-import { imageUrlMedium, imageUrlSmall } from "app/utils/entry";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { imageUrlSmall } from "app/utils/entry";
 import { Price } from "app/ui/beat-list-entry/price";
 import { FavoriteButton } from "app/ui/favoriteButton";
-import { tw } from "app/design-system/tailwind";
-import { useState } from "react";
-import { SafeAreaView } from "app/design-system/safe-area-view";
-
-function ShowMore({ entry }: { entry: Entry }) {
-  const [showing, setShowing] = useState(false);
-  return (
-    <>
-      <Icon.Button
-        name="dots-vertical"
-        size={30}
-        color={tw.color("white")}
-        backgroundColor={tw.color("transparent")}
-        iconStyle={tw`m-0`}
-        style={tw`p-0`}
-        onPress={() => setShowing(!showing)}
-      />
-      <Modal transparent={true} visible={showing}>
-        <SafeAreaView className="bg-blue-field/90 flex-1 items-center justify-around">
-          <View className="flex items-center">
-            <Image
-              source={{
-                uri: entry.imageUrl ? imageUrlMedium(entry.imageUrl) : "",
-                width: 225,
-                height: 225,
-              }}
-            />
-            <Text>{entry.title}</Text>
-            <Text>{entry.artist}</Text>
-          </View>
-          <View></View>
-        </SafeAreaView>
-      </Modal>
-    </>
-  );
-}
+import { ShowMore } from "app/ui/beat-list-entry/show-more";
 
 export function BeatListEntry({
   entry,
