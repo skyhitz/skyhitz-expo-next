@@ -11,7 +11,7 @@ const LinkStyle: StyleProp<ViewStyle> = {
   padding: 10,
   alignItems: "center",
   justifyContent: "center",
-  maxHeight: 64,
+  height: 52,
 };
 
 export default function DashboardTabBar({ column }: { column?: boolean }) {

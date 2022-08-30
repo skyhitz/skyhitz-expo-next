@@ -17,10 +17,9 @@ type Props = {
 export function FullScreenPlayer({ onTogglePress }: Props) {
   return (
     <SafeAreaView
-      className={`flex px-4 bg-blue-dark items-center absolute w-full h-${
+      className={`flex px-4 bg-blue-dark items-center absolute top-0 w-full h-${
         height / 4
       }`}
-      style={{ transform: [{ translateY: -height }] }}
     >
       <Pressable
         className="w-full flex flex-row items-center py-4"
