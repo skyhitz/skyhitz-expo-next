@@ -12,8 +12,8 @@ function Icon({
 }) {
   return (
     <Svg
-      fill={fill ? (color ? color : "currentColor") : "none"}
-      stroke={fill ? "none" : color ? color : "currentColor"}
+      fill={fill ? color : "none"}
+      stroke={fill ? "none" : color}
       viewBox="0 0 24 24"
       width={size}
       height={size}

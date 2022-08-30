@@ -6,11 +6,11 @@ type Props = {
   size?: number;
 };
 
-export default function Icon({ color, size = 24 }: Props) {
+export default function Icon({ color = "currentColor", size = 24 }: Props) {
   return (
     <Svg
       fill="none"
-      stroke={color ? color : "currentColor"}
+      stroke={color}
       viewBox="0 0 24 24"
       width={size}
       height={size}

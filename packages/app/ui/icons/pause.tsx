@@ -6,13 +6,13 @@ type Props = {
   color?: string;
 };
 
-export default function Icon({ size = 24, color }: Props) {
+export default function Icon({ size = 24, color = "currentColor" }: Props) {
   return (
     <Svg
       width={size}
       height={size}
       fill="none"
-      stroke={color ? color : "currentColor"}
+      stroke={color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
