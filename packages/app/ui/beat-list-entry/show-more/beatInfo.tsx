@@ -1,7 +1,7 @@
 import { Image, Text, View } from "app/design-system";
 import { imageUrlMedium } from "app/utils/entry";
 
-export function Description(props: {
+export function BeatInfo(props: {
   imageUrl?: string;
   title: string;
   artist: string;

@@ -1,8 +1,10 @@
 import { Pressable, Text } from "app/design-system";
 
-export function CancelBtn(props: { onPress: () => void }) {
+type Props = { onPress: () => void };
+
+export function CancelBtn({ onPress }: Props) {
   return (
-    <Pressable onPress={props.onPress}>
+    <Pressable onPress={onPress}>
       <Text>Cancel</Text>
     </Pressable>
   );

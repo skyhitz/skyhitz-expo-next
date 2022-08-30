@@ -2,7 +2,7 @@ import { Pressable, Text, View } from "app/design-system";
 import { Price } from "app/ui/beat-list-entry/price";
 import { FavoriteButton } from "app/ui/favoriteButton";
 
-export function Interactions() {
+export function BeatActions() {
   return (
     <View className="flex items-center">
       <Pressable className="btn h-10">

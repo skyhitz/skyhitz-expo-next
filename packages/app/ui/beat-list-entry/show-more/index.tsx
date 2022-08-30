@@ -4,8 +4,8 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { tw } from "app/design-system/tailwind";
 import { Modal } from "app/design-system";
 import { SafeAreaView } from "app/design-system/safe-area-view";
-import { Description } from "app/ui/beat-list-entry/show-more/description";
-import { Interactions } from "app/ui/beat-list-entry/show-more/interactions";
+import { BeatInfo } from "app/ui/beat-list-entry/show-more/beatInfo";
+import { BeatActions } from "app/ui/beat-list-entry/show-more/beatActions";
 import { CancelBtn } from "app/ui/beat-list-entry/show-more/cancelBtn";
 
 export function ShowMore({ entry }: { entry: Entry }) {
@@ -23,12 +23,12 @@ export function ShowMore({ entry }: { entry: Entry }) {
       />
       <Modal transparent={true} visible={showing} animationType="fade">
         <SafeAreaView className="bg-blue-field/90 flex-1 items-center justify-around pt-10 sm:pt-20">
-          <Description
+          <BeatInfo
             imageUrl={entry.imageUrl ?? ""}
             title={entry.title ?? ""}
             artist={entry.artist ?? ""}
           />
-          <Interactions />
+          <BeatActions />
           <CancelBtn onPress={() => setShowing(false)} />
         </SafeAreaView>
       </Modal>
