@@ -27,6 +27,7 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
         <Pressable
           className="w-full flex flex-row items-center py-4"
           onPress={onTogglePress}
+          hitSlop={10}
         >
           <ChevronDown size={24} color={tw.color("white")} />
         </Pressable>

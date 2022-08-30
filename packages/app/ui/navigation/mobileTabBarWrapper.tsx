@@ -43,8 +43,9 @@ export function MobileTabBarWrapper() {
       );
     },
     onEnd: (event) => {
-      console.log(y.value, event.velocityY);
-      const animateTo = y.value < -maxYTranslation / 2 ? -maxYTranslation : 0;
+      const translationWithVelocity = y.value + event.velocityY;
+      const animateTo =
+        translationWithVelocity < -maxYTranslation / 2 ? -maxYTranslation : 0;
       y.value = withSpring(animateTo, springAnimationConfig);
     },
   });
@@ -68,6 +69,7 @@ export function MobileTabBarWrapper() {
     );
     return {
       opacity,
+      zIndex: y.value > -maxYTranslation ? 10 : 1,
     };
   });
 
@@ -96,6 +98,7 @@ export function MobileTabBarWrapper() {
     );
     return {
       opacity,
+      zIndex: y.value < -maxYTranslation ? 10 : 1,
     };
   });
 

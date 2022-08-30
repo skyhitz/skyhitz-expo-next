@@ -19,7 +19,7 @@ export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
     <Animated.View
       style={[
         tw.style(
-          "flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5 z-10"
+          "flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5"
         ),
         animatedStyle,
       ]}
