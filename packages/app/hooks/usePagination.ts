@@ -1,10 +1,10 @@
-import * as Apollo from "@apollo/client";
+import { QueryHookOptions, QueryResult } from "@apollo/client";
 import { isSome } from "app/utils";
 import { filter, isEmpty, uniqWith } from "ramda";
 import { useEffect, useState } from "react";
 
 type InputProps<T, R> = {
-  queryHook: (_baseOptions?: Apollo.QueryHookOptions) => Apollo.QueryResult<R>;
+  queryHook: (_baseOptions?: QueryHookOptions) => QueryResult<R>;
   transformResponse: (_result: R) => T[] | undefined | null;
   getId: (_item: NonNullable<T>) => string;
 };
