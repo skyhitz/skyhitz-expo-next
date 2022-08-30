@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuthStatus } from "app/hooks/useAuthStatus";
-import { SplashScreen } from "app/features/splash/splash-screen";
+import { SplashScreen } from "app/features/splash/splashScreen";
 import { useRecoilValue } from "recoil";
 import { appInitializedAtom } from "app/state/atoms";
 import { useRouter } from "solito/router";

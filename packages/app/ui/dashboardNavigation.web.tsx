@@ -1,7 +1,7 @@
 import { View } from "app/design-system";
 import Navbar from "app/ui/navbar";
 import { tw } from "app/design-system/tailwind";
-import DashboardTabBar from "app/ui/dashboard-tab-bar";
+import DashboardTabBar from "app/ui/dashboardTabBar";
 import React from "react";
 import { useSx } from "dripsy";
 
