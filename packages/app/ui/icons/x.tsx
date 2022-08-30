@@ -1,11 +1,17 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 
-function Icon({ color, size = 24 }: { color: string; size?: number }) {
+function Icon({
+  color = "currentColor",
+  size = 24,
+}: {
+  color: string;
+  size?: number;
+}) {
   return (
     <Svg
       fill="none"
-      stroke={color ? color : "currentColor"}
+      stroke={color}
       viewBox="0 0 24 24"
       width={size}
       height={size}
