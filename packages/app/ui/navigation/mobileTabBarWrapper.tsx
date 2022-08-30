@@ -23,7 +23,6 @@ const springAnimationConfig = {
 
 const { height } = Dimensions.get("window");
 const miniPlayerHeight = 40;
-
 export function MobileTabBarWrapper() {
   const y = useSharedValue(0);
   const insets = useSafeArea();
@@ -116,9 +115,11 @@ export function MobileTabBarWrapper() {
             onTogglePress={onExpand}
             animatedStyle={playerBarStyle}
           />
-          <Animated.View style={fullScreenPlayerStyle}>
-            <FullScreenPlayer onTogglePress={onHide} />
-          </Animated.View>
+
+          <FullScreenPlayer
+            onTogglePress={onHide}
+            animatedStyle={fullScreenPlayerStyle}
+          />
         </Animated.View>
       </PanGestureHandler>
       <Animated.View style={[{ zIndex: 10 }, tabBarStyle]}>

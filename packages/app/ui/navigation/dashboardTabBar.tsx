@@ -11,7 +11,7 @@ const LinkStyle: StyleProp<ViewStyle> = {
   padding: 10,
   alignItems: "center",
   justifyContent: "center",
-  height: 52,
+  maxHeight: 64,
 };
 
 export default function DashboardTabBar({ column }: { column?: boolean }) {
@@ -22,7 +22,7 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
 
   return (
     <View
-      className={`flex bg-blue-dark  ${rootViewStyle} pb-[${insets.bottom}px]`}
+      className={`flex bg-blue-dark ${rootViewStyle} pb-[${insets.bottom}px]`}
     >
       <Link viewProps={{ style: LinkStyle }} href={"/dashboard/search"}>
         <Icon name="magnify" size={32} color="white" />
