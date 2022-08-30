@@ -1,6 +1,6 @@
 import { User } from "app/api/graphql";
 import { Text, View, Image } from "app/design-system";
-import { compose, join, map, split, take } from "ramda";
+import { compose, head, join, map, split, take, toUpper } from "ramda";
 
 type Props = {
   user: User;
@@ -21,7 +21,7 @@ export function UserAvatar({ user }: Props) {
     initials = compose(
       join(""),
       take(2),
-      map((part) => part[0]),
+      map((part) => toUpper(head(part))),
       split(" ")
     )(user.displayName);
   }

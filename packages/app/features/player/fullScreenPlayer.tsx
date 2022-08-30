@@ -3,7 +3,7 @@ import { Pressable } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import ChevronDown from "app/ui/icons/chevron-down";
 import { Dimensions } from "react-native";
-import { LikesList } from "./components/likesLIst";
+import { LikesList } from "./components/likesList";
 import { PlayerButtonsRow } from "./components/playerButtonsRow";
 import { PlayerSlider } from "./components/playerSlider";
 import { SafeAreaView } from "app/design-system/safe-area-view";
@@ -17,7 +17,7 @@ type Props = {
 export function FullScreenPlayer({ onTogglePress }: Props) {
   return (
     <SafeAreaView
-      className={`flex flex-column px-4 bg-blue-dark items-center absolute w-full h-${
+      className={`flex px-4 bg-blue-dark items-center absolute w-full h-${
         height / 4
       }`}
       style={{ transform: [{ translateY: -height }] }}
@@ -30,7 +30,7 @@ export function FullScreenPlayer({ onTogglePress }: Props) {
       </Pressable>
       <View className="bg-red h-50 w-50 mb-2.5" />
       <PlayerSlider />
-      <View className="flex-1 flex-column items-center justify-center">
+      <View className="flex-1 items-center justify-center">
         <Text
           className="text-base font-bold text-center text-white"
           ellipsizeMode="tail"

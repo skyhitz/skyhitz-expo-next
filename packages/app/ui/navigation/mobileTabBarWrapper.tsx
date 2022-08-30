@@ -24,7 +24,7 @@ export function MobileTabBarWrapper() {
   const [playerVisible, setPlayerVisible] = useState<boolean>(false);
 
   return (
-    <View className="flex flex-column bg-blue-dark">
+    <View className="flex bg-blue-dark">
       {!playerVisible && (
         <Animated.View
           entering={enteringAnimation}

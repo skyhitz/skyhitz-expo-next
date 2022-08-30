@@ -16,6 +16,7 @@ export function LikesList({ likers }: Props) {
       </View>
     );
   };
+
   return (
     <View className="w-full mb-10 flex">
       <View className="flex flex-row justify-between items-center">
