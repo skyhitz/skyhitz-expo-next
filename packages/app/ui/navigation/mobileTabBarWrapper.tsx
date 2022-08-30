@@ -1,5 +1,5 @@
 import { View } from "app/design-system";
-import DashboardTabBar from "app/ui/navigation/dashboard-tab-bar";
+import DashboardTabBar from "app/ui/navigation/dashboardTabBar";
 import React, { useState } from "react";
 import { MiniPlayerBar } from "app/features/player/miniPlayerBar";
 import { FullScreenPlayer } from "app/features/player/fullScreenPlayer";

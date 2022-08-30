@@ -5,7 +5,7 @@ import { SignUp } from "app/features/accounts/sign-up";
 import { SearchScreen } from "app/features/dashboard/search";
 import { useRecoilValue } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/atoms";
-import { SplashScreen } from "app/features/splash/splash-screen";
+import { SplashScreen } from "app/features/splash/splashScreen";
 import { useRouter } from "solito/router";
 import { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

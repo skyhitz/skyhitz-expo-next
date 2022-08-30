@@ -9,11 +9,11 @@ export function useLogIn(): (_: User) => void {
   const { push } = useRouter();
 
   const logIn = async (user: User) => {
-    push("/dashboard/search");
     setUserData(user);
     if (user.jwt) {
       await SecureStorage.save("token", user.jwt!);
     }
+    push("/dashboard/search");
   };
 
   return logIn;
