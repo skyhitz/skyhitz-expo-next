@@ -11,9 +11,9 @@ import { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ChartScreen } from "app/features/dashboard/chart";
 import { ProfileScreen } from "app/features/dashboard/profile";
-import DashboardTabBar from "app/ui/dashboardTabBar";
 import { Linking } from "react-native";
 import { Config } from "app/config";
+import { MobileTabBarWrapper } from "../../ui/navigation/mobileTabBarWrapper";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -115,7 +115,7 @@ function DashboardNavigation() {
       screenOptions={{
         headerShown: false,
       }}
-      tabBar={() => <DashboardTabBar />}
+      tabBar={() => <MobileTabBarWrapper />}
     >
       <Tab.Screen component={SearchScreen} name="search" />
       <Tab.Screen component={ChartScreen} name="chart" />

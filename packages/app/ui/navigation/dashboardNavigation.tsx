@@ -1,9 +1,11 @@
 import { View } from "app/design-system";
 import Navbar from "app/ui/navbar";
 import { tw } from "app/design-system/tailwind";
-import DashboardTabBar from "app/ui/dashboardTabBar";
+import DashboardTabBar from "app/ui/navigation/dashboardTabBar";
 import React from "react";
 import { useSx } from "dripsy";
+import { PlayerBar } from "app/features/player/playerBar";
+import { MobileTabBarWrapper } from "./mobileTabBarWrapper";
 
 export function DashboardNavigation({
   children,
@@ -18,7 +20,8 @@ export function DashboardNavigation({
         {tw.prefixMatch("sm") && <DashboardTabBar column />}
         {children}
       </View>
-      {!tw.prefixMatch("sm") && <DashboardTabBar />}
+      {tw.prefixMatch("sm") && <PlayerBar />}
+      {!tw.prefixMatch("sm") && <MobileTabBarWrapper />}
     </View>
   );
 }
