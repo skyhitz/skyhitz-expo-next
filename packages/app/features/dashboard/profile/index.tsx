@@ -11,6 +11,7 @@ import StarBorder from "app/ui/icons/star-border";
 import { MintNewNftBtn } from "app/features/dashboard/profile/mintNewNftBtn";
 import { BuyXlmBtn } from "app/features/dashboard/profile/buyXlmBtn";
 import { ProfileRow } from "app/features/dashboard/profile/profileRowProps";
+import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
 
 export function ProfileScreen() {
   const user = useRecoilValue(userAtom)!;
@@ -29,13 +30,7 @@ export function ProfileScreen() {
           </View>
           <View className="flex flex-row items-center">
             <Wallet color={tw.color("white")} size={18} />
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="middle"
-              className="ml-2.5m text-xs font-bold flex-1"
-            >
-              {user.publicKey}
-            </Text>
+            <TextEllipsis text={user.publicKey!} />
           </View>
         </View>
       </View>
