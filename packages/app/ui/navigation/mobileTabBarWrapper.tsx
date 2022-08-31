@@ -1,6 +1,6 @@
 import { View } from "app/design-system";
 import DashboardTabBar from "app/ui/navigation/dashboardTabBar";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { MiniPlayerBar } from "app/features/player/miniPlayerBar";
 import { FullScreenPlayer } from "app/features/player/fullScreenPlayer";
 import Animated, {
@@ -11,7 +11,10 @@ import Animated, {
   Extrapolation,
   withSpring,
 } from "react-native-reanimated";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import {
+  PanGestureHandler,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 import { Dimensions } from "react-native";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 
@@ -111,23 +114,25 @@ export function MobileTabBarWrapper() {
   }, [y]);
 
   return (
-    <View className="flex bg-blue-dark">
-      <PanGestureHandler onGestureEvent={gestureHandler}>
-        <Animated.View style={draggableStyle}>
-          <MiniPlayerBar
-            onTogglePress={onExpand}
-            animatedStyle={playerBarStyle}
-          />
+    <GestureHandlerRootView>
+      <View className="flex bg-blue-dark z-10" style={{ elevation: 100 }}>
+        <PanGestureHandler onGestureEvent={gestureHandler}>
+          <Animated.View style={draggableStyle}>
+            <MiniPlayerBar
+              onTogglePress={onExpand}
+              animatedStyle={playerBarStyle}
+            />
 
-          <FullScreenPlayer
-            onTogglePress={onHide}
-            animatedStyle={fullScreenPlayerStyle}
-          />
+            <FullScreenPlayer
+              onTogglePress={onHide}
+              animatedStyle={fullScreenPlayerStyle}
+            />
+          </Animated.View>
+        </PanGestureHandler>
+        <Animated.View style={[{ zIndex: 10 }, tabBarStyle]}>
+          <DashboardTabBar />
         </Animated.View>
-      </PanGestureHandler>
-      <Animated.View style={[{ zIndex: 10 }, tabBarStyle]}>
-        <DashboardTabBar />
-      </Animated.View>
-    </View>
+      </View>
+    </GestureHandlerRootView>
   );
 }
