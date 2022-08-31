@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { insert, join, pipe, remove } from "ramda";
+import { insert, join, pipe, remove, split } from "ramda";
 import { Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 
@@ -19,11 +19,12 @@ export function TextEllipsis({ text }: { text: string }) {
     const lengthToCut = text.length - availableTextLength + 2;
     const cutStart = Math.round(text.length / 2 - lengthToCut / 2);
     const cutText = pipe(
-      remove<string>(cutStart, lengthToCut),
+      split(""),
+      remove(cutStart, lengthToCut),
       insert(cutStart, "..."),
       join("")
     );
-    setDisplayedText(cutText([...text]));
+    setDisplayedText(cutText(text));
   }, [charLength, wrapperWidth, setDisplayedText, text]);
 
   return (
