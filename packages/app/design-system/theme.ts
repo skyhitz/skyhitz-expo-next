@@ -16,27 +16,14 @@ const theme = makeTheme({
   space: [],
   fontSizes: [],
   customFonts: {
-    Inter: {
-      default: webFont("Inter"),
-      normal: webFont("Inter"),
-      regular: webFont("Inter"),
-      400: webFont("Inter"),
-      semibold: webFont("Inter-Semibold"),
-      500: webFont("Inter-Semibold"),
-      bold: webFont("Inter-Bold"),
-      600: webFont("Inter-Bold"),
-      700: webFont("Inter-Bold"),
-    },
     "Raleway-Light": {
       default: webFont("Raleway-Light"),
       600: webFont("Raleway-SemiBold"),
       bold: webFont("Raleway-Bold"),
-      400: webFont("Raleway-Regular"),
       500: webFont("Raleway-Medium"),
     },
   },
   fonts: {
-    inter: "Inter",
     raleway: "Raleway-Light",
   },
   text: {
