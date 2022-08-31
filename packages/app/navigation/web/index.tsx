@@ -1,7 +1,7 @@
 import { View } from "app/design-system";
-import { DashboardNavigation } from "app/ui/dashboardNavigation.web";
 import React from "react";
 import { useNextRouter } from "solito/build/router/use-next-router";
+import { DashboardNavigation } from "app/ui/navigation/dashboardNavigation";
 
 export function WebNavigation({ children }: { children: React.ReactNode }) {
   const router = useNextRouter();

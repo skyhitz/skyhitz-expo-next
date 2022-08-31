@@ -1,13 +1,13 @@
 import React from "react";
 import Svg, { Circle } from "react-native-svg";
 
-function Icon({ size = 24, color }) {
+function Icon({ size = 24, color = "currentColor" }) {
   return (
     <Svg
       width={size}
       height={size}
       fill="none"
-      stroke={color ? color : "currentColor"}
+      stroke={color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
