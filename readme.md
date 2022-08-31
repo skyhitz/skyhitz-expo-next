@@ -11,7 +11,6 @@ https://skyhitz-expo-next.vercel.app/
 ## 📦 Included packages
 
 - `solito` for cross-platform navigation
-- `moti` for animations
 - `dripsy` for theming/design (you can bring your own, too)
 - Expo SDK 44
 - Next.js 12

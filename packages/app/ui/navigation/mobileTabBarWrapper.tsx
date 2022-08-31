@@ -1,6 +1,6 @@
 import { View } from "app/design-system";
 import DashboardTabBar from "app/ui/navigation/dashboardTabBar";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { MiniPlayerBar } from "app/features/player/miniPlayerBar";
 import { FullScreenPlayer } from "app/features/player/fullScreenPlayer";
 import Animated, {
