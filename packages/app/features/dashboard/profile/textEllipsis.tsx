@@ -7,7 +7,7 @@ const textEllipsisLength = 2;
 
 export function TextEllipsis({ text }: { text: string }) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
-  const [displayedText, setDisplayedText] = useState("A");
+  const [displayedText, setDisplayedText] = useState(text);
   const [charLength, setCharLength] = useState(0);
 
   useEffect(() => {
@@ -31,13 +31,13 @@ export function TextEllipsis({ text }: { text: string }) {
 
   return (
     <View
-      className="flex-1 flex-row ml-2.5"
+      className="flex-1 mx-2.5 flex-row h-3"
       onLayout={(e) => {
         setWrapperWidth(e.nativeEvent.layout.width);
       }}
     >
       <Text
-        style={tw.style("text-xs font-bold")}
+        style={tw.style("text-xs font-bold absolute leading-5")}
         onLayout={(e) => {
           if (charLength) return;
           setCharLength(e.nativeEvent.layout.width / displayedText.length);
