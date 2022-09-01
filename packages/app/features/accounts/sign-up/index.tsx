@@ -3,7 +3,7 @@ import { Platform, TextInput } from "react-native";
 import BackgroundImage from "app/ui/backgroundImage";
 import WalletconnectBtn from "app/ui/walletconnectBtn";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
-import { Separator } from "app/features/accounts/orSeparator";
+import { Separator } from "app/ui/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";
 import { Formik, FormikProps } from "formik";
 import * as Yup from "yup";

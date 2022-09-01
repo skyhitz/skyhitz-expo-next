@@ -1,6 +1,6 @@
 import { Text, View } from "app/design-system";
 
-const Line = () => (
+export const Line = () => (
   <View className="border border-transparent border-b-white grow" />
 );
 
