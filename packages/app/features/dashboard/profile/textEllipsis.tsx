@@ -3,6 +3,8 @@ import { insert, join, pipe, remove, split } from "ramda";
 import { Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 
+const textEllipsisLength = 2;
+
 export function TextEllipsis({ text }: { text: string }) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
   const [displayedText, setDisplayedText] = useState("A");
@@ -16,7 +18,7 @@ export function TextEllipsis({ text }: { text: string }) {
       return;
     }
 
-    const lengthToCut = text.length - availableTextLength + 2;
+    const lengthToCut = text.length - availableTextLength + textEllipsisLength;
     const cutStart = Math.round(text.length / 2 - lengthToCut / 2);
     const cutText = pipe(
       split(""),
