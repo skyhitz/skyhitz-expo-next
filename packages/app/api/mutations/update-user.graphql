@@ -1,0 +1,26 @@
+mutation updateUser(
+  $avatarUrl: String
+  $displayName: String
+  $description: String
+  $username: String
+  $email: String
+) {
+  updateUser(
+    avatarUrl: $avatarUrl
+    displayName: $displayName
+    description: $description
+    username: $username
+    email: $email
+  ) {
+    avatarUrl
+    displayName
+    email
+    username
+    id
+    publishedAt
+    version
+    jwt
+    description
+    publicKey
+  }
+}
