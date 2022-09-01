@@ -4,7 +4,7 @@ import Svg, { Path } from "react-native-svg";
 function Icon({
   size = 24,
   fill = false,
-  color = "white",
+  color = "currentColor",
 }: {
   size: number;
   fill?: boolean;

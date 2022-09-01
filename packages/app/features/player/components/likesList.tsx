@@ -1,6 +1,6 @@
 import { User } from "app/api/graphql";
 import { Text, View } from "app/design-system";
-import { FavoriteButton } from "app/ui/beat-list-entry/favoriteButton";
+import { FavoriteButton } from "app/ui/favoriteButton";
 import { UserAvatar } from "app/ui/userAvatar";
 import { FlatList } from "react-native";
 
