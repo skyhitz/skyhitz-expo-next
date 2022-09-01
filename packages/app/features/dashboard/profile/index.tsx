@@ -9,7 +9,7 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 import Like from "app/ui/icons/like";
 import StarBorder from "app/ui/icons/star-border";
 import { MintNewNftBtn } from "app/features/dashboard/profile/mintNewNftBtn";
-import { BuyXlmBtn } from "app/features/dashboard/profile/buyXlmBtn";
+import { BuyXLMBtn } from "app/features/dashboard/profile/buyXLMBtn";
 import { ProfileRow } from "app/features/dashboard/profile/profileRowProps";
 import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
 
@@ -43,7 +43,7 @@ export function ProfileScreen() {
         icon={<StarBorder size={24} color={tw.color("blue")} />}
         title="Collections"
       />
-      <BuyXlmBtn />
+      <BuyXLMBtn />
       <MintNewNftBtn />
     </SafeAreaView>
   );

@@ -1,8 +1,10 @@
 import { Pressable, Text, View } from "app/design-system";
 import ChevronRight from "app/ui/icons/chevron-right";
+import { ReactElement } from "react";
+import { tw } from "app/design-system/tailwind";
 
 type ProfileRowProps = {
-  icon: JSX.Element;
+  icon: ReactElement;
   title: string;
   number?: number;
 };
@@ -16,7 +18,7 @@ export function ProfileRow({ icon, number, title }: ProfileRowProps) {
       </View>
       <View className="flex flex-row items-center">
         <Text className="text-sm">{number}</Text>
-        <ChevronRight size={28} color="white" />
+        <ChevronRight size={28} color={tw.color("white")} />
       </View>
     </Pressable>
   );
