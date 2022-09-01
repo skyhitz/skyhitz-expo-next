@@ -36,7 +36,7 @@ export default function EditProfileScreen() {
       </View>
       <View className="px-4">
         <View className="flex items-center my-4">
-          <UserAvatar user={user} />
+          <UserAvatar user={user} size="large" />
           <Pressable>
             <Text className="mt-2 font-light text-sm">
               Change Profile Photo
