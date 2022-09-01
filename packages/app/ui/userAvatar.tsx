@@ -2,18 +2,33 @@ import { User } from "app/api/graphql";
 import { Image, Text, View } from "app/design-system";
 import { compose, head, join, map, split, take, toUpper } from "ramda";
 
+const classNames = {
+  default: {
+    size: "h-10 w-10",
+    border: "",
+    textSize: "text-sm",
+  },
+
+  large: {
+    size: "h-20 w-20",
+    border: "border border-white",
+    textSize: "text-lg",
+  },
+};
+
 type Props = {
   user: User;
-  big?: boolean;
+  size?: "default" | "large";
 };
-export function UserAvatar({ user, big }: Props) {
-  const sizeClassNames = big ? "h-20 w-20" : "h-10 w-10";
+
+export function UserAvatar({ user, size = "default" }: Props) {
+  const classes = classNames[size];
 
   if (user.avatarUrl) {
     return (
       <Image
         source={{ uri: user.avatarUrl }}
-        className={`${sizeClassNames} rounded-full`}
+        className={`${classes.size} rounded-full`}
         resizeMode="cover"
       />
     );
@@ -29,14 +44,11 @@ export function UserAvatar({ user, big }: Props) {
     )(user.displayName);
   }
 
-  const borderClassName = big ? "border border-white" : "";
-  const textSizeClassName = big ? "text-lg" : "text-sm";
-
   return (
     <View
-      className={`${sizeClassNames} ${borderClassName} rounded-full bg-blue-light items-center justify-center flex`}
+      className={`${classes.size} ${classes.border} rounded-full bg-blue-light items-center justify-center flex`}
     >
-      <Text className={`${textSizeClassName} text-center text-black`}>
+      <Text className={`${classes.textSize} text-center text-black`}>
         {initials}
       </Text>
     </View>
