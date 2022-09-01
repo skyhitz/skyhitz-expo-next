@@ -1,17 +1,11 @@
 import { Text, View } from "app/design-system";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { tw } from "app/design-system/tailwind";
+import Search from "app/ui/icons/search";
 
 export default function BeatmakersEmptyState() {
   return (
-    <View className="flex-1 py-16">
-      <Icon
-        style={tw`mx-auto`}
-        color={tw.color("white")}
-        name="magnify"
-        size={80}
-      />
-      <Text className="mx-auto text-lg">Search for beatmakers</Text>
+    <View className="flex-1 py-8 flex-row justify-center mx-auto">
+      <Search color="white" size={24} />
+      <Text className="ml-1 text-lg">Search for beatmakers</Text>
     </View>
   );
 }
