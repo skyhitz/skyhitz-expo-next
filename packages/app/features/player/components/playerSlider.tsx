@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import Slider from "@react-native-community/slider";
 import { tw } from "app/design-system/tailwind";
 import { Text, View } from "app/design-system";
+import { useRecoilValue } from "recoil";
+import { currentDurationAtom, currentPositionAtom } from "app/state/playback";
 
 export function PlayerSlider() {
-  const [value, setValue] = useState<number>(0.01);
-  const songTime = 200;
-  const currentTime = songTime * value;
+  const duration = useRecoilValue(currentDurationAtom);
+  const position = useRecoilValue(currentPositionAtom);
+  const songTime = duration / 1000;
+  const currentTime = position / 1000;
+  const value = position / duration;
 
   return (
     <View className="flex flex-row items-center justify-between w-full">
@@ -24,7 +28,7 @@ export function PlayerSlider() {
           //TODO
         }}
         onSlidingComplete={(value) => {
-          setValue(value);
+          //TODO
         }}
         minimumTrackTintColor={tw.color("blue")}
         maximumTrackTintColor={tw.color("blue-track")}

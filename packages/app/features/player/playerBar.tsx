@@ -1,12 +1,15 @@
 import { Text, View } from "app/design-system";
 import { PlayerSlider } from "./components/playerSlider";
 import { PlayerButtonsRow } from "./components/playerButtonsRow";
+import { VideoPlayer } from "app/ui/VideoPlayer";
 
 export function PlayerBar() {
   return (
     <View className="flex flex-row justify-between items-center h-20 bg-blue-transparent">
       <View className="p-4 w-52 flex flex-row items-center">
-        <View className="bg-red h-10 w-10" />
+        <View className="bg-red h-10 w-10">
+          <VideoPlayer />
+        </View>
         <View className="pl-4 h-full justify-end">
           <Text
             className="text-sm text-left font-bold text-white"
