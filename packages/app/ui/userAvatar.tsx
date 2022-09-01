@@ -1,16 +1,34 @@
 import { User } from "app/api/graphql";
-import { Text, View, Image } from "app/design-system";
+import { Image, Text, View } from "app/design-system";
 import { compose, head, join, map, split, take, toUpper } from "ramda";
+
+const classNames = {
+  default: {
+    size: "h-10 w-10",
+    border: "",
+    textSize: "text-sm",
+  },
+
+  large: {
+    size: "h-20 w-20",
+    border: "border border-white",
+    textSize: "text-lg",
+  },
+};
 
 type Props = {
   user: User;
+  size?: "default" | "large";
 };
-export function UserAvatar({ user }: Props) {
+
+export function UserAvatar({ user, size = "default" }: Props) {
+  const classes = classNames[size];
+
   if (user.avatarUrl) {
     return (
       <Image
         source={{ uri: user.avatarUrl }}
-        className="h-10 w-10 rounded-full"
+        className={`${classes.size} rounded-full`}
         resizeMode="cover"
       />
     );
@@ -27,8 +45,12 @@ export function UserAvatar({ user }: Props) {
   }
 
   return (
-    <View className="h-10 w-10 rounded-full bg-blue-light items-center justify-center flex">
-      <Text className="text-sm text-center">{initials}</Text>
+    <View
+      className={`${classes.size} ${classes.border} rounded-full bg-blue-light items-center justify-center flex`}
+    >
+      <Text className={`${classes.textSize} text-center text-black`}>
+        {initials}
+      </Text>
     </View>
   );
 }
