@@ -1,11 +1,9 @@
-import { Text, View } from "app/design-system";
+import { Image, Text, View } from "app/design-system";
 import { Entry } from "app/api/graphql";
-import { Image } from "react-native";
 import { imageUrlSmall } from "app/utils/entry";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Price } from "app/ui/beat-list-entry/price";
-import { FavoriteButton } from "app/ui/beat-list-entry/favoriteButton";
-import { tw } from "app/design-system/tailwind";
+import { FavoriteButton } from "app/ui/favoriteButton";
+import { ShowMore } from "app/ui/beat-list-entry/show-more";
 
 export function BeatListEntry({
   entry,
@@ -38,7 +36,7 @@ export function BeatListEntry({
       <View className="flex flex-row items-center">
         <Price className="mr-3" />
         <FavoriteButton size={20} />
-        <Icon name="dots-vertical" size={30} color={tw.color("white")} />
+        <ShowMore entry={entry} />
       </View>
     </View>
   );
