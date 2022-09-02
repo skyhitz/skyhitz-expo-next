@@ -16,8 +16,8 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     }),
     [playback, setPlayback]
   );
+
   useEffect(() => {
-    console.log("set audio mode");
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       staysActiveInBackground: true,
@@ -28,6 +28,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       playThroughEarpieceAndroid: false,
     });
   }, []);
+
   return (
     <PlaybackContext.Provider value={value}>
       {children}

@@ -5,6 +5,7 @@ import { isSome } from "app/utils";
 import { FlatList } from "react-native";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { Text } from "app/design-system";
+import { usePlayback } from "app/hooks/usePlayback";
 
 export function ChartScreen() {
   const [nextPage, setNextPage] = useState(0);
@@ -12,6 +13,7 @@ export function ChartScreen() {
   const { data: queryData, refetch } = useTopChartQuery({
     variables: { page: 0 },
   });
+  const { playEntry } = usePlayback();
 
   useEffect(() => {
     if (queryData && queryData.topChart) {
@@ -30,7 +32,11 @@ export function ChartScreen() {
         data={data}
         keyExtractor={(item) => item.id!}
         renderItem={({ item, index }) => (
-          <BeatListEntry entry={item} spot={index + 1} />
+          <BeatListEntry
+            entry={item}
+            spot={index + 1}
+            onPress={() => playEntry(item, data)}
+          />
         )}
         onEndReached={() => refetch({ page: nextPage })}
       />

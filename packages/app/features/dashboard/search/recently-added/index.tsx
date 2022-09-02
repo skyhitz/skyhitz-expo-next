@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Entry, useRecentlyAddedQuery } from "app/api/graphql";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { isSome } from "app/utils";
+import { usePlayback } from "app/hooks/usePlayback";
 
 export default function RecentlyAddedList() {
   const [nextPage, setNextPage] = useState(0);
@@ -11,6 +12,7 @@ export default function RecentlyAddedList() {
   const { data: queryData, refetch } = useRecentlyAddedQuery({
     variables: { page: 0 },
   });
+  const { playEntry } = usePlayback();
 
   useEffect(() => {
     if (queryData && queryData.recentlyAdded) {
@@ -24,7 +26,9 @@ export default function RecentlyAddedList() {
       ListHeaderComponent={ListHeader}
       data={data}
       keyExtractor={(item) => item.id!}
-      renderItem={({ item }) => <BeatListEntry entry={item} />}
+      renderItem={({ item }) => (
+        <BeatListEntry entry={item} onPress={() => playEntry(item, data)} />
+      )}
       onEndReached={() => refetch({ page: nextPage })}
       showsVerticalScrollIndicator={false}
     />

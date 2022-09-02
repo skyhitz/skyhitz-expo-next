@@ -6,19 +6,18 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Price } from "app/ui/beat-list-entry/price";
 import { FavoriteButton } from "app/ui/beat-list-entry/favoriteButton";
 import { tw } from "app/design-system/tailwind";
-import { usePlayback } from "../../hooks/usePlayback";
 
 export function BeatListEntry({
   entry,
   spot,
+  onPress,
 }: {
   entry: Entry;
   spot?: number;
+  onPress: () => void;
 }) {
-  const { playEntry } = usePlayback();
-
   return (
-    <Pressable onPress={() => playEntry(entry)}>
+    <Pressable onPress={onPress}>
       <View className="w-full flex items-center flex-row py-2">
         <Image
           style={{ width: 40, height: 40 }}

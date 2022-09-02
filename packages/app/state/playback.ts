@@ -1,10 +1,21 @@
 import { Entry } from "app/api/graphql";
+import { PlaybackState } from "app/models/PlaybackState";
 import { atom } from "recoil";
 
 export const isPlayingAtom = atom<boolean>({
   key: "isPlaying",
   default: false,
 });
+
+export const playbackStateAtom = atom<PlaybackState>({
+  key: "playbackState",
+  default: "IDLE"
+})
+
+export const playingHistoryAtom = atom<Entry[]>({
+  key: "playingHistory",
+  default: [],
+})
 
 export const shuffleAtom = atom<boolean>({
   key: "shuffle",
@@ -21,9 +32,9 @@ export const currentEntryAtom = atom<Entry | null>({
   default: null,
 });
 
-export const currentPlaylistAtom = atom<Entry[] | null>({
+export const currentPlaylistAtom = atom<Entry[]>({
   key: "currentPlaylist",
-  default: null,
+  default: [],
 });
 
 export const currentDurationAtom = atom<number>({

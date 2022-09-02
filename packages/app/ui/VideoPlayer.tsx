@@ -2,10 +2,15 @@ import { Video, ResizeMode } from "expo-av";
 import { useContext } from "react";
 import { ImageBackground, Platform } from "react-native";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { currentDurationAtom, currentPositionAtom } from "../state/playback";
+import {
+  currentDurationAtom,
+  currentPositionAtom,
+  playbackStateAtom,
+} from "app/state/playback";
 import { PlaybackContext } from "../provider/playback";
 import { currentEntryAtom } from "app/state/playback";
 import { videoSrc, imageSrc } from "app/utils/entry";
+import { usePlayback } from "app/hooks/usePlayback";
 
 // Audio.setAudioModeAsync({
 //   playsInSilentModeIOS: true,
@@ -23,13 +28,12 @@ type Props = {
 };
 
 export function VideoPlayer({ width, height }: Props) {
-  console.log("Video component");
   const setDuration = useSetRecoilState(currentDurationAtom);
   const setPosition = useSetRecoilState(currentPositionAtom);
+  const playbackState = useRecoilValue(playbackStateAtom);
   const entry = useRecoilValue(currentEntryAtom);
   const { setPlayback } = useContext(PlaybackContext);
-
-  console.log(imageSrc(entry?.imageUrl ?? ""));
+  const { skipForward } = usePlayback();
 
   return (
     <ImageBackground
@@ -65,6 +69,10 @@ export function VideoPlayer({ width, height }: Props) {
           //   return;
           // }
 
+          if (status.didJustFinish && playbackState === "PLAYING") {
+            skipForward();
+          }
+
           if (status.isPlaying && !status.isBuffering) {
             setPosition(status.positionMillis);
             setDuration(status.durationMillis ?? 0);
@@ -83,7 +91,6 @@ export function VideoPlayer({ width, height }: Props) {
         }}
         // onFullscreenUpdate={(update) => playerStore.onFullscreenUpdate(update)}
         onReadyForDisplay={(res: any) => {
-          console.log("aaa");
           if (Platform.OS !== "web") return;
           const { videoHeight, videoWidth } = res.target;
           const aspectRatio = videoWidth / videoHeight;

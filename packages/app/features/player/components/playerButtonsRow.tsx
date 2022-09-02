@@ -24,7 +24,7 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
   const [shuffleActive, setShuffleActive] = useRecoilState(shuffleAtom);
   const [loopActive, setLoopActive] = useRecoilState(loopAtom);
   const isPlaying = useRecoilValue(isPlayingAtom);
-  const { playPause } = usePlayback();
+  const { playPause, skipForward, skipBackward } = usePlayback();
   const sizeModificator = size === "large" ? 6 : 0;
 
   return (
@@ -37,11 +37,7 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
           size={14 + sizeModificator}
         />
       </Pressable>
-      <Pressable
-        onPress={() => {
-          //TODO
-        }}
-      >
+      <Pressable onPress={skipBackward}>
         <PrevIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
       <Pressable onPress={playPause}>
@@ -51,11 +47,7 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
           <PlayIcon color={tw.color("white")} size={22 + sizeModificator} />
         )}
       </Pressable>
-      <Pressable
-        onPress={() => {
-          //TODO
-        }}
-      >
+      <Pressable onPress={skipForward}>
         <NextIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
       <Pressable onPress={() => setLoopActive(!loopActive)}>
