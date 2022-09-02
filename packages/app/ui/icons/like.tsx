@@ -4,11 +4,11 @@ import Svg, { Path } from "react-native-svg";
 function Icon({
   size = 24,
   fill = false,
-  color,
+  color = "currentColor",
 }: {
   size: number;
   fill?: boolean;
-  color: string;
+  color?: string;
 }) {
   return (
     <Svg

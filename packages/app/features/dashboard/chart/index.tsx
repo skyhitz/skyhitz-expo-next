@@ -1,26 +1,24 @@
 import { SafeAreaView } from "app/design-system/safe-area-view";
-import { useEffect, useState } from "react";
-import { Entry, useTopChartQuery } from "app/api/graphql";
-import { isSome } from "app/utils";
+import { Entry, TopChartQuery, useTopChartQuery } from "app/api/graphql";
 import { FlatList } from "react-native";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { Text } from "app/design-system";
 import { usePlayback } from "app/hooks/usePlayback";
+import { usePagination } from "../../../hooks/usePagination";
+import { useCallback } from "react";
 
 export function ChartScreen() {
-  const [nextPage, setNextPage] = useState(0);
-  const [data, setData] = useState<Entry[]>([]);
-  const { data: queryData, refetch } = useTopChartQuery({
-    variables: { page: 0 },
+  const getId = useCallback((entry: Entry) => entry.id!, []);
+  const transformResponse = useCallback(
+    (result: TopChartQuery) => result.topChart,
+    []
+  );
+  const { data, onNextPage } = usePagination({
+    queryHook: useTopChartQuery,
+    getId,
+    transformResponse,
   });
   const { playEntry } = usePlayback();
-
-  useEffect(() => {
-    if (queryData && queryData.topChart) {
-      setData((prev) => prev.concat(queryData.topChart!.filter(isSome)));
-      setNextPage((prev) => prev + 1);
-    }
-  }, [queryData, setData, setNextPage]);
 
   return (
     <SafeAreaView
@@ -38,7 +36,7 @@ export function ChartScreen() {
             onPress={() => playEntry(item, data)}
           />
         )}
-        onEndReached={() => refetch({ page: nextPage })}
+        onEndReached={onNextPage}
       />
     </SafeAreaView>
   );

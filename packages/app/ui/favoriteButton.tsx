@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable } from "app/design-system";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { tw } from "app/design-system/tailwind";
+import Like from "app/ui/icons/like";
 
 export function FavoriteButton({
   size,
@@ -11,13 +11,12 @@ export function FavoriteButton({
   className?: string;
 }) {
   const [active, setActive] = useState(false);
+
+  const likeColor = active ? tw.color("blue") : tw.color("white");
+
   return (
     <Pressable className={className} onPress={() => setActive(!active)}>
-      {active ? (
-        <Icon name="heart" size={size} color={tw.color("blue")} />
-      ) : (
-        <Icon name="heart-outline" size={size} color={tw.color("white")} />
-      )}
+      <Like size={size} color={likeColor} fill={active} />
     </Pressable>
   );
 }

@@ -122,14 +122,12 @@ export function MobileTabBarWrapper() {
               onTogglePress={onExpand}
               animatedStyle={playerBarStyle}
             />
-
             <FullScreenPlayer
               onTogglePress={onHide}
               animatedStyle={fullScreenPlayerStyle}
             />
           </Animated.View>
         </PanGestureHandler>
-
         <Animated.View style={[{ zIndex: 10 }, tabBarStyle]}>
           <DashboardTabBar />
         </Animated.View>

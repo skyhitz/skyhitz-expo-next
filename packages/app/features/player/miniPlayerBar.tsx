@@ -23,6 +23,7 @@ export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
   const playbackState = useRecoilValue(playbackStateAtom);
   const { playPause } = usePlayback();
   const entry = useRecoilValue(currentEntryAtom);
+
   return (
     <Animated.View
       style={[
