@@ -6,7 +6,11 @@ import PlayIcon from "app/ui/icons/play";
 import PauseIcon from "app/ui/icons/pause";
 import Animated from "react-native-reanimated";
 import { useRecoilValue } from "recoil";
-import { currentEntryAtom, isPlayingAtom } from "app/state/playback";
+import {
+  currentEntryAtom,
+  isPlayingAtom,
+  playbackStateAtom,
+} from "app/state/playback";
 import { usePlayback } from "app/hooks/usePlayback";
 
 type Props = {
@@ -16,13 +20,16 @@ type Props = {
 
 export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
   const isPlaying = useRecoilValue(isPlayingAtom);
+  const playbackState = useRecoilValue(playbackStateAtom);
   const { playPause } = usePlayback();
   const entry = useRecoilValue(currentEntryAtom);
   return (
     <Animated.View
       style={[
         tw.style(
-          "flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5"
+          `flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5 ${
+            playbackState === "IDLE" ? "hidden" : ""
+          }`
         ),
         animatedStyle,
       ]}

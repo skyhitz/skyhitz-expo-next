@@ -9,13 +9,13 @@ export const isPlayingAtom = atom<boolean>({
 
 export const playbackStateAtom = atom<PlaybackState>({
   key: "playbackState",
-  default: "IDLE"
-})
+  default: "IDLE",
+});
 
 export const playingHistoryAtom = atom<Entry[]>({
   key: "playingHistory",
   default: [],
-})
+});
 
 export const shuffleAtom = atom<boolean>({
   key: "shuffle",
@@ -46,4 +46,3 @@ export const currentPositionAtom = atom<number>({
   key: "currentPosition",
   default: 0,
 });
-

@@ -3,12 +3,18 @@ import { PlayerSlider } from "./components/playerSlider";
 import { PlayerButtonsRow } from "./components/playerButtonsRow";
 import { VideoPlayer } from "app/ui/VideoPlayer";
 import { useRecoilValue } from "recoil";
-import { currentEntryAtom } from "app/state/playback";
+import { currentEntryAtom, playbackStateAtom } from "app/state/playback";
 
 export function PlayerBar() {
   const entry = useRecoilValue(currentEntryAtom);
+  const playbackState = useRecoilValue(playbackStateAtom);
+
   return (
-    <View className="flex flex-row justify-between items-center h-20 bg-blue-transparent">
+    <View
+      className={`flex flex-row justify-between items-center h-20 bg-blue-transparent ${
+        playbackState === "IDLE" ? "hidden" : ""
+      }`}
+    >
       <View className="p-4 w-52 flex flex-row items-center">
         <VideoPlayer width={40} height={40} />
         <View className="pl-4 h-full justify-end">

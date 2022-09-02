@@ -1,1 +1,7 @@
-export type PlaybackState = "IDLE" | "LOADING" | "PLAYING" | "PAUSED" | "SEEKING" | "ERROR"
+export type PlaybackState =
+  | "IDLE"
+  | "LOADING"
+  | "PLAYING"
+  | "PAUSED"
+  | "SEEKING"
+  | "ERROR";

@@ -129,6 +129,7 @@ export function MobileTabBarWrapper() {
             />
           </Animated.View>
         </PanGestureHandler>
+
         <Animated.View style={[{ zIndex: 10 }, tabBarStyle]}>
           <DashboardTabBar />
         </Animated.View>
