@@ -3,10 +3,10 @@ import { tw } from "app/design-system/tailwind";
 
 export default function SearchingIndicator({
   visible,
-  searchFraze,
+  searchPhrase,
 }: {
   visible: boolean;
-  searchFraze: string;
+  searchPhrase: string;
 }) {
   if (!visible) return null;
 
@@ -14,7 +14,7 @@ export default function SearchingIndicator({
     <View className="flex flex-row items-center">
       <ActivityIndicator color={tw.color("white")} />
       <Text className="text-xs ml-2">
-        Searching for &quot;{searchFraze}&quot;
+        Searching for &quot;{searchPhrase}&quot;
       </Text>
     </View>
   );
