@@ -6,10 +6,15 @@ import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { Separator } from "app/ui/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";
 import { Formik, FormikProps } from "formik";
-import * as Yup from "yup";
 import { useEffect, useRef } from "react";
 import { useLogIn } from "app/hooks/useLogIn";
 import { useCreateUserWithEmailMutation } from "app/api/graphql";
+import {
+  displayedNameSchema,
+  emailSchema,
+  usernameSchema,
+} from "app/validation";
+import * as Yup from "yup";
 
 type FormFields = {
   username: string;
@@ -41,6 +46,12 @@ export function SignUp() {
     });
   };
 
+  const signUpFormSchema = Yup.object().shape({
+    username: usernameSchema,
+    displayedName: displayedNameSchema,
+    email: emailSchema,
+  });
+
   const displayedNameInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
 
@@ -49,22 +60,6 @@ export function SignUp() {
     email: "",
     displayedName: "",
   };
-
-  const formSchema = Yup.object().shape({
-    username: Yup.string()
-      .required("Username is required.")
-      .min(2, "Username is minimum 2 characters.")
-      .matches(
-        /^[a-zA-Z0-9_-]+$/,
-        "Usernames cannot have spaces or special characters"
-      ),
-    displayedName: Yup.string()
-      .required("Display name is required.")
-      .min(2, "Display name is minimum 2 characters."),
-    email: Yup.string()
-      .required("Email is required")
-      .email("Please enter a valid email."),
-  });
 
   return (
     <KeyboardAvoidingView
@@ -79,7 +74,7 @@ export function SignUp() {
           validateOnMount={true}
           initialValues={initialValues}
           onSubmit={handleSignUp}
-          validationSchema={formSchema}
+          validationSchema={signUpFormSchema}
         >
           {({
             values,
