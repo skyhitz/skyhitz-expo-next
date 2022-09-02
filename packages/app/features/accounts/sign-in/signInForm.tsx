@@ -1,12 +1,11 @@
 import { SignInForm as FormData } from "app/types";
-import * as Yup from "yup";
-import { SchemaOf } from "yup";
 import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
 import WalletconnectBtn from "app/ui/walletconnectBtn";
 import { Separator } from "app/ui/orSeparator";
 import { Formik, FormikProps } from "formik";
 import StyledTextInput from "app/features/accounts/styledTextInput";
 import { useRequestTokenMutation } from "app/api/graphql";
+import { signInFormSchema } from "app/validation";
 
 type SignInFormProps = {
   onEmailSend: () => void;
@@ -30,12 +29,6 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
     usernameOrEmail: "",
   };
 
-  const formSchema: SchemaOf<FormData> = Yup.object().shape({
-    usernameOrEmail: Yup.string()
-      .required("Username or email is required")
-      .min(2, "Enter a valid username or email"),
-  });
-
   return (
     <View className="w-72 md:w-96">
       <WalletconnectBtn />
@@ -44,7 +37,7 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
         validateOnMount={true}
         initialValues={initialValues}
         onSubmit={handleSignIn}
-        validationSchema={formSchema}
+        validationSchema={signInFormSchema}
       >
         {({
           values,

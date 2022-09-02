@@ -9,12 +9,7 @@ import { Formik, FormikProps } from "formik";
 import { useEffect, useRef } from "react";
 import { useLogIn } from "app/hooks/useLogIn";
 import { useCreateUserWithEmailMutation } from "app/api/graphql";
-import {
-  displayedNameSchema,
-  emailSchema,
-  usernameSchema,
-} from "app/validation";
-import * as Yup from "yup";
+import { signUpFormSchema } from "app/validation";
 
 type FormFields = {
   username: string;
@@ -45,12 +40,6 @@ export function SignUp() {
       },
     });
   };
-
-  const signUpFormSchema = Yup.object().shape({
-    username: usernameSchema,
-    displayedName: displayedNameSchema,
-    email: emailSchema,
-  });
 
   const displayedNameInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);

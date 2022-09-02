@@ -11,23 +11,13 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/atoms";
 import { UpdateUserMutationVariables } from "app/api/graphql";
-import { object, string } from "yup";
-import {
-  displayedNameSchema,
-  emailSchema,
-  usernameSchema,
-} from "app/validation";
+import { editProfileFormSchema } from "app/validation";
 import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/edit-profile/logOutBtn";
 import { UploadProfilePictureBanner } from "app/features/edit-profile/uploadProfilePictureBanner";
 import { EditProfileHeader } from "app/features/edit-profile/editProfileHeader";
 import { values as vals } from "ramda";
 import { ChangeUserAvatar } from "app/features/edit-profile/changeUserAvatar";
-
-const iconProps = {
-  color: tw.color("white"),
-  size: 22,
-};
 
 export default function EditProfileScreen() {
   const user = useRecoilValue(userAtom)!;
@@ -40,18 +30,10 @@ export default function EditProfileScreen() {
     email: user.email,
   };
 
-  const formSchema = object().shape({
-    displayName: displayedNameSchema,
-    description: string(),
-    username: usernameSchema,
-    avatarUrl: string(),
-    email: emailSchema,
-  });
-
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={formSchema}
+      validationSchema={editProfileFormSchema}
       onSubmit={console.log}
     >
       {({
@@ -116,3 +98,8 @@ export default function EditProfileScreen() {
     </Formik>
   );
 }
+
+const iconProps = {
+  color: tw.color("white"),
+  size: 22,
+};
