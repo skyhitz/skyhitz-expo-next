@@ -10,7 +10,7 @@ export function PlayerSlider() {
   const position = useRecoilValue(currentPositionAtom);
   const songTime = duration / 1000;
   const currentTime = position / 1000;
-  const value = position / duration;
+  const value = duration !== 0 ? position / duration : 0;
 
   return (
     <View className="flex flex-row items-center justify-between w-full">
@@ -35,7 +35,7 @@ export function PlayerSlider() {
         thumbTintColor={tw.color("white")}
       />
       <Text className="text-white text-xs ml-3">
-        {(songTime / 60).toFixed()}:{(songTime % 60).toFixed()}
+        {(songTime / 60).toFixed()}:{(songTime % 60).toFixed().padStart(2, "0")}
       </Text>
     </View>
   );

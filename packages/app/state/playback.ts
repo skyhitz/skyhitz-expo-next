@@ -1,5 +1,4 @@
 import { Entry } from "app/api/graphql";
-import { Playback } from "expo-av/build/AV";
 import { atom } from "recoil";
 
 export const isPlayingAtom = atom<boolean>({

@@ -2,10 +2,12 @@ import { Text, View } from "app/design-system";
 import { Pressable, ViewStyle } from "react-native";
 import ChevronUp from "app/ui/icons/chevron-up";
 import { tw } from "app/design-system/tailwind";
-import { useState } from "react";
 import PlayIcon from "app/ui/icons/play";
 import PauseIcon from "app/ui/icons/pause";
 import Animated from "react-native-reanimated";
+import { useRecoilValue } from "recoil";
+import { currentEntryAtom, isPlayingAtom } from "app/state/playback";
+import { usePlayback } from "app/hooks/usePlayback";
 
 type Props = {
   onTogglePress?: () => void;
@@ -13,8 +15,9 @@ type Props = {
 };
 
 export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
+  const isPlaying = useRecoilValue(isPlayingAtom);
+  const { playPause } = usePlayback();
+  const entry = useRecoilValue(currentEntryAtom);
   return (
     <Animated.View
       style={[
@@ -27,10 +30,12 @@ export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
       <Pressable onPress={onTogglePress}>
         <View className="flex flex-row items-center">
           <ChevronUp color={tw.color("white")} />
-          <Text className="text-sm pl-1 text-white ml-2.5">title - artist</Text>
+          <Text className="text-sm pl-1 text-white ml-2.5">
+            {entry?.title} - {entry?.artist}
+          </Text>
         </View>
       </Pressable>
-      <Pressable onPress={() => setIsPlaying(!isPlaying)}>
+      <Pressable onPress={playPause}>
         {isPlaying ? (
           <PauseIcon color={tw.color("white")} size={22} />
         ) : (

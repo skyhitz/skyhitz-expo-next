@@ -26,6 +26,7 @@ export default function RecentlyAddedList() {
       keyExtractor={(item) => item.id!}
       renderItem={({ item }) => <BeatListEntry entry={item} />}
       onEndReached={() => refetch({ page: nextPage })}
+      showsVerticalScrollIndicator={false}
     />
   );
 }

@@ -1,5 +1,4 @@
 import { View } from "app/design-system";
-import { useState } from "react";
 import ShuffleIcon from "app/ui/icons/shuffle";
 import PrevIcon from "app/ui/icons/skip-backward";
 import NextIcon from "app/ui/icons/skip-forward";
@@ -8,21 +7,29 @@ import PauseIcon from "app/ui/icons/pause";
 import LoopIcon from "app/ui/icons/repeat";
 import { Pressable } from "app/design-system/pressable";
 import { tw } from "app/design-system/tailwind";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { usePlayback } from "app/hooks/usePlayback";
+import { isPlayingAtom, loopAtom, shuffleAtom } from "app/state/playback";
+
+const style = {
+  default: "h-10 max-w-60",
+  large: "h-20",
+};
 
 type Props = {
   size?: "default" | "large";
 };
 
 export function PlayerButtonsRow({ size = "default" }: Props) {
-  const [shuffleActive, setShuffleActive] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [randomActive, setRandomActive] = useState<boolean>(false);
-  const classes = size === "default" ? " h-10 max-w-60" : " h-20";
+  const [shuffleActive, setShuffleActive] = useRecoilState(shuffleAtom);
+  const [loopActive, setLoopActive] = useRecoilState(loopAtom);
+  const isPlaying = useRecoilValue(isPlayingAtom);
+  const { playPause } = usePlayback();
   const sizeModificator = size === "large" ? 6 : 0;
 
   return (
     <View
-      className={"flex flex-row w-full justify-evenly items-center" + classes}
+      className={`flex flex-row w-full justify-evenly items-center ${style[size]}`}
     >
       <Pressable onPress={() => setShuffleActive(!shuffleActive)}>
         <ShuffleIcon
@@ -37,7 +44,7 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
       >
         <PrevIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
-      <Pressable onPress={() => setIsPlaying(!isPlaying)}>
+      <Pressable onPress={playPause}>
         {isPlaying ? (
           <PauseIcon color={tw.color("white")} size={22 + sizeModificator} />
         ) : (
@@ -51,9 +58,9 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
       >
         <NextIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
-      <Pressable onPress={() => setRandomActive(!randomActive)}>
+      <Pressable onPress={() => setLoopActive(!loopActive)}>
         <LoopIcon
-          color={randomActive ? tw.color("blue-light") : tw.color("white")}
+          color={loopActive ? tw.color("blue-light") : tw.color("white")}
           size={14 + sizeModificator}
         />
       </Pressable>
