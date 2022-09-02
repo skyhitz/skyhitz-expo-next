@@ -12,7 +12,7 @@ export function LogOutBtn() {
       className="flex flex-row items-center px-4 py-3"
       onPress={logOut}
     >
-      <Logout color={tw.color("white")} size={20} />
+      <Logout color={tw.color("white")} size={22} />
       <Text className="ml-4 text-sm">Log Out</Text>
     </Pressable>
   );

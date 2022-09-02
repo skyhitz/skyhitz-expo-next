@@ -6,7 +6,12 @@ import { tw } from "app/design-system/tailwind";
 
 export const EditProfileTextInput = React.forwardRef(
   function EditProfileTextInput(
-    { children, style, ...rest }: TextProps & { children: ReactElement },
+    {
+      children,
+      placeholderTextColor,
+      style,
+      ...rest
+    }: TextProps & { children: ReactElement },
     ref: ForwardedRef<rTextInput>
   ) {
     return (
@@ -14,6 +19,7 @@ export const EditProfileTextInput = React.forwardRef(
         {children}
         <TextInput
           style={[tw.style("ml-4 text-white"), style]}
+          placeholderTextColor={placeholderTextColor ?? tw.color("white")}
           {...rest}
           ref={ref}
         />
