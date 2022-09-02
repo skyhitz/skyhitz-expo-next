@@ -23,7 +23,11 @@ export function ProfileScreen() {
       className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto"
     >
       <View className="flex flex-row items-center py-4 ">
-        <UserAvatar user={user} size="large" />
+        <UserAvatar
+          avatarUri={user.avatarUrl}
+          displayName={user.displayName}
+          size="large"
+        />
         <View className="ml-8 flex-1">
           <View className="flex flex-row items-center mb-2.5">
             <Text className="font-bold mr-2.5">{user.displayName}</Text>
