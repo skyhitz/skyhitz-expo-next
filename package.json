@@ -6,12 +6,13 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/react": "^17.0.39",
-    "@types/react-native": "^0.67.2",
     "eslint": "^8.11.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "turbo": "^1.1.6",
-    "typescript": "^4.6.2"
+    "prettier": "2.7.1",
+    "typescript": "^4.6.2",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "~0.67.6"
   },
   "scripts": {
     "native": "cd apps/expo && expo start",

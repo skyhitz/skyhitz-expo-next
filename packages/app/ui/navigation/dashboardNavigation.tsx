@@ -14,7 +14,7 @@ export function DashboardNavigation({
 }) {
   useSx();
   return (
-    <View className="flex flex-1 max-h-[100vh] bg-blue-dark">
+    <View className="flex flex-1 max-h-[100vh] bg-blue-dark overflow-hidden">
       <Navbar />
       <View className="flex flex-row flex-1">
         {tw.prefixMatch("sm") && <DashboardTabBar column />}

@@ -3,7 +3,6 @@
     "name": "skyhitz",
     "slug": "skyhitz",
     "version": "1.0.0",
-    "sdkVersion": "44.0.0",
     "scheme": "skyhitz",
     "orientation": "portrait",
     "icon": "./icon.png",
