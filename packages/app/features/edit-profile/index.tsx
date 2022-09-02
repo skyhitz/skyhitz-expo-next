@@ -7,10 +7,13 @@ import { Line } from "app/ui/orSeparator";
 import InfoCircle from "app/ui/icons/info-circle";
 import PersonOutline from "app/ui/icons/person-outline";
 import MailOutline from "app/ui/icons/mail-outline";
-import React from "react";
-import { useRecoilValue } from "recoil";
+import React, { useEffect } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userAtom } from "app/state/atoms";
-import { UpdateUserMutationVariables } from "app/api/graphql";
+import {
+  UpdateUserMutationVariables,
+  useUpdateUserMutation,
+} from "app/api/graphql";
 import { editProfileFormSchema } from "app/validation";
 import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/edit-profile/logOutBtn";
@@ -21,6 +24,28 @@ import { ChangeUserAvatar } from "app/features/edit-profile/changeUserAvatar";
 
 export default function EditProfileScreen() {
   const user = useRecoilValue(userAtom)!;
+  const setUser = useSetRecoilState(userAtom);
+  const [updateUser, { data, loading, error }] = useUpdateUserMutation();
+
+  const handleUpdateUser = async (form: UpdateUserMutationVariables) => {
+    if (loading) return;
+
+    // TODO: remove after adding ability to change profile picture
+    const { avatarUrl: _, ...formWithoutAvatarUrl } = form;
+
+    await updateUser({
+      variables: {
+        ...formWithoutAvatarUrl,
+        avatarUrl: user.avatarUrl,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (data?.updateUser) {
+      setUser(data.updateUser);
+    }
+  }, [data, setUser]);
 
   const initialValues: UpdateUserMutationVariables = {
     displayName: user.displayName,
@@ -34,7 +59,8 @@ export default function EditProfileScreen() {
     <Formik
       initialValues={initialValues}
       validationSchema={editProfileFormSchema}
-      onSubmit={console.log}
+      validateOnMount={true}
+      onSubmit={handleUpdateUser}
     >
       {({
         values,
@@ -45,7 +71,7 @@ export default function EditProfileScreen() {
       }: FormikProps<UpdateUserMutationVariables>) => (
         <SafeAreaView className="bg-blue-dark flex-1">
           <EditProfileHeader
-            disableDoneBtn={isValid}
+            disableDoneBtn={!isValid}
             onDoneBtnClick={handleSubmit}
           />
           <UploadProfilePictureBanner />
@@ -92,7 +118,11 @@ export default function EditProfileScreen() {
           </View>
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />
-          <Text>{vals(errors).join(" ")}</Text>
+          <Text className="text-red text-sm py-5 mx-4">
+            {vals(errors)
+              .join("\n")
+              .concat(error?.message ?? "")}
+          </Text>
         </SafeAreaView>
       )}
     </Formik>
