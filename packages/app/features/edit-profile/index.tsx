@@ -17,7 +17,6 @@ import {
 import { editProfileFormSchema } from "app/validation";
 import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/edit-profile/logOutBtn";
-import { UploadProfilePictureBanner } from "app/features/edit-profile/uploadProfilePictureBanner";
 import { EditProfileHeader } from "app/features/edit-profile/editProfileHeader";
 import { values as vals } from "ramda";
 import { ChangeUserAvatar } from "app/features/edit-profile/changeUserAvatar";
@@ -73,7 +72,9 @@ export default function EditProfileScreen() {
             disableDoneBtn={!isValid}
             onDoneBtnClick={handleSubmit}
           />
-          <UploadProfilePictureBanner />
+          <View className="w-full bg-red p-4">
+            <Text className="mx-auto text-sm">Upload a profile picture</Text>
+          </View>
           <View className="px-4">
             <ChangeUserAvatar
               avatarUri={values.avatarUrl}
