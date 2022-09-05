@@ -19,7 +19,6 @@ export function useAlgoliaSearch<T>({
   const [searchResult, setSearchResult] = useState<T[]>([]);
   const debouncedSearchPhrase = useDebounce(searchPhrase, 200);
   const [loading, setLoading] = useState(false);
-  const setLoadingFalse = () => setLoading(false);
 
   useEffect(() => {
     setLoading(true);
@@ -28,12 +27,20 @@ export function useAlgoliaSearch<T>({
   useEffect(() => {
     if (!debouncedSearchPhrase) return;
 
-    algoliaIndex
-      .search<T>(debouncedSearchPhrase)
-      .then((result) => result.hits)
-      .then(setSearchResult)
-      .catch(console.log)
-      .finally(setLoadingFalse);
+    const search = async () => {
+      try {
+        const algoliaSearchResult = await algoliaIndex.search<T>(
+          debouncedSearchPhrase
+        );
+        setSearchResult(algoliaSearchResult.hits);
+      } catch (ex) {
+        console.error(ex);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    search();
   }, [debouncedSearchPhrase, algoliaIndex]);
 
   return {
