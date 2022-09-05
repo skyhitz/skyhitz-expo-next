@@ -1,7 +1,7 @@
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import React, { useState } from "react";
 import { TabBar, Tabs } from "app/features/dashboard/search/tabs";
-import { SearchInputField } from "app/features/dashboard/search/search-input-field";
+import { SearchInputField } from "app/features/dashboard/search/searchInputField";
 import RecentlyAddedList from "app/features/dashboard/search/recently-added";
 import { isEmpty } from "ramda";
 import { BeatmakersSearchResultList } from "app/features/dashboard/search/search-result-lists/beatmakersSearchResultList";
