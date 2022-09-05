@@ -10,7 +10,7 @@ export function BeatsSearchResultList({
 }: {
   searchPhrase: string;
 }) {
-  const { data, loading } = useAlgoliaSearch<Entry>({
+  const { data, loading, error } = useAlgoliaSearch<Entry>({
     searchPhrase,
     algoliaIndex: entriesIndex,
   });
@@ -22,6 +22,7 @@ export function BeatsSearchResultList({
       loading={loading}
       renderItem={({ item }) => <BeatListEntry entry={item} />}
       emptyListText="No beats found"
+      error={!!error}
     />
   );
 }

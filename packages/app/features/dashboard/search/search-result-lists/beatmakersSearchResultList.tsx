@@ -10,7 +10,7 @@ export function BeatmakersSearchResultList({
 }: {
   searchPhrase: string;
 }) {
-  const { data, loading } = useAlgoliaSearch<User>({
+  const { data, loading, error } = useAlgoliaSearch<User>({
     searchPhrase,
     algoliaIndex: usersIndex,
   });
@@ -22,6 +22,7 @@ export function BeatmakersSearchResultList({
       loading={loading}
       renderItem={({ item }) => <MakerListEntry user={item} />}
       emptyListText="No beatmakers found"
+      error={!!error}
     />
   );
 }

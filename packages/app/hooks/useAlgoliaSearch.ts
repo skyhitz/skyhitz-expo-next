@@ -10,13 +10,17 @@ type Props = {
 type SearchResult<T> = {
   loading: boolean;
   data: T[];
+  error?: Error;
 };
+
+export type Error = { name: string; message: string; status?: number };
 
 export function useAlgoliaSearch<T>({
   searchPhrase,
   algoliaIndex,
 }: Props): SearchResult<T> {
   const [searchResult, setSearchResult] = useState<T[]>([]);
+  const [error, setError] = useState<Error | undefined>(undefined);
   const debouncedSearchPhrase = useDebounce(searchPhrase, 200);
   const [loading, setLoading] = useState(false);
 
@@ -33,8 +37,10 @@ export function useAlgoliaSearch<T>({
           debouncedSearchPhrase
         );
         setSearchResult(algoliaSearchResult.hits);
+        setError(undefined);
       } catch (ex) {
-        console.error(ex);
+        setSearchResult([]);
+        setError(ex);
       } finally {
         setLoading(false);
       }
@@ -46,5 +52,6 @@ export function useAlgoliaSearch<T>({
   return {
     loading,
     data: searchResult,
+    error,
   };
 }
