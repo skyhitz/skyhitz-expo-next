@@ -8,7 +8,7 @@ import InfoCircle from "app/ui/icons/info-circle";
 import PersonOutline from "app/ui/icons/person-outline";
 import MailOutline from "app/ui/icons/mail-outline";
 import React, { useEffect } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "app/state/atoms";
 import {
   UpdateUserMutationVariables,
@@ -23,8 +23,7 @@ import { values as vals } from "ramda";
 import { ChangeUserAvatar } from "app/features/edit-profile/changeUserAvatar";
 
 export default function EditProfileScreen() {
-  const user = useRecoilValue(userAtom)!;
-  const setUser = useSetRecoilState(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
   const [updateUser, { data, loading, error }] = useUpdateUserMutation();
 
   const handleUpdateUser = async (form: UpdateUserMutationVariables) => {
@@ -36,7 +35,7 @@ export default function EditProfileScreen() {
     await updateUser({
       variables: {
         ...formWithoutAvatarUrl,
-        avatarUrl: user.avatarUrl,
+        avatarUrl: user!.avatarUrl,
       },
     });
   };
@@ -48,11 +47,11 @@ export default function EditProfileScreen() {
   }, [data, setUser]);
 
   const initialValues: UpdateUserMutationVariables = {
-    displayName: user.displayName,
-    description: user.description,
-    username: user.username,
-    avatarUrl: user.avatarUrl,
-    email: user.email,
+    displayName: user!.displayName,
+    description: user!.description,
+    username: user!.username,
+    avatarUrl: user!.avatarUrl,
+    email: user!.email,
   };
 
   return (
@@ -78,7 +77,7 @@ export default function EditProfileScreen() {
           <View className="px-4">
             <ChangeUserAvatar
               avatarUri={values.avatarUrl}
-              displayName={user.displayName}
+              displayName={user!.displayName}
               handleChange={handleChange("avatarUrl")}
             />
             <EditProfileTextInput
