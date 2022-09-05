@@ -9,6 +9,14 @@ export function PlayerBar() {
   const entry = useRecoilValue(currentEntryAtom);
   const playbackState = useRecoilValue(playbackStateAtom);
 
+  if (playbackState === "ERROR") {
+    return (
+      <View className="h-20 bg-blue-transparent items-center justify-center">
+        <Text className="text-red">Something went wrong. Try again.</Text>
+      </View>
+    );
+  }
+
   return (
     <View
       className={`flex flex-row justify-between items-center h-20 bg-blue-transparent ${

@@ -25,6 +25,21 @@ export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
   const { playPause } = usePlayback();
   const entry = useRecoilValue(currentEntryAtom);
 
+  if (playbackState === "ERROR") {
+    return (
+      <Animated.View
+        style={[
+          tw.style(
+            "flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5"
+          ),
+          animatedStyle,
+        ]}
+      >
+        <Text className="text-red">Something went wrong. Try again.</Text>
+      </Animated.View>
+    );
+  }
+
   return (
     <Animated.View
       style={[

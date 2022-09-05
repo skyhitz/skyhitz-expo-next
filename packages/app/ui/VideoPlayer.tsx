@@ -55,11 +55,7 @@ export function VideoPlayer({ width, height, style }: Props) {
           }
         }}
         onPlaybackStatusUpdate={(status) => {
-          console.log("status", status);
           if (!status.isLoaded) {
-            if (status.error) {
-              console.log(status.error);
-            }
             return;
           }
 
@@ -83,15 +79,13 @@ export function VideoPlayer({ width, height, style }: Props) {
           alignItems: "center",
           justifyContent: "center",
         }}
-        onError={(error) => {
-          // TODO
-          console.log(error);
+        onError={(_) => {
+          setPlaybackState("ERROR");
         }}
         onReadyForDisplay={() => {
           if (playbackState === "LOADING") {
             setPlaybackState("PLAYING");
           }
-          console.log("ready for display");
         }}
       />
     </ImageBackground>

@@ -10,7 +10,7 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 import Animated from "react-native-reanimated";
 import { VideoPlayer } from "app/ui/VideoPlayer";
 import { useRecoilValue } from "recoil";
-import { currentEntryAtom } from "app/state/playback";
+import { currentEntryAtom, playbackStateAtom } from "app/state/playback";
 
 const { height } = Dimensions.get("window");
 
@@ -21,6 +21,24 @@ type Props = {
 
 export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
   const entry = useRecoilValue(currentEntryAtom);
+  const playbackState = useRecoilValue(playbackStateAtom);
+
+  if (playbackState === "ERROR") {
+    return (
+      <Animated.View
+        style={[
+          tw.style(
+            ` bg-blue-dark absolute w-full items-center justify-center h-${
+              height / 4
+            }`
+          ),
+          animatedStyle,
+        ]}
+      >
+        <Text className="text-red">Something went wrong. Try again.</Text>
+      </Animated.View>
+    );
+  }
 
   return (
     <Animated.View
