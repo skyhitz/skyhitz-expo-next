@@ -51,31 +51,33 @@ export function usePlayback(): PlaybackResult {
         const initialStatus = {
           shouldPlay: true,
         };
-        await playback.loadAsync(source, initialStatus, true);
-        console.log("loaded");
+        setDuration(0);
+        setPosition(0);
         setEntry(entry);
         setPlayingHistory(append(entry, playingHistory));
+        await playback.loadAsync(source, initialStatus, true);
         setIsPlaying(true);
-        setPlaybackState("PLAYING");
         await playback.playAsync();
       }
     },
     [
       playback,
-      setPlaybackState,
       setIsPlaying,
       setEntry,
       setPlayingHistory,
       playingHistory,
+      setPosition,
+      setDuration,
     ]
   );
 
   const playEntry = useCallback(
     async (entry: Entry, playlist: Entry[]) => {
+      setPlaybackState("LOADING");
       await _loadAndPlay(entry);
       setPlaylist(playlist);
     },
-    [_loadAndPlay, setPlaylist]
+    [_loadAndPlay, setPlaylist, setPlaybackState]
   );
 
   const playPause = useCallback(async () => {
@@ -118,19 +120,8 @@ export function usePlayback(): PlaybackResult {
     } else {
       nextIndex = (currentIndex + 1) % playlist.length;
     }
-    setDuration(0);
-    setPosition(0);
     await _loadAndPlay(playlist[nextIndex]!);
-  }, [
-    playback,
-    entry,
-    _loadAndPlay,
-    shuffle,
-    playlist,
-    setPlaybackState,
-    setPosition,
-    setDuration,
-  ]);
+  }, [playback, entry, _loadAndPlay, shuffle, playlist, setPlaybackState]);
 
   const skipBackward = useCallback(async () => {
     const previousEntry = last(init(playingHistory));
@@ -143,8 +134,6 @@ export function usePlayback(): PlaybackResult {
     }
     setPlaybackState("LOADING");
     await playback?.pauseAsync();
-    setDuration(0);
-    setPosition(0);
     await _loadAndPlay(previousEntry);
     setPlayingHistory(init(playingHistory));
   }, [
@@ -154,8 +143,6 @@ export function usePlayback(): PlaybackResult {
     _loadAndPlay,
     setPlaybackState,
     isPlaying,
-    setPosition,
-    setDuration,
   ]);
 
   const toggleLoop = useCallback(async () => {

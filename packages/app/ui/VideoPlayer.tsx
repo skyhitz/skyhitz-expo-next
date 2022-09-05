@@ -1,7 +1,7 @@
 import { Video, ResizeMode } from "expo-av";
 import { useContext } from "react";
-import { ImageBackground } from "react-native";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { ImageBackground, Platform, ViewStyle } from "react-native";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import {
   currentDurationAtom,
   currentPositionAtom,
@@ -16,31 +16,40 @@ import { usePlayback } from "app/hooks/usePlayback";
 type Props = {
   width: number;
   height: number;
+  style?: ViewStyle;
 };
 
-export function VideoPlayer({ width, height }: Props) {
+export function VideoPlayer({ width, height, style }: Props) {
   const setDuration = useSetRecoilState(currentDurationAtom);
   const setPosition = useSetRecoilState(currentPositionAtom);
-  const playbackState = useRecoilValue(playbackStateAtom);
+  const [playbackState, setPlaybackState] = useRecoilState(playbackStateAtom);
   const isLooping = useRecoilValue(loopAtom);
   const entry = useRecoilValue(currentEntryAtom);
   const { setPlayback } = useContext(PlaybackContext);
   const { skipForward } = usePlayback();
 
+  const getVideoUri = () => {
+    // we need to provide correct uri only for web
+    // on native we can change uri using loadAsync
+    if (Platform.OS === "web" && entry) {
+      return videoSrc(entry.videoUrl!);
+    }
+    return "";
+  };
+
   return (
     <ImageBackground
       source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : "" }}
-      style={{ width, height, alignItems: "center", justifyContent: "center" }}
+      style={[
+        { width, height, alignItems: "center", justifyContent: "center" },
+        style,
+      ]}
     >
       <Video
-        posterSource={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : "" }}
-        usePoster={true}
         source={{
-          uri: entry ? videoSrc(entry.videoUrl!) : "",
+          uri: getVideoUri(),
         }}
-        posterStyle={{ width, height }}
         ref={(ref) => {
-          console.log("set video ref");
           if (ref !== null) {
             setPlayback(ref);
           }
@@ -53,13 +62,6 @@ export function VideoPlayer({ width, height }: Props) {
             }
             return;
           }
-
-          // if (this.networkState === "none" && status.isBuffering) {
-          //   console.log(
-          //     "You are probably offline. Please make sure you are connected to the Internet to watch this video"
-          //   );
-          //   return;
-          // }
 
           if (
             status.didJustFinish &&
@@ -85,7 +87,12 @@ export function VideoPlayer({ width, height }: Props) {
           // TODO
           console.log(error);
         }}
-        // onFullscreenUpdate={(update) => playerStore.onFullscreenUpdate(update)}
+        onReadyForDisplay={() => {
+          if (playbackState === "LOADING") {
+            setPlaybackState("PLAYING");
+          }
+          console.log("ready for display");
+        }}
       />
     </ImageBackground>
   );

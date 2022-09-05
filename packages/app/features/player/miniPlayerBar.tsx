@@ -12,6 +12,7 @@ import {
   playbackStateAtom,
 } from "app/state/playback";
 import { usePlayback } from "app/hooks/usePlayback";
+import { ActivityIndicator } from "app/design-system/activityIndicator";
 
 type Props = {
   onTogglePress?: () => void;
@@ -43,13 +44,17 @@ export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
           </Text>
         </View>
       </Pressable>
-      <Pressable onPress={playPause}>
-        {isPlaying ? (
-          <PauseIcon color={tw.color("white")} size={22} />
-        ) : (
-          <PlayIcon color={tw.color("white")} size={22} />
-        )}
-      </Pressable>
+      {playbackState === "LOADING" ? (
+        <ActivityIndicator />
+      ) : (
+        <Pressable onPress={playPause}>
+          {isPlaying ? (
+            <PauseIcon color={tw.color("white")} size={22} />
+          ) : (
+            <PlayIcon color={tw.color("white")} size={22} />
+          )}
+        </Pressable>
+      )}
     </Animated.View>
   );
 }
