@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDebounce } from "app/hooks/useDebounce";
 import { SearchIndex } from "algoliasearch/lite";
+import { ErrorType } from "app/types";
 
 type Props = {
   searchPhrase: string;
@@ -10,17 +11,20 @@ type Props = {
 type SearchResult<T> = {
   loading: boolean;
   data: T[];
-  error?: Error;
+  error?: ErrorType;
 };
 
-export type Error = { name: string; message: string; status?: number };
+const unknownError: ErrorType = {
+  name: "Unknown error",
+  message: "Unknown algolia search error",
+};
 
 export function useAlgoliaSearch<T>({
   searchPhrase,
   algoliaIndex,
 }: Props): SearchResult<T> {
   const [searchResult, setSearchResult] = useState<T[]>([]);
-  const [error, setError] = useState<Error | undefined>(undefined);
+  const [error, setError] = useState<ErrorType | undefined>(undefined);
   const debouncedSearchPhrase = useDebounce(searchPhrase, 200);
   const [loading, setLoading] = useState(false);
 
@@ -38,9 +42,9 @@ export function useAlgoliaSearch<T>({
         );
         setSearchResult(algoliaSearchResult.hits);
         setError(undefined);
-      } catch (ex) {
+      } catch (e) {
+        setError((e as ErrorType) ?? unknownError);
         setSearchResult([]);
-        setError(ex);
       } finally {
         setLoading(false);
       }
