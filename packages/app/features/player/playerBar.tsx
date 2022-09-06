@@ -1,26 +1,44 @@
 import { Text, View } from "app/design-system";
 import { PlayerSlider } from "./components/playerSlider";
 import { PlayerButtonsRow } from "./components/playerButtonsRow";
+import { VideoPlayer } from "app/ui/VideoPlayer";
+import { useRecoilValue } from "recoil";
+import { currentEntryAtom, playbackStateAtom } from "app/state/playback";
 
 export function PlayerBar() {
+  const entry = useRecoilValue(currentEntryAtom);
+  const playbackState = useRecoilValue(playbackStateAtom);
+
+  if (playbackState === "ERROR") {
+    return (
+      <View className="h-20 bg-blue-transparent items-center justify-center">
+        <Text className="text-red">Something went wrong. Try again.</Text>
+      </View>
+    );
+  }
+
   return (
-    <View className="flex flex-row justify-between items-center h-20 bg-blue-transparent">
+    <View
+      className={`flex flex-row justify-between items-center h-20 bg-blue-transparent ${
+        playbackState === "IDLE" ? "hidden" : ""
+      }`}
+    >
       <View className="p-4 w-52 flex flex-row items-center">
-        <View className="bg-red h-10 w-10" />
+        <VideoPlayer width={40} height={40} />
         <View className="pl-4 h-full justify-end">
           <Text
             className="text-sm text-left font-bold text-white"
             ellipsizeMode="tail"
             numberOfLines={1}
           >
-            Song title
+            {entry?.title}
           </Text>
           <Text
             className="text-xs text-left text-grey mt-1"
             ellipsizeMode="tail"
             numberOfLines={1}
           >
-            Artist
+            {entry?.artist}
           </Text>
         </View>
       </View>

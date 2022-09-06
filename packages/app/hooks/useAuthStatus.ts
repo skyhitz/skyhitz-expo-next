@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SecureStorage } from "app/utils/secure-storage";
 import { useSetRecoilState } from "recoil";
-import { appInitializedAtom, userAtom } from "app/state/atoms";
+import { appInitializedAtom, userAtom } from "app/state/user";
 import {
   AuthenticatedUserQuery,
   useAuthenticatedUserQuery,

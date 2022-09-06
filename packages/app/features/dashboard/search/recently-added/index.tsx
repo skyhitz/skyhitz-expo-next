@@ -6,6 +6,7 @@ import {
   useRecentlyAddedQuery,
 } from "app/api/graphql";
 import { BeatListEntry } from "app/ui/beat-list-entry";
+import { usePlayback } from "app/hooks/usePlayback";
 import { usePagination } from "app/hooks/usePagination";
 import { useCallback } from "react";
 
@@ -20,13 +21,17 @@ export default function RecentlyAddedList() {
     transformResponse,
     getId,
   });
+  const { playEntry } = usePlayback();
 
   return (
     <FlatList
       ListHeaderComponent={ListHeader}
       data={data}
       keyExtractor={(item) => item.id!}
-      renderItem={({ item }) => <BeatListEntry entry={item} />}
+      renderItem={({ item }) => (
+        <BeatListEntry entry={item} onPress={() => playEntry(item, data)} />
+      )}
+      showsVerticalScrollIndicator={false}
       onEndReached={onNextPage}
       onEndReachedThreshold={0.1}
     />

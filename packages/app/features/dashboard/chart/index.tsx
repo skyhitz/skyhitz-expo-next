@@ -3,6 +3,7 @@ import { Entry, TopChartQuery, useTopChartQuery } from "app/api/graphql";
 import { FlatList } from "react-native";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { Text } from "app/design-system";
+import { usePlayback } from "app/hooks/usePlayback";
 import { usePagination } from "../../../hooks/usePagination";
 import { useCallback } from "react";
 
@@ -17,6 +18,7 @@ export function ChartScreen() {
     getId,
     transformResponse,
   });
+  const { playEntry } = usePlayback();
 
   return (
     <SafeAreaView
@@ -28,7 +30,11 @@ export function ChartScreen() {
         data={data}
         keyExtractor={(item) => item.id!}
         renderItem={({ item, index }) => (
-          <BeatListEntry entry={item} spot={index + 1} />
+          <BeatListEntry
+            entry={item}
+            spot={index + 1}
+            onPress={() => playEntry(item, data)}
+          />
         )}
         onEndReached={onNextPage}
       />

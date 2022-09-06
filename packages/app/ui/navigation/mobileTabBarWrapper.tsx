@@ -122,7 +122,6 @@ export function MobileTabBarWrapper() {
               onTogglePress={onExpand}
               animatedStyle={playerBarStyle}
             />
-
             <FullScreenPlayer
               onTogglePress={onHide}
               animatedStyle={fullScreenPlayerStyle}
