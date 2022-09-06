@@ -8,6 +8,7 @@ import { IconProps } from "app/types";
 type Props = TextProps & {
   icon: (_props: IconProps) => ReactElement;
   iconProps?: IconProps;
+  className?: string;
 };
 
 const defaultIconProps = {
@@ -17,14 +18,21 @@ const defaultIconProps = {
 
 export const EditProfileTextInput = React.forwardRef(
   function EditProfileTextInput(
-    { placeholderTextColor, style, icon, iconProps, ...rest }: Props,
+    {
+      placeholderTextColor,
+      style,
+      icon,
+      iconProps,
+      className = "",
+      ...rest
+    }: Props,
     ref: ForwardedRef<rTextInput>
   ) {
     return (
-      <View className="flex flex-row py-3">
+      <View className={`flex flex-row py-3 ${className}`}>
         {icon(iconProps ?? defaultIconProps)}
         <TextInput
-          style={[tw.style("ml-4 text-white"), style]}
+          style={[tw.style("ml-4 text-white flex-1"), style]}
           placeholderTextColor={placeholderTextColor ?? tw.color("white")}
           {...rest}
           ref={ref}
