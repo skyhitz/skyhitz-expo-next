@@ -2,7 +2,6 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 import { Text, View } from "app/design-system";
 import { EditProfileTextInput } from "app/features/edit-profile/editProfileTextInput";
 import AccountBox from "app/ui/icons/account-box";
-import { tw } from "app/design-system/tailwind";
 import { Line } from "app/ui/orSeparator";
 import InfoCircle from "app/ui/icons/info-circle";
 import PersonOutline from "app/ui/icons/person-outline";
@@ -20,6 +19,7 @@ import { LogOutBtn } from "app/features/edit-profile/logOutBtn";
 import { EditProfileHeader } from "app/features/edit-profile/editProfileHeader";
 import { values as vals } from "ramda";
 import { ChangeUserAvatar } from "app/features/edit-profile/changeUserAvatar";
+import { Credits } from "app/features/edit-profile/credits";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -85,25 +85,22 @@ export default function EditProfileScreen() {
               value={values.displayName ?? ""}
               placeholder={"Display Name"}
               onChangeText={handleChange("displayName")}
-            >
-              <AccountBox {...iconProps} />
-            </EditProfileTextInput>
+              icon={AccountBox}
+            />
             <Line />
             <EditProfileTextInput
               value={values.description ?? ""}
               placeholder={"Description"}
               onChangeText={handleChange("description")}
-            >
-              <InfoCircle {...iconProps} />
-            </EditProfileTextInput>
+              icon={InfoCircle}
+            />
             <Line />
             <EditProfileTextInput
               value={values.username ?? ""}
               placeholder={"Username"}
               onChangeText={handleChange("username")}
-            >
-              <PersonOutline {...iconProps} />
-            </EditProfileTextInput>
+              icon={PersonOutline}
+            />
             <Text className="font-bold text-sm pt-8 pb-2">
               Private information
             </Text>
@@ -111,10 +108,10 @@ export default function EditProfileScreen() {
               value={values.email ?? ""}
               placeholder={"Email address"}
               onChangeText={handleChange("email")}
-            >
-              <MailOutline {...iconProps} />
-            </EditProfileTextInput>
+              icon={MailOutline}
+            />
             <Line />
+            <Credits className="mt-8" />
           </View>
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />
@@ -128,8 +125,3 @@ export default function EditProfileScreen() {
     </Formik>
   );
 }
-
-const iconProps = {
-  color: tw.color("white"),
-  size: 22,
-};
