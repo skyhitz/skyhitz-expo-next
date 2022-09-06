@@ -18,3 +18,8 @@ export type SignUpForm = {
 export type SignInForm = {
   usernameOrEmail: string;
 };
+
+export type IconProps = {
+  color?: string;
+  size?: number;
+};
