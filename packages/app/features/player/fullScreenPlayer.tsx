@@ -8,6 +8,10 @@ import { PlayerButtonsRow } from "./components/playerButtonsRow";
 import { PlayerSlider } from "./components/playerSlider";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import Animated from "react-native-reanimated";
+import { VideoPlayer } from "app/ui/VideoPlayer";
+import { useRecoilValue } from "recoil";
+import { currentEntryAtom, playbackStateAtom } from "app/state/playback";
+
 const { height } = Dimensions.get("window");
 
 type Props = {
@@ -16,6 +20,26 @@ type Props = {
 };
 
 export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
+  const entry = useRecoilValue(currentEntryAtom);
+  const playbackState = useRecoilValue(playbackStateAtom);
+
+  if (playbackState === "ERROR") {
+    return (
+      <Animated.View
+        style={[
+          tw.style(
+            ` bg-blue-dark absolute w-full items-center justify-center h-${
+              height / 4
+            }`
+          ),
+          animatedStyle,
+        ]}
+      >
+        <Text className="text-red">Something went wrong. Try again.</Text>
+      </Animated.View>
+    );
+  }
+
   return (
     <Animated.View
       style={[
@@ -31,7 +55,8 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
         >
           <ChevronDown size={24} color={tw.color("white")} />
         </Pressable>
-        <View className="bg-red h-50 w-50 mb-2.5" />
+        <VideoPlayer width={200} height={200} style={{ marginBottom: 40 }} />
+
         <PlayerSlider />
         <View className="flex-1 items-center justify-center">
           <Text
@@ -39,14 +64,14 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
             ellipsizeMode="tail"
             numberOfLines={1}
           >
-            Title
+            {entry?.title}
           </Text>
           <Text
             className="text-base text-center text-white"
             ellipsizeMode="tail"
             numberOfLines={1}
           >
-            Artist
+            {entry?.artist}
           </Text>
         </View>
 

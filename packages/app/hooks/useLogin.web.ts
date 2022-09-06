@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { userAtom } from "app/state/atoms";
+import { userAtom } from "app/state/user";
 import { SecureStorage } from "app/utils/secure-storage";
 import { useRouter } from "solito/router";
 import { User } from "app/api/graphql";

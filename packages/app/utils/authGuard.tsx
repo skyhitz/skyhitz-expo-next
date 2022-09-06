@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { userAtom } from "app/state/atoms";
+import { userAtom } from "app/state/user";
 import { useRouter } from "solito/router";
 import { SplashScreen } from "app/features/splash/splashScreen";
 

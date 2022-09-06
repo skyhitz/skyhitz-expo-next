@@ -2,7 +2,7 @@ import React from "react";
 import { useAuthStatus } from "app/hooks/useAuthStatus";
 import { SplashScreen } from "app/features/splash/splashScreen";
 import { useRecoilValue } from "recoil";
-import { appInitializedAtom } from "app/state/atoms";
+import { appInitializedAtom } from "app/state/user";
 import { useRouter } from "solito/router";
 
 export const NavigationProvider = ({
