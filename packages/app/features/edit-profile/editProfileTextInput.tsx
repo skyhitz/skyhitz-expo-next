@@ -32,7 +32,7 @@ export const EditProfileTextInput = React.forwardRef(
       <View className={`flex flex-row py-3 ${className}`}>
         {icon(iconProps ?? defaultIconProps)}
         <TextInput
-          style={[tw.style("ml-4 text-white flex-1"), style]}
+          style={[tw.style("ml-4 text-white w-full"), style]}
           placeholderTextColor={placeholderTextColor ?? tw.color("white")}
           {...rest}
           ref={ref}
