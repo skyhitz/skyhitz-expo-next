@@ -28,7 +28,13 @@ export function NavigationProvider({
                 screens: {
                   search: "dashboard/search",
                   chart: "dashboard/chart",
-                  profile: "dashboard/profile",
+                  profile: {
+                    path: "dashboard/profile",
+                    screens: {
+                      "user-details": "",
+                      mint: "mint",
+                    },
+                  },
                 },
               },
             },

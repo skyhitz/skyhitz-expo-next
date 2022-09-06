@@ -1,7 +1,7 @@
 import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
 import { Platform, TextInput } from "react-native";
 import BackgroundImage from "app/ui/backgroundImage";
-import WalletconnectBtn from "app/ui/walletconnectBtn";
+import WalletconnectBtn from "app/ui/buttons/walletconnectBtn";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { Separator } from "app/features/accounts/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";

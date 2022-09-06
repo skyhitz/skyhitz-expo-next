@@ -14,6 +14,8 @@ import { ProfileScreen } from "app/features/dashboard/profile";
 import { Linking } from "react-native";
 import { Config } from "app/config";
 import { MobileTabBarWrapper } from "../../ui/navigation/mobileTabBarWrapper";
+import { MintScreen } from "../../features/dashboard/profile/mint/MintScreen";
+import { tw } from "app/design-system/tailwind";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -119,7 +121,42 @@ function DashboardNavigation() {
     >
       <Tab.Screen component={SearchScreen} name="search" />
       <Tab.Screen component={ChartScreen} name="chart" />
-      <Tab.Screen component={ProfileScreen} name="profile" />
+      <Tab.Screen component={ProfileNavigation} name="profile" />
     </Tab.Navigator>
+  );
+}
+
+const ProfileStack = createNativeStackNavigator<{
+  "user-details": undefined;
+  mint: undefined;
+}>();
+
+function ProfileNavigation() {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        component={ProfileScreen}
+        name="user-details"
+        options={{
+          title: "Profile",
+          headerShown: false,
+        }}
+      />
+      <ProfileStack.Screen
+        component={MintScreen}
+        name="mint"
+        options={{
+          title: "Mint new NFT",
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: tw.color("blue-dark"),
+          },
+          headerTintColor: tw.color("white"),
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+    </ProfileStack.Navigator>
   );
 }

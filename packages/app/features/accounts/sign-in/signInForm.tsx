@@ -2,7 +2,7 @@ import { SignInForm as FormData } from "app/types";
 import * as Yup from "yup";
 import { SchemaOf } from "yup";
 import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
-import WalletconnectBtn from "app/ui/walletconnectBtn";
+import WalletconnectBtn from "app/ui/buttons/walletconnectBtn";
 import { Separator } from "app/features/accounts/orSeparator";
 import { Formik, FormikProps } from "formik";
 import StyledTextInput from "app/features/accounts/styledTextInput";
