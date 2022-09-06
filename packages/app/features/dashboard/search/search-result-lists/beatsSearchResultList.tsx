@@ -4,6 +4,7 @@ import { entriesIndex } from "app/api/algolia";
 import { Entry } from "app/api/graphql";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { useAlgoliaSearch } from "app/hooks/useAlgoliaSearch";
+import { usePlayback } from "app/hooks/usePlayback";
 
 export function BeatsSearchResultList({
   searchPhrase,
@@ -14,13 +15,16 @@ export function BeatsSearchResultList({
     searchPhrase,
     algoliaIndex: entriesIndex,
   });
+  const { playEntry } = usePlayback();
 
   return (
     <SearchResultList
       searchPhrase={searchPhrase}
       data={data}
       loading={loading}
-      renderItem={({ item }) => <BeatListEntry entry={item} />}
+      renderItem={({ item }) => (
+        <BeatListEntry entry={item} onPress={() => playEntry(item, data)} />
+      )}
       emptyListText="No beats found"
       error={!!error}
     />
