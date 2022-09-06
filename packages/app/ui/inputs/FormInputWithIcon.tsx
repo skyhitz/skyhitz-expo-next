@@ -5,16 +5,18 @@ import { tw } from "app/design-system/tailwind";
 
 type Props = {
   icon: ReactElement;
+  containerClassNames?: string;
 };
 
 export function FormInputWithIcon({
   style,
+  containerClassNames = "",
   placeholderTextColor,
   icon,
   ...rest
 }: TextProps & Props) {
   return (
-    <View className="flex flex-row py-3">
+    <View className={`flex flex-row py-5 items-center ${containerClassNames}`}>
       {icon}
       <TextInput
         style={[tw.style("ml-4 text-white"), style]}

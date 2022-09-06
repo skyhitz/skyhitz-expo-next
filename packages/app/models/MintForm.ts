@@ -3,4 +3,6 @@ export type MintForm = {
   title: string;
   description: string;
   availableForSale: boolean;
+  price?: number;
+  equityForSale?: number;
 };

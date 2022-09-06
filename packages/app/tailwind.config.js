@@ -29,6 +29,7 @@ module.exports = {
           transparent: "#292b33e6",
           track: "#1e4aff4d",
           light: "#00aeefe6",
+          brand: "#1dadff"
         },
         red: {
           DEFAULT: "#d9544f",
