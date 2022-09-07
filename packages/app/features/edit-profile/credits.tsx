@@ -26,7 +26,7 @@ export function Credits({ className }: Props) {
       </Pressable>
       <Modal visible={modalVisible} transparent={true}>
         <KeyboardAvoidingView behavior="padding" className="flex-1">
-          <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70">
+          <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70 px-2">
             <View className="flex items-center w-full max-w-lg bg-blue-field p-4">
               <Pressable
                 className="absolute right-2 top-2 "
