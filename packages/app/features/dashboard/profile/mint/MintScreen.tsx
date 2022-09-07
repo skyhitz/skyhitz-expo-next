@@ -15,11 +15,13 @@ import { useEffect, useState } from "react";
 import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useRouter } from "solito/router";
 import { ScrollView } from "app/design-system/ScrollView";
+import { useMintNFT } from "app/hooks/useMintNFT";
 
 export function MintScreen() {
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
   const { back } = useRouter();
+  const { mint, progress, status, error } = useMintNFT();
 
   useEffect(() => {
     const getPermissionAsync = async () => {
@@ -71,12 +73,15 @@ export function MintScreen() {
         initialValues={initialValues}
         validationSchema={mintFormSchema}
         validateOnMount={true}
-        onSubmit={() => {}}
+        onSubmit={() => {
+          console.log("submit");
+        }}
       >
         {({
           values,
           handleChange,
           setFieldValue,
+          validateForm,
           isValid,
           handleSubmit,
           errors,
@@ -181,11 +186,9 @@ export function MintScreen() {
               <Button
                 text="Mint"
                 size="large"
-                onPress={() => {
-                  //TODO
-                }}
+                onPress={handleSubmit}
                 className="mb-5 md:mb-0 md:mr-5"
-                disabled
+                disabled={!isValid || status !== "UNINITIALIZED"}
               />
               <Button
                 text="Cancel"
