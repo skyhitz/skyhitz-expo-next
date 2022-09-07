@@ -14,11 +14,17 @@ const classNames = {
     border: "border border-white",
     textSize: "text-lg",
   },
+
+  small: {
+    size: "h-8 w-8",
+    border: "",
+    textSize: "text-xs",
+  },
 };
 
 type Props = {
   user: User;
-  size?: "default" | "large";
+  size?: "default" | "large" | "small";
 };
 
 export function UserAvatar({ user, size = "default" }: Props) {

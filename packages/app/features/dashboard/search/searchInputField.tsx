@@ -4,6 +4,7 @@ import { TextInput as rTextInput } from "react-native";
 import { Pressable, View } from "app/design-system";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { tw } from "app/design-system/tailwind";
+import Search from "app/ui/icons/search";
 
 export const SearchInputField = React.forwardRef(function SearchInputField(
   {
@@ -25,11 +26,7 @@ export const SearchInputField = React.forwardRef(function SearchInputField(
       />
       {showX && (
         <Pressable onPress={() => onXClick?.call(null)}>
-          <Icon
-            name="close-circle-outline"
-            color={tw.color("black")}
-            size={24}
-          />
+          <Search color={tw.color("black")} size={24} />
         </Pressable>
       )}
     </View>
