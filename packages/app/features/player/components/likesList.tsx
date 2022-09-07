@@ -12,7 +12,7 @@ export function LikesList({ likers }: Props) {
   const renderItem = ({ item }: { item: User }) => {
     return (
       <View className="mr-2" key={item.id}>
-        <UserAvatar avatarUri={item.avatarUrl} displayName={item.displayName} />
+        <UserAvatar avatarUrl={item.avatarUrl} displayName={item.displayName} />
       </View>
     );
   };

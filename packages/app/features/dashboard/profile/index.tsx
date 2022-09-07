@@ -24,7 +24,7 @@ export function ProfileScreen() {
     >
       <View className="flex flex-row items-center py-4 ">
         <UserAvatar
-          avatarUri={user.avatarUrl}
+          avatarUrl={user.avatarUrl}
           displayName={user.displayName}
           size="large"
         />

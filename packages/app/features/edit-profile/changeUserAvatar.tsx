@@ -31,7 +31,7 @@ export function ChangeUserAvatar({
   return (
     <View className="flex items-center mt-4 mb-5">
       <UserAvatar
-        avatarUri={avatarUri}
+        avatarUrl={avatarUri}
         displayName={displayName}
         size="large"
       />

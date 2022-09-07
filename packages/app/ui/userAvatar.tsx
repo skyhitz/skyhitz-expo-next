@@ -16,22 +16,22 @@ const classNames = {
 };
 
 export type UserAvatarProps = {
-  avatarUri?: string | null;
+  avatarUrl?: string | null;
   displayName?: string | null;
   size?: "default" | "large";
 };
 
 export function UserAvatar({
-  avatarUri,
+  avatarUrl,
   displayName,
   size = "default",
 }: UserAvatarProps) {
   const classes = classNames[size];
 
-  if (avatarUri) {
+  if (avatarUrl) {
     return (
       <Image
-        source={{ uri: avatarUri }}
+        source={{ uri: avatarUrl }}
         className={`${classes.size} rounded-full`}
         resizeMode="cover"
       />
