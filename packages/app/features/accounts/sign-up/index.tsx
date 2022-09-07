@@ -3,13 +3,13 @@ import { Platform, TextInput } from "react-native";
 import BackgroundImage from "app/ui/backgroundImage";
 import WalletconnectBtn from "app/ui/walletconnectBtn";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
-import { Separator } from "app/features/accounts/orSeparator";
+import { Separator } from "app/ui/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";
 import { Formik, FormikProps } from "formik";
-import * as Yup from "yup";
 import { useEffect, useRef } from "react";
 import { useLogIn } from "app/hooks/useLogIn";
 import { useCreateUserWithEmailMutation } from "app/api/graphql";
+import { signUpFormSchema } from "app/validation";
 
 type FormFields = {
   username: string;
@@ -50,22 +50,6 @@ export function SignUp() {
     displayedName: "",
   };
 
-  const formSchema = Yup.object().shape({
-    username: Yup.string()
-      .required("Username is required.")
-      .min(2, "Username is minimum 2 characters.")
-      .matches(
-        /^[a-zA-Z0-9_-]+$/,
-        "Usernames cannot have spaces or special characters"
-      ),
-    displayedName: Yup.string()
-      .required("Display name is required.")
-      .min(2, "Display name is minimum 2 characters."),
-    email: Yup.string()
-      .required("Email is required")
-      .email("Please enter a valid email."),
-  });
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -79,7 +63,7 @@ export function SignUp() {
           validateOnMount={true}
           initialValues={initialValues}
           onSubmit={handleSignUp}
-          validationSchema={formSchema}
+          validationSchema={signUpFormSchema}
         >
           {({
             values,

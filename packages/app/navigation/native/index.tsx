@@ -13,7 +13,8 @@ import { ChartScreen } from "app/features/dashboard/chart";
 import { ProfileScreen } from "app/features/dashboard/profile";
 import { Linking } from "react-native";
 import { Config } from "app/config";
-import { MobileTabBarWrapper } from "../../ui/navigation/mobileTabBarWrapper";
+import { MobileTabBarWrapper } from "app/ui/navigation/mobileTabBarWrapper";
+import EditProfileScreen from "app/features/edit-profile";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -22,6 +23,7 @@ const Stack = createNativeStackNavigator<{
   "sign-in": undefined;
   "sign-up": undefined;
   dashboard: undefined;
+  "edit-profile": undefined;
 }>();
 
 export function NativeNavigation() {
@@ -58,13 +60,22 @@ export function NativeNavigation() {
       }}
     >
       {user ? (
-        <Stack.Screen
-          name="dashboard"
-          component={DashboardNavigation}
-          options={{
-            title: "Dashboard",
-          }}
-        />
+        <>
+          <Stack.Screen
+            name="dashboard"
+            component={DashboardNavigation}
+            options={{
+              title: "Dashboard",
+            }}
+          />
+          <Stack.Screen
+            name="edit-profile"
+            component={EditProfileScreen}
+            options={{
+              title: "Edit Profile",
+            }}
+          />
+        </>
       ) : (
         <>
           <Stack.Screen
