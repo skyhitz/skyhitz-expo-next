@@ -1,5 +1,5 @@
 import SkyhitzLogo from "./logo";
-import { userAtom } from "app/state/atoms";
+import { userAtom } from "app/state/user";
 import { useRecoilValue } from "recoil";
 import { Text, TextLink, View } from "app/design-system";
 

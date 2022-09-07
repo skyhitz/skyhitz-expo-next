@@ -1,6 +1,6 @@
 import { Text, View } from "app/design-system";
 import { useRecoilValue } from "recoil";
-import { userAtom } from "app/state/atoms";
+import { userAtom } from "app/state/user";
 import { UserAvatar } from "app/ui/userAvatar";
 import Cog from "app/ui/icons/cog";
 import { tw } from "app/design-system/tailwind";
