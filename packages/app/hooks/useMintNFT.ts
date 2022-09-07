@@ -29,7 +29,7 @@ export function useMintNFT(): MintResult {
         request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         request.setRequestHeader(
           "Authorization",
-          `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEM3REIzNmNmMzc4MEFkZTBFNDNiOEIyRTE0ZTEzQUI1ZDQ4Mjc2ZjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODM2Mjk3Mjk4OCwibmFtZSI6InNreWhpdHoifQ.i8u1UvSe4DawKTXh_1pzfeYe932rqAJAvsKqndaw0vU`
+          `Bearer ${process.env.NEXT_PUBLIC_NFT_STORAGE_API_KEY}`
         );
   
         request.upload.addEventListener("progress", (event) => {
@@ -54,6 +54,9 @@ export function useMintNFT(): MintResult {
     
 
     const mint = useCallback(async ({artist, title, description, availableForSale, equityForSale, price}: MintForm, artwork: Blob, video: Blob) => {
+        try {
+
+        
         setStatus("UPLOADING FILES");
         const name = `${artist} - ${title}`;    
         const code = `${title}${artist}`
@@ -74,6 +77,7 @@ export function useMintNFT(): MintResult {
         const videoUrl = `${ipfsProtocol}${videoCid}`;
     
         const {data, error} = await getIssuer({variables: {cid: videoCid}});
+        console.log(data)
         if (error || !data?.getIssuer) {
             setStatus("ERROR")
             setError("Couldn't generate issuer")
@@ -118,6 +122,10 @@ export function useMintNFT(): MintResult {
             setError("Couldn't submit transaction")
             return;
         }
+    } catch(ex){
+        console.log(ex)
+        setError("o nie")
+    }
     }, [createEntry, getIssuer, indexEntry, setError, setStatus, uploadFile])
 
 
