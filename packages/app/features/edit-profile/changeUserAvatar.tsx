@@ -7,12 +7,14 @@ type ChangeUserAvatarProps = {
   avatarUri?: string | null;
   displayName?: string | null;
   handleChange: (_avatar: string) => void;
+  disable?: boolean;
 };
 
 export function ChangeUserAvatar({
   avatarUri,
   displayName,
   handleChange,
+  disable,
 }: ChangeUserAvatarProps) {
   const launchImageLibrary = async () => {
     const image = await launchImageLibraryAsync({
@@ -35,7 +37,7 @@ export function ChangeUserAvatar({
         displayName={displayName}
         size="large"
       />
-      <Pressable onPress={() => launchImageLibrary()}>
+      <Pressable disabled={disable} onPress={() => launchImageLibrary()}>
         <Text className="mt-2 font-light text-sm">Change Profile Photo</Text>
       </Pressable>
     </View>

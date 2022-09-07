@@ -71,6 +71,7 @@ export default function EditProfileScreen() {
           <EditProfileHeader
             disableDoneBtn={!isValid}
             onDoneBtnClick={handleSubmit}
+            setDoneBtnLoading={loading}
           />
           <View className="w-full bg-red p-4">
             <Text className="mx-auto text-sm">Upload a profile picture</Text>
@@ -80,12 +81,14 @@ export default function EditProfileScreen() {
               avatarUri={values.avatarUrl}
               displayName={user!.displayName}
               handleChange={handleChange("avatarUrl")}
+              disable={loading}
             />
             <EditProfileTextInput
               value={values.displayName ?? ""}
               placeholder={"Display Name"}
               onChangeText={handleChange("displayName")}
               icon={AccountBox}
+              editable={!loading}
             />
             <Line />
             <EditProfileTextInput
@@ -93,6 +96,7 @@ export default function EditProfileScreen() {
               placeholder={"Description"}
               onChangeText={handleChange("description")}
               icon={InfoCircle}
+              editable={!loading}
             />
             <Line />
             <EditProfileTextInput
@@ -109,6 +113,7 @@ export default function EditProfileScreen() {
               placeholder={"Email address"}
               onChangeText={handleChange("email")}
               icon={MailOutline}
+              editable={!loading}
             />
             <Line />
             <Credits className="mt-8" />
