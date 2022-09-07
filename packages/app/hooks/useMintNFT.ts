@@ -22,6 +22,7 @@ export function useMintNFT(): MintResult {
     const [indexEntry] = useIndexEntryMutation()
 
     const uploadFile = useCallback((file: Blob) => {
+        // TODO fix that
         console.log(process.env.NEXT_PUBLIC_NFT_STORAGE_API_KEY);
         return new Promise<string>((resolve, reject) => {
              const request = new XMLHttpRequest()
@@ -124,7 +125,7 @@ export function useMintNFT(): MintResult {
         }
     } catch(ex){
         console.log(ex)
-        setError("o nie")
+        setError("Something went wrong")
     }
     }, [createEntry, getIssuer, indexEntry, setError, setStatus, uploadFile])
 
