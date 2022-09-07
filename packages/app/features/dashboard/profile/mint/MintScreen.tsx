@@ -1,16 +1,63 @@
 import { tw } from "app/design-system/tailwind";
-import { SafeAreaView } from "app/design-system/safe-area-view";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import InfoIcon from "app/ui/icons/info-circle";
 import { Formik, FormikProps } from "formik";
-import { MintForm } from "app/models/MintForm";
+import { MintForm } from "app/types";
 import { Text, View } from "app/design-system";
-import { Switch } from "react-native";
+import { Alert, Platform, Switch } from "react-native";
 import DollarIcon from "app/ui/icons/dollar";
 import PieChartIcon from "app/ui/icons/pie";
 import Slider from "@react-native-community/slider";
+import { UploadInputWithIcon } from "app/ui/inputs/UploadInputWithIcon";
+import { ImageInfo } from "expo-image-picker";
+import { mintFormSchema } from "app/validation";
+import { useEffect, useState } from "react";
+import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
+import { useRouter } from "solito/router";
+import { ScrollView } from "app/design-system/ScrollView";
 
 export function MintScreen() {
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
+  const { back } = useRouter();
+
+  useEffect(() => {
+    const getPermissionAsync = async () => {
+      const permissions = await requestMediaLibraryPermissionsAsync();
+      if (!permissions.granted) {
+        Alert.alert(
+          "Media Library Permission",
+          "We need madia library permissions so you can upload beats!",
+          [{ text: "OK", onPress: () => back() }]
+        );
+      }
+    };
+    if (Platform.OS !== "web") {
+      getPermissionAsync();
+    }
+  }, [back]);
+
+  const validateArtwork = (image: ImageInfo): string | null => {
+    const isPng = image.uri.startsWith("data:image/png");
+    if (!isPng) {
+      return "Only png files supported!";
+    }
+    if (image.height !== image.width) {
+      return "Only square images supported!";
+    }
+    if (image.width < 3000) {
+      return "Image should be at least 3000px wide!";
+    }
+    return null;
+  };
+
+  const validateVideo = (video: ImageInfo): string | null => {
+    const isMp4 = video.uri.startsWith("data:video/mp4");
+    if (!isMp4) {
+      return "Only mp4 files supported!";
+    }
+    return null;
+  };
   const initialValues: MintForm = {
     artist: "",
     title: "",
@@ -19,13 +66,10 @@ export function MintScreen() {
   };
 
   return (
-    <SafeAreaView
-      edges={["top"]}
-      className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto"
-    >
+    <ScrollView className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto">
       <Formik
         initialValues={initialValues}
-        //   validationSchema={editProfileFormSchema}
+        validationSchema={mintFormSchema}
         validateOnMount={true}
         onSubmit={() => {}}
       >
@@ -40,21 +84,21 @@ export function MintScreen() {
           <View>
             <FormInputWithIcon
               containerClassNames="border-b border-white"
-              icon={<InfoIcon size={24} color={tw.color("white")} />}
+              icon={InfoIcon}
               value={values.artist}
               onChangeText={handleChange("artist")}
               placeholder="Artist"
             />
             <FormInputWithIcon
               containerClassNames="border-b border-white"
-              icon={<InfoIcon size={24} color={tw.color("white")} />}
+              icon={InfoIcon}
               value={values.title}
               onChangeText={handleChange("title")}
               placeholder="Title"
             />
             <FormInputWithIcon
               containerClassNames="border-b border-white"
-              icon={<InfoIcon size={24} color={tw.color("white")} />}
+              icon={InfoIcon}
               value={values.description}
               onChangeText={handleChange("description")}
               placeholder="Description"
@@ -80,7 +124,7 @@ export function MintScreen() {
               <>
                 <FormInputWithIcon
                   containerClassNames="border-b border-white"
-                  icon={<DollarIcon size={24} color={tw.color("white")} />}
+                  icon={DollarIcon}
                   value={values.price?.toString()}
                   onChangeText={(text) =>
                     setFieldValue("price", text.replace(/[^0-9]/g, ""))
@@ -110,9 +154,32 @@ export function MintScreen() {
                 </View>
               </>
             )}
+            <UploadInputWithIcon
+              containerClassNames="border-b border-white"
+              icon={InfoIcon}
+              label="Artwork"
+              type="image"
+              onUploadFinished={setImageBlob}
+              validateFile={validateArtwork}
+            />
+            <UploadInputWithIcon
+              containerClassNames="border-b border-white"
+              icon={InfoIcon}
+              label="Media File"
+              type="video"
+              onUploadFinished={setVideoBlob}
+              validateFile={validateVideo}
+            />
+            <View className="flex flex-row py-5 items-center border-b border-white">
+              <Text className="mx-4 text-sm">
+                Only original video music related material will be uploaded. We
+                take copyright law very seriously. Maximum file size allowed:
+                100MB
+              </Text>
+            </View>
           </View>
         )}
       </Formik>
-    </SafeAreaView>
+    </ScrollView>
   );
 }

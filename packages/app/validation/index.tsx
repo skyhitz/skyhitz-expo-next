@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { object, SchemaOf, string } from "yup";
-import { SignInForm } from "app/types";
+import { SignInForm, MintForm } from "app/types";
 import { UpdateUserMutationVariables } from "app/api/graphql";
 
 export const usernameSchema = Yup.string()
@@ -38,4 +38,24 @@ export const signUpFormSchema = Yup.object().shape({
   username: usernameSchema,
   displayedName: displayedNameSchema,
   email: emailSchema,
+});
+
+export const mintFormSchema: SchemaOf<MintForm> = object().shape({
+  artist: Yup.string()
+    .required("Artist name is required")
+    .min(2, "Enter a valid artist name")
+    .max(20, "Enter a valid artist name"),
+  title: Yup.string()
+    .required("Title is required")
+    .min(2, "Enter a valid title")
+    .max(20, "Enter a valid title"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(2, "Enter a valid description")
+    .max(20, "Enter a valid description"),
+  availableForSale: Yup.boolean().required(),
+  price: Yup.number(),
+  equityForSale: Yup.number()
+    .min(1, "Equity should be within range 0 - 100")
+    .max(100, "Equity should be within range 0 - 100"),
 });

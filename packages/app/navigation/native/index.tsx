@@ -166,6 +166,14 @@ function ProfileNavigation() {
         component={EditProfileScreen}
         options={{
           title: "Edit Profile",
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: tw.color("blue-dark"),
+          },
+          headerTintColor: tw.color("white"),
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
     </ProfileStack.Navigator>

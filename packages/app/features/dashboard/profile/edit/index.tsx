@@ -1,6 +1,5 @@
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import { Text, View } from "app/design-system";
-import { EditProfileTextInput } from "app/features/dashboard/profile/edit/editProfileTextInput";
 import AccountBox from "app/ui/icons/account-box";
 import { Line } from "app/ui/orSeparator";
 import InfoCircle from "app/ui/icons/info-circle";
@@ -20,6 +19,7 @@ import { values as vals } from "ramda";
 import { ChangeUserAvatar } from "app/features/dashboard/profile/edit/changeUserAvatar";
 import { Credits } from "app/features/dashboard/profile/edit/credits";
 import { userAtom } from "app/state/user";
+import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -83,7 +83,7 @@ export default function EditProfileScreen() {
               handleChange={handleChange("avatarUrl")}
               disable={loading}
             />
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.displayName ?? ""}
               placeholder={"Display Name"}
               onChangeText={handleChange("displayName")}
@@ -91,7 +91,7 @@ export default function EditProfileScreen() {
               editable={!loading}
             />
             <Line />
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.description ?? ""}
               placeholder={"Description"}
               onChangeText={handleChange("description")}
@@ -99,7 +99,7 @@ export default function EditProfileScreen() {
               editable={!loading}
             />
             <Line />
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.username ?? ""}
               placeholder={"Username"}
               onChangeText={handleChange("username")}
@@ -108,7 +108,7 @@ export default function EditProfileScreen() {
             <Text className="font-bold text-sm pt-8 pb-2">
               Private information
             </Text>
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.email ?? ""}
               placeholder={"Email address"}
               onChangeText={handleChange("email")}

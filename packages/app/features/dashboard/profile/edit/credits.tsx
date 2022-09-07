@@ -2,13 +2,13 @@ import { Modal, Pressable, Text, View } from "app/design-system";
 import React, { useState } from "react";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import X from "app/ui/icons/x";
-import { EditProfileTextInput } from "app/features/dashboard/profile/edit/editProfileTextInput";
 import Wallet from "app/ui/icons/wallet";
 import Dollar from "app/ui/icons/dollar";
 import { tw } from "app/design-system/tailwind";
 import { Formik } from "formik";
 import { Line } from "app/ui/orSeparator";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
+import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 
 type Props = { className?: string };
 
@@ -40,16 +40,16 @@ export function Credits({ className }: Props) {
                 <Formik initialValues={{}} onSubmit={console.log}>
                   {({ handleSubmit }) => (
                     <View className="flex w-full">
-                      <EditProfileTextInput
+                      <FormInputWithIcon
                         placeholder={"Stellar Address (Without Memo)"}
                         icon={Wallet}
-                        className="py-1 mt-12"
+                        containerClassNames="py-1 mt-12"
                       />
                       <Line />
-                      <EditProfileTextInput
+                      <FormInputWithIcon
                         placeholder={"XML to withdraw"}
                         icon={Dollar}
-                        className="py-1 mt-8"
+                        containerClassNames="py-1 mt-8"
                       />
                       <Line />
                       <Text className="text-xs leading-none mt-4">
