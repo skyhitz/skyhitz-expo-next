@@ -13,12 +13,18 @@ const classNames = {
     border: "border border-white",
     textSize: "text-lg",
   },
+
+  small: {
+    size: "h-8 w-8",
+    border: "",
+    textSize: "text-xs",
+  },
 };
 
 export type UserAvatarProps = {
   avatarUrl?: string | null;
   displayName?: string | null;
-  size?: "default" | "large";
+  size?: "default" | "large" | "small";
 };
 
 export function UserAvatar({
