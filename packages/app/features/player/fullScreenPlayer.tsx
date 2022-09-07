@@ -80,7 +80,7 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
           onPress={() => {
             //TODO
           }}
-          className="bg-blue px-5 py-2 mb-5 rounded-xl"
+          className="mb-5"
         />
         <PlayerButtonsRow size="large" />
         {/* TODO replace, it's mocked */}

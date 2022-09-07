@@ -3,7 +3,7 @@ import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import InfoIcon from "app/ui/icons/info-circle";
 import { Formik, FormikProps } from "formik";
 import { MintForm } from "app/types";
-import { Text, View } from "app/design-system";
+import { Button, Text, View } from "app/design-system";
 import { Alert, Platform, Switch } from "react-native";
 import DollarIcon from "app/ui/icons/dollar";
 import PieChartIcon from "app/ui/icons/pie";
@@ -176,6 +176,23 @@ export function MintScreen() {
                 take copyright law very seriously. Maximum file size allowed:
                 100MB
               </Text>
+            </View>
+            <View className="flex-column md:flex-row justify-center items-center mt-5">
+              <Button
+                text="Mint"
+                size="large"
+                onPress={() => {
+                  //TODO
+                }}
+                className="mb-5 md:mb-0 md:mr-5"
+                disabled
+              />
+              <Button
+                text="Cancel"
+                size="large"
+                variant="secondary"
+                onPress={back}
+              />
             </View>
           </View>
         )}

@@ -1,4 +1,4 @@
-import { Text, View } from "app/design-system";
+import { Button, Text, View } from "app/design-system";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import { UserAvatar } from "app/ui/userAvatar";
@@ -8,14 +8,16 @@ import Wallet from "app/ui/icons/wallet";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import Like from "app/ui/icons/like";
 import StarBorder from "app/ui/icons/star-border";
-import { MintNewNftBtn } from "app/features/dashboard/profile/mintNewNftBtn";
-import { BuyXLMBtn } from "app/features/dashboard/profile/buyXLMBtn";
 import { ProfileRow } from "app/features/dashboard/profile/profileRowProps";
 import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
 import { Link } from "solito/link";
+import Dollar from "app/ui/icons/dollar";
+import Upload from "app/ui/icons/upload";
+import { useRouter } from "solito/router";
 
 export function ProfileScreen() {
   const user = useRecoilValue(userAtom)!;
+  const { push } = useRouter();
 
   return (
     <SafeAreaView
@@ -50,8 +52,22 @@ export function ProfileScreen() {
         icon={<StarBorder size={24} color={tw.color("blue")} />}
         title="Collections"
       />
-      <BuyXLMBtn />
-      <MintNewNftBtn />
+      <Button
+        text="Buy XLM"
+        onPress={() => {}}
+        icon={Dollar}
+        className="mx-auto my-16"
+        size="large"
+      />
+      <Button
+        text="Mint new NFT"
+        onPress={() => {
+          push("/dashboard/profile/mint");
+        }}
+        icon={Upload}
+        className="mx-auto"
+        size="large"
+      />
     </SafeAreaView>
   );
 }
