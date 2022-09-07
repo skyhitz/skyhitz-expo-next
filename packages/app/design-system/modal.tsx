@@ -1,10 +1,13 @@
-import { Modal as NativeModal, ModalProps } from "react-native";
+import {
+  Modal as NativeModal,
+  ModalProps as NativeModalProps,
+} from "react-native";
 import { tw } from "app/design-system/tailwind";
+import { useSx } from "dripsy";
 
-export function Modal({
-  className,
-  style,
-  ...rest
-}: ModalProps & { className?: string }) {
+export type ModalProps = NativeModalProps & { className?: string };
+
+export function Modal({ className, style, ...rest }: ModalProps) {
+  useSx();
   return <NativeModal style={[tw.style(className), style]} {...rest} />;
 }

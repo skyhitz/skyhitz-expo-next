@@ -1,13 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import * as Linking from "expo-linking";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { useAuthStatus } from "app/hooks/useAuthStatus";
 
-export function NavigationProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function NavigationProvider({ children }: { children: ReactNode }) {
   useAuthStatus();
 
   return (
@@ -33,6 +29,7 @@ export function NavigationProvider({
                     screens: {
                       "user-details": "",
                       mint: "mint",
+                      edit: "edit",
                     },
                   },
                 },

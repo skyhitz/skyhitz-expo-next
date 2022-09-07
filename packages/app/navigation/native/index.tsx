@@ -13,9 +13,10 @@ import { ChartScreen } from "app/features/dashboard/chart";
 import { ProfileScreen } from "app/features/dashboard/profile";
 import { Linking } from "react-native";
 import { Config } from "app/config";
-import { MobileTabBarWrapper } from "../../ui/navigation/mobileTabBarWrapper";
-import { MintScreen } from "../../features/dashboard/profile/mint/MintScreen";
+import { MintScreen } from "app/features/dashboard/profile/mint/MintScreen";
 import { tw } from "app/design-system/tailwind";
+import { MobileTabBarWrapper } from "app/ui/navigation/mobileTabBarWrapper";
+import EditProfileScreen from "app/features/dashboard/profile/edit";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -60,13 +61,15 @@ export function NativeNavigation() {
       }}
     >
       {user ? (
-        <Stack.Screen
-          name="dashboard"
-          component={DashboardNavigation}
-          options={{
-            title: "Dashboard",
-          }}
-        />
+        <>
+          <Stack.Screen
+            name="dashboard"
+            component={DashboardNavigation}
+            options={{
+              title: "Dashboard",
+            }}
+          />
+        </>
       ) : (
         <>
           <Stack.Screen
@@ -129,6 +132,7 @@ function DashboardNavigation() {
 const ProfileStack = createNativeStackNavigator<{
   "user-details": undefined;
   mint: undefined;
+  edit: undefined;
 }>();
 
 function ProfileNavigation() {
@@ -155,6 +159,13 @@ function ProfileNavigation() {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+        }}
+      />
+      <ProfileStack.Screen
+        name="edit"
+        component={EditProfileScreen}
+        options={{
+          title: "Edit Profile",
         }}
       />
     </ProfileStack.Navigator>

@@ -12,6 +12,7 @@ import { MintNewNftBtn } from "app/features/dashboard/profile/mintNewNftBtn";
 import { BuyXLMBtn } from "app/features/dashboard/profile/buyXLMBtn";
 import { ProfileRow } from "app/features/dashboard/profile/profileRowProps";
 import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
+import { Link } from "solito/link";
 
 export function ProfileScreen() {
   const user = useRecoilValue(userAtom)!;
@@ -22,11 +23,17 @@ export function ProfileScreen() {
       className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto"
     >
       <View className="flex flex-row items-center py-4 ">
-        <UserAvatar user={user} size="large" />
+        <UserAvatar
+          avatarUrl={user.avatarUrl}
+          displayName={user.displayName}
+          size="large"
+        />
         <View className="ml-8 flex-1">
           <View className="flex flex-row items-center mb-2.5">
             <Text className="font-bold mr-2.5">{user.displayName}</Text>
-            <Cog color={tw.color("white")} size={18} />
+            <Link href={"/dashboard/profile/edit"}>
+              <Cog color={tw.color("white")} size={18} />
+            </Link>
           </View>
           <View className="flex flex-row items-center">
             <Wallet color={tw.color("white")} size={18} />

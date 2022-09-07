@@ -72,12 +72,20 @@ export function usePlayback(): PlaybackResult {
   );
 
   const playEntry = useCallback(
-    async (entry: Entry, playlist: Entry[]) => {
-      setPlaybackState("LOADING");
-      await _loadAndPlay(entry);
+    async (newEntry: Entry, playlist: Entry[]) => {
       setPlaylist(playlist);
+      if (newEntry.id === entry?.id) {
+        // if the new entry is the same as the current one, just set position to 0
+        await playback?.setStatusAsync({
+          positionMillis: 0,
+          shouldPlay: isPlaying,
+        });
+        return;
+      }
+      setPlaybackState("LOADING");
+      await _loadAndPlay(newEntry);
     },
-    [_loadAndPlay, setPlaylist, setPlaybackState]
+    [entry, playback, isPlaying, _loadAndPlay, setPlaylist, setPlaybackState]
   );
 
   const playPause = useCallback(async () => {

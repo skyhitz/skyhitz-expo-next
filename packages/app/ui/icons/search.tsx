@@ -1,8 +1,7 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
-import { IconProps } from "app/types";
 
-function Icon({ size = 24, color = "currentColor" }: IconProps) {
+function Icon({ color = "currentColor", size = 20 }) {
   return (
     <Svg
       fill="none"
@@ -15,7 +14,7 @@ function Icon({ size = 24, color = "currentColor" }: IconProps) {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
       />
     </Svg>
   );

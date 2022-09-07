@@ -1,4 +1,3 @@
-import { User } from "app/api/graphql";
 import { Image, Text, View } from "app/design-system";
 import { compose, head, join, map, split, take, toUpper } from "ramda";
 
@@ -14,20 +13,31 @@ const classNames = {
     border: "border border-white",
     textSize: "text-lg",
   },
+
+  small: {
+    size: "h-8 w-8",
+    border: "",
+    textSize: "text-xs",
+  },
 };
 
-type Props = {
-  user: User;
-  size?: "default" | "large";
+export type UserAvatarProps = {
+  avatarUrl?: string | null;
+  displayName?: string | null;
+  size?: "default" | "large" | "small";
 };
 
-export function UserAvatar({ user, size = "default" }: Props) {
+export function UserAvatar({
+  avatarUrl,
+  displayName,
+  size = "default",
+}: UserAvatarProps) {
   const classes = classNames[size];
 
-  if (user.avatarUrl) {
+  if (avatarUrl) {
     return (
       <Image
-        source={{ uri: user.avatarUrl }}
+        source={{ uri: avatarUrl }}
         className={`${classes.size} rounded-full`}
         resizeMode="cover"
       />
@@ -35,13 +45,13 @@ export function UserAvatar({ user, size = "default" }: Props) {
   }
 
   let initials = "";
-  if (user.displayName) {
+  if (displayName) {
     initials = compose(
       join(""),
       take(2),
       map((part) => toUpper(head(part))),
       split(" ")
-    )(user.displayName);
+    )(displayName);
   }
 
   return (
