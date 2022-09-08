@@ -17,5 +17,3 @@ const toastTypes: Record<
 export const toast: Toast = (msg, type = "error") => {
   toastTypes[type](msg);
 };
-
-export default toast;

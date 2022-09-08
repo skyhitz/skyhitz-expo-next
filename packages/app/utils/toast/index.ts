@@ -7,12 +7,10 @@ const toastContainerStyle: Record<ToastType, string> = {
   success: "border-valid",
 };
 
-const toast: Toast = (msg, type = "error") => {
+export const toast: Toast = (msg, type = "error") => {
   T.show(msg, {
     containerStyle: tw`bg-blue-dark border ${toastContainerStyle[type]}`,
     opacity: 100,
     position: T.positions.BOTTOM,
   });
 };
-
-export default toast;
