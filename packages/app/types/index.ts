@@ -2,6 +2,7 @@ export type PlaybackState =
   | "LOADING"
   | "PLAYING"
   | "PAUSED"
+  | "SEEKING"
   | "IDLE"
   | "ERROR";
 
@@ -25,6 +26,6 @@ export type MintForm = {
   title: string;
   description: string;
   availableForSale: boolean;
-  price?: number;
-  equityForSale?: number;
+  price: string;
+  equityForSale: number;
 };

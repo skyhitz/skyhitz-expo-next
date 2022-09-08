@@ -14,9 +14,11 @@ import { Link } from "solito/link";
 import Dollar from "app/ui/icons/dollar";
 import Upload from "app/ui/icons/upload";
 import { useRouter } from "solito/router";
+import { usePaymentsInfoQuery } from "app/api/graphql";
 
 export function ProfileScreen() {
   const user = useRecoilValue(userAtom)!;
+  const { data } = usePaymentsInfoQuery();
   const { push } = useRouter();
 
   return (
@@ -33,6 +35,10 @@ export function ProfileScreen() {
         <View className="ml-8 flex-1">
           <View className="flex flex-row items-center mb-2.5">
             <Text className="font-bold mr-2.5">{user.displayName}</Text>
+            <Dollar size={22} color={tw.color("white")} />
+            <Text className="font-bold ml-1 mr-2.5">
+              {data?.paymentsInfo?.credits?.toFixed(2) ?? ""}
+            </Text>
             <Link href={"/dashboard/profile/edit"}>
               <Cog color={tw.color("white")} size={18} />
             </Link>
@@ -62,11 +68,15 @@ export function ProfileScreen() {
       <Button
         text="Mint new NFT"
         onPress={() => {
-          push("/dashboard/profile/mint");
+          // TODO add low balance modal
+          if ((data?.paymentsInfo?.credits ?? 0) > 2) {
+            push("/dashboard/profile/mint");
+          }
         }}
         icon={Upload}
         className="mx-auto"
         size="large"
+        disabled={(data?.paymentsInfo?.credits ?? 0) <= 2}
       />
     </SafeAreaView>
   );

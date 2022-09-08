@@ -80,6 +80,8 @@ export function MintScreen() {
     title: "",
     description: "",
     availableForSale: false,
+    price: "",
+    equityForSale: 0,
   };
 
   if (status === "Success") {
@@ -160,7 +162,7 @@ export function MintScreen() {
                 <FormInputWithIcon
                   containerClassNames="border-b border-white"
                   icon={DollarIcon}
-                  value={values.price?.toString()}
+                  value={values.price}
                   onChangeText={(text) =>
                     setFieldValue("price", text.replace(/[^0-9]/g, ""))
                   }
@@ -172,7 +174,7 @@ export function MintScreen() {
                 <View className="flex flex-row py-5 items-center border-b border-white">
                   <PieChartIcon size={24} color={tw.color("white")} />
                   <Text className="mx-4 text-sm w-40">
-                    Equity for Sale: {values.equityForSale ?? 0}%
+                    Equity for Sale: {values.equityForSale}%
                   </Text>
                   <Slider
                     style={{ flex: 1 }}

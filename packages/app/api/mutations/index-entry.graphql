@@ -1,3 +1,6 @@
 mutation IndexEntry($issuer: String!) {
-  indexEntry(issuer: $issuer)
+  indexEntry(issuer: $issuer) {
+    success
+    message
+  }
 }

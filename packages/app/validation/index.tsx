@@ -54,8 +54,9 @@ export const mintFormSchema: SchemaOf<MintForm> = object().shape({
     .min(2, "Enter a valid description")
     .max(20, "Enter a valid description"),
   availableForSale: Yup.boolean().required(),
-  price: Yup.number(),
+  price: Yup.string().required(),
   equityForSale: Yup.number()
+    .required()
     .min(1, "Equity should be within range 0 - 100")
     .max(100, "Equity should be within range 0 - 100"),
 });

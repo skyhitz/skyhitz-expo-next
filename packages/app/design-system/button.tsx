@@ -33,10 +33,6 @@ const containerStyle = {
 
 const disabledStyle = "bg-grey-dark";
 
-const defaultIconProps = {
-  color: tw.color("white"),
-  size: 22,
-};
 const Button = ({
   loading,
   text,
@@ -48,6 +44,10 @@ const Button = ({
   disabled,
   className,
 }: Props) => {
+  const defaultIconProps = {
+    color: disabled ? tw.color("grey") : tw.color("white"),
+    size: 22,
+  };
   return (
     <Pressable
       className={`flex-row items-center justify-center rounded-full ${

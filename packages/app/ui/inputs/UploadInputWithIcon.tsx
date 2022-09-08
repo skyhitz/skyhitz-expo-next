@@ -77,7 +77,9 @@ export function UploadInputWithIcon({
           <Pressable onPress={onUpload}>
             <UploadIcon size={30} color={tw.color("white")} />
           </Pressable>
-          {error !== null && <Text className="text-red text-sm ml-5">{error}</Text>}
+          {error !== null && (
+            <Text className="text-red text-sm ml-5">{error}</Text>
+          )}
         </>
       );
     }

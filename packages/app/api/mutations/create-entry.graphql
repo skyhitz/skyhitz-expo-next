@@ -17,5 +17,6 @@ mutation CreateEntry(
     xdr
     success
     submitted
+    message
   }
 }
