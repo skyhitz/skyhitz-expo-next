@@ -4,10 +4,8 @@ import React from "react";
 import type { SolitoAppProps } from "solito";
 import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
-import "../toast-style.css";
-import { CloseButtonProps, ToastContainer } from "react-toastify";
-import X from "app/ui/icons/x";
-import { Pressable } from "react-native";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   return (
@@ -26,21 +24,12 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         </WebNavigation>
         <ToastContainer
           position="bottom-right"
-          icon={false}
           hideProgressBar={true}
-          theme="colored"
-          closeButton={CloseButton}
+          theme="dark"
+          closeButton={false}
         />
       </Provider>
     </>
-  );
-}
-
-function CloseButton(props: CloseButtonProps) {
-  return (
-    <Pressable onPress={() => props.closeToast}>
-      <X color="white" size={20} />
-    </Pressable>
   );
 }
 
