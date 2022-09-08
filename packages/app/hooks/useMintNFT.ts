@@ -4,7 +4,7 @@ import { MintForm } from "app/types"
 import { useCallback, useState } from "react";
 import { useIndexEntryMutation } from '../api/graphql';
 
-type MintStatus = "UNINITIALIZED" | "UPLOADING FILES" | "UPLOADING METADATA" | "GENERATING XDR AND SUBMITTING" | "INDEXING" | "SUCCESS" | "ERROR";
+type MintStatus = "Uninitialized" | "Uploading files" | "Uploading metadata" | "Submitting" | "Indexing" | "Success" | "Error";
 
 type MintResult = {
     mint: (_formData: MintForm, _artwork: Blob, _video: Blob) => void;
@@ -14,7 +14,7 @@ type MintResult = {
 }
 
 export function useMintNFT(): MintResult {
-    const [status, setStatus] = useState<MintStatus>("UNINITIALIZED");
+    const [status, setStatus] = useState<MintStatus>("Uninitialized");
     const [progress, setProgress] = useState<number>(0)
     const [error, setError] = useState<string | undefined>()
     const [getIssuer] = useGetIssuerLazyQuery()
@@ -22,8 +22,6 @@ export function useMintNFT(): MintResult {
     const [indexEntry] = useIndexEntryMutation()
 
     const uploadFile = useCallback((file: Blob) => {
-        // TODO fix that
-        console.log(process.env.NEXT_PUBLIC_NFT_STORAGE_API_KEY);
         return new Promise<string>((resolve, reject) => {
              const request = new XMLHttpRequest()
         request.open("POST", `${nftStorageApi}/upload`, true);
@@ -48,17 +46,13 @@ export function useMintNFT(): MintResult {
             }
           }
         };
-
         request.send(file);
         })
       }, [])
     
 
     const mint = useCallback(async ({artist, title, description, availableForSale, equityForSale, price}: MintForm, artwork: Blob, video: Blob) => {
-        try {
-
-        
-        setStatus("UPLOADING FILES");
+        setStatus("Uploading files");
         const name = `${artist} - ${title}`;    
         const code = `${title}${artist}`
           .normalize("NFD")
@@ -72,21 +66,19 @@ export function useMintNFT(): MintResult {
         const imageCid = await uploadFile(artwork);
         const videoCid = await uploadFile(video)
     
-        setStatus("UPLOADING METADATA");
+        setStatus("Uploading metadata");
 
         const imageUrl = `${ipfsProtocol}${imageCid}`;
         const videoUrl = `${ipfsProtocol}${videoCid}`;
     
-        const {data, error} = await getIssuer({variables: {cid: videoCid}});
-        console.log(data)
-        if (error || !data?.getIssuer) {
-            setStatus("ERROR")
+        const {data} = await getIssuer({variables: {cid: videoCid}});
+        if (!data?.getIssuer) {
+            setStatus("Error")
             setError("Couldn't generate issuer")
             return;
         }
 
         const issuer = data.getIssuer;
-        console.log(issuer)
     
         const json = {
           name: name,
@@ -104,29 +96,25 @@ export function useMintNFT(): MintResult {
         const blob = new Blob([JSON.stringify(json)], { type: "application/json" });
         const nftCid = await uploadFile(blob);
 
-        setStatus("GENERATING XDR AND SUBMITTING");
-        const {data: entry} = await createEntry({variables: {fileCid: videoCid, metaCid: nftCid, code, forSale: availableForSale, price: price ?? 0, equityForSale: equityForSale ?? 0.0}}) 
+        setStatus("Submitting");
+        const {data: entry} = await createEntry({variables: {fileCid: videoCid, metaCid: nftCid, code: code, forSale: availableForSale, price: price ?? 0, equityForSale: equityForSale ?? 0.0}}) 
         if (entry?.createEntry?.success && entry.createEntry.submitted) {
-            setStatus("INDEXING")
+            setStatus("Indexing")
             const {data: indexed, errors} = await indexEntry({variables: {issuer}})
             if (errors || !indexed?.indexEntry) {
-                setStatus("ERROR")
+                setStatus("Error")
                 setError("Couldn't index new entry");
                 return;
             } else {
-                setStatus("SUCCESS");
+                setStatus("Success");
                 return;
             }
         } else {
-            // TODO handle this case with wallet connect
-            setStatus("ERROR")
-            setError("Couldn't submit transaction")
+            // TODO handle unsubmitted case with wallet connect
+            setStatus("Error")
+            setError("Couldn't submit transaction. Make sure your music video is original.")
             return;
         }
-    } catch(ex){
-        console.log(ex)
-        setError("Something went wrong")
-    }
     }, [createEntry, getIssuer, indexEntry, setError, setStatus, uploadFile])
 
 

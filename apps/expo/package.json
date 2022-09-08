@@ -4,6 +4,7 @@
     "@expo-google-fonts/raleway": "^0.2.2",
     "@expo/vector-icons": "^13.0.0",
     "app": "*",
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "expo": "^45.0.0",
     "expo-av": "~11.2.3",
     "expo-dev-client": "~1.0.1",
