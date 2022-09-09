@@ -1,5 +1,4 @@
-import { Button, Text, View } from "app/design-system";
-import { Pressable } from "app/design-system";
+import { Button, Pressable, Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import ChevronDown from "app/ui/icons/chevron-down";
 import { Dimensions, ViewStyle } from "react-native";
