@@ -8,7 +8,7 @@ import Wallet from "app/ui/icons/wallet";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import Like from "app/ui/icons/like";
 import StarBorder from "app/ui/icons/star-border";
-import { ProfileRow } from "app/features/dashboard/profile/profileRowProps";
+import { ProfileRow } from "app/features/dashboard/profile/profileRow";
 import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
 import { Link } from "solito/link";
 import Dollar from "app/ui/icons/dollar";
@@ -56,6 +56,7 @@ export function ProfileScreen() {
         icon={<Like size={24} color={tw.color("blue")} />}
         number={3}
         title="Likes"
+        onPress={() => push("/dashboard/profile/likes")}
       />
       <ProfileRow
         icon={<StarBorder size={24} color={tw.color("blue")} />}

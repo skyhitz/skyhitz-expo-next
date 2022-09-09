@@ -7,11 +7,15 @@ type ProfileRowProps = {
   icon: ReactElement;
   title: string;
   number?: number;
+  onPress?: () => void;
 };
 
-export function ProfileRow({ icon, number, title }: ProfileRowProps) {
+export function ProfileRow({ icon, number, title, onPress }: ProfileRowProps) {
   return (
-    <Pressable className="flex flex-row justify-between py-1.5">
+    <Pressable
+      className="flex flex-row justify-between py-1.5"
+      onPress={onPress}
+    >
       <View className="flex flex-row items-center">
         {icon}
         <Text className="font-bold ml-2 text-sm">{title}</Text>
