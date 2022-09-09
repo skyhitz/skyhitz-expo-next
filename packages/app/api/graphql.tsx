@@ -306,6 +306,16 @@ export type IndexEntryMutation = {
   } | null;
 };
 
+export type LikeEntryMutationVariables = Exact<{
+  id: Scalars["String"];
+  like: Scalars["Boolean"];
+}>;
+
+export type LikeEntryMutation = {
+  __typename?: "Mutation";
+  likeEntry?: boolean | null;
+};
+
 export type RequestTokenMutationVariables = Exact<{
   usernameOrEmail: Scalars["String"];
   publicKey: Scalars["String"];
@@ -426,6 +436,23 @@ export type TopChartQueryVariables = Exact<{
 export type TopChartQuery = {
   __typename?: "Query";
   topChart?: Array<{
+    __typename?: "Entry";
+    imageUrl?: string | null;
+    videoUrl?: string | null;
+    description?: string | null;
+    title?: string | null;
+    id?: string | null;
+    artist?: string | null;
+    code?: string | null;
+    issuer?: string | null;
+  } | null> | null;
+};
+
+export type UserLikesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UserLikesQuery = {
+  __typename?: "Query";
+  userLikes?: Array<{
     __typename?: "Entry";
     imageUrl?: string | null;
     videoUrl?: string | null;
@@ -630,6 +657,54 @@ export type IndexEntryMutationResult =
 export type IndexEntryMutationOptions = Apollo.BaseMutationOptions<
   IndexEntryMutation,
   IndexEntryMutationVariables
+>;
+export const LikeEntryDocument = gql`
+  mutation likeEntry($id: String!, $like: Boolean!) {
+    likeEntry(id: $id, like: $like)
+  }
+`;
+export type LikeEntryMutationFn = Apollo.MutationFunction<
+  LikeEntryMutation,
+  LikeEntryMutationVariables
+>;
+
+/**
+ * __useLikeEntryMutation__
+ *
+ * To run a mutation, you first call `useLikeEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeEntryMutation, { data, loading, error }] = useLikeEntryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      like: // value for 'like'
+ *   },
+ * });
+ */
+export function useLikeEntryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LikeEntryMutation,
+    LikeEntryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LikeEntryMutation, LikeEntryMutationVariables>(
+    LikeEntryDocument,
+    options
+  );
+}
+export type LikeEntryMutationHookResult = ReturnType<
+  typeof useLikeEntryMutation
+>;
+export type LikeEntryMutationResult = Apollo.MutationResult<LikeEntryMutation>;
+export type LikeEntryMutationOptions = Apollo.BaseMutationOptions<
+  LikeEntryMutation,
+  LikeEntryMutationVariables
 >;
 export const RequestTokenDocument = gql`
   mutation requestToken($usernameOrEmail: String!, $publicKey: String!) {
@@ -1109,4 +1184,63 @@ export type TopChartLazyQueryHookResult = ReturnType<
 export type TopChartQueryResult = Apollo.QueryResult<
   TopChartQuery,
   TopChartQueryVariables
+>;
+export const UserLikesDocument = gql`
+  query userLikes {
+    userLikes {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
+  }
+`;
+
+/**
+ * __useUserLikesQuery__
+ *
+ * To run a query within a React component, call `useUserLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserLikesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserLikesQuery(
+  baseOptions?: Apollo.QueryHookOptions<UserLikesQuery, UserLikesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserLikesQuery, UserLikesQueryVariables>(
+    UserLikesDocument,
+    options
+  );
+}
+export function useUserLikesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserLikesQuery,
+    UserLikesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserLikesQuery, UserLikesQueryVariables>(
+    UserLikesDocument,
+    options
+  );
+}
+export type UserLikesQueryHookResult = ReturnType<typeof useUserLikesQuery>;
+export type UserLikesLazyQueryHookResult = ReturnType<
+  typeof useUserLikesLazyQuery
+>;
+export type UserLikesQueryResult = Apollo.QueryResult<
+  UserLikesQuery,
+  UserLikesQueryVariables
 >;
