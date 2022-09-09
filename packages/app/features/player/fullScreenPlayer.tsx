@@ -63,35 +63,34 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
               </Text>
             </View>
 
-            <Button
-              text="Buy Now"
-              onPress={() => {
-                //TODO
-              }}
-              className="mb-5"
-            />
-            <PlayerButtonsRow size="large" />
-            {/* TODO replace, it's mocked */}
-            <LikesList
-              likers={[
-                {
-                  id: "1",
-                  avatarUrl: "https://avatars.dicebear.com/api/male/john.jpg",
-                },
-                { id: "2", displayName: "Long Name Text" },
-                { id: "3", displayName: "Short" },
-                { id: "4", displayName: "Short" },
-                { id: "5", displayName: "Short" },
-                { id: "6", displayName: "Short" },
-                { id: "7", displayName: "Short" },
-                { id: "8", displayName: "Short" },
-                { id: "9", displayName: "Short" },
-                { id: "10", displayName: "Short" },
-                { id: "11", displayName: "Short" },
-              ]}
-            />
-          </>
-        )}
+        <Button
+          text="Buy Now"
+          onPress={() => {
+            //TODO
+          }}
+          className="mb-5"
+        />
+        <PlayerButtonsRow size="large" />
+        {/* TODO replace, it's mocked */}
+        <LikesList
+          entryId={entry?.id ?? ""}
+          likers={[
+            {
+              id: "1",
+              avatarUrl: "https://avatars.dicebear.com/api/male/john.jpg",
+            },
+            { id: "2", displayName: "Long Name Text" },
+            { id: "3", displayName: "Short" },
+            { id: "4", displayName: "Short" },
+            { id: "5", displayName: "Short" },
+            { id: "6", displayName: "Short" },
+            { id: "7", displayName: "Short" },
+            { id: "8", displayName: "Short" },
+            { id: "9", displayName: "Short" },
+            { id: "10", displayName: "Short" },
+            { id: "11", displayName: "Short" },
+          ]}
+        />
       </SafeAreaView>
     </Animated.View>
   );

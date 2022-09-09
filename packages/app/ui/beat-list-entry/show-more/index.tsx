@@ -23,7 +23,7 @@ export function ShowMore({ entry }: { entry: Entry }) {
             title={entry.title ?? ""}
             artist={entry.artist ?? ""}
           />
-          <BeatActions />
+          <BeatActions entryId={entry.id!} />
           <CancelBtn onPress={() => setShowing(false)} />
         </SafeAreaView>
       </Modal>

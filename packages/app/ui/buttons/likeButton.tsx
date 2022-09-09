@@ -3,12 +3,13 @@ import { Pressable } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import Like from "app/ui/icons/like";
 
-export function FavoriteButton({
+export function LikeButton({
   size,
   className,
 }: {
   size: number;
   className?: string;
+  entryId: string;
 }) {
   const [active, setActive] = useState(false);
 
