@@ -19,7 +19,7 @@ export function ShowMore({ entry }: { entry: Entry }) {
       </Pressable>
 
       <Modal transparent={true} visible={showing} animationType="fade">
-        <SafeAreaView className="bg-blue-field/90 flex-1 items-center justify-around pt-10 sm:pt-20">
+        <SafeAreaView className="bg-blue-field/90 flex-1 items-center justify-around pt-10 sm:pt-20 px-8">
           <BeatInfo
             imageUrl={entry.imageUrl ?? ""}
             title={entry.title ?? ""}
