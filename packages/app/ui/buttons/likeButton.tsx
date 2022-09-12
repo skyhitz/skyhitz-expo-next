@@ -7,6 +7,8 @@ import {
   useUserLikesQuery,
 } from "app/api/graphql";
 import useLikeCache from "app/hooks/useLikeCache";
+import { toast } from "app/utils/toast";
+import { ErrorType } from "app/types";
 
 type Props = {
   size: number;
@@ -15,10 +17,8 @@ type Props = {
 };
 
 export function LikeButton({ size, className, entry }: Props) {
-  const [likeEntry] = useLikeEntryMutation({});
-  const { data: userLikesData } = useUserLikesQuery({
-    nextFetchPolicy: "cache-first",
-  });
+  const [likeEntry] = useLikeEntryMutation();
+  const { data: userLikesData } = useUserLikesQuery();
   const { addLikeToCache, removeLikeFromCache } = useLikeCache();
   const active = !!userLikesData?.userLikes?.find((e) => e?.id === entry.id);
 
@@ -29,6 +29,9 @@ export function LikeButton({ size, className, entry }: Props) {
       await likeEntry({ variables: { id: entry.id, like: !active } });
     } catch (e) {
       active ? addLikeToCache(entry) : removeLikeFromCache(entry);
+
+      const err = e as Partial<ErrorType>;
+      toast(err?.message ?? "Unknown error");
     }
   };
 
