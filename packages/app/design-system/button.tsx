@@ -15,6 +15,7 @@ type Props = {
   iconProps?: IconProps;
   disabled?: boolean;
   className?: string;
+  onDisabledPress?: () => void;
 };
 
 const textStyle = {
@@ -43,6 +44,7 @@ const Button = ({
   iconProps,
   disabled,
   className,
+  onDisabledPress,
 }: Props) => {
   const defaultIconProps = {
     color: disabled ? tw.color("grey") : tw.color("white"),
@@ -55,8 +57,13 @@ const Button = ({
       } ${disabled ? disabledStyle : containerStyle[variant]} ${
         className ?? ""
       }`}
-      onPress={onPress}
-      disabled={disabled}
+      onPress={() => {
+        if (disabled && onDisabledPress) {
+          onDisabledPress();
+        } else if (!disabled) {
+          onPress();
+        }
+      }}
     >
       {loading ? (
         <ActivityIndicator size="small" color={tw.color("white")} />

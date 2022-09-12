@@ -15,8 +15,11 @@ import Dollar from "app/ui/icons/dollar";
 import Upload from "app/ui/icons/upload";
 import { useRouter } from "solito/router";
 import { usePaymentsInfoQuery } from "app/api/graphql";
+import { useState } from "react";
+import { LowBalanceModal } from "./LowBalanceModal";
 
 export function ProfileScreen() {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const user = useRecoilValue(userAtom)!;
   const { data } = usePaymentsInfoQuery();
   const { push } = useRouter();
@@ -65,18 +68,24 @@ export function ProfileScreen() {
         className="mx-auto my-16"
         size="large"
       />
+
       <Button
         text="Mint new NFT"
         onPress={() => {
-          // TODO add low balance modal
-          if ((data?.paymentsInfo?.credits ?? 0) > 2) {
-            push("/dashboard/profile/mint");
-          }
+          push("/dashboard/profile/mint");
         }}
         icon={Upload}
         className="mx-auto"
         size="large"
-        disabled={(data?.paymentsInfo?.credits ?? 0) <= 2}
+        disabled={(data?.paymentsInfo?.credits ?? 0) < 2}
+        onDisabledPress={() => setModalVisible(true)}
+      />
+
+      <LowBalanceModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        availableBalance={data?.paymentsInfo?.credits ?? 0}
+        publicKey={user.publicKey ?? ""}
       />
     </SafeAreaView>
   );
