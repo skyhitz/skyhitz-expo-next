@@ -71,28 +71,7 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
           className="mb-5"
         />
         <PlayerButtonsRow size="large" />
-        {/* TODO replace, it's mocked */}
-        {entry && (
-          <LikesList
-            entry={entry}
-            likers={[
-              {
-                id: "1",
-                avatarUrl: "https://avatars.dicebear.com/api/male/john.jpg",
-              },
-              { id: "2", displayName: "Long Name Text" },
-              { id: "3", displayName: "Short" },
-              { id: "4", displayName: "Short" },
-              { id: "5", displayName: "Short" },
-              { id: "6", displayName: "Short" },
-              { id: "7", displayName: "Short" },
-              { id: "8", displayName: "Short" },
-              { id: "9", displayName: "Short" },
-              { id: "10", displayName: "Short" },
-              { id: "11", displayName: "Short" },
-            ]}
-          />
-        )}
+        {entry && <LikesList entry={entry} />}
       </SafeAreaView>
     </Animated.View>
   );

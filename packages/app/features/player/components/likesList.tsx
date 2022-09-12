@@ -1,16 +1,22 @@
-import { Entry, User } from "app/api/graphql";
+import { Entry, PublicUser, useEntryLikesQuery } from "app/api/graphql";
 import { Text, View } from "app/design-system";
 import { LikeButton } from "app/ui/buttons/likeButton";
 import { UserAvatar } from "app/ui/userAvatar";
 import { FlatList } from "react-native";
+import { isSome } from "app/utils";
 
 type Props = {
-  likers: User[];
   entry: Entry;
 };
 
-export function LikesList({ likers, entry }: Props) {
-  const renderItem = ({ item }: { item: User }) => {
+export function LikesList({ entry }: Props) {
+  const { data } = useEntryLikesQuery({
+    variables: {
+      id: entry.id!,
+    },
+  });
+
+  const renderItem = ({ item }: { item: PublicUser }) => {
     return (
       <View className="mr-2" key={item.id}>
         <UserAvatar avatarUrl={item.avatarUrl} displayName={item.displayName} />
@@ -26,7 +32,7 @@ export function LikesList({ likers, entry }: Props) {
       </View>
       <View className="flex flex-row mt-2.5 min-h-10">
         <FlatList
-          data={likers}
+          data={data?.entryLikes?.users?.filter(isSome)}
           keyExtractor={(item) => item.id!}
           renderItem={renderItem}
           horizontal
