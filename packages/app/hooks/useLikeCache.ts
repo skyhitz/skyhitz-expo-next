@@ -62,18 +62,9 @@ function addLike(
 
 function getAddToEntryLikesCacheUpdate(user: PublicUser) {
   return (data: any) => {
-    const typedData = data as EntryLikesQuery;
-    if (
-      !typedData ||
-      !typedData.entryLikes?.users ||
-      typedData.entryLikes.users.some((item) => item?.id === user?.id)
-    ) {
-      return;
-    }
-
     const update: Partial<EntryLikesQuery> = {
       entryLikes: {
-        users: typedData.entryLikes.users.concat([user]),
+        users: [user].concat(data?.entryLikes?.users ?? []),
       },
     };
 
@@ -83,17 +74,8 @@ function getAddToEntryLikesCacheUpdate(user: PublicUser) {
 
 function getAddToUserLikesCacheUpdate(entry: Entry) {
   return (data: any) => {
-    const typedData = data as UserLikesQuery;
-    if (
-      !typedData ||
-      !typedData.userLikes ||
-      typedData.userLikes.some((item) => item?.id === entry.id)
-    ) {
-      return;
-    }
-
     const update: Partial<UserLikesQuery> = {
-      userLikes: typedData.userLikes.concat([entry]),
+      userLikes: [entry].concat(data?.userLikes ?? []),
     };
 
     return update;
