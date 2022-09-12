@@ -49,7 +49,40 @@ function addLike(
 ) {
   if (!user || !entry.id) return;
 
-  cache.updateQuery({ query: UserLikesDocument }, (data) => {
+  cache.updateQuery(
+    { query: UserLikesDocument },
+    getAddToUserLikesCacheUpdate(entry)
+  );
+
+  cache.updateQuery(
+    { query: EntryLikesDocument, variables: { id: entry.id } },
+    getAddToEntryLikesCacheUpdate(user)
+  );
+}
+
+function getAddToEntryLikesCacheUpdate(user: PublicUser) {
+  return (data: any) => {
+    const typedData = data as EntryLikesQuery;
+    if (
+      !typedData ||
+      !typedData.entryLikes?.users ||
+      typedData.entryLikes.users.some((item) => item?.id === user?.id)
+    ) {
+      return;
+    }
+
+    const update: Partial<EntryLikesQuery> = {
+      entryLikes: {
+        users: typedData.entryLikes.users.concat([user]),
+      },
+    };
+
+    return update;
+  };
+}
+
+function getAddToUserLikesCacheUpdate(entry: Entry) {
+  return (data: any) => {
     const typedData = data as UserLikesQuery;
     if (
       !typedData ||
@@ -64,29 +97,7 @@ function addLike(
     };
 
     return update;
-  });
-
-  cache.updateQuery(
-    { query: EntryLikesDocument, variables: { id: entry.id } },
-    (data) => {
-      const typedData = data as EntryLikesQuery;
-      if (
-        !typedData ||
-        !typedData.entryLikes?.users ||
-        typedData.entryLikes.users.some((item) => item?.id === user?.id)
-      ) {
-        return;
-      }
-
-      const update: Partial<EntryLikesQuery> = {
-        entryLikes: {
-          users: typedData.entryLikes.users.concat([user]),
-        },
-      };
-
-      return update;
-    }
-  );
+  };
 }
 
 function removeLike(
@@ -96,7 +107,19 @@ function removeLike(
 ) {
   if (!user) return;
 
-  cache.updateQuery({ query: UserLikesDocument }, (data) => {
+  cache.updateQuery(
+    { query: UserLikesDocument },
+    getRemoveFromUserLikesCacheUpdate(entry)
+  );
+
+  cache.updateQuery(
+    { query: EntryLikesDocument, variables: { id: entry.id } },
+    getRemoveFromEntryLikesUpdate(user)
+  );
+}
+
+function getRemoveFromUserLikesCacheUpdate(entry: Entry) {
+  return (data: any) => {
     const typedData = data as UserLikesQuery;
     if (!typedData || !typedData.userLikes) return;
 
@@ -107,25 +130,24 @@ function removeLike(
     };
 
     return update;
-  });
+  };
+}
 
-  cache.updateQuery(
-    { query: EntryLikesDocument, variables: { id: entry.id } },
-    (data) => {
-      const typedData = data as EntryLikesQuery;
-      if (!typedData || !typedData.entryLikes?.users) {
-        return;
-      }
-
-      const update: Partial<EntryLikesQuery> = {
-        entryLikes: {
-          users: typedData.entryLikes.users
-            .filter(isSome)
-            .filter((item) => item.id !== user.id),
-        },
-      };
-
-      return update;
+function getRemoveFromEntryLikesUpdate(user: PublicUser) {
+  return (data: any) => {
+    const typedData = data as EntryLikesQuery;
+    if (!typedData || !typedData.entryLikes?.users) {
+      return;
     }
-  );
+
+    const update: Partial<EntryLikesQuery> = {
+      entryLikes: {
+        users: typedData.entryLikes.users
+          .filter(isSome)
+          .filter((item) => item.id !== user.id),
+      },
+    };
+
+    return update;
+  };
 }
