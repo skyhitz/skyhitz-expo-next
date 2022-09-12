@@ -1,26 +1,54 @@
 import { ApolloCache, useApolloClient } from "@apollo/client";
-import { Entry, UserLikesDocument, UserLikesQuery } from "app/api/graphql";
+import {
+  Entry,
+  EntryLikesDocument,
+  EntryLikesQuery,
+  PublicUser,
+  User,
+  UserLikesDocument,
+  UserLikesQuery,
+} from "app/api/graphql";
 import { isSome } from "app/utils";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import { useCallback } from "react";
 
-function removeLike(cache: ApolloCache<unknown>, entry: Entry) {
-  cache.updateQuery({ query: UserLikesDocument }, (data) => {
-    const typedData = data as UserLikesQuery;
-    if (!typedData || !typedData.userLikes) return;
+export default function useLikeCache() {
+  const user = useRecoilValue(userAtom);
+  const cache = useApolloClient().cache;
+  const publicUser = userToPublicUser(user);
 
-    const update: Partial<UserLikesQuery> = {
-      userLikes: typedData.userLikes
-        .filter(isSome)
-        .filter((item) => item.id !== entry.id),
-    };
+  const addLikeToCache = useCallback(
+    (entry) => addLike(cache, publicUser, entry),
+    [cache, publicUser]
+  );
+  const removeLikeFromCache = useCallback(
+    (entry) => removeLike(cache, publicUser, entry),
+    [cache, publicUser]
+  );
 
-    return update;
-  });
+  return { addLikeToCache, removeLikeFromCache };
 }
 
-function addLike(cache: ApolloCache<unknown>, entry: Entry) {
+function userToPublicUser(user: User | null): PublicUser | null {
+  if (!user) return null;
+  return {
+    __typename: "PublicUser",
+    avatarUrl: user.avatarUrl,
+    description: user.description,
+    displayName: user.displayName,
+    id: user.id,
+    username: user.username,
+  };
+}
+
+function addLike(
+  cache: ApolloCache<unknown>,
+  user: null | PublicUser,
+  entry: Entry
+) {
+  if (!user || !entry.id) return;
+
   cache.updateQuery({ query: UserLikesDocument }, (data) => {
     const typedData = data as UserLikesQuery;
     if (
@@ -37,17 +65,67 @@ function addLike(cache: ApolloCache<unknown>, entry: Entry) {
 
     return update;
   });
+
+  cache.updateQuery(
+    { query: EntryLikesDocument, variables: { id: entry.id } },
+    (data) => {
+      const typedData = data as EntryLikesQuery;
+      if (
+        !typedData ||
+        !typedData.entryLikes?.users ||
+        typedData.entryLikes.users.some((item) => item?.id === user?.id)
+      ) {
+        return;
+      }
+
+      const update: Partial<EntryLikesQuery> = {
+        entryLikes: {
+          users: typedData.entryLikes.users.concat([user]),
+        },
+      };
+
+      return update;
+    }
+  );
 }
 
-export default function useLikeCache() {
-  const user = useRecoilState(userAtom);
-  const cache = useApolloClient().cache;
+function removeLike(
+  cache: ApolloCache<unknown>,
+  user: null | PublicUser,
+  entry: Entry
+) {
+  if (!user) return;
 
-  const addLikeToCache = useCallback((entry) => addLike(cache, entry), [cache]);
-  const removeLikeFromCache = useCallback(
-    (entry) => removeLike(cache, entry),
-    [cache]
+  cache.updateQuery({ query: UserLikesDocument }, (data) => {
+    const typedData = data as UserLikesQuery;
+    if (!typedData || !typedData.userLikes) return;
+
+    const update: Partial<UserLikesQuery> = {
+      userLikes: typedData.userLikes
+        .filter(isSome)
+        .filter((item) => item.id !== entry.id),
+    };
+
+    return update;
+  });
+
+  cache.updateQuery(
+    { query: EntryLikesDocument, variables: { id: entry.id } },
+    (data) => {
+      const typedData = data as EntryLikesQuery;
+      if (!typedData || !typedData.entryLikes?.users) {
+        return;
+      }
+
+      const update: Partial<EntryLikesQuery> = {
+        entryLikes: {
+          users: typedData.entryLikes.users
+            .filter(isSome)
+            .filter((item) => item.id !== user.id),
+        },
+      };
+
+      return update;
+    }
   );
-
-  return { addLikeToCache, removeLikeFromCache };
 }
