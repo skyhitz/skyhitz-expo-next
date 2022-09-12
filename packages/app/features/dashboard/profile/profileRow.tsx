@@ -21,7 +21,7 @@ export function ProfileRow({ icon, number, title, onPress }: ProfileRowProps) {
         <Text className="font-bold ml-2 text-sm">{title}</Text>
       </View>
       <View className="flex flex-row items-center">
-        <Text className="text-sm">{number}</Text>
+        <Text className="text-sm">{number && number > 0 ? number : ""}</Text>
         <ChevronRight size={28} color={tw.color("white")} />
       </View>
     </Pressable>
