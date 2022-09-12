@@ -50,12 +50,12 @@ function addLike(
   if (!user || !entry.id) return;
 
   cache.updateQuery(
-    { query: UserLikesDocument },
+    { query: UserLikesDocument, overwrite: true },
     getAddToUserLikesCacheUpdate(entry)
   );
 
   cache.updateQuery(
-    { query: EntryLikesDocument, variables: { id: entry.id } },
+    { query: EntryLikesDocument, variables: { id: entry.id }, overwrite: true },
     getAddToEntryLikesCacheUpdate(user)
   );
 }
@@ -108,12 +108,12 @@ function removeLike(
   if (!user) return;
 
   cache.updateQuery(
-    { query: UserLikesDocument },
+    { query: UserLikesDocument, overwrite: true },
     getRemoveFromUserLikesCacheUpdate(entry)
   );
 
   cache.updateQuery(
-    { query: EntryLikesDocument, variables: { id: entry.id } },
+    { query: EntryLikesDocument, variables: { id: entry.id }, overwrite: true },
     getRemoveFromEntryLikesUpdate(user)
   );
 }

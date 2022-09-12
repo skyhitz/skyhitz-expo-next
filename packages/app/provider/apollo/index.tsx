@@ -13,17 +13,7 @@ const httpLink = createHttpLink({
   uri: Config.GRAPHQL_URL,
 });
 
-const cache = new InMemoryCache({
-  typePolicies: {
-    ROOT_QUERY: {
-      fields: {
-        userLikes: {
-          merge: false,
-        },
-      },
-    },
-  },
-});
+const cache = new InMemoryCache();
 
 export const SkyhitzApolloProvider = ({
   children,
