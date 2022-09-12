@@ -1,8 +1,11 @@
-import { ApolloCache } from "@apollo/client";
+import { ApolloCache, useApolloClient } from "@apollo/client";
 import { Entry, UserLikesDocument, UserLikesQuery } from "app/api/graphql";
-import { isSome } from "app/utils/index";
+import { isSome } from "app/utils";
+import { useRecoilState } from "recoil";
+import { userAtom } from "app/state/user";
+import { useCallback } from "react";
 
-export function removeLike(cache: ApolloCache<unknown>, entry: Entry) {
+function removeLike(cache: ApolloCache<unknown>, entry: Entry) {
   cache.updateQuery({ query: UserLikesDocument }, (data) => {
     const typedData = data as UserLikesQuery;
     if (!typedData || !typedData.userLikes) return;
@@ -17,7 +20,7 @@ export function removeLike(cache: ApolloCache<unknown>, entry: Entry) {
   });
 }
 
-export function addLike(cache: ApolloCache<unknown>, entry: Entry) {
+function addLike(cache: ApolloCache<unknown>, entry: Entry) {
   cache.updateQuery({ query: UserLikesDocument }, (data) => {
     const typedData = data as UserLikesQuery;
     if (
@@ -34,4 +37,17 @@ export function addLike(cache: ApolloCache<unknown>, entry: Entry) {
 
     return update;
   });
+}
+
+export default function useLikeCache() {
+  const user = useRecoilState(userAtom);
+  const cache = useApolloClient().cache;
+
+  const addLikeToCache = useCallback((entry) => addLike(cache, entry), [cache]);
+  const removeLikeFromCache = useCallback(
+    (entry) => removeLike(cache, entry),
+    [cache]
+  );
+
+  return { addLikeToCache, removeLikeFromCache };
 }

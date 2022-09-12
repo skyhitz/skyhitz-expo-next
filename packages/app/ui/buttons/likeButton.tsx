@@ -6,8 +6,7 @@ import {
   useLikeEntryMutation,
   useUserLikesQuery,
 } from "app/api/graphql";
-import { useApolloClient } from "@apollo/client";
-import { addLike, removeLike } from "app/utils/cache";
+import useLikeCache from "app/hooks/useLikeCache";
 
 type Props = {
   size: number;
@@ -20,16 +19,16 @@ export function LikeButton({ size, className, entry }: Props) {
   const { data: userLikesData } = useUserLikesQuery({
     nextFetchPolicy: "cache-first",
   });
-  const cache = useApolloClient().cache;
+  const { addLikeToCache, removeLikeFromCache } = useLikeCache();
   const active = !!userLikesData?.userLikes?.find((e) => e?.id === entry.id);
 
   const update = async () => {
     if (!entry.id) return;
-    active ? removeLike(cache, entry) : addLike(cache, entry);
+    active ? removeLikeFromCache(entry) : addLikeToCache(entry);
     try {
       await likeEntry({ variables: { id: entry.id, like: !active } });
     } catch (e) {
-      active ? addLike(cache, entry) : removeLike(cache, entry);
+      active ? addLikeToCache(entry) : removeLikeFromCache(entry);
     }
   };
 
