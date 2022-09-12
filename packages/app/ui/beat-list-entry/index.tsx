@@ -42,7 +42,7 @@ export function BeatListEntry({
         </View>
         <View className="flex flex-row items-center">
           <Price className="mr-3" />
-          <LikeButton size={20} entryId={entry.id!} />
+          <LikeButton size={20} entry={entry} />
           <ShowMore entry={entry} />
         </View>
       </View>

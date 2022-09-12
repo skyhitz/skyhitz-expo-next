@@ -1,4 +1,4 @@
-import { User } from "app/api/graphql";
+import { Entry, User } from "app/api/graphql";
 import { Text, View } from "app/design-system";
 import { LikeButton } from "app/ui/buttons/likeButton";
 import { UserAvatar } from "app/ui/userAvatar";
@@ -6,10 +6,10 @@ import { FlatList } from "react-native";
 
 type Props = {
   likers: User[];
-  entryId: string;
+  entry: Entry;
 };
 
-export function LikesList({ likers, entryId }: Props) {
+export function LikesList({ likers, entry }: Props) {
   const renderItem = ({ item }: { item: User }) => {
     return (
       <View className="mr-2" key={item.id}>
@@ -22,7 +22,7 @@ export function LikesList({ likers, entryId }: Props) {
     <View className="w-full mb-10 flex">
       <View className="flex flex-row justify-between items-center">
         <Text className="text-sm text-white">Liked By</Text>
-        <LikeButton size={24} entryId={entryId} />
+        <LikeButton size={24} entry={entry} />
       </View>
       <View className="flex flex-row mt-2.5 min-h-10">
         <FlatList
