@@ -7,9 +7,10 @@ import { isSome } from "app/utils";
 
 type Props = {
   entry: Entry;
+  classname?: string;
 };
 
-export function LikesList({ entry }: Props) {
+export function LikesList({ entry, classname = "" }: Props) {
   const { data } = useEntryLikesQuery({
     variables: {
       id: entry.id!,
@@ -25,7 +26,7 @@ export function LikesList({ entry }: Props) {
   };
 
   return (
-    <View className="w-full mb-10 flex">
+    <View className={`w-full mb-10 flex ${classname}`}>
       <View className="flex flex-row justify-between items-center">
         <Text className="text-sm text-white">Liked By</Text>
         <LikeButton size={24} entry={entry} />
