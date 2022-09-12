@@ -373,6 +373,25 @@ export type UpdateUserMutation = {
   } | null;
 };
 
+export type EntryLikesQueryVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type EntryLikesQuery = {
+  __typename?: "Query";
+  entryLikes?: {
+    __typename?: "EntryLikes";
+    users?: Array<{
+      __typename?: "PublicUser";
+      avatarUrl?: string | null;
+      displayName?: string | null;
+      username?: string | null;
+      id?: string | null;
+      description?: string | null;
+    } | null> | null;
+  } | null;
+};
+
 export type GetIssuerQueryVariables = Exact<{
   cid: Scalars["String"];
 }>;
@@ -886,6 +905,68 @@ export type UpdateUserMutationResult =
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
+>;
+export const EntryLikesDocument = gql`
+  query entryLikes($id: String!) {
+    entryLikes(id: $id) {
+      users {
+        avatarUrl
+        displayName
+        username
+        id
+        description
+      }
+    }
+  }
+`;
+
+/**
+ * __useEntryLikesQuery__
+ *
+ * To run a query within a React component, call `useEntryLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEntryLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEntryLikesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntryLikesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    EntryLikesQuery,
+    EntryLikesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<EntryLikesQuery, EntryLikesQueryVariables>(
+    EntryLikesDocument,
+    options
+  );
+}
+export function useEntryLikesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    EntryLikesQuery,
+    EntryLikesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<EntryLikesQuery, EntryLikesQueryVariables>(
+    EntryLikesDocument,
+    options
+  );
+}
+export type EntryLikesQueryHookResult = ReturnType<typeof useEntryLikesQuery>;
+export type EntryLikesLazyQueryHookResult = ReturnType<
+  typeof useEntryLikesLazyQuery
+>;
+export type EntryLikesQueryResult = Apollo.QueryResult<
+  EntryLikesQuery,
+  EntryLikesQueryVariables
 >;
 export const GetIssuerDocument = gql`
   query GetIssuer($cid: String!) {
