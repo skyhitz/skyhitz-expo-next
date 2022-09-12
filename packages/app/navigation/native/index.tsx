@@ -2,21 +2,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignIn } from "app/features/accounts/sign-in";
 import { HomeScreen } from "app/features/home/screen";
 import { SignUp } from "app/features/accounts/sign-up";
-import { SearchScreen } from "app/features/dashboard/search";
 import { useRecoilValue } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/user";
 import { SplashScreen } from "app/features/splash/splashScreen";
 import { useRouter } from "solito/router";
 import { useEffect } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ChartScreen } from "app/features/dashboard/chart";
-import { ProfileScreen } from "app/features/dashboard/profile";
 import { Linking } from "react-native";
 import { Config } from "app/config";
-import { MintScreen } from "app/features/dashboard/profile/mint/MintScreen";
-import { tw } from "app/design-system/tailwind";
-import { MobileTabBarWrapper } from "app/ui/navigation/mobileTabBarWrapper";
-import EditProfileScreen from "app/features/dashboard/profile/edit";
+import { DashboardNavigation } from "./tab";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -105,77 +98,5 @@ export function NativeNavigation() {
         </>
       )}
     </Stack.Navigator>
-  );
-}
-
-const Tab = createBottomTabNavigator<{
-  search: undefined;
-  chart: undefined;
-  profile: undefined;
-}>();
-
-function DashboardNavigation() {
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-      tabBar={() => <MobileTabBarWrapper />}
-    >
-      <Tab.Screen component={SearchScreen} name="search" />
-      <Tab.Screen component={ChartScreen} name="chart" />
-      <Tab.Screen component={ProfileNavigation} name="profile" />
-    </Tab.Navigator>
-  );
-}
-
-const ProfileStack = createNativeStackNavigator<{
-  "user-details": undefined;
-  mint: undefined;
-  edit: undefined;
-}>();
-
-function ProfileNavigation() {
-  return (
-    <ProfileStack.Navigator>
-      <ProfileStack.Screen
-        component={ProfileScreen}
-        name="user-details"
-        options={{
-          title: "Profile",
-          headerShown: false,
-        }}
-      />
-      <ProfileStack.Screen
-        component={MintScreen}
-        name="mint"
-        options={{
-          title: "Mint new NFT",
-          headerBackTitleVisible: false,
-          headerStyle: {
-            backgroundColor: tw.color("blue-dark"),
-          },
-          headerTintColor: tw.color("white"),
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      />
-      <ProfileStack.Screen
-        name="edit"
-        component={EditProfileScreen}
-        options={{
-          title: "Edit Profile",
-          headerBackTitleVisible: false,
-          headerStyle: {
-            backgroundColor: tw.color("blue-dark"),
-          },
-          headerTintColor: tw.color("white"),
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      />
-    </ProfileStack.Navigator>
   );
 }

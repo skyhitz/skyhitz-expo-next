@@ -31,7 +31,7 @@ export const editProfileFormSchema: SchemaOf<UpdateUserMutationVariables> =
 export const signInFormSchema: SchemaOf<SignInForm> = Yup.object().shape({
   usernameOrEmail: Yup.string()
     .required("Username or email is required")
-    .min(2, "Enter a valid username or email"),
+    .min(2, "Username should contain at least 2 characters"),
 });
 
 export const signUpFormSchema = Yup.object().shape({
@@ -43,20 +43,19 @@ export const signUpFormSchema = Yup.object().shape({
 export const mintFormSchema: SchemaOf<MintForm> = object().shape({
   artist: Yup.string()
     .required("Artist name is required")
-    .min(2, "Enter a valid artist name")
-    .max(20, "Enter a valid artist name"),
+    .min(2, "Artist name should contain at least 2 characters")
+    .max(20, "Artist name should not contain more than 20 characters"),
   title: Yup.string()
     .required("Title is required")
-    .min(2, "Enter a valid title")
-    .max(20, "Enter a valid title"),
+    .min(2, "Title should contain at least 2 characters")
+    .max(20, "Title should not contain more than 20 characters"),
   description: Yup.string()
     .required("Description is required")
-    .min(2, "Enter a valid description")
-    .max(20, "Enter a valid description"),
+    .min(2, "Description should contain at least 2 characters")
+    .max(100, "Description should not contain more than 100 characters"),
   availableForSale: Yup.boolean().required(),
-  price: Yup.string().required(),
+  price: Yup.string(),
   equityForSale: Yup.number()
-    .required()
     .min(1, "Equity should be within range 0 - 100")
     .max(100, "Equity should be within range 0 - 100"),
 });

@@ -11,15 +11,18 @@ import {
   MediaTypeOptions,
   ImageInfo,
 } from "expo-image-picker";
+import XIcon from "app/ui/icons/x";
 
 type Props = {
   type: "video" | "image";
   label: string;
   onUploadFinished: (_blob: Blob) => void;
+  onClear: () => void;
   icon: (_props: IconProps) => ReactElement;
   iconProps?: IconProps;
   containerClassNames?: string;
   validateFile: (_file: ImageInfo) => string | null;
+  success: boolean;
 };
 
 const defaultIconProps = {
@@ -35,10 +38,11 @@ export function UploadInputWithIcon({
   validateFile,
   iconProps,
   containerClassNames,
+  onClear,
+  success,
 }: TextProps & Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
-  const [success, setSuccess] = useState<boolean>(false);
 
   const onUpload = async () => {
     const result = await launchImageLibraryAsync({
@@ -62,7 +66,6 @@ export function UploadInputWithIcon({
     const file = await response.blob();
     onUploadFinished(file);
     setLoading(false);
-    setSuccess(true);
   };
 
   const UploadWidget = () => {
@@ -70,7 +73,14 @@ export function UploadInputWithIcon({
       return <ActivityIndicator size="small" color={tw.color("white")} />;
     }
     if (success) {
-      return <CheckIcon size={30} color={tw.color("lightGreen")} />;
+      return (
+        <View className="flex-row justify-between flex-1 pr-4 items-center">
+          <CheckIcon size={30} color={tw.color("lightGreen")} />;
+          <Pressable onPress={onClear}>
+            <XIcon size={30} color={tw.color("white")} />
+          </Pressable>
+        </View>
+      );
     } else {
       return (
         <>

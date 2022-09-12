@@ -30,7 +30,7 @@ export function FormInputWithIcon({
       <View className={`flex flex-row items-center `}>
         {icon(iconProps ?? defaultIconProps)}
         <TextInput
-          style={[tw.style("ml-4 text-white"), style]}
+          style={[tw.style("ml-4 text-white grow"), style]}
           placeholderTextColor={placeholderTextColor ?? tw.color("white")}
           {...rest}
         />

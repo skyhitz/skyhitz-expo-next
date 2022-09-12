@@ -1,4 +1,8 @@
-import { useCreateEntryMutation, useGetIssuerLazyQuery } from "app/api/graphql";
+import {
+  GetIssuerQuery,
+  useCreateEntryMutation,
+  useGetIssuerLazyQuery,
+} from "app/api/graphql";
 import { ipfsProtocol, nftStorageApi } from "app/constants/constants";
 import { MintForm } from "app/types";
 import { useCallback, useState } from "react";
@@ -24,7 +28,9 @@ export function useMintNFT(): MintResult {
   const [status, setStatus] = useState<MintStatus>("Uninitialized");
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<string | undefined>();
-  const [getIssuer] = useGetIssuerLazyQuery();
+  const [formValues, setFormValues] = useState<MintForm | undefined>();
+  const [imageCid, setImageCid] = useState<string>("");
+  const [videoCid, setVideoCid] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
   const [indexEntry] = useIndexEntryMutation();
 
@@ -57,20 +63,22 @@ export function useMintNFT(): MintResult {
     });
   }, []);
 
-  const mint = useCallback(
-    async (
-      {
+  const onIssuerQueryCompleted = useCallback(
+    async (data: GetIssuerQuery) => {
+      if (!formValues) return;
+      if (!data?.getIssuer) {
+        setStatus("Error");
+        setError("Couldn't generate issuer");
+        return;
+      }
+      const {
         artist,
         title,
         description,
         availableForSale,
-        equityForSale,
         price,
-      }: MintForm,
-      artwork: Blob,
-      video: Blob
-    ) => {
-      setStatus("Uploading files");
+        equityForSale,
+      } = formValues;
       const name = `${artist} - ${title}`;
       const code = `${title}${artist}`
         .normalize("NFD")
@@ -80,20 +88,8 @@ export function useMintNFT(): MintResult {
         .replace(/[^0-9a-z]/gi, "")
         .slice(0, 12)
         .toUpperCase();
-
-      const imageCid = await uploadFile(artwork);
-      const videoCid = await uploadFile(video);
-
-      setStatus("Uploading metadata");
-
       const imageUrl = `${ipfsProtocol}${imageCid}`;
       const videoUrl = `${ipfsProtocol}${videoCid}`;
-      const { data } = await getIssuer({ variables: { cid: videoCid } });
-      if (!data?.getIssuer) {
-        setStatus("Error");
-        setError("Couldn't generate issuer");
-        return;
-      }
 
       const issuer = data.getIssuer;
 
@@ -122,8 +118,8 @@ export function useMintNFT(): MintResult {
           metaCid: nftCid,
           code: code,
           forSale: availableForSale,
-          price: parseInt(price),
-          equityForSale: equityForSale / 100,
+          price: parseInt(price ?? "0") || 0,
+          equityForSale: (equityForSale ?? 0) / 100,
         },
       });
       if (entry?.createEntry?.success && entry.createEntry.submitted) {
@@ -144,7 +140,37 @@ export function useMintNFT(): MintResult {
         return;
       }
     },
-    [createEntry, getIssuer, indexEntry, setError, setStatus, uploadFile]
+    [
+      createEntry,
+      indexEntry,
+      setError,
+      setStatus,
+      uploadFile,
+      formValues,
+      imageCid,
+      videoCid,
+    ]
+  );
+
+  const [getIssuer] = useGetIssuerLazyQuery({
+    onCompleted: onIssuerQueryCompleted,
+  });
+
+  const mint = useCallback(
+    async (form: MintForm, artwork: Blob, video: Blob) => {
+      setFormValues(form);
+      setStatus("Uploading files");
+
+      const imageCidResponse = await uploadFile(artwork);
+      const videoCidResponse = await uploadFile(video);
+
+      setImageCid(imageCidResponse);
+      setVideoCid(videoCidResponse);
+
+      setStatus("Uploading metadata");
+      await getIssuer({ variables: { cid: videoCidResponse } });
+    },
+    [getIssuer, setStatus, uploadFile]
   );
 
   return {

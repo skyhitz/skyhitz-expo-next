@@ -81,7 +81,7 @@ export function MintScreen() {
     description: "",
     availableForSale: false,
     price: "",
-    equityForSale: 0,
+    equityForSale: 1,
   };
 
   if (status === "Success") {
@@ -199,6 +199,8 @@ export function MintScreen() {
               type="image"
               onUploadFinished={setImageBlob}
               validateFile={validateArtwork}
+              onClear={() => setImageBlob(null)}
+              success={imageBlob !== null}
             />
             <UploadInputWithIcon
               containerClassNames="border-b border-white"
@@ -207,6 +209,8 @@ export function MintScreen() {
               type="video"
               onUploadFinished={setVideoBlob}
               validateFile={validateVideo}
+              onClear={() => setVideoBlob(null)}
+              success={videoBlob !== null}
             />
             <View className="flex flex-row py-5 items-center border-b border-white">
               <Text className="mx-4 text-sm">
