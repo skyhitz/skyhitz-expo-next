@@ -35,14 +35,14 @@ const containerStyle = {
 const disabledStyle = "bg-grey-dark";
 
 const Button = ({
-  loading,
+  loading = false,
   text,
   onPress,
   size = "default",
   variant = "primary",
   icon,
   iconProps,
-  disabled,
+  disabled = false,
   className,
   onDisabledPress,
 }: Props) => {
@@ -68,15 +68,17 @@ const Button = ({
       {loading ? (
         <ActivityIndicator size="small" color={tw.color("white")} />
       ) : (
-        <Text
-          className={`${textStyle[size]} ${
-            disabled ? "text-grey" : textStyle[variant]
-          } ${icon ? "mr-2" : ""}`}
-        >
-          {text}
-        </Text>
+        <>
+          <Text
+            className={`text-center ${textStyle[size]} ${
+              disabled ? "text-grey" : textStyle[variant]
+            } ${icon ? "mr-2" : ""}`}
+          >
+            {text}
+          </Text>
+          {icon !== undefined && icon(iconProps ?? defaultIconProps)}
+        </>
       )}
-      {icon && icon(iconProps ?? defaultIconProps)}
     </Pressable>
   );
 };

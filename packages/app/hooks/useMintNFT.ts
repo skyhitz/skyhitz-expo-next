@@ -15,10 +15,12 @@ type MintStatus =
   | "Submitting"
   | "Indexing"
   | "Success"
-  | "Error";
+  | "Error"
+  | "IndexError";
 
 type MintResult = {
   mint: (_formData: MintForm, _artwork: Blob, _video: Blob) => void;
+  retryIndex: () => void;
   progress: number;
   status: MintStatus;
   error?: string;
@@ -31,6 +33,7 @@ export function useMintNFT(): MintResult {
   const [formValues, setFormValues] = useState<MintForm | undefined>();
   const [imageCid, setImageCid] = useState<string>("");
   const [videoCid, setVideoCid] = useState<string>("");
+  const [issuer, setIssuer] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
   const [indexEntry] = useIndexEntryMutation();
 
@@ -63,6 +66,25 @@ export function useMintNFT(): MintResult {
     });
   }, []);
 
+  const indexNFT = useCallback(
+    async (nftIssuer: string = issuer) => {
+      setError(undefined);
+      setStatus("Indexing");
+      const { data: indexed } = await indexEntry({
+        variables: { issuer: nftIssuer },
+      });
+      if (indexed?.indexEntry?.success) {
+        setStatus("Success");
+        return;
+      } else {
+        setStatus("IndexError");
+        setError(indexed?.indexEntry?.message ?? "Couldn't index new entry");
+        return;
+      }
+    },
+    [setStatus, setError, indexEntry, issuer]
+  );
+
   const onIssuerQueryCompleted = useCallback(
     async (data: GetIssuerQuery) => {
       if (!formValues) return;
@@ -91,13 +113,13 @@ export function useMintNFT(): MintResult {
       const imageUrl = `${ipfsProtocol}${imageCid}`;
       const videoUrl = `${ipfsProtocol}${videoCid}`;
 
-      const issuer = data.getIssuer;
+      setIssuer(data.getIssuer);
 
       const json = {
         name: name,
         description: description,
         code: code,
-        issuer: issuer,
+        issuer: data.getIssuer,
         domain: "skyhitz.io",
         supply: 1,
         image: imageUrl,
@@ -123,16 +145,7 @@ export function useMintNFT(): MintResult {
         },
       });
       if (entry?.createEntry?.success && entry.createEntry.submitted) {
-        setStatus("Indexing");
-        const { data: indexed } = await indexEntry({ variables: { issuer } });
-        if (indexed?.indexEntry?.success) {
-          setStatus("Success");
-          return;
-        } else {
-          setStatus("Error");
-          setError(indexed?.indexEntry?.message ?? "Couldn't index new entry");
-          return;
-        }
+        indexNFT(data.getIssuer);
       } else {
         // TODO handle unsubmitted case with wallet connect
         setStatus("Error");
@@ -142,13 +155,13 @@ export function useMintNFT(): MintResult {
     },
     [
       createEntry,
-      indexEntry,
       setError,
       setStatus,
       uploadFile,
       formValues,
       imageCid,
       videoCid,
+      indexNFT,
     ]
   );
 
@@ -158,6 +171,7 @@ export function useMintNFT(): MintResult {
 
   const mint = useCallback(
     async (form: MintForm, artwork: Blob, video: Blob) => {
+      setError(undefined);
       setFormValues(form);
       setStatus("Uploading files");
 
@@ -175,6 +189,7 @@ export function useMintNFT(): MintResult {
 
   return {
     mint,
+    retryIndex: indexNFT,
     progress,
     status,
     error,

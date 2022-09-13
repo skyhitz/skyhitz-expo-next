@@ -22,7 +22,7 @@ export function MintScreen() {
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
   const { back } = useRouter();
-  const { mint, progress, status, error } = useMintNFT();
+  const { mint, retryIndex, progress, status, error } = useMintNFT();
 
   useEffect(() => {
     const getPermissionAsync = async () => {
@@ -70,6 +70,8 @@ export function MintScreen() {
       case "Indexing":
       case "Submitting":
         return status;
+      case "IndexError":
+        return "Retry Indexing";
       default:
         return "Mint";
     }
@@ -102,7 +104,9 @@ export function MintScreen() {
         validationSchema={mintFormSchema}
         validateOnMount={false}
         onSubmit={(values) => {
-          if (imageBlob && videoBlob) {
+          if (status === "IndexError") {
+            retryIndex();
+          } else if (imageBlob && videoBlob) {
             mint(values, imageBlob, videoBlob);
           }
         }}
@@ -227,7 +231,13 @@ export function MintScreen() {
                 className="mb-5 md:mb-0 md:mr-5"
                 disabled={
                   !isValid ||
-                  not(any(equals(status), ["Uninitialized", "Error"])) ||
+                  not(
+                    any(equals(status), [
+                      "Uninitialized",
+                      "Error",
+                      "IndexError",
+                    ])
+                  ) ||
                   !videoBlob ||
                   !imageBlob
                 }
