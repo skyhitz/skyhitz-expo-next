@@ -2,6 +2,7 @@ import * as Yup from "yup";
 import { object, SchemaOf, string } from "yup";
 import { SignInForm, MintForm } from "app/types";
 import { UpdateUserMutationVariables } from "app/api/graphql";
+import { ImageInfo } from "expo-image-picker";
 
 export const usernameSchema = Yup.string()
   .required("Username is required.")
@@ -59,3 +60,31 @@ export const mintFormSchema: SchemaOf<MintForm> = object().shape({
     .min(1, "Equity should be within range 0 - 100")
     .max(100, "Equity should be within range 0 - 100"),
 });
+
+export const validateImg = (image: ImageInfo): string | null => {
+  const isPng = image.uri.startsWith("data:image/png");
+  if (!isPng) {
+    return "Only png files supported!";
+  }
+  if (image.height !== image.width) {
+    return "Only square images supported!";
+  }
+  return null;
+};
+
+export const validateArtwork = (image: ImageInfo): string | null => {
+  const imgValidationError = validateImg(image);
+  if (imgValidationError) return imgValidationError;
+  if (image.width < 3000) {
+    return "Image should be at least 3000px wide!";
+  }
+  return null;
+};
+
+export const validateVideo = (video: ImageInfo): string | null => {
+  const isMp4 = video.uri.startsWith("data:video/mp4");
+  if (!isMp4) {
+    return "Only mp4 files supported!";
+  }
+  return null;
+};
