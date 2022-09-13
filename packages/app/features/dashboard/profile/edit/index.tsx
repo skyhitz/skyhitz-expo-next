@@ -29,14 +29,8 @@ export default function EditProfileScreen() {
   const handleUpdateUser = async (form: UpdateUserMutationVariables) => {
     if (loading) return;
 
-    // TODO: remove after adding ability to change profile picture
-    const { avatarUrl: _, ...formWithoutAvatarUrl } = form;
-
     await updateUser({
-      variables: {
-        ...formWithoutAvatarUrl,
-        avatarUrl: user!.avatarUrl,
-      },
+      variables: form,
     });
   };
 
