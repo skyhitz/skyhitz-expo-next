@@ -2,16 +2,13 @@ import { ActivityIndicator, Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import { TextProps } from "app/design-system/textInput";
 import { IconProps } from "app/types";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect } from "react";
 import CheckIcon from "app/ui/icons/check";
 import UploadIcon from "app/ui/icons/upload";
 import { Pressable } from "react-native";
-import {
-  launchImageLibraryAsync,
-  MediaTypeOptions,
-  ImageInfo,
-} from "expo-image-picker";
+import { ImageInfo } from "expo-image-picker";
 import XIcon from "app/ui/icons/x";
+import usePickMedia from "app/hooks/usePickMedia";
 
 type Props = {
   type: "video" | "image";
@@ -41,32 +38,12 @@ export function UploadInputWithIcon({
   onClear,
   success,
 }: TextProps & Props) {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>("");
+  const { pickMedia, loading, error, data } = usePickMedia(type, validateFile);
 
-  const onUpload = async () => {
-    const result = await launchImageLibraryAsync({
-      mediaTypes:
-        type === "image" ? MediaTypeOptions.Images : MediaTypeOptions.Videos,
-      allowsEditing: type === "image",
-      aspect: type === "image" ? [1, 1] : undefined,
-      quality: 1,
-      base64: true,
-      exif: true,
-    });
-    if (!result || result.cancelled) return;
-    setLoading(true);
-    const error = validateFile(result);
-    if (error) {
-      setError(error);
-      setLoading(false);
-      return;
-    }
-    const response = await fetch(result.uri);
-    const file = await response.blob();
-    onUploadFinished(file);
-    setLoading(false);
-  };
+  useEffect(() => {
+    if (!data) return;
+    onUploadFinished(data);
+  }, [data, onUploadFinished]);
 
   const UploadWidget = () => {
     if (loading) {
@@ -84,7 +61,7 @@ export function UploadInputWithIcon({
     } else {
       return (
         <>
-          <Pressable onPress={onUpload}>
+          <Pressable onPress={pickMedia}>
             <UploadIcon size={30} color={tw.color("white")} />
           </Pressable>
           {error !== null && (
