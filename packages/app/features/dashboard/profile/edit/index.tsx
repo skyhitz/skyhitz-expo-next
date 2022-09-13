@@ -19,6 +19,8 @@ import { useRouter } from "solito/router";
 import { ChangeAvatarImg, EditProfileForm } from "app/types";
 import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
+import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
+import { ipfsProtocol } from "app/constants/constants";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -27,13 +29,24 @@ export default function EditProfileScreen() {
     url: user.avatarUrl ?? "",
   });
   const [updateUser, { data, loading, error }] = useUpdateUserMutation();
+  const { uploadFile } = useUploadFileToNFTStorage();
   const { back } = useRouter();
 
   const handleUpdateUser = async (form: EditProfileForm) => {
     if (loading) return;
 
+    let avatarUrl = "";
+    try {
+      if (avatar.blob) {
+        const cid = await uploadFile(avatar.blob);
+        avatarUrl = `${ipfsProtocol}${cid}`;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
     await updateUser({
-      variables: form,
+      variables: { ...form, avatarUrl },
     });
   };
 
