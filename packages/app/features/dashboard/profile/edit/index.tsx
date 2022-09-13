@@ -4,13 +4,9 @@ import { Line } from "app/ui/orSeparator";
 import InfoCircle from "app/ui/icons/info-circle";
 import PersonOutline from "app/ui/icons/person-outline";
 import MailOutline from "app/ui/icons/mail-outline";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import {
-  UpdateUserMutationVariables,
-  useUpdateUserMutation,
-} from "app/api/graphql";
-import { editProfileFormSchema } from "app/validation";
+import { useUpdateUserMutation } from "app/api/graphql";
 import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/dashboard/profile/edit/logOutBtn";
 import { values as vals } from "ramda";
@@ -20,13 +16,20 @@ import { userAtom } from "app/state/user";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useRouter } from "solito/router";
+import { ChangeAvatarImg, EditProfileForm } from "app/types";
+import * as assert from "assert";
+import { editProfileFormSchema } from "app/validation";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
+  assert.ok(user, "Unauthorized access on EditProfileScreen");
+  const [avatar, setAvatar] = useState<ChangeAvatarImg>({
+    url: user.avatarUrl ?? "",
+  });
   const [updateUser, { data, loading, error }] = useUpdateUserMutation();
   const { back } = useRouter();
 
-  const handleUpdateUser = async (form: UpdateUserMutationVariables) => {
+  const handleUpdateUser = async (form: EditProfileForm) => {
     if (loading) return;
 
     await updateUser({
@@ -41,19 +44,18 @@ export default function EditProfileScreen() {
     }
   }, [data, setUser, back]);
 
-  const initialValues: UpdateUserMutationVariables = {
-    displayName: user!.displayName,
-    description: user!.description,
-    username: user!.username,
-    avatarUrl: user!.avatarUrl,
-    email: user!.email,
+  const initialValues: EditProfileForm = {
+    displayName: user.displayName,
+    description: user.description,
+    username: user.username,
+    email: user.email,
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={editProfileFormSchema}
       validateOnMount={true}
+      validationSchema={editProfileFormSchema}
       onSubmit={handleUpdateUser}
     >
       {({
@@ -62,16 +64,16 @@ export default function EditProfileScreen() {
         isValid,
         handleSubmit,
         errors,
-      }: FormikProps<UpdateUserMutationVariables>) => (
+      }: FormikProps<EditProfileForm>) => (
         <ScrollView className="bg-blue-dark flex-1">
           <View className="w-full bg-red p-4">
             <Text className="mx-auto text-sm">Upload a profile picture</Text>
           </View>
           <View className="px-4">
             <ChangeUserAvatar
-              avatarUri={values.avatarUrl}
+              avatarImg={avatar}
               displayName={user!.displayName}
-              handleChange={handleChange("avatarUrl")}
+              onChange={setAvatar}
               disable={loading}
             />
             <FormInputWithIcon

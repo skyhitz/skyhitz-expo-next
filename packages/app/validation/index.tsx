@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 import { object, SchemaOf, string } from "yup";
-import { SignInForm, MintForm } from "app/types";
-import { UpdateUserMutationVariables } from "app/api/graphql";
+import { EditProfileForm, MintForm, SignInForm } from "app/types";
 import { ImageInfo } from "expo-image-picker";
 
 export const usernameSchema = Yup.string()
@@ -20,14 +19,12 @@ export const emailSchema = Yup.string()
   .required("Email is required")
   .email("Please enter a valid email.");
 
-export const editProfileFormSchema: SchemaOf<UpdateUserMutationVariables> =
-  object().shape({
-    displayName: displayedNameSchema,
-    description: string(),
-    username: usernameSchema,
-    avatarUrl: string(),
-    email: emailSchema,
-  });
+export const editProfileFormSchema: SchemaOf<EditProfileForm> = object().shape({
+  displayName: displayedNameSchema,
+  description: string(),
+  username: usernameSchema,
+  email: emailSchema,
+});
 
 export const signInFormSchema: SchemaOf<SignInForm> = Yup.object().shape({
   usernameOrEmail: Yup.string()
