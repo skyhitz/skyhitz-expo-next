@@ -12,6 +12,7 @@ export default function usePickMedia(
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
   const [data, setData] = useState<Blob | null>(null);
+  const [url, setUrl] = useState<string>("");
 
   const pickMedia = async () => {
     const result = await launchImageLibraryAsync({
@@ -34,8 +35,9 @@ export default function usePickMedia(
     const response = await fetch(result.uri);
     const file = await response.blob();
     setData(file);
+    setUrl(result.uri);
     setLoading(false);
   };
 
-  return { pickMedia, loading, error, data };
+  return { pickMedia, loading, error, data, url };
 }
