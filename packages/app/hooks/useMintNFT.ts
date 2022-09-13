@@ -3,10 +3,11 @@ import {
   useCreateEntryMutation,
   useGetIssuerLazyQuery,
 } from "app/api/graphql";
-import { ipfsProtocol, nftStorageApi } from "app/constants/constants";
+import { ipfsProtocol } from "app/constants/constants";
 import { MintForm } from "app/types";
 import { useCallback, useState } from "react";
 import { useIndexEntryMutation } from "../api/graphql";
+import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 
 type MintStatus =
   | "Uninitialized"
@@ -28,7 +29,7 @@ type MintResult = {
 
 export function useMintNFT(): MintResult {
   const [status, setStatus] = useState<MintStatus>("Uninitialized");
-  const [progress, setProgress] = useState<number>(0);
+  const { uploadFile, progress } = useUploadFileToNFTStorage();
   const [error, setError] = useState<string | undefined>();
   const [formValues, setFormValues] = useState<MintForm | undefined>();
   const [imageCid, setImageCid] = useState<string>("");
@@ -36,35 +37,6 @@ export function useMintNFT(): MintResult {
   const [issuer, setIssuer] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
   const [indexEntry] = useIndexEntryMutation();
-
-  const uploadFile = useCallback((file: Blob) => {
-    return new Promise<string>((resolve, reject) => {
-      const request = new XMLHttpRequest();
-      request.open("POST", `${nftStorageApi}/upload`, true);
-      request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-      request.setRequestHeader(
-        "Authorization",
-        `Bearer ${process.env.NEXT_PUBLIC_NFT_STORAGE_API_KEY}`
-      );
-
-      request.upload.addEventListener("progress", (event) => {
-        setProgress(Math.round((event.loaded * 100.0) / event.total));
-      });
-
-      request.onreadystatechange = () => {
-        if (request.readyState == 4 && request.status == 200) {
-          const { value, ok } = JSON.parse(request.responseText);
-          if (!ok) {
-            reject();
-          } else {
-            setProgress(0);
-            resolve(value.cid);
-          }
-        }
-      };
-      request.send(file);
-    });
-  }, []);
 
   const indexNFT = useCallback(
     async (nftIssuer: string = issuer) => {
