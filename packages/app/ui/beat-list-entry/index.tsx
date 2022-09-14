@@ -2,7 +2,7 @@ import { Image, Text, View } from "app/design-system";
 import { Entry } from "app/api/graphql";
 import { Pressable } from "react-native";
 import { imageUrlSmall } from "app/utils/entry";
-import { Price } from "app/ui/beat-list-entry/price";
+import { Price } from "app/ui/price";
 import { FavoriteButton } from "app/ui/buttons/favoriteButton";
 import { ShowMore } from "app/ui/beat-list-entry/show-more";
 

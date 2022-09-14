@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "app/design-system";
-import { Price } from "app/ui/beat-list-entry/price";
+import { Price } from "app/ui/price";
 import { FavoriteButton } from "app/ui/buttons/favoriteButton";
 
 export function BeatActions() {
