@@ -75,7 +75,7 @@ export function UploadInputWithIcon({
     if (success) {
       return (
         <View className="flex-row justify-between flex-1 pr-4 items-center">
-          <CheckIcon size={30} color={tw.color("lightGreen")} />;
+          <CheckIcon size={30} color={tw.color("lightGreen")} />
           <Pressable onPress={onClear}>
             <XIcon size={30} color={tw.color("white")} />
           </Pressable>

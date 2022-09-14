@@ -37,7 +37,7 @@ export function TextEllipsis({ text }: { text: string }) {
       }}
     >
       <Text
-        style={tw.style("text-xs font-bold absolute")}
+        style={tw.style("text-xs font-bold absolute leading-5")}
         onLayout={(e) => {
           if (charLength) return;
           setCharLength(e.nativeEvent.layout.width / displayedText.length);
