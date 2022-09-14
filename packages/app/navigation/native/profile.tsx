@@ -10,6 +10,7 @@ const ProfileStack = createNativeStackNavigator<{
   mint: undefined;
   edit: undefined;
   likes: undefined;
+  collection: undefined;
 }>();
 
 export function ProfileNavigation() {
@@ -58,6 +59,21 @@ export function ProfileNavigation() {
         component={LikesScreen}
         options={{
           title: "Likes",
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: tw.color("blue-dark"),
+          },
+          headerTintColor: tw.color("white"),
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <ProfileStack.Screen
+        name="collection"
+        component={LikesScreen}
+        options={{
+          title: "Collection",
           headerBackTitleVisible: false,
           headerStyle: {
             backgroundColor: tw.color("blue-dark"),
