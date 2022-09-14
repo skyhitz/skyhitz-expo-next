@@ -19,14 +19,20 @@ export default function useUploadFileToNFTStorage() {
       });
 
       request.onreadystatechange = () => {
-        if (request.readyState == 4 && request.status == 200) {
-          const { value, ok } = JSON.parse(request.responseText);
+        if (request.readyState == 4) {
+          setProgress(0);
+          const { value, ok, error } = JSON.parse(request.responseText);
           if (!ok) {
-            reject();
-          } else {
-            setProgress(0);
-            resolve(value.cid);
+            reject(
+              error ?? {
+                message: "Upload to NFT.storage failed",
+                code: "UNKNOWN",
+              }
+            );
+            return;
           }
+
+          resolve(value.cid);
         }
       };
       request.send(file);
