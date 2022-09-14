@@ -58,24 +58,43 @@ export const mintFormSchema: SchemaOf<MintForm> = object().shape({
     .max(100, "Equity should be within range 0 - 100"),
 });
 
-export const validateImg = (image: ImageInfo): string | null => {
-  const isPng = image.uri.startsWith("data:image/png");
-  if (!isPng) {
-    return "Only png files supported!";
-  }
+const validateImgSquare = (image: ImageInfo) => {
   if (image.height !== image.width) {
     return "Only square images supported!";
   }
   return null;
 };
 
-export const validateArtwork = (image: ImageInfo): string | null => {
-  const imgValidationError = validateImg(image);
-  if (imgValidationError) return imgValidationError;
-  if (image.width < 3000) {
-    return "Image should be at least 3000px wide!";
+const validateImgFormatOneOf = (image: ImageInfo, formats = ["png"]) => {
+  for (const format of formats) {
+    if (image.uri.startsWith(`data:image/${format}`)) return null;
+    if (image.uri.endsWith(`.${format}`)) return null;
+  }
+
+  return "Unsupported image format";
+};
+
+const validateImgWideEnough = (image: ImageInfo, minWidth = 3000) => {
+  if (image.width <= minWidth) {
+    return `Image should be at least ${minWidth}px wide!`;
   }
   return null;
+};
+
+export const validateProfilePicture = (image: ImageInfo): string | null => {
+  console.log(image.uri);
+  return (
+    validateImgSquare(image) ??
+    validateImgFormatOneOf(image, ["png", "jpg", "jpeg"])
+  );
+};
+
+export const validateArtwork = (image: ImageInfo): string | null => {
+  return (
+    validateImgSquare(image) ??
+    validateImgFormatOneOf(image) ??
+    validateImgWideEnough(image)
+  );
 };
 
 export const validateVideo = (video: ImageInfo): string | null => {

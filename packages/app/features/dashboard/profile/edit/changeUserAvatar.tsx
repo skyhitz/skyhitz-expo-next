@@ -3,7 +3,7 @@ import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
 import React, { useEffect } from "react";
 import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
 import usePickMedia from "app/hooks/usePickMedia";
-import { validateImg } from "app/validation";
+import { validateProfilePicture } from "app/validation";
 import { ChangeAvatarImg } from "app/types";
 import { toast } from "app/utils/toast";
 
@@ -23,7 +23,7 @@ export function ChangeUserAvatar({
   useMediaLibraryPermission();
   const { pickMedia, loading, error, data, url } = usePickMedia(
     "image",
-    validateImg
+    validateProfilePicture
   );
 
   useEffect(() => {
