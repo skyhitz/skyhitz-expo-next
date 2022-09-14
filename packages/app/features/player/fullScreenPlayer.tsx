@@ -63,15 +63,17 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
               </Text>
             </View>
 
-        <Button
-          text="Buy Now"
-          onPress={() => {
-            //TODO
-          }}
-          className="mb-5"
-        />
-        <PlayerButtonsRow size="large" />
-        {entry && <LikesList entry={entry} />}
+            <Button
+              text="Buy Now"
+              onPress={() => {
+                //TODO
+              }}
+              className="mb-5"
+            />
+            <PlayerButtonsRow size="large" />
+            {entry && <LikesList entry={entry} />}
+          </>
+        )}
       </SafeAreaView>
     </Animated.View>
   );
