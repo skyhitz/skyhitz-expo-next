@@ -2,7 +2,7 @@ import { Image, Text, View } from "app/design-system";
 import { Entry } from "app/api/graphql";
 import { Pressable } from "react-native";
 import { imageUrlSmall } from "app/utils/entry";
-import { Price } from "app/ui/price";
+import Price from "app/ui/price";
 import { FavoriteButton } from "app/ui/buttons/favoriteButton";
 import { ShowMore } from "app/ui/beat-list-entry/show-more";
 
@@ -41,7 +41,13 @@ export function BeatListEntry({
           </Text>
         </View>
         <View className="flex flex-row items-center">
-          <Price className="mr-3" />
+          <Price
+            code={entry.code ?? undefined}
+            issuer={entry.issuer ?? undefined}
+            price={0}
+            className="mr-3"
+          />
+
           <FavoriteButton size={20} />
           <ShowMore entry={entry} />
         </View>
