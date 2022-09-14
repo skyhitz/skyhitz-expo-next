@@ -81,7 +81,9 @@ export default function EditProfileScreen() {
         errors,
       }: FormikProps<EditProfileForm>) => (
         <ScrollView className="bg-blue-dark flex-1">
-          <View className="w-full bg-red p-4">
+          <View
+            className={`w-full bg-red p-4 ${user.avatarUrl ? "hidden" : ""}`}
+          >
             <Text className="mx-auto text-sm">Upload a profile picture</Text>
           </View>
           <View className="px-4">
