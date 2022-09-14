@@ -17,7 +17,11 @@ export type SignUpForm = {
 export type SignInForm = {
   usernameOrEmail: string;
 };
-export type ErrorType = { name?: string; message: string; status?: number };
+export type ErrorType = {
+  name?: string;
+  message: string;
+  status?: number | string;
+};
 
 export type IconProps = {
   color?: string;
