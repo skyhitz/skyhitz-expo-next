@@ -20,12 +20,18 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
               home: "home",
               "sign-in": "sign-in",
               "sign-up": "sign-up",
-              "edit-profile": "edit-profile",
               dashboard: {
                 screens: {
                   search: "dashboard/search",
                   chart: "dashboard/chart",
-                  profile: "dashboard/profile",
+                  profile: {
+                    path: "dashboard/profile",
+                    screens: {
+                      "user-details": "",
+                      mint: "mint",
+                      edit: "edit",
+                    },
+                  },
                 },
               },
             },

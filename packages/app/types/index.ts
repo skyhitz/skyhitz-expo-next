@@ -1,14 +1,11 @@
-export type QueryType = "entries" | "users";
-export type Query = { type: QueryType; q: string };
 export type PlaybackState =
   | "LOADING"
   | "PLAYING"
   | "PAUSED"
-  | "BUFFERING"
-  | "ERROR"
-  | "ENDED";
-export type SeekState = "SEEKING" | "NOT_SEEKING" | "SEEKED";
-export type ControlsState = "SHOWN" | "SHOWING" | "HIDDEN" | "HIDDING";
+  | "SEEKING"
+  | "IDLE"
+  | "ERROR";
+
 export type SignUpForm = {
   username: string;
   displayName: string;
@@ -23,4 +20,12 @@ export type ErrorType = { name?: string; message: string; status?: number };
 export type IconProps = {
   color?: string;
   size?: number;
+};
+export type MintForm = {
+  artist: string;
+  title: string;
+  description: string;
+  availableForSale: boolean;
+  price?: string;
+  equityForSale?: number;
 };

@@ -10,6 +10,14 @@
       "ios",
       "android"
     ],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you upload beats."
+        }
+      ]
+    ],
     "ios": {
       "bundleIdentifier": "io.skyhitz.skyhitz",
       "buildNumber": "1.0.0",

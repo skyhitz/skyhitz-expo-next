@@ -9,14 +9,6 @@ export function PlayerBar() {
   const entry = useRecoilValue(currentEntryAtom);
   const playbackState = useRecoilValue(playbackStateAtom);
 
-  if (playbackState === "ERROR") {
-    return (
-      <View className="h-20 bg-blue-transparent items-center justify-center">
-        <Text className="text-red">Something went wrong. Try again.</Text>
-      </View>
-    );
-  }
-
   return (
     <View
       className={`flex flex-row justify-between items-center h-20 bg-blue-transparent ${
@@ -42,10 +34,17 @@ export function PlayerBar() {
           </Text>
         </View>
       </View>
-      <View className="items-center justify-evenly w-100">
-        <PlayerButtonsRow />
-        <PlayerSlider />
-      </View>
+      {playbackState === "ERROR" ? (
+        <View className="h-20 items-center justify-center">
+          <Text className="text-red">Something went wrong. Try again.</Text>
+        </View>
+      ) : (
+        <View className="items-center justify-evenly w-100">
+          <PlayerButtonsRow />
+          <PlayerSlider />
+        </View>
+      )}
+
       <View className="w-50" />
     </View>
   );

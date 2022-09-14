@@ -1,6 +1,4 @@
-import { SafeAreaView } from "app/design-system/safe-area-view";
-import { Text, View } from "app/design-system";
-import { EditProfileTextInput } from "app/features/edit-profile/editProfileTextInput";
+import { Button, Text, View } from "app/design-system";
 import AccountBox from "app/ui/icons/account-box";
 import { Line } from "app/ui/orSeparator";
 import InfoCircle from "app/ui/icons/info-circle";
@@ -14,16 +12,19 @@ import {
 } from "app/api/graphql";
 import { editProfileFormSchema } from "app/validation";
 import { Formik, FormikProps } from "formik";
-import { LogOutBtn } from "app/features/edit-profile/logOutBtn";
-import { EditProfileHeader } from "app/features/edit-profile/editProfileHeader";
+import { LogOutBtn } from "app/features/dashboard/profile/edit/logOutBtn";
 import { values as vals } from "ramda";
-import { ChangeUserAvatar } from "app/features/edit-profile/changeUserAvatar";
-import { Credits } from "app/features/edit-profile/credits";
+import { ChangeUserAvatar } from "app/features/dashboard/profile/edit/changeUserAvatar";
+import { Credits } from "app/features/dashboard/profile/edit/credits";
 import { userAtom } from "app/state/user";
+import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
+import { ScrollView } from "app/design-system/ScrollView";
+import { useRouter } from "solito/router";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
   const [updateUser, { data, loading, error }] = useUpdateUserMutation();
+  const { back } = useRouter();
 
   const handleUpdateUser = async (form: UpdateUserMutationVariables) => {
     if (loading) return;
@@ -42,8 +43,9 @@ export default function EditProfileScreen() {
   useEffect(() => {
     if (data?.updateUser) {
       setUser(data.updateUser);
+      back();
     }
-  }, [data, setUser]);
+  }, [data, setUser, back]);
 
   const initialValues: UpdateUserMutationVariables = {
     displayName: user!.displayName,
@@ -67,12 +69,7 @@ export default function EditProfileScreen() {
         handleSubmit,
         errors,
       }: FormikProps<UpdateUserMutationVariables>) => (
-        <SafeAreaView className="bg-blue-dark flex-1">
-          <EditProfileHeader
-            disableDoneBtn={!isValid}
-            onDoneBtnClick={handleSubmit}
-            setDoneBtnLoading={loading}
-          />
+        <ScrollView className="bg-blue-dark flex-1">
           <View className="w-full bg-red p-4">
             <Text className="mx-auto text-sm">Upload a profile picture</Text>
           </View>
@@ -83,7 +80,7 @@ export default function EditProfileScreen() {
               handleChange={handleChange("avatarUrl")}
               disable={loading}
             />
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.displayName ?? ""}
               placeholder={"Display Name"}
               onChangeText={handleChange("displayName")}
@@ -91,7 +88,7 @@ export default function EditProfileScreen() {
               editable={!loading}
             />
             <Line />
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.description ?? ""}
               placeholder={"Description"}
               onChangeText={handleChange("description")}
@@ -99,7 +96,7 @@ export default function EditProfileScreen() {
               editable={!loading}
             />
             <Line />
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.username ?? ""}
               placeholder={"Username"}
               onChangeText={handleChange("username")}
@@ -108,7 +105,7 @@ export default function EditProfileScreen() {
             <Text className="font-bold text-sm pt-8 pb-2">
               Private information
             </Text>
-            <EditProfileTextInput
+            <FormInputWithIcon
               value={values.email ?? ""}
               placeholder={"Email address"}
               onChangeText={handleChange("email")}
@@ -125,7 +122,23 @@ export default function EditProfileScreen() {
               .join("\n")
               .concat(error?.message ?? "")}
           </Text>
-        </SafeAreaView>
+          <View className="flex md:flex-row justify-center items-center mb-5">
+            <Button
+              text="Done"
+              size="large"
+              onPress={handleSubmit}
+              className="mb-5 md:mb-0 md:mr-5"
+              disabled={!isValid}
+              loading={loading}
+            />
+            <Button
+              text="Cancel"
+              size="large"
+              variant="secondary"
+              onPress={back}
+            />
+          </View>
+        </ScrollView>
       )}
     </Formik>
   );

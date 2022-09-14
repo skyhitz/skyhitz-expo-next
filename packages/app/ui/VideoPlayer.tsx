@@ -39,7 +39,7 @@ export function VideoPlayer({ width, height, style }: Props) {
 
   return (
     <ImageBackground
-      source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : "" }}
+      source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : undefined }}
       style={[
         { width, height, alignItems: "center", justifyContent: "center" },
         style,

@@ -3,7 +3,7 @@ import { Entry } from "app/api/graphql";
 import { Pressable } from "react-native";
 import { imageUrlSmall } from "app/utils/entry";
 import { Price } from "app/ui/beat-list-entry/price";
-import { FavoriteButton } from "app/ui/favoriteButton";
+import { FavoriteButton } from "app/ui/buttons/favoriteButton";
 import { ShowMore } from "app/ui/beat-list-entry/show-more";
 
 export function BeatListEntry({

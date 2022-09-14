@@ -20,6 +20,9 @@ const withTM = require('next-transpile-modules')([
   'app',
   'twrnc',
 ])
+require('dotenv').config({
+  path:'../../.env'
+})
 
 module.exports = withPlugins(
   [

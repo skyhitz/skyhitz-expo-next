@@ -1,5 +1,5 @@
 import { Entry } from "app/api/graphql";
-import { PlaybackState } from "app/models/PlaybackState";
+import { PlaybackState } from "app/types";
 import { atom } from "recoil";
 
 export const isPlayingAtom = atom<boolean>({
