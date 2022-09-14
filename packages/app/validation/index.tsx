@@ -75,7 +75,7 @@ const validateImgFormatOneOf = (image: ImageInfo, formats = ["png"]) => {
 };
 
 const validateImgWideEnough = (image: ImageInfo, minWidth = 3000) => {
-  if (image.width <= minWidth) {
+  if (image.width < minWidth) {
     return `Image should be at least ${minWidth}px wide!`;
   }
   return null;
