@@ -21,6 +21,7 @@ import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
+import { toast } from "app/utils/toast";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -29,7 +30,7 @@ export default function EditProfileScreen() {
     url: user.avatarUrl ?? "",
   });
   const [updateUser, { data, loading, error }] = useUpdateUserMutation();
-  const { uploadFile } = useUploadFileToNFTStorage();
+  const { uploadFile, progress } = useUploadFileToNFTStorage();
   const { back } = useRouter();
 
   const handleUpdateUser = async (form: EditProfileForm) => {
@@ -43,6 +44,7 @@ export default function EditProfileScreen() {
       }
     } catch (e) {
       console.error(e);
+      return;
     }
 
     await updateUser({
@@ -53,7 +55,7 @@ export default function EditProfileScreen() {
   useEffect(() => {
     if (data?.updateUser) {
       setUser(data.updateUser);
-      back();
+      toast("Changes successfully saved", "success");
     }
   }, [data, setUser, back]);
 
@@ -138,7 +140,7 @@ export default function EditProfileScreen() {
               onPress={handleSubmit}
               className="mb-5 md:mb-0 md:mr-5"
               disabled={!isValid}
-              loading={loading}
+              loading={loading || !!progress}
             />
             <Button
               text="Cancel"
