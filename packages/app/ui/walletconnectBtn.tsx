@@ -4,11 +4,15 @@ import WalletConnectIcon from "app/ui/icons/walletconnect-icon";
 // import { signManageDataOp } from "app/stellar"
 // import { WalletConnectStore } from 'app/state/wallet-connect'
 import { Pressable, Text } from "app/design-system";
+import { useWalletConnectClient } from "app/provider/WalletConnect";
 
 const WalletConnectBtn = ({}: { signInWithXDR?: (_: any) => {} }) => {
   // const state = "idle"
   // const { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
+  const { connect, client, isInitializing, accounts } =
+    useWalletConnectClient();
 
+  console.log(isInitializing, client, accounts);
   // useEffect(() => {
   //   if (!uri) return QRCodeModal.close()
   //   QRCodeModal.open(uri, () => {}, {
@@ -23,7 +27,9 @@ const WalletConnectBtn = ({}: { signInWithXDR?: (_: any) => {} }) => {
   // signInWithXDR && signInWithXDR(signedXDR)
   // }
 
-  const handleConnect = () => {};
+  const handleConnect = async () => {
+    connect();
+  };
 
   // useEffect(() => {
   //   if (publicKey && signInWithXDR) handleSignInWithXdr(publicKey)
