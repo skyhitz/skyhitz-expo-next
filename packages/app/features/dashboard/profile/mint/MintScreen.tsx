@@ -4,63 +4,25 @@ import InfoIcon from "app/ui/icons/info-circle";
 import { Formik, FormikProps } from "formik";
 import { MintForm } from "app/types";
 import { Button, Text, View } from "app/design-system";
-import { Alert, Platform, Switch } from "react-native";
+import { Switch } from "react-native";
 import DollarIcon from "app/ui/icons/dollar";
 import PieChartIcon from "app/ui/icons/pie";
 import Slider from "@react-native-community/slider";
 import { UploadInputWithIcon } from "app/ui/inputs/UploadInputWithIcon";
-import { ImageInfo } from "expo-image-picker";
-import { mintFormSchema } from "app/validation";
-import { useEffect, useState } from "react";
-import { requestMediaLibraryPermissionsAsync } from "expo-image-picker";
-import { useRouter } from "solito/router";
+import { mintFormSchema, validateArtwork, validateVideo } from "app/validation";
+import { useState } from "react";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useMintNFT } from "app/hooks/useMintNFT";
 import { any, equals, not } from "ramda";
+import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
+import { useRouter } from "solito/router";
 
 export function MintScreen() {
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
   const { back } = useRouter();
   const { mint, retryIndex, progress, status, error } = useMintNFT();
-
-  useEffect(() => {
-    const getPermissionAsync = async () => {
-      const permissions = await requestMediaLibraryPermissionsAsync();
-      if (!permissions.granted) {
-        Alert.alert(
-          "Media Library Permission",
-          "We need madia library permissions so you can upload beats!",
-          [{ text: "OK", onPress: () => back() }]
-        );
-      }
-    };
-    if (Platform.OS !== "web") {
-      getPermissionAsync();
-    }
-  }, [back]);
-
-  const validateArtwork = (image: ImageInfo): string | null => {
-    const isPng = image.uri.startsWith("data:image/png");
-    if (!isPng) {
-      return "Only png files supported!";
-    }
-    if (image.height !== image.width) {
-      return "Only square images supported!";
-    }
-    if (image.width < 3000) {
-      return "Image should be at least 3000px wide!";
-    }
-    return null;
-  };
-
-  const validateVideo = (video: ImageInfo): string | null => {
-    const isMp4 = video.uri.startsWith("data:video/mp4");
-    if (!isMp4) {
-      return "Only mp4 files supported!";
-    }
-    return null;
-  };
+  useMediaLibraryPermission();
 
   const buttonTitle = () => {
     switch (status) {
