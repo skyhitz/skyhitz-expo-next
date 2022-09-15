@@ -4,13 +4,13 @@ import { isSome } from "app/utils";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 
 export default function LikesScreen() {
-  const { data } = useUserLikesQuery();
+  const { data, loading } = useUserLikesQuery();
   const entries = data?.userLikes?.filter(isSome) ?? [];
 
   return (
     <View className="flex-1 w-full">
       <Text className="text-lg ml-8 font-bold hidden web:flex">Likes</Text>
-      <ProfileBeatsList beats={entries} />
+      <ProfileBeatsList beats={entries} loading={loading} />
     </View>
   );
 }

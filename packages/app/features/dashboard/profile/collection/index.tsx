@@ -10,7 +10,7 @@ export default function CollectionScreen() {
   const user = useRecoilValue(userAtom);
   assert.ok(user);
   assert.ok(user.id);
-  const { data } = useUserCollectionQuery({
+  const { data, loading } = useUserCollectionQuery({
     variables: {
       userId: user.id,
     },
@@ -20,7 +20,7 @@ export default function CollectionScreen() {
   return (
     <View className="flex-1 w-full">
       <Text className="text-lg ml-8 font-bold hidden web:flex">Collection</Text>
-      <ProfileBeatsList beats={entries} />
+      <ProfileBeatsList beats={entries} loading={loading} />
     </View>
   );
 }
