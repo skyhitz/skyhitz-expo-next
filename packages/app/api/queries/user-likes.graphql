@@ -1,0 +1,12 @@
+query userLikes {
+  userLikes {
+    imageUrl
+    videoUrl
+    description
+    title
+    id
+    artist
+    code
+    issuer
+  }
+}

@@ -30,6 +30,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
                       "user-details": "",
                       mint: "mint",
                       edit: "edit",
+                      likes: "likes",
                     },
                   },
                 },
