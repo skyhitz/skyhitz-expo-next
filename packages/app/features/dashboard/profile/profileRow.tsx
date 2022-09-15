@@ -6,13 +6,13 @@ import { tw } from "app/design-system/tailwind";
 type ProfileRowProps = {
   icon: ReactElement;
   title: string;
-  trailingText?: number;
+  trailingText?: string;
   onPress?: () => void;
 };
 
 export function ProfileRow({
   icon,
-  trailingText,
+  trailingText = "",
   title,
   onPress,
 }: ProfileRowProps) {
@@ -26,9 +26,7 @@ export function ProfileRow({
         <Text className="font-bold ml-2 text-sm">{title}</Text>
       </View>
       <View className="flex flex-row items-center">
-        <Text className="text-sm">
-          {trailingText && trailingText > 0 ? trailingText : ""}
-        </Text>
+        <Text className="text-sm">{trailingText}</Text>
         <ChevronRight size={28} color={tw.color("white")} />
       </View>
     </Pressable>
