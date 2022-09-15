@@ -36,8 +36,9 @@ export function ChangeUserAvatar({
   }, [data, url, onChange]);
 
   useEffect(() => {
-    if (!error) return;
-    toast(error);
+    if (error) {
+      toast(error);
+    }
   }, [error]);
 
   return (
