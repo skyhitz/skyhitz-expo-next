@@ -56,6 +56,7 @@ export default function EditProfileScreen() {
     if (data?.updateUser) {
       setUser(data.updateUser);
       toast("Changes successfully saved", "success");
+      back();
     }
   }, [data, setUser, back]);
 
