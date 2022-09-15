@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { nftStorageApi } from "app/constants/constants";
 
 type ReturnType = {
-  uploadFile: (_file: Blob) => Promise<String>;
+  uploadFile: (_file: Blob) => Promise<string>;
   progress: number;
 };
 
