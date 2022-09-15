@@ -1,12 +1,14 @@
-import { Text, View } from "app/design-system";
+import { Pressable, Text, View } from "app/design-system";
 import Dollar from "app/ui/icons/dollar";
 import { tw } from "app/design-system/tailwind";
 import useEntryPrice from "app/hooks/useEntryPrice";
+import { openURL } from "expo-linking";
+import { stellarAssetLink } from "app/utils/stellar";
 
 type PriceProps = PriceOfEntryProps | PriceFrontProps;
 
 export default function Price(props: PriceProps) {
-  if ("code" in props) {
+  if ("code" in props && "issuer" in props) {
     return <PriceOfEntry {...props} />;
   }
   return <PriceFront {...props} />;
@@ -24,7 +26,11 @@ function PriceOfEntry({
   ...rest
 }: PriceOfEntryProps) {
   const entryPrice = useEntryPrice(code, issuer);
-  return <PriceFront {...rest} price={entryPrice ?? defaultPrice ?? 0} />;
+  return (
+    <Pressable onPress={() => openURL(stellarAssetLink(code, issuer))}>
+      <PriceFront {...rest} price={entryPrice ?? defaultPrice ?? 0} />
+    </Pressable>
+  );
 }
 
 type PriceFrontProps = {
