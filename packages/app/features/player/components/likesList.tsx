@@ -1,9 +1,10 @@
 import { Entry, PublicUser, useEntryLikesQuery } from "app/api/graphql";
-import { Text, View } from "app/design-system";
+import { ActivityIndicator, Text, View } from "app/design-system";
 import { LikeButton } from "app/ui/buttons/likeButton";
 import { UserAvatar } from "app/ui/userAvatar";
 import { FlatList } from "react-native";
 import { isSome } from "app/utils";
+import React from "react";
 
 type Props = {
   entry: Entry;
@@ -11,7 +12,7 @@ type Props = {
 };
 
 export function LikesList({ entry, classname = "" }: Props) {
-  const { data } = useEntryLikesQuery({
+  const { data, loading } = useEntryLikesQuery({
     variables: {
       id: entry.id!,
     },
@@ -38,8 +39,21 @@ export function LikesList({ entry, classname = "" }: Props) {
           renderItem={renderItem}
           horizontal
           showsHorizontalScrollIndicator={false}
+          ListEmptyComponent={<ListEmptyComponent loading={loading} />}
         />
       </View>
+    </View>
+  );
+}
+
+function ListEmptyComponent({ loading }: { loading: boolean }) {
+  return (
+    <View className="flex items-center justify-center">
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text className="text-sm">Be first to like this beat</Text>
+      )}
     </View>
   );
 }
