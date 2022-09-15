@@ -1,7 +1,12 @@
 import { useCallback, useState } from "react";
 import { nftStorageApi } from "app/constants/constants";
 
-export default function useUploadFileToNFTStorage() {
+type ReturnType = {
+  uploadFile: (_file: Blob) => Promise<String>;
+  progress: number;
+};
+
+export default function useUploadFileToNFTStorage(): ReturnType {
   const [progress, setProgress] = useState<number>(0);
 
   const uploadFile = useCallback((file: Blob) => {

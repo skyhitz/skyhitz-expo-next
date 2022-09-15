@@ -5,10 +5,18 @@ import {
   MediaTypeOptions,
 } from "expo-image-picker";
 
+type usePickMediaReturn = {
+  pickMedia: () => Promise<void>;
+  loading: boolean;
+  error: string | null;
+  data: Blob | null;
+  url: string;
+};
+
 export default function usePickMedia(
   type: "video" | "image",
   validateFile: (_file: ImageInfo) => string | null
-) {
+): usePickMediaReturn {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
   const [data, setData] = useState<Blob | null>(null);
