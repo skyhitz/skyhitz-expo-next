@@ -64,13 +64,13 @@ export function ProfileScreen() {
       </View>
       <ProfileRow
         icon={<Like size={24} color={tw.color("blue")} />}
-        trailingText={userLikesData?.userLikes?.length?.toString()}
+        trailingNumber={userLikesData?.userLikes?.length}
         title="Likes"
         onPress={() => push("/dashboard/profile/likes")}
       />
       <ProfileRow
         icon={<StarBorder size={24} color={tw.color("blue")} />}
-        trailingText={userCollectionData?.entries?.length?.toString()}
+        trailingNumber={userCollectionData?.entries?.length}
         title="Collections"
         onPress={() => push("/dashboard/profile/collection")}
       />
