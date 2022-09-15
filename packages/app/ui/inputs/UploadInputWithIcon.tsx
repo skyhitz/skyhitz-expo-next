@@ -41,8 +41,9 @@ export function UploadInputWithIcon({
   const { pickMedia, loading, error, data } = usePickMedia(type, validateFile);
 
   useEffect(() => {
-    if (!data) return;
-    onUploadFinished(data);
+    if (data) {
+      onUploadFinished(data);
+    }
   }, [data, onUploadFinished]);
 
   const UploadWidget = () => {

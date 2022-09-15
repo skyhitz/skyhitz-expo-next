@@ -27,11 +27,12 @@ export function ChangeUserAvatar({
   );
 
   useEffect(() => {
-    if (!data || !url) return;
-    onChange({
-      blob: data,
-      url,
-    });
+    if (data && url) {
+      onChange({
+        blob: data,
+        url,
+      });
+    }
   }, [data, url, onChange]);
 
   useEffect(() => {
