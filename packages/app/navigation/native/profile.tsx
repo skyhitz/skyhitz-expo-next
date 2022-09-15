@@ -4,6 +4,7 @@ import { MintScreen } from "app/features/dashboard/profile/mint/MintScreen";
 import { tw } from "app/design-system/tailwind";
 import EditProfileScreen from "app/features/dashboard/profile/edit";
 import LikesScreen from "app/features/dashboard/profile/likes";
+import CollectionScreen from "app/features/dashboard/profile/collection";
 
 const ProfileStack = createNativeStackNavigator<{
   "user-details": undefined;
@@ -71,7 +72,7 @@ export function ProfileNavigation() {
       />
       <ProfileStack.Screen
         name="collection"
-        component={LikesScreen}
+        component={CollectionScreen}
         options={{
           title: "Collection",
           headerBackTitleVisible: false,
