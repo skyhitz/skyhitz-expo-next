@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { insert, join, pipe, remove, split } from "ramda";
 import { Text, View } from "app/design-system";
-import { tw } from "app/design-system/tailwind";
 
 const textEllipsisLength = 2;
 
@@ -37,7 +36,7 @@ export function TextEllipsis({ text }: { text: string }) {
       }}
     >
       <Text
-        style={tw.style("text-xs font-bold absolute")}
+        className="text-xs font-bold absolute leading-5"
         onLayout={(e) => {
           if (charLength) return;
           setCharLength(e.nativeEvent.layout.width / displayedText.length);
