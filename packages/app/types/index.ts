@@ -1,3 +1,5 @@
+import { UpdateUserMutationVariables } from "app/api/graphql";
+
 export type PlaybackState =
   | "LOADING"
   | "PLAYING"
@@ -15,7 +17,11 @@ export type SignUpForm = {
 export type SignInForm = {
   usernameOrEmail: string;
 };
-export type ErrorType = { name?: string; message: string; status?: number };
+export type ErrorType = {
+  name?: string;
+  message: string;
+  status?: number | string;
+};
 
 export type IconProps = {
   color?: string;
@@ -29,3 +35,10 @@ export type MintForm = {
   price?: string;
   equityForSale?: number;
 };
+
+export type ChangeAvatarImg = {
+  blob?: Blob;
+  url: string;
+};
+
+export type EditProfileForm = Omit<UpdateUserMutationVariables, "avatarUrl">;

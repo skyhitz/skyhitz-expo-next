@@ -1,0 +1,3 @@
+mutation likeEntry($id: String!, $like: Boolean!) {
+  likeEntry(id: $id, like: $like)
+}

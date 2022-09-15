@@ -77,3 +77,4 @@ build/**
 packages/app/graphql.schema.json
 
 .env
+.vercel
