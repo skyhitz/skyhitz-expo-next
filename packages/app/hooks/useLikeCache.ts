@@ -12,10 +12,11 @@ import { isSome } from "app/utils";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import { useCallback } from "react";
+import { prepend } from "ramda";
 
 export default function useLikeCache() {
   const user = useRecoilValue(userAtom);
-  const cache = useApolloClient().cache;
+  const { cache } = useApolloClient();
   const publicUser = userToPublicUser(user);
 
   const addLikeToCache = useCallback(
@@ -64,7 +65,7 @@ function getAddToEntryLikesCacheUpdate(user: PublicUser) {
   return (data: any) => {
     const update: Partial<EntryLikesQuery> = {
       entryLikes: {
-        users: [user].concat(data?.entryLikes?.users ?? []),
+        users: prepend(user, data?.entryLikes?.users ?? []),
       },
     };
 
@@ -75,7 +76,7 @@ function getAddToEntryLikesCacheUpdate(user: PublicUser) {
 function getAddToUserLikesCacheUpdate(entry: Entry) {
   return (data: any) => {
     const update: Partial<UserLikesQuery> = {
-      userLikes: [entry].concat(data?.userLikes ?? []),
+      userLikes: prepend(entry, data?.userLikes ?? []),
     };
 
     return update;
@@ -106,9 +107,9 @@ function getRemoveFromUserLikesCacheUpdate(entry: Entry) {
     if (!typedData || !typedData.userLikes) return;
 
     const update: Partial<UserLikesQuery> = {
-      userLikes: typedData.userLikes
-        .filter(isSome)
-        .filter((item) => item.id !== entry.id),
+      userLikes: typedData.userLikes.filter(
+        (item) => isSome(item) && item.id !== entry.id
+      ),
     };
 
     return update;
@@ -124,9 +125,9 @@ function getRemoveFromEntryLikesUpdate(user: PublicUser) {
 
     const update: Partial<EntryLikesQuery> = {
       entryLikes: {
-        users: typedData.entryLikes.users
-          .filter(isSome)
-          .filter((item) => item.id !== user.id),
+        users: typedData.entryLikes.users.filter(
+          (item) => isSome(item) && item.id !== user.id
+        ),
       },
     };
 

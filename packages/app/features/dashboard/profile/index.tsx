@@ -55,7 +55,7 @@ export function ProfileScreen() {
       </View>
       <ProfileRow
         icon={<Like size={24} color={tw.color("blue")} />}
-        number={userLikesData?.userLikes?.length}
+        trailingText={userLikesData?.userLikes?.length}
         title="Likes"
         onPress={() => push("/dashboard/profile/likes")}
       />

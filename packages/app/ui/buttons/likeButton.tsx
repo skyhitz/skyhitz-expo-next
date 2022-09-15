@@ -9,6 +9,8 @@ import {
 import useLikeCache from "app/hooks/useLikeCache";
 import { toast } from "app/utils/toast";
 import { ErrorType } from "app/types";
+import { any } from "ramda";
+import { isSome } from "app/utils";
 
 type Props = {
   size: number;
@@ -20,7 +22,10 @@ export function LikeButton({ size, className, entry }: Props) {
   const [likeEntry] = useLikeEntryMutation();
   const { data: userLikesData } = useUserLikesQuery();
   const { addLikeToCache, removeLikeFromCache } = useLikeCache();
-  const active = !!userLikesData?.userLikes?.find((e) => e?.id === entry.id);
+  const active = any(
+    (item) => isSome(item) && item.id === entry.id,
+    userLikesData?.userLikes ?? []
+  );
 
   const update = async () => {
     if (!entry.id) return;

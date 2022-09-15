@@ -35,11 +35,11 @@ export function ShowMore({ entry }: { entry: Entry }) {
 }
 
 function BuyNowBtn() {
-  const Icon = (_: IconProps) => <Price />;
+  const PriceIcon = (_: IconProps) => <Price />;
 
   return (
     <Button
-      icon={Icon}
+      icon={PriceIcon}
       text=" - Buy Now"
       className="flex-row-reverse"
       onPress={() => {
