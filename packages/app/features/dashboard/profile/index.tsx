@@ -70,7 +70,7 @@ export function ProfileScreen() {
       />
       <ProfileRow
         icon={<StarBorder size={24} color={tw.color("blue")} />}
-        number={userCollectionData?.entries?.length}
+        trailingText={userCollectionData?.entries?.length?.toString()}
         title="Collections"
         onPress={() => push("/dashboard/profile/collection")}
       />
