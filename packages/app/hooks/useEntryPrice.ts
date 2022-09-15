@@ -10,30 +10,25 @@ export default function useEntryPrice(
   code?: string | null,
   issuer?: string | null
 ) {
-  const identifier = getIdentifier(code, issuer);
-  const [data, setData] = useState(savedPrice.get(identifier));
+  const identifier: string = getIdentifier(code, issuer);
+  const [data, setData] = useState<number | undefined>(
+    savedPrice.get(identifier)
+  );
+
+  async function fetchData(code: string, issuer: string) {
+    const price = await getEntryPrice(code, issuer);
+    const displayedPrice = Math.round(price.price * price.amount);
+
+    const identifier = getIdentifier(code, issuer);
+    savedPrice.set(identifier, displayedPrice);
+    setData(displayedPrice);
+  }
 
   useEffect(() => {
     if (data === undefined && code && issuer) {
-      fetchData(code, issuer).then(setData);
+      fetchData(code, issuer);
     }
   }, [code, issuer, data]);
 
   return data;
-}
-
-async function fetchData(code: string, issuer: string) {
-  let price;
-  try {
-    price = await getEntryPrice(code, issuer);
-  } catch (e) {
-    console.error(e);
-    price = { price: 0, amount: 0 };
-  }
-
-  const displayedPrice = Math.round(price.price * price.amount);
-
-  const identifier = getIdentifier(code, issuer);
-  savedPrice.set(identifier, displayedPrice);
-  return displayedPrice;
 }
