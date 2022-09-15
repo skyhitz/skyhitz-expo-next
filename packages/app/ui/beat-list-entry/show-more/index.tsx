@@ -7,11 +7,14 @@ import { BeatInfo } from "app/ui/beat-list-entry/show-more/beatInfo";
 import { CancelBtn } from "app/ui/beat-list-entry/show-more/cancelBtn";
 import VerticalDots from "app/ui/icons/verticalDots";
 import { LikesList } from "app/features/player/components/likesList";
-import { Price } from "app/ui/beat-list-entry/price";
+import Price from "app/ui/price";
 import { IconProps } from "app/types";
+import useEntryPrice from "app/hooks/useEntryPrice";
 
 export function ShowMore({ entry }: { entry: Entry }) {
   const [showing, setShowing] = useState(false);
+  const price = useEntryPrice(entry.code, entry.issuer);
+
   return (
     <>
       <Pressable onPress={() => setShowing(!showing)}>
@@ -26,7 +29,7 @@ export function ShowMore({ entry }: { entry: Entry }) {
             artist={entry.artist ?? ""}
           />
           <LikesList entry={entry} classname="max-w-sm" />
-          <BuyNowBtn />
+          {!!price && <BuyNowBtn price={price} />}
           <CancelBtn onPress={() => setShowing(false)} />
         </SafeAreaView>
       </Modal>
@@ -34,8 +37,8 @@ export function ShowMore({ entry }: { entry: Entry }) {
   );
 }
 
-function BuyNowBtn() {
-  const PriceIcon = (_: IconProps) => <Price />;
+function BuyNowBtn({ price }: { price: number }) {
+  const PriceIcon = (_: IconProps) => <Price price={price} />;
 
   return (
     <Button

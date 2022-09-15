@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { getEntryPrice } from "app/api/rest/entryPrice";
-import { isSome } from "app/utils";
 
 const savedPrice: Map<string, number> = new Map();
 
-const getIdentifier = (code: string, issuer: string) => `${code}-${issuer}`;
+const getIdentifier = (code?: string | null, issuer?: string | null) =>
+  code && issuer ? `${code}-${issuer}` : "";
 
-export default function useEntryPrice(code: string, issuer: string) {
+export default function useEntryPrice(
+  code?: string | null,
+  issuer?: string | null
+) {
   const identifier = getIdentifier(code, issuer);
   const [data, setData] = useState(savedPrice.get(identifier));
 
   useEffect(() => {
-    if (isSome(data)) return;
-    fetchData(code, issuer).then(setData);
+    if (data === undefined && code && issuer) {
+      fetchData(code, issuer).then(setData);
+    }
   }, [code, issuer, data]);
 
   return data;
