@@ -1,6 +1,14 @@
 import { Config } from "app/config";
 
-export async function getEntryPrice(code: string, issuer: string) {
+type ReturnType = {
+  price: number;
+  amount: number;
+};
+
+export async function getEntryPrice(
+  code: string,
+  issuer: string
+): Promise<ReturnType> {
   try {
     const response = await fetch(
       `${Config.HORIZON_URL}/order_book?selling_asset_type=credit_alphanum12&selling_asset_code=${code}&selling_asset_issuer=${issuer}&buying_asset_type=native`
@@ -15,6 +23,7 @@ export async function getEntryPrice(code: string, issuer: string) {
     }
   } catch (e) {
     console.error(e);
-    return { price: 0, amount: 0 };
   }
+
+  return { price: 0, amount: 0 };
 }
