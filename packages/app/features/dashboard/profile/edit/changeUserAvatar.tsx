@@ -1,43 +1,58 @@
 import { UserAvatar } from "app/ui/userAvatar";
-import { Pressable, Text, View } from "app/design-system";
-import React from "react";
-import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
+import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
+import React, { useEffect } from "react";
+import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
+import usePickMedia from "app/hooks/usePickMedia";
+import { validateProfilePicture } from "app/validation";
+import { ChangeAvatarImg } from "app/types";
+import { toast } from "app/utils/toast";
 
 type ChangeUserAvatarProps = {
-  avatarUri?: string | null;
+  avatarImg: ChangeAvatarImg;
   displayName?: string | null;
-  handleChange: (_avatar: string) => void;
+  onChange: (_avatar: ChangeAvatarImg) => void;
   disable?: boolean;
 };
 
 export function ChangeUserAvatar({
-  avatarUri,
+  avatarImg,
   displayName,
-  handleChange,
+  onChange,
   disable,
 }: ChangeUserAvatarProps) {
-  const launchImageLibrary = async () => {
-    const image = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.7,
-      base64: true,
-      exif: true,
-    });
+  useMediaLibraryPermission();
+  const { pickMedia, loading, error, data, url } = usePickMedia(
+    "image",
+    validateProfilePicture
+  );
 
-    if (image.cancelled || !image.base64) return;
-    handleChange("data:image/jpeg;base64,".concat(image.base64));
-  };
+  useEffect(() => {
+    if (data && url) {
+      onChange({
+        blob: data,
+        url,
+      });
+    }
+  }, [data, url, onChange]);
+
+  useEffect(() => {
+    if (error) {
+      toast(error);
+    }
+  }, [error]);
 
   return (
     <View className="flex items-center mt-4 mb-5">
-      <UserAvatar
-        avatarUrl={avatarUri}
-        displayName={displayName}
-        size="large"
-      />
-      <Pressable disabled={disable} onPress={() => launchImageLibrary()}>
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <UserAvatar
+          avatarUrl={avatarImg.url}
+          displayName={displayName}
+          size="large"
+        />
+      )}
+      <Pressable disabled={disable} onPress={pickMedia}>
         <Text className="mt-2 font-light text-sm">Change Profile Photo</Text>
       </Pressable>
     </View>

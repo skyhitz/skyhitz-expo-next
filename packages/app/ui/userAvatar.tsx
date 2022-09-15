@@ -1,5 +1,6 @@
 import { Image, Text, View } from "app/design-system";
 import { compose, head, join, map, split, take, toUpper } from "ramda";
+import { imageUrlSmall } from "app/utils/entry";
 
 const classNames = {
   default: {
@@ -37,7 +38,7 @@ export function UserAvatar({
   if (avatarUrl) {
     return (
       <Image
-        source={{ uri: avatarUrl }}
+        source={{ uri: imageUrlSmall(avatarUrl) }}
         className={`${classes.size} rounded-full`}
         resizeMode="cover"
       />
