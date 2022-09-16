@@ -41,13 +41,7 @@ export function BeatListEntry({
           </Text>
         </View>
         <View className="flex flex-row items-center">
-          <Price
-            code={entry.code ?? undefined}
-            issuer={entry.issuer ?? undefined}
-            price={0}
-            className="mr-3"
-          />
-
+          <Price code={entry.code} issuer={entry.issuer} className="mr-3" />
           <LikeButton size={20} entry={entry} />
           <ShowMore entry={entry} />
         </View>

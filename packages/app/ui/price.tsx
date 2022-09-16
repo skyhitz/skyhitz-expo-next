@@ -5,30 +5,26 @@ import useEntryPrice from "app/hooks/useEntryPrice";
 import { openURL } from "expo-linking";
 import { stellarAssetLink } from "app/utils/stellar";
 
-type PriceProps = PriceOfEntryProps | PriceFrontProps;
+type PriceProps = {
+  code?: string | null;
+  issuer?: string | null;
+  className?: string;
+  defaultPrice?: number;
+};
 
-export default function Price(props: PriceProps) {
-  if ("code" in props && "issuer" in props) {
-    return <PriceOfEntry {...props} />;
-  }
-  return <PriceFront {...props} />;
-}
-
-type PriceOfEntryProps = {
-  code: string;
-  issuer: string;
-} & Partial<PriceFrontProps>;
-
-function PriceOfEntry({
+export default function Price({
+  className,
   code,
+  defaultPrice = 0,
   issuer,
-  price: defaultPrice,
-  ...rest
-}: PriceOfEntryProps) {
+}: PriceProps) {
   const entryPrice = useEntryPrice(code, issuer);
+
+  const onPress: undefined | (() => Promise<true>) =
+    code && issuer ? () => openURL(stellarAssetLink(code, issuer)) : undefined;
   return (
-    <Pressable onPress={() => openURL(stellarAssetLink(code, issuer))}>
-      <PriceFront {...rest} price={entryPrice ?? defaultPrice ?? 0} />
+    <Pressable onPress={onPress}>
+      <PriceFront className={className} price={entryPrice ?? defaultPrice} />
     </Pressable>
   );
 }
@@ -38,7 +34,7 @@ type PriceFrontProps = {
   price: number;
 };
 
-function PriceFront({ className, price }: PriceFrontProps) {
+export function PriceFront({ className, price }: PriceFrontProps) {
   return (
     <View className={`flex flex-row items-center ${className}`}>
       <Dollar size={10} color={tw.color("white")} />

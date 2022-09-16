@@ -7,7 +7,7 @@ import { BeatInfo } from "app/ui/beat-list-entry/show-more/beatInfo";
 import { CancelBtn } from "app/ui/beat-list-entry/show-more/cancelBtn";
 import VerticalDots from "app/ui/icons/verticalDots";
 import { LikesList } from "app/features/player/components/likesList";
-import Price from "app/ui/price";
+import { PriceFront } from "app/ui/price";
 import { IconProps } from "app/types";
 import useEntryPrice from "app/hooks/useEntryPrice";
 
@@ -38,7 +38,7 @@ export function ShowMore({ entry }: { entry: Entry }) {
 }
 
 function BuyNowBtn({ price }: { price: number }) {
-  const PriceIcon = (_: IconProps) => <Price price={price} />;
+  const PriceIcon = (_: IconProps) => <PriceFront price={price} />;
 
   return (
     <Button
