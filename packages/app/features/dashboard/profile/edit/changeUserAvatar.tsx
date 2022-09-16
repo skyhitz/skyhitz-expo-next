@@ -5,7 +5,6 @@ import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
 import usePickMedia from "app/hooks/usePickMedia";
 import { validateProfilePicture } from "app/validation";
 import { ChangeAvatarImg } from "app/types";
-import { toast } from "app/utils/toast";
 
 type ChangeUserAvatarProps = {
   avatarImg: ChangeAvatarImg;
@@ -37,7 +36,7 @@ export function ChangeUserAvatar({
 
   useEffect(() => {
     if (error) {
-      toast(error);
+      //TODO: toast(error);
     }
   }, [error]);
 

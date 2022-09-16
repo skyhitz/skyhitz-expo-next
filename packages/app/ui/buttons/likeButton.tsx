@@ -7,7 +7,6 @@ import {
   useUserLikesQuery,
 } from "app/api/graphql";
 import useLikeCache from "app/hooks/useLikeCache";
-import { toast } from "app/utils/toast";
 import { ErrorType } from "app/types";
 import { any } from "ramda";
 import { isSome } from "app/utils";
@@ -36,7 +35,7 @@ export function LikeButton({ size, className, entry }: Props) {
       active ? addLikeToCache(entry) : removeLikeFromCache(entry);
 
       const err = e as Partial<ErrorType>;
-      toast(err?.message ?? "Unknown error");
+      //TODO: toast(err?.message ?? "Unknown error");
     }
   };
 

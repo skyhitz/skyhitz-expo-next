@@ -21,7 +21,6 @@ import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
-import { toast } from "app/utils/toast";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -55,7 +54,7 @@ export default function EditProfileScreen() {
   useEffect(() => {
     if (data?.updateUser) {
       setUser(data.updateUser);
-      toast("Changes successfully saved", "success");
+      //TODO: toast("Changes successfully saved", "success");
       back();
     }
   }, [data, setUser, back]);
