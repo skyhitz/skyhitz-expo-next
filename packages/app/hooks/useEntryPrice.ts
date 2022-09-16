@@ -1,34 +1,34 @@
-import { useEffect, useState } from "react";
-import { getEntryPrice } from "app/api/rest/entryPrice";
+import useSWR from "swr";
+import { Config } from "app/config";
 
-const savedPrice: Map<string, number> = new Map();
+type FetchData = {
+  asks: { price: number; amount: number }[];
+};
 
-const getIdentifier = (code?: string | null, issuer?: string | null) =>
-  code && issuer ? `${code}-${issuer}` : "";
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  const data: FetchData = await response.json();
+  return data;
+};
 
 export default function useEntryPrice(
   code?: string | null,
   issuer?: string | null
 ) {
-  const identifier: string = getIdentifier(code, issuer);
-  const [data, setData] = useState<number | undefined>(
-    savedPrice.get(identifier)
+  const { data } = useSWR(
+    `${Config.HORIZON_URL}/order_book?selling_asset_type=credit_alphanum12&selling_asset_code=${code}&selling_asset_issuer=${issuer}&buying_asset_type=native`,
+    code && issuer ? fetcher : null,
+    {
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      revalidateOnFocus: false,
+    }
   );
 
-  async function fetchData(code: string, issuer: string) {
-    const price = await getEntryPrice(code, issuer);
-    const displayedPrice = Math.round(price.price * price.amount);
-
-    const identifier = getIdentifier(code, issuer);
-    savedPrice.set(identifier, displayedPrice);
-    setData(displayedPrice);
+  if (data && data.asks && data.asks[0]) {
+    const ask = data.asks[0];
+    return Math.round(ask.price * ask.amount);
   }
 
-  useEffect(() => {
-    if (data === undefined && code && issuer) {
-      fetchData(code, issuer);
-    }
-  }, [code, issuer, data]);
-
-  return data;
+  return 0;
 }
