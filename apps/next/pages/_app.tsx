@@ -4,7 +4,6 @@ import React from "react";
 import type { SolitoAppProps } from "solito";
 import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
-import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   return (
