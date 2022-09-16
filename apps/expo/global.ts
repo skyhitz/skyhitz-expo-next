@@ -1,8 +1,7 @@
 import { Platform, LogBox } from "react-native";
 
 export interface Global {
-    // btoa: any
-    // atob: any
+
     self: any
     Buffer: any
     process: {
@@ -30,9 +29,6 @@ const { TextEncoder, TextDecoder } = require('text-encoding');
 global.TextEncoder = () => TextEncoder;
 global.TextDecoder = () => TextDecoder;
 
-
-// global.btoa = global.btoa || require('base-64').encode;
-// global.atob = global.atob || require('base-64').decode;
 
 global.Buffer = require('buffer').Buffer
 global.process = require('process')

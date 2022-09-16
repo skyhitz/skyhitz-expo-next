@@ -1,5 +1,4 @@
 import "./global";
-import "./global";
 import { registerRootComponent } from "expo";
 import App from "./App";
 

@@ -1,6 +1,6 @@
 import { SignInForm as FormData } from "app/types";
-import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
-import WalletconnectBtn from "app/ui/buttons/walletconnectBtn";
+import { Button, Text, View } from "app/design-system";
+import { WalletConnectBtn } from "app/ui/buttons/walletconnectBtn";
 import { Separator } from "app/ui/orSeparator";
 import { Formik, FormikProps } from "formik";
 import StyledTextInput from "app/features/accounts/styledTextInput";
@@ -31,7 +31,7 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
 
   return (
     <View className="w-72 md:w-96">
-      <WalletconnectBtn />
+      <WalletConnectBtn disabled loading={false} onConnected={() => {}} />
       <Separator />
       <Formik
         validateOnMount={true}
@@ -48,7 +48,7 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
           isValid,
           handleSubmit,
         }: FormikProps<FormData>) => (
-          <View>
+          <View className="items-center">
             <StyledTextInput
               value={values.usernameOrEmail}
               onChangeText={handleChange("usernameOrEmail")}
@@ -68,16 +68,14 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
                 error?.message ||
                 " "}
             </Text>
-            <Pressable
-              onPress={() => handleSubmit()}
-              className={`btn mt-6 ${isValid && !loading ? "" : "opacity-50"}`}
-            >
-              {loading ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text className="tracking-0.5">Log In</Text>
-              )}
-            </Pressable>
+            <Button
+              onPress={handleSubmit}
+              loading={loading}
+              text="Log In"
+              size="large"
+              className="mt-6"
+              disabled={!isValid}
+            />
           </View>
         )}
       </Formik>
