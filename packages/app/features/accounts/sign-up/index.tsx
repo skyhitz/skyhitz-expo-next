@@ -1,7 +1,11 @@
-import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
+import {
+  Button,
+  Text,
+  View,
+} from "app/design-system";
 import { Platform, TextInput } from "react-native";
 import BackgroundImage from "app/ui/backgroundImage";
-import WalletconnectBtn from "app/ui/walletconnectBtn";
+import { WalletConnectBtn } from "app/ui/walletconnectBtn";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { Separator } from "app/ui/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";
@@ -57,8 +61,6 @@ export function SignUp() {
     >
       <BackgroundImage />
       <View className="w-72 md:w-96">
-        <WalletconnectBtn />
-        <Separator />
         <Formik
           validateOnMount={true}
           initialValues={initialValues}
@@ -131,18 +133,20 @@ export function SignUp() {
                   error?.message ||
                   " "}
               </Text>
-              <Pressable
-                onPress={() => handleSubmit()}
-                className={`btn mt-6 ${
-                  isValid && !loading ? "" : "opacity-50"
-                }`}
-              >
-                {loading ? (
-                  <ActivityIndicator color="white" />
-                ) : (
-                  <Text className="tracking-0.5">Join</Text>
-                )}
-              </Pressable>
+              <Button
+                text="Join"
+                loading={loading}
+                disabled={!isValid}
+                onPress={handleSubmit}
+              />
+              <Separator />
+
+              <WalletConnectBtn
+                disabled={isValid}
+                onConnected={(publicKey: string) => {
+                  console.log(publicKey);
+                }}
+              />
             </View>
           )}
         </Formik>
