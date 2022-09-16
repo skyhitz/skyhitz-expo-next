@@ -20,8 +20,12 @@ export default function Price({
 }: PriceProps) {
   const entryPrice = useEntryPrice(code, issuer);
 
-  const onPress: undefined | (() => Promise<true>) =
-    code && issuer ? () => openURL(stellarAssetLink(code, issuer)) : undefined;
+  const onPress = () => {
+    if (code && issuer) {
+      return openURL(stellarAssetLink(code, issuer));
+    }
+  };
+
   return (
     <Pressable onPress={onPress}>
       <PriceFront className={className} price={entryPrice ?? defaultPrice} />
