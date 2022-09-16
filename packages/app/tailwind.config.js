@@ -33,6 +33,7 @@ module.exports = {
         },
         red: {
           DEFAULT: "#d9544f",
+          dark: "#241e22",
         },
         white: {
           DEFAULT: "#ffffff",
@@ -46,7 +47,10 @@ module.exports = {
         tabIconDefault: "rgba(255,255,255, 0.65)",
         tabIconSelected: "#eee",
         tabBar: "#fefefe",
-        valid: "rgba(15,172,141,.8)",
+        valid: {
+          DEFAULT: "rgba(15,172,141,.8)",
+          dark: "#192225",
+        },
         warningBackground: "#EAEB5E",
         warningText: "#666804",
         noticeText: "#fff",
