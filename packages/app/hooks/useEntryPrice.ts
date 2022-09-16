@@ -19,9 +19,7 @@ export default function useEntryPrice(
     `${Config.HORIZON_URL}/order_book?selling_asset_type=credit_alphanum12&selling_asset_code=${code}&selling_asset_issuer=${issuer}&buying_asset_type=native`,
     code && issuer ? fetcher : null,
     {
-      revalidateOnMount: false,
-      revalidateOnReconnect: false,
-      revalidateOnFocus: false,
+      dedupingInterval: 30_000,
     }
   );
 
