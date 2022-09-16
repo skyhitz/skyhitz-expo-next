@@ -1,16 +1,12 @@
-import {
-  Button,
-  Text,
-  View,
-} from "app/design-system";
+import { Button, Text, View } from "app/design-system";
 import { Platform, TextInput } from "react-native";
 import BackgroundImage from "app/ui/backgroundImage";
-import { WalletConnectBtn } from "app/ui/walletconnectBtn";
+import { WalletConnectBtn } from "app/ui/buttons/walletconnectBtn";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { Separator } from "app/ui/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";
 import { Formik, FormikProps } from "formik";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLogIn } from "app/hooks/useLogIn";
 import { useCreateUserWithEmailMutation } from "app/api/graphql";
 import { signUpFormSchema } from "app/validation";
@@ -23,7 +19,7 @@ type FormFields = {
 
 export function SignUp() {
   const logIn = useLogIn();
-
+  const [publicKey, setPublicKey] = useState<string>("");
   const [createUserWithEmail, { loading, error, data }] =
     useCreateUserWithEmailMutation();
 
@@ -40,7 +36,7 @@ export function SignUp() {
         displayName: formData.displayedName,
         username: formData.username,
         email: formData.email,
-        publicKey: "",
+        publicKey,
       },
     });
   };
@@ -76,7 +72,7 @@ export function SignUp() {
             isValid,
             handleSubmit,
           }: FormikProps<FormFields>) => (
-            <View>
+            <View className="items-center">
               <StyledTextInput
                 value={values.username}
                 onChangeText={handleChange("username")}
@@ -138,13 +134,17 @@ export function SignUp() {
                 loading={loading}
                 disabled={!isValid}
                 onPress={handleSubmit}
+                size="large"
+                className="mt-5"
               />
               <Separator />
 
               <WalletConnectBtn
-                disabled={isValid}
+                disabled={!isValid}
+                loading={loading}
                 onConnected={(publicKey: string) => {
-                  console.log(publicKey);
+                  setPublicKey(publicKey);
+                  handleSubmit();
                 }}
               />
             </View>

@@ -1,0 +1,11 @@
+query entryLikes($id: String!) {
+  entryLikes(id: $id) {
+    users {
+      avatarUrl
+      displayName
+      username
+      id
+      description
+    }
+  }
+}

@@ -1,0 +1,6 @@
+mutation IndexEntry($issuer: String!) {
+  indexEntry(issuer: $issuer) {
+    success
+    message
+  }
+}

@@ -4,7 +4,7 @@ import X from "app/ui/icons/x";
 import { tw } from "app/design-system/tailwind";
 import Check from "app/ui/icons/check";
 
-const toastTypes: Record<ToastType, (msg: string) => Id> = {
+const toastTypes: Record<ToastType, (_msg: string) => Id> = {
   error: (msg: string) =>
     toastWeb.error(msg, { icon: <X size={20} color={tw.color("red")} /> }),
   success: (msg: string) =>

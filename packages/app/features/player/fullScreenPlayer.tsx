@@ -1,5 +1,4 @@
-import { Button, Text, View } from "app/design-system";
-import { Pressable } from "app/design-system";
+import { Button, Pressable, Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import ChevronDown from "app/ui/icons/chevron-down";
 import { Dimensions, ViewStyle } from "react-native";
@@ -23,23 +22,6 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
   const entry = useRecoilValue(currentEntryAtom);
   const playbackState = useRecoilValue(playbackStateAtom);
 
-  if (playbackState === "ERROR") {
-    return (
-      <Animated.View
-        style={[
-          tw.style(
-            ` bg-blue-dark absolute w-full items-center justify-center h-${
-              height / 4
-            }`
-          ),
-          animatedStyle,
-        ]}
-      >
-        <Text className="text-red">Something went wrong. Try again.</Text>
-      </Animated.View>
-    );
-  }
-
   return (
     <Animated.View
       style={[
@@ -57,51 +39,41 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
         </Pressable>
         <VideoPlayer width={200} height={200} style={{ marginBottom: 40 }} />
 
-        <PlayerSlider />
-        <View className="flex-1 items-center justify-center">
-          <Text
-            className="text-base font-bold text-center text-white"
-            ellipsizeMode="tail"
-            numberOfLines={1}
-          >
-            {entry?.title}
-          </Text>
-          <Text
-            className="text-base text-center text-white"
-            ellipsizeMode="tail"
-            numberOfLines={1}
-          >
-            {entry?.artist}
-          </Text>
-        </View>
+        {playbackState === "ERROR" ? (
+          <View>
+            <Text className="text-red">Something went wrong. Try again.</Text>
+          </View>
+        ) : (
+          <>
+            <PlayerSlider />
+            <View className="flex-1 items-center justify-center">
+              <Text
+                className="text-base font-bold text-center text-white"
+                ellipsizeMode="tail"
+                numberOfLines={1}
+              >
+                {entry?.title}
+              </Text>
+              <Text
+                className="text-base text-center text-white"
+                ellipsizeMode="tail"
+                numberOfLines={1}
+              >
+                {entry?.artist}
+              </Text>
+            </View>
 
-        <Button
-          text="Buy Now"
-          onPress={() => {
-            //TODO
-          }}
-          className="bg-blue px-5 py-2 mb-5 rounded-xl"
-        />
-        <PlayerButtonsRow size="large" />
-        {/* TODO replace, it's mocked */}
-        <LikesList
-          likers={[
-            {
-              id: "1",
-              avatarUrl: "https://avatars.dicebear.com/api/male/john.jpg",
-            },
-            { id: "2", displayName: "Long Name Text" },
-            { id: "3", displayName: "Short" },
-            { id: "4", displayName: "Short" },
-            { id: "5", displayName: "Short" },
-            { id: "6", displayName: "Short" },
-            { id: "7", displayName: "Short" },
-            { id: "8", displayName: "Short" },
-            { id: "9", displayName: "Short" },
-            { id: "10", displayName: "Short" },
-            { id: "11", displayName: "Short" },
-          ]}
-        />
+            <Button
+              text="Buy Now"
+              onPress={() => {
+                //TODO
+              }}
+              className="mb-5"
+            />
+            <PlayerButtonsRow size="large" />
+            {entry && <LikesList entry={entry} />}
+          </>
+        )}
       </SafeAreaView>
     </Animated.View>
   );

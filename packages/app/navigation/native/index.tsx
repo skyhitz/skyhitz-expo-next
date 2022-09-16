@@ -2,19 +2,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignIn } from "app/features/accounts/sign-in";
 import { HomeScreen } from "app/features/home/screen";
 import { SignUp } from "app/features/accounts/sign-up";
-import { SearchScreen } from "app/features/dashboard/search";
 import { useRecoilValue } from "recoil";
 import { appInitializedAtom, userAtom } from "app/state/user";
 import { SplashScreen } from "app/features/splash/splashScreen";
 import { useRouter } from "solito/router";
 import { useEffect } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ChartScreen } from "app/features/dashboard/chart";
-import { ProfileScreen } from "app/features/dashboard/profile";
 import { Linking } from "react-native";
 import { Config } from "app/config";
-import { MobileTabBarWrapper } from "app/ui/navigation/mobileTabBarWrapper";
-import EditProfileScreen from "app/features/edit-profile";
+import { DashboardNavigation } from "./tab";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -23,7 +18,6 @@ const Stack = createNativeStackNavigator<{
   "sign-in": undefined;
   "sign-up": undefined;
   dashboard: undefined;
-  "edit-profile": undefined;
 }>();
 
 export function NativeNavigation() {
@@ -68,13 +62,6 @@ export function NativeNavigation() {
               title: "Dashboard",
             }}
           />
-          <Stack.Screen
-            name="edit-profile"
-            component={EditProfileScreen}
-            options={{
-              title: "Edit Profile",
-            }}
-          />
         </>
       ) : (
         <>
@@ -111,26 +98,5 @@ export function NativeNavigation() {
         </>
       )}
     </Stack.Navigator>
-  );
-}
-
-const Tab = createBottomTabNavigator<{
-  search: undefined;
-  chart: undefined;
-  profile: undefined;
-}>();
-
-function DashboardNavigation() {
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-      tabBar={() => <MobileTabBarWrapper />}
-    >
-      <Tab.Screen component={SearchScreen} name="search" />
-      <Tab.Screen component={ChartScreen} name="chart" />
-      <Tab.Screen component={ProfileScreen} name="profile" />
-    </Tab.Navigator>
   );
 }

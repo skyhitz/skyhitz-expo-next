@@ -1,6 +1,5 @@
-import * as Apollo from "@apollo/client";
 import { gql } from "@apollo/client";
-
+import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -25,6 +24,7 @@ export type Scalars = {
 /** This is an ConditionalXDR */
 export type ConditionalXdr = {
   __typename?: "ConditionalXDR";
+  message?: Maybe<Scalars["String"]>;
   submitted?: Maybe<Scalars["Boolean"]>;
   success?: Maybe<Scalars["Boolean"]>;
   xdr?: Maybe<Scalars["String"]>;
@@ -59,6 +59,13 @@ export type EntryPrice = {
   price?: Maybe<Scalars["String"]>;
 };
 
+/** Result of the indexEntry mutation */
+export type IndexEntryResult = {
+  __typename?: "IndexEntryResult";
+  message?: Maybe<Scalars["String"]>;
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 /** Create users or entries */
 export type Mutation = {
   __typename?: "Mutation";
@@ -67,7 +74,7 @@ export type Mutation = {
   cancelSubscription?: Maybe<Scalars["String"]>;
   createEntry?: Maybe<ConditionalXdr>;
   createUserWithEmail?: Maybe<User>;
-  indexEntry?: Maybe<Scalars["Boolean"]>;
+  indexEntry?: Maybe<IndexEntryResult>;
   likeEntry?: Maybe<Scalars["Boolean"]>;
   removeEntry?: Maybe<Scalars["Boolean"]>;
   requestToken?: Maybe<Scalars["Boolean"]>;
@@ -244,6 +251,26 @@ export type User = {
   version?: Maybe<Scalars["Int"]>;
 };
 
+export type CreateEntryMutationVariables = Exact<{
+  fileCid: Scalars["String"];
+  metaCid: Scalars["String"];
+  code: Scalars["String"];
+  forSale: Scalars["Boolean"];
+  price: Scalars["Int"];
+  equityForSale: Scalars["Float"];
+}>;
+
+export type CreateEntryMutation = {
+  __typename?: "Mutation";
+  createEntry?: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success?: boolean | null;
+    submitted?: boolean | null;
+    message?: string | null;
+  } | null;
+};
+
 export type CreateUserWithEmailMutationVariables = Exact<{
   displayName: Scalars["String"];
   email: Scalars["String"];
@@ -264,6 +291,29 @@ export type CreateUserWithEmailMutation = {
     jwt?: string | null;
     publicKey?: string | null;
   } | null;
+};
+
+export type IndexEntryMutationVariables = Exact<{
+  issuer: Scalars["String"];
+}>;
+
+export type IndexEntryMutation = {
+  __typename?: "Mutation";
+  indexEntry?: {
+    __typename?: "IndexEntryResult";
+    success?: boolean | null;
+    message?: string | null;
+  } | null;
+};
+
+export type LikeEntryMutationVariables = Exact<{
+  id: Scalars["String"];
+  like: Scalars["Boolean"];
+}>;
+
+export type LikeEntryMutation = {
+  __typename?: "Mutation";
+  likeEntry?: boolean | null;
 };
 
 export type RequestTokenMutationVariables = Exact<{
@@ -323,6 +373,34 @@ export type UpdateUserMutation = {
   } | null;
 };
 
+export type EntryLikesQueryVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type EntryLikesQuery = {
+  __typename?: "Query";
+  entryLikes?: {
+    __typename?: "EntryLikes";
+    users?: Array<{
+      __typename?: "PublicUser";
+      avatarUrl?: string | null;
+      displayName?: string | null;
+      username?: string | null;
+      id?: string | null;
+      description?: string | null;
+    } | null> | null;
+  } | null;
+};
+
+export type GetIssuerQueryVariables = Exact<{
+  cid: Scalars["String"];
+}>;
+
+export type GetIssuerQuery = {
+  __typename?: "Query";
+  getIssuer?: string | null;
+};
+
 export type AuthenticatedUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type AuthenticatedUserQuery = {
@@ -337,6 +415,17 @@ export type AuthenticatedUserQuery = {
     description?: string | null;
     jwt?: string | null;
     publicKey?: string | null;
+  } | null;
+};
+
+export type PaymentsInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type PaymentsInfoQuery = {
+  __typename?: "Query";
+  paymentsInfo?: {
+    __typename?: "PaymentsInfo";
+    subscribed?: boolean | null;
+    credits?: number | null;
   } | null;
 };
 
@@ -378,6 +467,95 @@ export type TopChartQuery = {
   } | null> | null;
 };
 
+export type UserLikesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UserLikesQuery = {
+  __typename?: "Query";
+  userLikes?: Array<{
+    __typename?: "Entry";
+    imageUrl?: string | null;
+    videoUrl?: string | null;
+    description?: string | null;
+    title?: string | null;
+    id?: string | null;
+    artist?: string | null;
+    code?: string | null;
+    issuer?: string | null;
+  } | null> | null;
+};
+
+export const CreateEntryDocument = gql`
+  mutation CreateEntry(
+    $fileCid: String!
+    $metaCid: String!
+    $code: String!
+    $forSale: Boolean!
+    $price: Int!
+    $equityForSale: Float!
+  ) {
+    createEntry(
+      fileCid: $fileCid
+      metaCid: $metaCid
+      code: $code
+      forSale: $forSale
+      price: $price
+      equityForSale: $equityForSale
+    ) {
+      xdr
+      success
+      submitted
+      message
+    }
+  }
+`;
+export type CreateEntryMutationFn = Apollo.MutationFunction<
+  CreateEntryMutation,
+  CreateEntryMutationVariables
+>;
+
+/**
+ * __useCreateEntryMutation__
+ *
+ * To run a mutation, you first call `useCreateEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createEntryMutation, { data, loading, error }] = useCreateEntryMutation({
+ *   variables: {
+ *      fileCid: // value for 'fileCid'
+ *      metaCid: // value for 'metaCid'
+ *      code: // value for 'code'
+ *      forSale: // value for 'forSale'
+ *      price: // value for 'price'
+ *      equityForSale: // value for 'equityForSale'
+ *   },
+ * });
+ */
+export function useCreateEntryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateEntryMutation,
+    CreateEntryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateEntryMutation, CreateEntryMutationVariables>(
+    CreateEntryDocument,
+    options
+  );
+}
+export type CreateEntryMutationHookResult = ReturnType<
+  typeof useCreateEntryMutation
+>;
+export type CreateEntryMutationResult =
+  Apollo.MutationResult<CreateEntryMutation>;
+export type CreateEntryMutationOptions = Apollo.BaseMutationOptions<
+  CreateEntryMutation,
+  CreateEntryMutationVariables
+>;
 export const CreateUserWithEmailDocument = gql`
   mutation createUserWithEmail(
     $displayName: String!
@@ -447,6 +625,105 @@ export type CreateUserWithEmailMutationResult =
 export type CreateUserWithEmailMutationOptions = Apollo.BaseMutationOptions<
   CreateUserWithEmailMutation,
   CreateUserWithEmailMutationVariables
+>;
+export const IndexEntryDocument = gql`
+  mutation IndexEntry($issuer: String!) {
+    indexEntry(issuer: $issuer) {
+      success
+      message
+    }
+  }
+`;
+export type IndexEntryMutationFn = Apollo.MutationFunction<
+  IndexEntryMutation,
+  IndexEntryMutationVariables
+>;
+
+/**
+ * __useIndexEntryMutation__
+ *
+ * To run a mutation, you first call `useIndexEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIndexEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [indexEntryMutation, { data, loading, error }] = useIndexEntryMutation({
+ *   variables: {
+ *      issuer: // value for 'issuer'
+ *   },
+ * });
+ */
+export function useIndexEntryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    IndexEntryMutation,
+    IndexEntryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<IndexEntryMutation, IndexEntryMutationVariables>(
+    IndexEntryDocument,
+    options
+  );
+}
+export type IndexEntryMutationHookResult = ReturnType<
+  typeof useIndexEntryMutation
+>;
+export type IndexEntryMutationResult =
+  Apollo.MutationResult<IndexEntryMutation>;
+export type IndexEntryMutationOptions = Apollo.BaseMutationOptions<
+  IndexEntryMutation,
+  IndexEntryMutationVariables
+>;
+export const LikeEntryDocument = gql`
+  mutation likeEntry($id: String!, $like: Boolean!) {
+    likeEntry(id: $id, like: $like)
+  }
+`;
+export type LikeEntryMutationFn = Apollo.MutationFunction<
+  LikeEntryMutation,
+  LikeEntryMutationVariables
+>;
+
+/**
+ * __useLikeEntryMutation__
+ *
+ * To run a mutation, you first call `useLikeEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeEntryMutation, { data, loading, error }] = useLikeEntryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      like: // value for 'like'
+ *   },
+ * });
+ */
+export function useLikeEntryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LikeEntryMutation,
+    LikeEntryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LikeEntryMutation, LikeEntryMutationVariables>(
+    LikeEntryDocument,
+    options
+  );
+}
+export type LikeEntryMutationHookResult = ReturnType<
+  typeof useLikeEntryMutation
+>;
+export type LikeEntryMutationResult = Apollo.MutationResult<LikeEntryMutation>;
+export type LikeEntryMutationOptions = Apollo.BaseMutationOptions<
+  LikeEntryMutation,
+  LikeEntryMutationVariables
 >;
 export const RequestTokenDocument = gql`
   mutation requestToken($usernameOrEmail: String!, $publicKey: String!) {
@@ -629,6 +906,119 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
+export const EntryLikesDocument = gql`
+  query entryLikes($id: String!) {
+    entryLikes(id: $id) {
+      users {
+        avatarUrl
+        displayName
+        username
+        id
+        description
+      }
+    }
+  }
+`;
+
+/**
+ * __useEntryLikesQuery__
+ *
+ * To run a query within a React component, call `useEntryLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEntryLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEntryLikesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntryLikesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    EntryLikesQuery,
+    EntryLikesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<EntryLikesQuery, EntryLikesQueryVariables>(
+    EntryLikesDocument,
+    options
+  );
+}
+export function useEntryLikesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    EntryLikesQuery,
+    EntryLikesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<EntryLikesQuery, EntryLikesQueryVariables>(
+    EntryLikesDocument,
+    options
+  );
+}
+export type EntryLikesQueryHookResult = ReturnType<typeof useEntryLikesQuery>;
+export type EntryLikesLazyQueryHookResult = ReturnType<
+  typeof useEntryLikesLazyQuery
+>;
+export type EntryLikesQueryResult = Apollo.QueryResult<
+  EntryLikesQuery,
+  EntryLikesQueryVariables
+>;
+export const GetIssuerDocument = gql`
+  query GetIssuer($cid: String!) {
+    getIssuer(cid: $cid)
+  }
+`;
+
+/**
+ * __useGetIssuerQuery__
+ *
+ * To run a query within a React component, call `useGetIssuerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIssuerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIssuerQuery({
+ *   variables: {
+ *      cid: // value for 'cid'
+ *   },
+ * });
+ */
+export function useGetIssuerQuery(
+  baseOptions: Apollo.QueryHookOptions<GetIssuerQuery, GetIssuerQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetIssuerQuery, GetIssuerQueryVariables>(
+    GetIssuerDocument,
+    options
+  );
+}
+export function useGetIssuerLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetIssuerQuery,
+    GetIssuerQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetIssuerQuery, GetIssuerQueryVariables>(
+    GetIssuerDocument,
+    options
+  );
+}
+export type GetIssuerQueryHookResult = ReturnType<typeof useGetIssuerQuery>;
+export type GetIssuerLazyQueryHookResult = ReturnType<
+  typeof useGetIssuerLazyQuery
+>;
+export type GetIssuerQueryResult = Apollo.QueryResult<
+  GetIssuerQuery,
+  GetIssuerQueryVariables
+>;
 export const AuthenticatedUserDocument = gql`
   query authenticatedUser {
     authenticatedUser {
@@ -692,6 +1082,64 @@ export type AuthenticatedUserLazyQueryHookResult = ReturnType<
 export type AuthenticatedUserQueryResult = Apollo.QueryResult<
   AuthenticatedUserQuery,
   AuthenticatedUserQueryVariables
+>;
+export const PaymentsInfoDocument = gql`
+  query PaymentsInfo {
+    paymentsInfo {
+      subscribed
+      credits
+    }
+  }
+`;
+
+/**
+ * __usePaymentsInfoQuery__
+ *
+ * To run a query within a React component, call `usePaymentsInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePaymentsInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePaymentsInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePaymentsInfoQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    PaymentsInfoQuery,
+    PaymentsInfoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PaymentsInfoQuery, PaymentsInfoQueryVariables>(
+    PaymentsInfoDocument,
+    options
+  );
+}
+export function usePaymentsInfoLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    PaymentsInfoQuery,
+    PaymentsInfoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PaymentsInfoQuery, PaymentsInfoQueryVariables>(
+    PaymentsInfoDocument,
+    options
+  );
+}
+export type PaymentsInfoQueryHookResult = ReturnType<
+  typeof usePaymentsInfoQuery
+>;
+export type PaymentsInfoLazyQueryHookResult = ReturnType<
+  typeof usePaymentsInfoLazyQuery
+>;
+export type PaymentsInfoQueryResult = Apollo.QueryResult<
+  PaymentsInfoQuery,
+  PaymentsInfoQueryVariables
 >;
 export const RecentlyAddedDocument = gql`
   query recentlyAdded($page: Int) {
@@ -817,4 +1265,63 @@ export type TopChartLazyQueryHookResult = ReturnType<
 export type TopChartQueryResult = Apollo.QueryResult<
   TopChartQuery,
   TopChartQueryVariables
+>;
+export const UserLikesDocument = gql`
+  query userLikes {
+    userLikes {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
+  }
+`;
+
+/**
+ * __useUserLikesQuery__
+ *
+ * To run a query within a React component, call `useUserLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserLikesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserLikesQuery(
+  baseOptions?: Apollo.QueryHookOptions<UserLikesQuery, UserLikesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserLikesQuery, UserLikesQueryVariables>(
+    UserLikesDocument,
+    options
+  );
+}
+export function useUserLikesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserLikesQuery,
+    UserLikesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserLikesQuery, UserLikesQueryVariables>(
+    UserLikesDocument,
+    options
+  );
+}
+export type UserLikesQueryHookResult = ReturnType<typeof useUserLikesQuery>;
+export type UserLikesLazyQueryHookResult = ReturnType<
+  typeof useUserLikesLazyQuery
+>;
+export type UserLikesQueryResult = Apollo.QueryResult<
+  UserLikesQuery,
+  UserLikesQueryVariables
 >;

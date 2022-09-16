@@ -75,4 +75,6 @@ build/**
 
 ## codegen
 packages/app/graphql.schema.json
+
 .env
+.vercel

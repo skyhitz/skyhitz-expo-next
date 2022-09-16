@@ -1,0 +1,22 @@
+mutation CreateEntry(
+  $fileCid: String!
+  $metaCid: String!
+  $code: String!
+  $forSale: Boolean!
+  $price: Int!
+  $equityForSale: Float!
+) {
+  createEntry(
+    fileCid: $fileCid
+    metaCid: $metaCid
+    code: $code
+    forSale: $forSale
+    price: $price
+    equityForSale: $equityForSale
+  ) {
+    xdr
+    success
+    submitted
+    message
+  }
+}

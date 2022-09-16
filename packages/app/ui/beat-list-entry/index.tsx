@@ -2,8 +2,8 @@ import { Image, Text, View } from "app/design-system";
 import { Entry } from "app/api/graphql";
 import { Pressable } from "react-native";
 import { imageUrlSmall } from "app/utils/entry";
-import { Price } from "app/ui/beat-list-entry/price";
-import { FavoriteButton } from "app/ui/favoriteButton";
+import Price from "app/ui/price";
+import { LikeButton } from "app/ui/buttons/likeButton";
 import { ShowMore } from "app/ui/beat-list-entry/show-more";
 
 export function BeatListEntry({
@@ -41,8 +41,8 @@ export function BeatListEntry({
           </Text>
         </View>
         <View className="flex flex-row items-center">
-          <Price className="mr-3" />
-          <FavoriteButton size={20} />
+          <Price code={entry.code} issuer={entry.issuer} className="mr-3" />
+          <LikeButton size={20} entry={entry} />
           <ShowMore entry={entry} />
         </View>
       </View>

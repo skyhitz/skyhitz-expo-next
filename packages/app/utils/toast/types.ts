@@ -1,2 +1,2 @@
 export type ToastType = "success" | "error";
-export type Toast = (msg: string, type?: ToastType) => void;
+export type Toast = (_msg: string, _type?: ToastType) => void;

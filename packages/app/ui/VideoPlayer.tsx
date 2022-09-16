@@ -1,16 +1,16 @@
-import { Video, ResizeMode } from "expo-av";
+import { ResizeMode, Video } from "expo-av";
 import { useContext } from "react";
 import { ImageBackground, Platform, ViewStyle } from "react-native";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   currentDurationAtom,
+  currentEntryAtom,
   currentPositionAtom,
   loopAtom,
   playbackStateAtom,
 } from "app/state/playback";
 import { PlaybackContext } from "../provider/playback";
-import { currentEntryAtom } from "app/state/playback";
-import { videoSrc, imageSrc } from "app/utils/entry";
+import { imageSrc, videoSrc } from "app/utils/entry";
 import { usePlayback } from "app/hooks/usePlayback";
 
 type Props = {
@@ -39,7 +39,7 @@ export function VideoPlayer({ width, height, style }: Props) {
 
   return (
     <ImageBackground
-      source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : "" }}
+      source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : undefined }}
       style={[
         { width, height, alignItems: "center", justifyContent: "center" },
         style,

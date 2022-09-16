@@ -1,0 +1,3 @@
+query GetIssuer($cid: String!) {
+  getIssuer(cid: $cid)
+}
