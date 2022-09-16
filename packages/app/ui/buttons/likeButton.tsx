@@ -10,6 +10,7 @@ import useLikeCache from "app/hooks/useLikeCache";
 import { ErrorType } from "app/types";
 import { any } from "ramda";
 import { isSome } from "app/utils";
+import { useToast } from "react-native-toast-notifications";
 
 type Props = {
   size: number;
@@ -19,6 +20,7 @@ type Props = {
 
 export function LikeButton({ size, className, entry }: Props) {
   const [likeEntry] = useLikeEntryMutation();
+  const toast = useToast();
   const { data: userLikesData } = useUserLikesQuery();
   const { addLikeToCache, removeLikeFromCache } = useLikeCache();
   const active = any(
@@ -35,7 +37,7 @@ export function LikeButton({ size, className, entry }: Props) {
       active ? addLikeToCache(entry) : removeLikeFromCache(entry);
 
       const err = e as Partial<ErrorType>;
-      //TODO: toast(err?.message ?? "Unknown error");
+      toast.show(err?.message ?? "Unknown error", { type: "danger" });
     }
   };
 
