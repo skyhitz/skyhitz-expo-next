@@ -46,7 +46,7 @@ export default function EditProfileScreen() {
       await updateUser({
         variables: { ...form, avatarUrl },
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       toast.show(e?.message ?? "Unknown error", { type: "danger" });
       return;
