@@ -29,7 +29,7 @@ export default function EditProfileScreen() {
   const [avatar, setAvatar] = useState<ChangeAvatarImg>({
     url: user.avatarUrl ?? "",
   });
-  const [updateUser, { data, loading, error }] = useUpdateUserMutation();
+  const [updateUser, { data, loading }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();
   const { back } = useRouter();
   const toast = useToast();
@@ -43,14 +43,14 @@ export default function EditProfileScreen() {
         const cid = await uploadFile(avatar.blob);
         avatarUrl = `${ipfsProtocol}${cid}`;
       }
-    } catch (e) {
+      await updateUser({
+        variables: { ...form, avatarUrl },
+      });
+    } catch (e: any) {
       console.error(e);
+      toast.show(e?.message ?? "Unknown error", { type: "danger" });
       return;
     }
-
-    await updateUser({
-      variables: { ...form, avatarUrl },
-    });
   };
 
   useEffect(() => {
@@ -133,9 +133,7 @@ export default function EditProfileScreen() {
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />
           <Text className="text-red text-sm py-5 mx-4">
-            {vals(errors)
-              .join("\n")
-              .concat(error?.message ?? "")}
+            {vals(errors).join("\n")}
           </Text>
           <View className="flex md:flex-row justify-center items-center mb-5">
             <Button
