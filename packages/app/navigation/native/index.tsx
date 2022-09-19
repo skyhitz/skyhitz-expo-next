@@ -53,50 +53,43 @@ export function NativeNavigation() {
         headerShown: false,
       }}
     >
-      {user ? (
-        <>
-          <Stack.Screen
-            name="dashboard"
-            component={DashboardNavigation}
-            options={{
-              title: "Dashboard",
-            }}
-          />
-        </>
-      ) : (
-        <>
-          <Stack.Screen
-            name="splash"
-            component={SplashScreen}
-            options={{
-              title: "Splash",
-            }}
-          />
+      <Stack.Screen
+        name="dashboard"
+        component={DashboardNavigation}
+        options={{
+          title: "Dashboard",
+        }}
+      />
+      <Stack.Screen
+        name="splash"
+        component={SplashScreen}
+        options={{
+          title: "Splash",
+        }}
+      />
 
-          <Stack.Screen
-            name="home"
-            component={HomeScreen}
-            options={{
-              title: "Home",
-            }}
-          />
+      <Stack.Screen
+        name="home"
+        component={HomeScreen}
+        options={{
+          title: "Home",
+        }}
+      />
 
-          <Stack.Screen
-            name="sign-in"
-            component={SignIn}
-            options={{
-              title: "Log In",
-            }}
-          />
-          <Stack.Screen
-            name="sign-up"
-            component={SignUp}
-            options={{
-              title: "Sign Up",
-            }}
-          />
-        </>
-      )}
+      <Stack.Screen
+        name="sign-in"
+        component={SignIn}
+        options={{
+          title: "Log In",
+        }}
+      />
+      <Stack.Screen
+        name="sign-up"
+        component={SignUp}
+        options={{
+          title: "Sign Up",
+        }}
+      />
     </Stack.Navigator>
   );
 }
