@@ -5,8 +5,8 @@ import { useWalletConnectClient } from "app/provider/WalletConnect";
 
 type Props = {
   onConnected: (_publicKey: string) => void;
-  disabled: boolean;
-  loading: boolean;
+  disabled?: boolean;
+  loading?: boolean;
 };
 
 export const WalletConnectBtn = ({ onConnected, disabled, loading }: Props) => {

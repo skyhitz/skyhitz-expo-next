@@ -6,10 +6,13 @@ import { useSignInParam } from "app/hooks/useSignInParam";
 import { AuthenticationView } from "app/features/accounts/sign-in/authenticationView";
 import { OpenEmailView } from "app/features/accounts/sign-in/openEmailView";
 import { SignInForm } from "app/features/accounts/sign-in/signInForm";
+import { WalletConnectView } from "./WalletConnectView";
+import { isEmpty, not } from "ramda";
 
 export function SignIn() {
   const signInParam = useSignInParam();
-  const [emailSend, setEmailSend] = useState(false);
+  const [emailSend, setEmailSend] = useState<boolean>(false);
+  const [publicKey, setPublicKey] = useState<string>("");
 
   return (
     <KeyboardAvoidingView
@@ -22,8 +25,13 @@ export function SignIn() {
         <OpenEmailView />
       ) : signInParam ? (
         <AuthenticationView signInParam={signInParam} />
+      ) : not(isEmpty(publicKey)) ? (
+        <WalletConnectView publicKey={publicKey} />
       ) : (
-        <SignInForm onEmailSend={() => setEmailSend(true)} />
+        <SignInForm
+          onEmailSend={() => setEmailSend(true)}
+          onWalletConnected={setPublicKey}
+        />
       )}
     </KeyboardAvoidingView>
   );

@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCreateUserWithEmailMutation } from "app/api/graphql";
 import { signUpFormSchema } from "app/validation";
 import { useRouter } from "solito/router";
+import { isEmpty, not } from "ramda";
 
 type FormFields = {
   username: string;
@@ -131,9 +132,12 @@ export function SignUp() {
               </Text>
               <Button
                 text="Join"
-                loading={loading}
+                loading={loading && isEmpty(publicKey)}
                 disabled={!isValid}
-                onPress={handleSubmit}
+                onPress={() => {
+                  setPublicKey("");
+                  handleSubmit();
+                }}
                 size="large"
                 className="mt-5"
               />
@@ -141,7 +145,7 @@ export function SignUp() {
 
               <WalletConnectBtn
                 disabled={!isValid}
-                loading={loading}
+                loading={loading && not(isEmpty(publicKey))}
                 onConnected={(publicKey: string) => {
                   setPublicKey(publicKey);
                   handleSubmit();

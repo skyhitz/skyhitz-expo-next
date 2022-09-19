@@ -1,0 +1,13 @@
+mutation signInWithXDR($signedXDR: String!) {
+  signInWithXDR(signedXDR: $signedXDR) {
+    avatarUrl
+    displayName
+    username
+    id
+    jwt
+    publishedAt
+    email
+    description
+    publicKey
+  }
+}

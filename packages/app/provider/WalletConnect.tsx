@@ -19,6 +19,7 @@ interface IContext {
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
   accounts: string[];
+  signXdr: (_xdr: string) => Promise<null | unknown>;
 }
 
 export const ClientContext = createContext<IContext>({} as IContext);
@@ -55,8 +56,8 @@ export function ClientContextProvider({
     try {
       const requiredNamespaces = {
         stellar: {
-          methods: ["stellar_signAndSubmitXDR"],
-          chains: ["stellar:pubnet"],
+          methods: ["stellar_signAndSubmitXDR", "stellar_signXDR"],
+          chains: ["stellar:pubnet", "stellar:testnet"],
           events: [],
         },
       };
@@ -160,6 +161,27 @@ export function ClientContextProvider({
     }
   }, [_subscribeToEvents]);
 
+  const signXdr = useCallback(
+    async (xdr: string) => {
+      if (client && session) {
+        const result = await client.request({
+          topic: session.topic,
+          chainId: "stellar:testnet",
+          request: {
+            // jsonrpc: "2.0",
+            method: "stellar_signXDR",
+            params: {
+              xdr,
+            },
+          },
+        });
+        return result;
+      }
+      return null;
+    },
+    [client, session]
+  );
+
   useEffect(() => {
     if (!client) {
       createClient();
@@ -172,8 +194,9 @@ export function ClientContextProvider({
       session,
       connect,
       disconnect,
+      signXdr,
     }),
-    [accounts, session, connect, disconnect]
+    [accounts, session, connect, disconnect, signXdr]
   );
 
   return (
