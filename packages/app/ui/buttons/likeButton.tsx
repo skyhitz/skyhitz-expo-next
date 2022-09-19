@@ -11,7 +11,7 @@ import { ErrorType } from "app/types";
 import { any } from "ramda";
 import { isSome } from "app/utils";
 import { useToast } from "react-native-toast-notifications";
-import guardedComponentFactory from "app/utils/guardedComponentFactory";
+import { ComponentAuthGuard } from "app/utils/authGuard";
 
 type Props = {
   size: number;
@@ -50,4 +50,10 @@ function LikeButton({ size, className, entry }: Props) {
   );
 }
 
-export default guardedComponentFactory(LikeButton);
+export default function LikeBtn(props: Props) {
+  return (
+    <ComponentAuthGuard>
+      <LikeButton {...props} />
+    </ComponentAuthGuard>
+  );
+}
