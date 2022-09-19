@@ -8,14 +8,25 @@ const Navbar = () => {
 
   return (
     <View className="flex-row justify-center sm:justify-between items-center p-3 w-full flex-wrap">
-      <TextLink href="/" tw="flex flex-row justify-start items-center">
-        <View className="flex flex-row items-center">
-          <SkyhitzLogo />
-          <Text className="pl-4 text-lg font-raleway tracking-[12px]">
-            SKYHITZ
-          </Text>
+      <View className="flex flex-row">
+        <TextLink href="/home" tw="flex flex-row justify-start items-center">
+          <View className="flex flex-row items-center">
+            <SkyhitzLogo />
+            <Text className="pl-4 text-lg font-raleway tracking-[12px]">
+              SKYHITZ
+            </Text>
+          </View>
+        </TextLink>
+        <View className="flex-row ml-8 hidden web:flex items-center">
+          <TextLink tw="mr-4" href="/dashboard/chart">
+            <Text className="text-sm">Top Chart</Text>
+          </TextLink>
+          <TextLink tw="mr-4" href="/dashboard/search">
+            <Text className="text-sm">Search</Text>
+          </TextLink>
         </View>
-      </TextLink>
+      </View>
+
       {user ? null : (
         <View className="hidden sm:flex flex-row justify-end items-center">
           <TextLink
