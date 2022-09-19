@@ -7,6 +7,7 @@ import { useDeviceContext } from "twrnc";
 import { tw } from "app/design-system/tailwind";
 import { SafeArea } from "app/provider/safe-area";
 import { PlaybackProvider } from "./playback";
+import SkyhitzToastProvider from "app/provider/toast";
 
 export function Provider({ children }: { children: React.ReactNode }) {
   useDeviceContext(tw);
@@ -16,9 +17,11 @@ export function Provider({ children }: { children: React.ReactNode }) {
         <RecoilRoot>
           <FontProvider>
             <Dripsy>
-              <PlaybackProvider>
-                <NavigationProvider>{children}</NavigationProvider>
-              </PlaybackProvider>
+              <SkyhitzToastProvider>
+                <PlaybackProvider>
+                  <NavigationProvider>{children}</NavigationProvider>
+                </PlaybackProvider>
+              </SkyhitzToastProvider>
             </Dripsy>
           </FontProvider>
         </RecoilRoot>

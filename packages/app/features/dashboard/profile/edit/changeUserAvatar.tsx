@@ -5,7 +5,7 @@ import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
 import usePickMedia from "app/hooks/usePickMedia";
 import { validateProfilePicture } from "app/validation";
 import { ChangeAvatarImg } from "app/types";
-import { toast } from "app/utils/toast";
+import { useToast } from "react-native-toast-notifications";
 
 type ChangeUserAvatarProps = {
   avatarImg: ChangeAvatarImg;
@@ -20,6 +20,7 @@ export function ChangeUserAvatar({
   onChange,
   disable,
 }: ChangeUserAvatarProps) {
+  const toast = useToast();
   useMediaLibraryPermission();
   const { pickMedia, loading, error, data, url } = usePickMedia(
     "image",
@@ -37,9 +38,9 @@ export function ChangeUserAvatar({
 
   useEffect(() => {
     if (error) {
-      toast(error);
+      toast.show(error, { type: "danger" });
     }
-  }, [error]);
+  }, [error, toast]);
 
   return (
     <View className="flex items-center mt-4 mb-5">
