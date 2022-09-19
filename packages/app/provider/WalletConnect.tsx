@@ -23,6 +23,7 @@ interface IContext {
 
 export const ClientContext = createContext<IContext>({} as IContext);
 
+// TODO find out why it doesn't work
 export function ClientContextProvider({
   children,
 }: {
@@ -59,14 +60,12 @@ export function ClientContextProvider({
           events: [],
         },
       };
-      console.log("requiredNamespaces config for connect:", requiredNamespaces);
 
       const { uri, approval } = await client.connect({
         pairingTopic: undefined,
         requiredNamespaces,
       });
 
-      console.log("uri", uri);
       if (uri && Platform.OS === "web") {
         QRCodeModal.open(
           uri,

@@ -2,20 +2,19 @@ import { SignInParam } from "app/hooks/useSignInParam";
 import { ActivityIndicator, Text, View } from "app/design-system";
 import { useEffect } from "react";
 import { useLogIn } from "app/hooks/useLogIn";
-import { useSignInMutation } from "app/api/graphql";
+import { useSignInWithTokenMutation } from "app/api/graphql";
 
 export function AuthenticationView({
   signInParam,
 }: {
   signInParam: SignInParam;
 }) {
-  const [signIn, { data, error }] = useSignInMutation();
+  const [signIn, { data, error }] = useSignInWithTokenMutation();
   const logIn = useLogIn();
 
   useEffect(() => {
     signIn({
       variables: {
-        signedXDR: "",
         uid: signInParam.uid,
         token: signInParam.token,
       },
@@ -23,8 +22,8 @@ export function AuthenticationView({
   }, [signInParam, signIn]);
 
   useEffect(() => {
-    if (data?.signIn) {
-      logIn(data.signIn);
+    if (data?.signInWithToken) {
+      logIn(data.signInWithToken);
     }
   }, [data, logIn]);
 

@@ -7,9 +7,9 @@ import { Separator } from "app/ui/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";
 import { Formik, FormikProps } from "formik";
 import { useEffect, useRef, useState } from "react";
-import { useLogIn } from "app/hooks/useLogIn";
 import { useCreateUserWithEmailMutation } from "app/api/graphql";
 import { signUpFormSchema } from "app/validation";
+import { useRouter } from "solito/router";
 
 type FormFields = {
   username: string;
@@ -18,16 +18,16 @@ type FormFields = {
 };
 
 export function SignUp() {
-  const logIn = useLogIn();
   const [publicKey, setPublicKey] = useState<string>("");
   const [createUserWithEmail, { loading, error, data }] =
     useCreateUserWithEmailMutation();
+  const { replace } = useRouter();
 
   useEffect(() => {
-    if (data?.createUserWithEmail) {
-      logIn(data.createUserWithEmail);
+    if (data?.createUserWithEmail?.success) {
+      replace("/sign-in");
     }
-  }, [data, logIn]);
+  }, [data, replace]);
 
   const handleSignUp = async (formData: FormFields) => {
     if (loading) return;

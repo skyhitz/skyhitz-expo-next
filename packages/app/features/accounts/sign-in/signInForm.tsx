@@ -30,7 +30,7 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
   };
 
   return (
-    <View className="w-72 md:w-96">
+    <View className="w-72 md:w-96 items-center">
       <WalletConnectBtn disabled loading={false} onConnected={() => {}} />
       <Separator />
       <Formik

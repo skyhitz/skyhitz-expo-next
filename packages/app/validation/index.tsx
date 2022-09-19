@@ -82,7 +82,6 @@ const validateImgWideEnough = (image: ImageInfo, minWidth = 3000) => {
 };
 
 export const validateProfilePicture = (image: ImageInfo): string | null => {
-  console.log(image.uri);
   return (
     validateImgSquare(image) ??
     validateImgFormatOneOf(image, ["png", "jpg", "jpeg"])
