@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <View className="flex-row justify-center sm:justify-between items-center p-3 w-full flex-wrap">
-      <View className="flex flex-row">
+      <View className="flex sm:flex-row">
         <TextLink href="/home" tw="flex flex-row justify-start items-center">
           <View className="flex flex-row items-center">
             <SkyhitzLogo />
@@ -17,7 +17,7 @@ const Navbar = () => {
             </Text>
           </View>
         </TextLink>
-        <View className="flex-row ml-8 hidden web:flex items-center">
+        <View className="flex flex-col ml-8 sm:flex-row items-center">
           <TextLink tw="mr-4" href="/dashboard/chart">
             <Text className="text-sm">Top Chart</Text>
           </TextLink>
