@@ -1,6 +1,6 @@
 import { Entry, PublicUser, useEntryLikesQuery } from "app/api/graphql";
 import { ActivityIndicator, Text, View } from "app/design-system";
-import { LikeButton } from "app/ui/buttons/likeButton";
+import LikeButton from "app/ui/buttons/likeButton";
 import { UserAvatar } from "app/ui/userAvatar";
 import { FlatList } from "react-native";
 import { isSome } from "app/utils";

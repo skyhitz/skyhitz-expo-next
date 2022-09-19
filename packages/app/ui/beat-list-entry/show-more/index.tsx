@@ -10,6 +10,7 @@ import { LikesList } from "app/features/player/components/likesList";
 import { PriceFront } from "app/ui/price";
 import { IconProps } from "app/types";
 import useEntryPrice from "app/hooks/useEntryPrice";
+import guardedComponentFactory from "app/utils/guardedComponentFactory";
 
 export function ShowMore({ entry }: { entry: Entry }) {
   const [showing, setShowing] = useState(false);
@@ -37,7 +38,11 @@ export function ShowMore({ entry }: { entry: Entry }) {
   );
 }
 
-function BuyNowBtn({ price }: { price: number }) {
+const BuyNowBtn = guardedComponentFactory(function BuyNowBtn({
+  price,
+}: {
+  price: number;
+}) {
   const PriceIcon = (_: IconProps) => <PriceFront price={price} />;
 
   return (
@@ -50,4 +55,4 @@ function BuyNowBtn({ price }: { price: number }) {
       }}
     />
   );
-}
+});

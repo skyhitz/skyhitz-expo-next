@@ -11,6 +11,7 @@ import { ErrorType } from "app/types";
 import { any } from "ramda";
 import { isSome } from "app/utils";
 import { useToast } from "react-native-toast-notifications";
+import guardedComponentFactory from "app/utils/guardedComponentFactory";
 
 type Props = {
   size: number;
@@ -18,7 +19,7 @@ type Props = {
   entry: Entry;
 };
 
-export function LikeButton({ size, className, entry }: Props) {
+function LikeButton({ size, className, entry }: Props) {
   const [likeEntry] = useLikeEntryMutation();
   const toast = useToast();
   const { data: userLikesData } = useUserLikesQuery();
@@ -48,3 +49,5 @@ export function LikeButton({ size, className, entry }: Props) {
     </Pressable>
   );
 }
+
+export default guardedComponentFactory(LikeButton);
