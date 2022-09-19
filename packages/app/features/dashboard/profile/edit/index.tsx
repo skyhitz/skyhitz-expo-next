@@ -21,7 +21,7 @@ import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
-import { toast } from "app/utils/toast";
+import { useToast } from "react-native-toast-notifications";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -32,6 +32,7 @@ export default function EditProfileScreen() {
   const [updateUser, { data, loading, error }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();
   const { back } = useRouter();
+  const toast = useToast();
 
   const handleUpdateUser = async (form: EditProfileForm) => {
     if (loading) return;
@@ -55,10 +56,10 @@ export default function EditProfileScreen() {
   useEffect(() => {
     if (data?.updateUser) {
       setUser(data.updateUser);
-      toast("Changes successfully saved", "success");
+      toast.show("Changes successfully saved", { type: "success" });
       back();
     }
-  }, [data, setUser, back]);
+  }, [data, setUser, back, toast]);
 
   const initialValues: EditProfileForm = {
     displayName: user.displayName,
