@@ -12,8 +12,9 @@ import {
   useState,
 } from "react";
 import { getSdkError } from "@walletconnect/utils";
-import { Linking, Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import { Config } from "app/config";
+import * as Clipboard from "expo-clipboard";
 
 interface IContext {
   session: SessionTypes.Struct | undefined;
@@ -68,7 +69,8 @@ export function ClientContextProvider({
         requiredNamespaces,
       });
 
-      if (uri && Platform.OS === "web") {
+      if (!uri) return;
+      if (Platform.OS === "web") {
         QRCodeModal.open(
           uri,
           () => {
@@ -80,17 +82,34 @@ export function ClientContextProvider({
           }
         );
       } else {
+        Alert.alert("WalletConnect link", uri, [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Copy",
+            onPress: async () => {
+              await Clipboard.setStringAsync(uri);
+            },
+          },
+        ]);
         // TODO find out proper deep link
-        Linking.openURL("https://lobstr.co/uni");
+        // Linking.openURL("https://lobstr.co/uni");
       }
 
       const session = await approval();
       console.log("Established session:", session);
       await onSessionConnected(session);
-      QRCodeModal.close();
+      if (Platform.OS === "web") {
+        QRCodeModal.close();
+      }
       return session;
     } catch (e) {
-      QRCodeModal.close();
+      if (Platform.OS === "web") {
+        QRCodeModal.close();
+      }
       console.error(e);
     }
   }, [client, onSessionConnected]);
@@ -150,7 +169,7 @@ export function ClientContextProvider({
       const PROJECT_ID = "422a527ddc3ed4c5fff60954fcc8ed83";
 
       const _client = await Client.init({
-        logger: "debug",
+        // logger: "debug",
         projectId: PROJECT_ID,
         metadata: metadata,
       });

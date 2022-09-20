@@ -6458,6 +6458,11 @@ expo-av@~11.2.3:
   dependencies:
     "@expo/config-plugins" "^4.0.14"
 
+expo-clipboard@~3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-3.0.1.tgz#c3a46b08bb376bc5b4a5ed75631e56f5e1075db8"
+  integrity sha512-y3gooHxfXpdlslS8GLTrXdWKGCr5hXLI+Y49PolbjUqBVh819+Z/T8bdskUf5YNxu/Bb0HG1yuHpHPe8XyvxSA==
+
 expo-constants@~13.1.1:
   version "13.1.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-13.1.1.tgz#78c26c760cc63cd5608bc4b51bd159d7339d8054"

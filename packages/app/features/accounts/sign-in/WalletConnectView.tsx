@@ -43,7 +43,7 @@ export function WalletConnectView({ publicKey }: Props) {
   }, [publicKey, signXdr, signIn]);
 
   return (
-    <View className="flex items-center justify-content">
+    <View className="flex items-center justify-center">
       {error ? (
         <Text className="text-red">{error}</Text>
       ) : loading ? (
