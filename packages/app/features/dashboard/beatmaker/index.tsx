@@ -2,25 +2,46 @@ import { isSome } from "app/utils";
 import { Text, View } from "app/design-system";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
-import { useRouter } from "solito/router";
 import { UserAvatar } from "app/ui/userAvatar";
-import { useUserCollectionQuery } from "app/api/graphql";
+import { PublicUser, useUserCollectionQuery } from "app/api/graphql";
+import { useEffect, useMemo, useState } from "react";
+import { getUser } from "app/api/algolia";
+import useErrorReport from "app/hooks/useErrorReport";
 
 export default function BeatmakerScreen() {
-  const params = useBeatmakerParam(); // TODO: fetch missing params
+  const id = useBeatmakerParam();
+  const reportError = useErrorReport();
+  const [displayName, setDisplayName] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(null);
   const { data, loading } = useUserCollectionQuery({
-    skip: !params?.id,
+    skip: !id,
     variables: {
-      userId: params!.id,
+      userId: id!,
     },
   });
-  const { back } = useRouter();
   const entries = data?.entries?.filter(isSome) ?? [];
 
-  if (!params) {
-    back();
-    return null;
-  }
+  const fetchUser = useMemo(
+    () => async () => {
+      if (!id) return;
+
+      let user: PublicUser;
+      try {
+        user = await getUser(id);
+      } catch (e) {
+        reportError(e);
+        return;
+      }
+
+      setAvatarUrl(user.avatarUrl);
+      setDisplayName(user.displayName ?? "");
+    },
+    [id, reportError]
+  );
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   return (
     <View className="flex-1 w-full bg-blue-dark">
@@ -28,10 +49,10 @@ export default function BeatmakerScreen() {
       <View className="w-full bg-beatmakerAvatarBackground flex flex-row items-center py-4 px-8 web:mt-4">
         <UserAvatar
           size="large"
-          avatarUrl={params.avatarUrl}
-          displayName={params.displayName}
+          avatarUrl={avatarUrl}
+          displayName={displayName}
         />
-        <Text className="ml-4 font-bold text-lg">{params.displayName}</Text>
+        <Text className="ml-4 font-bold text-lg">{displayName}</Text>
       </View>
       <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg">
         Beatmaker collection
