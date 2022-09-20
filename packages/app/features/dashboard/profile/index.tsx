@@ -16,14 +16,23 @@ import Upload from "app/ui/icons/upload";
 import { useRouter } from "solito/router";
 import { useState } from "react";
 import { LowBalanceModal } from "./LowBalanceModal";
-import { usePaymentsInfoQuery, useUserLikesQuery } from "app/api/graphql";
+import {
+  usePaymentsInfoQuery,
+  useUserCollectionQuery,
+  useUserLikesQuery,
+} from "app/api/graphql";
+import * as assert from "assert";
 
 export function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const user = useRecoilValue(userAtom)!;
+  const user = useRecoilValue(userAtom);
+  assert.ok(user?.id);
   const { data: paymentInfoData } = usePaymentsInfoQuery();
   const { push } = useRouter();
   const { data: userLikesData } = useUserLikesQuery();
+  const { data: userCollectionData } = useUserCollectionQuery({
+    variables: { userId: user.id },
+  });
 
   return (
     <SafeAreaView
@@ -55,13 +64,15 @@ export function ProfileScreen() {
       </View>
       <ProfileRow
         icon={<Like size={24} color={tw.color("blue")} />}
-        trailingText={userLikesData?.userLikes?.length?.toString()}
+        trailingNumber={userLikesData?.userLikes?.length}
         title="Likes"
         onPress={() => push("/dashboard/profile/likes")}
       />
       <ProfileRow
         icon={<StarBorder size={24} color={tw.color("blue")} />}
+        trailingNumber={userCollectionData?.entries?.length}
         title="Collections"
+        onPress={() => push("/dashboard/profile/collection")}
       />
       <Button
         text="Buy XLM"

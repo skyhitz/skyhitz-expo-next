@@ -1,5 +1,6 @@
-import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
+import { gql } from "@apollo/client";
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -396,6 +397,25 @@ export type UpdateUserMutation = {
     description?: string | null;
     publicKey?: string | null;
   } | null;
+};
+
+export type UserCollectionQueryVariables = Exact<{
+  userId: Scalars["String"];
+}>;
+
+export type UserCollectionQuery = {
+  __typename?: "Query";
+  entries?: Array<{
+    __typename?: "Entry";
+    imageUrl?: string | null;
+    videoUrl?: string | null;
+    description?: string | null;
+    title?: string | null;
+    id?: string | null;
+    artist?: string | null;
+    code?: string | null;
+    issuer?: string | null;
+  } | null> | null;
 };
 
 export type EntryLikesQueryVariables = Exact<{
@@ -984,6 +1004,71 @@ export type UpdateUserMutationResult =
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
+>;
+export const UserCollectionDocument = gql`
+  query userCollection($userId: String!) {
+    entries(userId: $userId) {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
+  }
+`;
+
+/**
+ * __useUserCollectionQuery__
+ *
+ * To run a query within a React component, call `useUserCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserCollectionQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserCollectionQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    UserCollectionQuery,
+    UserCollectionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserCollectionQuery, UserCollectionQueryVariables>(
+    UserCollectionDocument,
+    options
+  );
+}
+export function useUserCollectionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserCollectionQuery,
+    UserCollectionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserCollectionQuery, UserCollectionQueryVariables>(
+    UserCollectionDocument,
+    options
+  );
+}
+export type UserCollectionQueryHookResult = ReturnType<
+  typeof useUserCollectionQuery
+>;
+export type UserCollectionLazyQueryHookResult = ReturnType<
+  typeof useUserCollectionLazyQuery
+>;
+export type UserCollectionQueryResult = Apollo.QueryResult<
+  UserCollectionQuery,
+  UserCollectionQueryVariables
 >;
 export const EntryLikesDocument = gql`
   query entryLikes($id: String!) {

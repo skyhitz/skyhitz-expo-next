@@ -38,7 +38,7 @@ type PriceFrontProps = {
   price: number;
 };
 
-export function PriceFront({ className, price }: PriceFrontProps) {
+export function PriceFront({ className = "", price }: PriceFrontProps) {
   return (
     <View className={`flex flex-row items-center ${className}`}>
       <Dollar size={10} color={tw.color("white")} />

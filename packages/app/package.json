@@ -23,6 +23,7 @@
     "graphql": "^16.5.0",
     "ramda": "^0.28.0",
     "readable-stream": "^4.1.0",
+    "react-native-toast-notifications": "^3.3.1",
     "recoil": "^0.7.4",
     "solito": "latest",
     "stellar-base": "^8.0.1",

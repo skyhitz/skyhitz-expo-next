@@ -21,7 +21,7 @@ import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
-import { toast } from "app/utils/toast";
+import { useToast } from "react-native-toast-notifications";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -29,9 +29,10 @@ export default function EditProfileScreen() {
   const [avatar, setAvatar] = useState<ChangeAvatarImg>({
     url: user.avatarUrl ?? "",
   });
-  const [updateUser, { data, loading, error }] = useUpdateUserMutation();
+  const [updateUser, { data, loading }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();
   const { back } = useRouter();
+  const toast = useToast();
 
   const handleUpdateUser = async (form: EditProfileForm) => {
     if (loading) return;
@@ -42,23 +43,23 @@ export default function EditProfileScreen() {
         const cid = await uploadFile(avatar.blob);
         avatarUrl = `${ipfsProtocol}${cid}`;
       }
-    } catch (e) {
+      await updateUser({
+        variables: { ...form, avatarUrl },
+      });
+    } catch (e: any) {
       console.error(e);
+      toast.show(e?.message ?? "Unknown error", { type: "danger" });
       return;
     }
-
-    await updateUser({
-      variables: { ...form, avatarUrl },
-    });
   };
 
   useEffect(() => {
     if (data?.updateUser) {
       setUser(data.updateUser);
-      toast("Changes successfully saved", "success");
+      toast.show("Changes successfully saved", { type: "success" });
       back();
     }
-  }, [data, setUser, back]);
+  }, [data, setUser, back, toast]);
 
   const initialValues: EditProfileForm = {
     displayName: user.displayName,
@@ -132,9 +133,7 @@ export default function EditProfileScreen() {
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />
           <Text className="text-red text-sm py-5 mx-4">
-            {vals(errors)
-              .join("\n")
-              .concat(error?.message ?? "")}
+            {vals(errors).join("\n")}
           </Text>
           <View className="flex md:flex-row justify-center items-center mb-5">
             <Button

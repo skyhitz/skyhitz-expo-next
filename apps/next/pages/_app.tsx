@@ -4,8 +4,6 @@ import React from "react";
 import type { SolitoAppProps } from "solito";
 import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   return (
@@ -22,12 +20,6 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         <WebNavigation>
           <Component {...pageProps} />
         </WebNavigation>
-        <ToastContainer
-          position="bottom-right"
-          hideProgressBar={true}
-          theme="dark"
-          closeButton={false}
-        />
       </Provider>
     </>
   );
