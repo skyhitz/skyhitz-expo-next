@@ -13,13 +13,15 @@ import {
 } from "react";
 import { getSdkError } from "@walletconnect/utils";
 import { Linking, Platform } from "react-native";
+import { Config } from "app/config";
 
 interface IContext {
   session: SessionTypes.Struct | undefined;
-  connect: () => Promise<void>;
+  connect: () => Promise<SessionTypes.Struct | undefined>;
   disconnect: () => Promise<void>;
   accounts: string[];
   signXdr: (_xdr: string) => Promise<null | unknown>;
+  signAndSubmitXdr: (_xdr: string) => Promise<null | unknown>;
 }
 
 export const ClientContext = createContext<IContext>({} as IContext);
@@ -86,10 +88,11 @@ export function ClientContextProvider({
       const session = await approval();
       console.log("Established session:", session);
       await onSessionConnected(session);
-    } catch (e) {
-      console.error(e);
-    } finally {
       QRCodeModal.close();
+      return session;
+    } catch (e) {
+      QRCodeModal.close();
+      console.error(e);
     }
   }, [client, onSessionConnected]);
 
@@ -161,25 +164,38 @@ export function ClientContextProvider({
     }
   }, [_subscribeToEvents]);
 
+  const requestClient = useCallback(
+    async (method: string, xdr: string) => {
+      if (!client) throw "WalletConnect Client not initialized";
+      const currentSession = session ?? (await connect());
+      if (!currentSession) throw "There is no active session";
+      const result = await client.request({
+        topic: currentSession.topic,
+        chainId: Config.CHAIN_ID,
+        request: {
+          method: method,
+          params: {
+            xdr,
+          },
+        },
+      });
+      return result;
+    },
+    [client, session, connect]
+  );
+
   const signXdr = useCallback(
     async (xdr: string) => {
-      if (client && session) {
-        const result = await client.request({
-          topic: session.topic,
-          chainId: "stellar:testnet",
-          request: {
-            // jsonrpc: "2.0",
-            method: "stellar_signXDR",
-            params: {
-              xdr,
-            },
-          },
-        });
-        return result;
-      }
-      return null;
+      return requestClient("stellar_signXDR", xdr);
     },
-    [client, session]
+    [requestClient]
+  );
+
+  const signAndSubmitXdr = useCallback(
+    async (xdr: string) => {
+      return requestClient("stellar_signAndSubmitXDR", xdr);
+    },
+    [requestClient]
   );
 
   useEffect(() => {
@@ -195,8 +211,9 @@ export function ClientContextProvider({
       connect,
       disconnect,
       signXdr,
+      signAndSubmitXdr,
     }),
-    [accounts, session, connect, disconnect, signXdr]
+    [accounts, session, connect, disconnect, signXdr, signAndSubmitXdr]
   );
 
   return (

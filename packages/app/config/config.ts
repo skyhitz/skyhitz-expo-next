@@ -6,4 +6,5 @@ export interface ConfigInterface {
   ALGOLIA_SEARCH_KEY: string;
   STRIPE_PUBLISHABLE_KEY: string;
   SCHEMA: string;
+  CHAIN_ID: string;
 }

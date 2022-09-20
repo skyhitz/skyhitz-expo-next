@@ -8,4 +8,5 @@ export const ProductionConfig: ConfigInterface = {
   ALGOLIA_SEARCH_KEY: "795d7226826c11d9d379b19029f2d1b4",
   STRIPE_PUBLISHABLE_KEY: "pk_live_AXVKTAaPwHycRifItu3Mn4Cm",
   SCHEMA: "skyhitz:///",
+  CHAIN_ID: "stellar:pubnet",
 };

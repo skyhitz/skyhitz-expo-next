@@ -8,4 +8,5 @@ export const DevelopmentConfig: ConfigInterface = {
   ALGOLIA_SEARCH_KEY: "172d1e4e519cb9a25063b0dd314fcc5a",
   STRIPE_PUBLISHABLE_KEY: "pk_test_jiDVP0p6iRtILtE4FzFfMACc",
   SCHEMA: "exp://192.168.103.24:19000/--/",
+  CHAIN_ID: "stellar:testnet",
 };
