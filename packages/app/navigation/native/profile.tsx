@@ -4,12 +4,14 @@ import { MintScreen } from "app/features/dashboard/profile/mint/MintScreen";
 import { tw } from "app/design-system/tailwind";
 import EditProfileScreen from "app/features/dashboard/profile/edit";
 import LikesScreen from "app/features/dashboard/profile/likes";
+import CollectionScreen from "app/features/dashboard/profile/collection";
 
 const ProfileStack = createNativeStackNavigator<{
   "user-details": undefined;
   mint: undefined;
   edit: undefined;
   likes: undefined;
+  collection: undefined;
 }>();
 
 export function ProfileNavigation() {
@@ -58,6 +60,21 @@ export function ProfileNavigation() {
         component={LikesScreen}
         options={{
           title: "Likes",
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: tw.color("blue-dark"),
+          },
+          headerTintColor: tw.color("white"),
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <ProfileStack.Screen
+        name="collection"
+        component={CollectionScreen}
+        options={{
+          title: "Collection",
           headerBackTitleVisible: false,
           headerStyle: {
             backgroundColor: tw.color("blue-dark"),
