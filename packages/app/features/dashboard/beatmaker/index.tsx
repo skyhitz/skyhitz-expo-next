@@ -39,7 +39,11 @@ export default function BeatmakerScreen() {
         />
         <Text className="ml-4 font-bold text-lg">{params.displayName}</Text>
       </View>
-      <ProfileBeatsList beats={entries} loading={loading} />
+      <ProfileBeatsList
+        beats={entries}
+        loading={loading}
+        emptyStateText="They don't have any beats in their collection yet"
+      />
     </View>
   );
 }
