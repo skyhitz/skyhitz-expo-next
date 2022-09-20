@@ -3,7 +3,7 @@ import { Text, View } from "app/design-system";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
 import { UserAvatar } from "app/ui/userAvatar";
-import { PublicUser, useUserCollectionQuery } from "app/api/graphql";
+import { useUserCollectionQuery } from "app/api/graphql";
 import { useEffect, useMemo, useState } from "react";
 import { getUser } from "app/api/algolia";
 import useErrorReport from "app/hooks/useErrorReport";
@@ -25,16 +25,14 @@ export default function BeatmakerScreen() {
     () => async () => {
       if (!id) return;
 
-      let user: PublicUser;
       try {
-        user = await getUser(id);
+        const user = await getUser(id);
+        setAvatarUrl(user.avatarUrl);
+        setDisplayName(user.displayName ?? "");
       } catch (e) {
         reportError(e);
         return;
       }
-
-      setAvatarUrl(user.avatarUrl);
-      setDisplayName(user.displayName ?? "");
     },
     [id, reportError]
   );
