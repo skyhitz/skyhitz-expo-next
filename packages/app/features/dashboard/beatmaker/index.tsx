@@ -1,27 +1,21 @@
-import { useUserCollectionLazyQuery } from "app/api/graphql";
 import { isSome } from "app/utils";
 import { Text, View } from "app/design-system";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
-import { useEffect } from "react";
 import { useRouter } from "solito/router";
 import { UserAvatar } from "app/ui/userAvatar";
+import { useUserCollectionQuery } from "app/api/graphql";
 
 export default function BeatmakerScreen() {
   const params = useBeatmakerParam();
-  const [query, { data, loading }] = useUserCollectionLazyQuery();
+  const { data, loading } = useUserCollectionQuery({
+    skip: !params?.id,
+    variables: {
+      userId: params!.id,
+    },
+  });
   const { back } = useRouter();
   const entries = data?.entries?.filter(isSome) ?? [];
-
-  useEffect(() => {
-    if (params?.id) {
-      query({
-        variables: {
-          userId: params.id,
-        },
-      });
-    }
-  }, [params, query]);
 
   if (!params) {
     back();
