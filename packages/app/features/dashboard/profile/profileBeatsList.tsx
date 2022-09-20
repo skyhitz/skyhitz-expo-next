@@ -7,9 +7,14 @@ import { Entry } from "app/api/graphql";
 type Props = {
   beats: Entry[];
   loading: boolean;
+  emptyStateText: string;
 };
 
-export default function ProfileBeatsList({ beats, loading }: Props) {
+export default function ProfileBeatsList({
+  beats,
+  loading,
+  emptyStateText,
+}: Props) {
   const { playEntry } = usePlayback();
 
   return (
@@ -19,16 +24,27 @@ export default function ProfileBeatsList({ beats, loading }: Props) {
         renderItem={({ item }) => (
           <BeatListEntry entry={item} onPress={() => playEntry(item, beats)} />
         )}
-        ListEmptyComponent={<ListEmptyComponent loading={loading} />}
+        ListEmptyComponent={
+          <ListEmptyComponent
+            loading={loading}
+            emptyStateText={emptyStateText}
+          />
+        }
       />
     </View>
   );
 }
 
-function ListEmptyComponent({ loading }: { loading: boolean }) {
+function ListEmptyComponent({
+  loading,
+  emptyStateText,
+}: {
+  loading: boolean;
+  emptyStateText: string;
+}) {
   return (
     <View className="flex-1 flex items-center justify-center mt-8">
-      {loading ? <ActivityIndicator /> : <Text>No beats here</Text>}
+      {loading ? <ActivityIndicator /> : <Text>{emptyStateText}</Text>}
     </View>
   );
 }

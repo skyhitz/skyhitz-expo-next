@@ -20,7 +20,11 @@ export default function CollectionScreen() {
   return (
     <View className="flex-1 w-full">
       <Text className="text-lg ml-8 font-bold hidden web:flex">Collection</Text>
-      <ProfileBeatsList beats={entries} loading={loading} />
+      <ProfileBeatsList
+        beats={entries}
+        loading={loading}
+        emptyStateText="You don't have beats in your collection yet"
+      />
     </View>
   );
 }
