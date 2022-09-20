@@ -22,19 +22,23 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
               "sign-up": "sign-up",
               dashboard: {
                 screens: {
-                  beatmaker: "dashboard/beatmaker/:id",
-                  search: "dashboard/search",
-                  chart: "dashboard/chart",
-                  profile: {
-                    path: "dashboard/profile",
+                  tabs: {
                     screens: {
-                      "user-details": "",
-                      mint: "mint",
-                      edit: "edit",
-                      likes: "likes",
-                      collection: "collection",
+                      search: "dashboard/search",
+                      chart: "dashboard/chart",
+                      profile: {
+                        path: "dashboard/profile",
+                        screens: {
+                          "user-details": "",
+                          mint: "mint",
+                          edit: "edit",
+                          likes: "likes",
+                          collection: "collection",
+                        },
+                      },
                     },
                   },
+                  beatmaker: "dashboard/beatmaker/:id",
                 },
               },
             },

@@ -9,7 +9,7 @@ import { useRouter } from "solito/router";
 import { useEffect } from "react";
 import { Linking } from "react-native";
 import { Config } from "app/config";
-import { DashboardNavigation } from "./tab";
+import { Dashboard } from "app/navigation/native/dashboard";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -57,7 +57,7 @@ export function NativeNavigation() {
         <>
           <Stack.Screen
             name="dashboard"
-            component={DashboardNavigation}
+            component={Dashboard}
             options={{
               title: "Dashboard",
             }}
