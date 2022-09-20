@@ -33,6 +33,9 @@ export default function BeatmakerScreen() {
         />
         <Text className="ml-4 font-bold text-lg">{params.displayName}</Text>
       </View>
+      <Text className="w-full max-w-6xl mx-auto mt-6 mb-4 text-lg">
+        Beatmaker collection
+      </Text>
       <ProfileBeatsList
         beats={entries}
         loading={loading}
