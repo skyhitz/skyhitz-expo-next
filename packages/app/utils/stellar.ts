@@ -29,37 +29,6 @@ export const getNetworkPassphrase = () => {
   }
 };
 
-// export function getHorizonConfig() {
-//   switch (Config.HORIZON_URL) {
-//     case 'https://horizon-testnet.stellar.org':
-//       return {
-//         network: 'testnet',
-//         networkPassphrase: Networks['TESTNET'],
-//         horizonUrl: 'https://horizon-testnet.stellar.org',
-//         ipfsUrl: (cid) => `https://ipfs.io/ipfs/${cid}`,
-//         explorerAssetUrl: (code, issuer) =>
-//           `https://stellar.expert/explorer/testnet/asset/${code}-${issuer}`,
-//         explorerAssetHoldersUrl: (code, issuer) =>
-//           `https://stellar.expert/explorer/testnet/asset/${code}-${issuer}?filter=asset-holders`,
-//         dexAssetUrl: (code, issuer) =>
-//           `https://stellarterm.com/exchange/${code}-${issuer}/XLM-native/testnet`,
-//       };
-//     default:
-//       return {
-//         network: 'pubnet',
-//         networkPassphrase: Networks['PUBLIC'],
-//         horizonUrl: 'https://horizon.stellar.org',
-//         ipfsUrl: (cid) => `https://ipfs.io/ipfs/${cid}`,
-//         explorerAssetUrl: (code, issuer) =>
-//           `https://stellar.expert/explorer/public/asset/${code}-${issuer}`,
-//         explorerAssetHoldersUrl: (code, issuer) =>
-//           `https://stellar.expert/explorer/public/asset/${code}-${issuer}?filter=asset-holders`,
-//         dexAssetUrl: (code, issuer) =>
-//           `https://stellarterm.com/exchange/${code}-${issuer}/XLM-native`,
-//       };
-//   }
-// }
-
 const getAccountData = async (address: string) => {
   const res = await fetch(`${Config.HORIZON_URL}/accounts/${address}`);
   const json = await res.json();

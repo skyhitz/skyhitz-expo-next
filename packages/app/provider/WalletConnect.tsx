@@ -26,7 +26,6 @@ interface IContext {
 
 export const ClientContext = createContext<IContext>({} as IContext);
 
-// TODO find out why it doesn't work
 export function ClientContextProvider({
   children,
 }: {
