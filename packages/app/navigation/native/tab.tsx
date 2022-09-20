@@ -8,9 +8,6 @@ const Tab = createBottomTabNavigator<{
   search: undefined;
   chart: undefined;
   profile: undefined;
-  beatmaker: {
-    id: string;
-  };
 }>();
 
 export function DashboardNavigation() {
