@@ -7,7 +7,7 @@ export function MakerListEntry({ user }: { user: User }) {
   const { push } = useRouter();
 
   return (
-    <Pressable onPress={() => push(`/dashboard/beatmaker/${user.id}/`)}>
+    <Pressable onPress={() => push(`/dashboard/search/beatmaker/${user.id}/`)}>
       <View className="w-full flex items-center flex-row py-2">
         <UserAvatar
           avatarUrl={user.avatarUrl}
