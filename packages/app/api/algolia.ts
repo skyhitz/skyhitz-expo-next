@@ -9,10 +9,10 @@ export const usersIndex = client.initIndex(`${appDomain}:users`);
 
 export async function getUser(id: string): Promise<PublicUser> {
   const res = await usersIndex.search("", {
-    filters: `id:${id}`,
+    filters: `objectID:${id}`,
   });
   if (res.hits.length === 0) {
-    throw "User not found";
+    throw { message: "User not found" };
   }
   const [user] = res.hits;
   return user as PublicUser;
