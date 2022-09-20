@@ -31,6 +31,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
                       mint: "mint",
                       edit: "edit",
                       likes: "likes",
+                      collection: "collection",
                     },
                   },
                 },
