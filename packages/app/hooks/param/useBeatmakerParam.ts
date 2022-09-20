@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 export type BeatmakerParam = {
   id: string;
-  displayName: string;
+  displayName?: string;
   avatarUrl?: string;
 };
 
@@ -15,7 +15,7 @@ export const useBeatmakerParam = (): BeatmakerParam | undefined => {
   const [avatarUrl] = useParam("avatarUrl");
 
   const params = useMemo(() => {
-    if (id && displayName) {
+    if (id) {
       return { id, displayName, avatarUrl };
     }
   }, [id, displayName, avatarUrl]);

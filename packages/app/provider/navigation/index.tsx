@@ -22,7 +22,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
               "sign-up": "sign-up",
               dashboard: {
                 screens: {
-                  beatmaker: "dashboard/beatmaker",
+                  beatmaker: "dashboard/beatmaker/:id",
                   search: "dashboard/search",
                   chart: "dashboard/chart",
                   profile: {

@@ -7,7 +7,7 @@ import { UserAvatar } from "app/ui/userAvatar";
 import { useUserCollectionQuery } from "app/api/graphql";
 
 export default function BeatmakerScreen() {
-  const params = useBeatmakerParam();
+  const params = useBeatmakerParam(); // TODO: fetch missing params
   const { data, loading } = useUserCollectionQuery({
     skip: !params?.id,
     variables: {
@@ -33,7 +33,7 @@ export default function BeatmakerScreen() {
         />
         <Text className="ml-4 font-bold text-lg">{params.displayName}</Text>
       </View>
-      <Text className="w-full max-w-6xl mx-auto mt-6 mb-4 text-lg">
+      <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg">
         Beatmaker collection
       </Text>
       <ProfileBeatsList

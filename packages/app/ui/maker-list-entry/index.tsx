@@ -10,7 +10,7 @@ export function MakerListEntry({ user }: { user: User }) {
     <Pressable
       onPress={() =>
         push(
-          `/dashboard/beatmaker?id=${user.id}&displayName=${user.displayName}&avatarUrl=${user.avatarUrl}`
+          `/dashboard/beatmaker/${user.id}/?displayName=${user.displayName}&avatarUrl=${user.avatarUrl}`
         )
       }
     >
