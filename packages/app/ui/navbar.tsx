@@ -17,7 +17,7 @@ const Navbar = () => {
             </Text>
           </View>
         </TextLink>
-        <View className="flex flex-col ml-8 sm:flex-row items-center">
+        <View className="hidden flex-row ml-8 sm:flex items-center">
           <TextLink tw="mr-4" href="/dashboard/chart">
             <Text className="text-sm">Top Chart</Text>
           </TextLink>
