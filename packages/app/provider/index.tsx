@@ -18,12 +18,12 @@ export function Provider({ children }: { children: React.ReactNode }) {
         <RecoilRoot>
           <FontProvider>
             <Dripsy>
-            <SkyhitzToastProvider>
-              <ClientContextProvider>
-                <PlaybackProvider>
-                  <NavigationProvider>{children}</NavigationProvider>
-                </PlaybackProvider>
-              </ClientContextProvider>
+              <SkyhitzToastProvider>
+                <ClientContextProvider>
+                  <PlaybackProvider>
+                    <NavigationProvider>{children}</NavigationProvider>
+                  </PlaybackProvider>
+                </ClientContextProvider>
               </SkyhitzToastProvider>
             </Dripsy>
           </FontProvider>
