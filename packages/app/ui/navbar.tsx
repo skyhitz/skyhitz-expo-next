@@ -17,14 +17,16 @@ const Navbar = () => {
             </Text>
           </View>
         </TextLink>
-        <View className="hidden flex-row ml-8 sm:flex items-center">
-          <TextLink tw="mr-4" href="/dashboard/chart">
-            <Text className="text-sm">Top Chart</Text>
-          </TextLink>
-          <TextLink tw="mr-4" href="/dashboard/search">
-            <Text className="text-sm">Search</Text>
-          </TextLink>
-        </View>
+        {user ? null : (
+          <View className="hidden flex-row ml-8 sm:flex items-center">
+            <TextLink tw="mr-4" href="/dashboard/chart">
+              <Text className="text-sm">Top Chart</Text>
+            </TextLink>
+            <TextLink tw="mr-4" href="/dashboard/search">
+              <Text className="text-sm">Search</Text>
+            </TextLink>
+          </View>
+        )}
       </View>
 
       {user ? null : (
