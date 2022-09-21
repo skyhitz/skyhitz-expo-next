@@ -20,6 +20,8 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
               home: "home",
               "sign-in": "sign-in",
               "sign-up": "sign-up",
+              privacy: "privacy",
+              terms: "terms",
               dashboard: {
                 screens: {
                   search: {

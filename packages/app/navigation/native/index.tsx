@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import { Linking } from "react-native";
 import { Config } from "app/config";
 import { DashboardNavigation } from "./tab";
+import TermsScreen from "app/features/legal/termsScreen";
+import PrivacyScreen from "app/features/legal/privacyScreen";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -18,6 +20,8 @@ const Stack = createNativeStackNavigator<{
   "sign-in": undefined;
   "sign-up": undefined;
   dashboard: undefined;
+  privacy: undefined;
+  terms: undefined;
 }>();
 
 export function NativeNavigation() {
@@ -72,7 +76,6 @@ export function NativeNavigation() {
               title: "Splash",
             }}
           />
-
           <Stack.Screen
             name="home"
             component={HomeScreen}
@@ -93,6 +96,20 @@ export function NativeNavigation() {
             component={SignUp}
             options={{
               title: "Sign Up",
+            }}
+          />
+          <Stack.Screen
+            name="terms"
+            component={TermsScreen}
+            options={{
+              title: "Terms of Service",
+            }}
+          />
+          <Stack.Screen
+            name="privacy"
+            component={PrivacyScreen}
+            options={{
+              title: "Privacy Policy",
             }}
           />
         </>
