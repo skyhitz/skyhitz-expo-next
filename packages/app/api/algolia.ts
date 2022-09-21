@@ -2,7 +2,7 @@ import { Config } from "app/config";
 import algoliasearch from "algoliasearch/lite";
 import useSWR, { SWRResponse } from "swr";
 import { RequestOptions } from "@algolia/transporter";
-import { SearchOptions, SearchResponse } from "@algolia/client-search";
+import { Hit, SearchOptions, SearchResponse } from "@algolia/client-search";
 import { PublicUser } from "app/api/graphql";
 
 const appDomain = Config.APP_URL.replace("https://", "");
@@ -32,7 +32,7 @@ function withGetFirst<T>(search: SearchType<T>) {
   return getFirst;
 }
 export const useUserWithId = (id?: string | null) => {
-  const result: SWRResponse<PublicUser> = useSWR(
+  const result: SWRResponse<Hit<PublicUser>> = useSWR(
     [
       "",
       {
