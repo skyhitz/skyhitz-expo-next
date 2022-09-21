@@ -24,11 +24,6 @@ const Navbar = () => {
           <TextLink tw="mr-4" href="/dashboard/search">
             <Text className="text-sm">Search</Text>
           </TextLink>
-          {!!user && (
-            <TextLink tw="mr-4" href="/dashboard/profile">
-              <Text className="text-sm">Profile</Text>
-            </TextLink>
-          )}
         </View>
       </View>
 
