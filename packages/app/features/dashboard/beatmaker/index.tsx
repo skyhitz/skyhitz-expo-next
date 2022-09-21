@@ -1,63 +1,62 @@
 import { isSome } from "app/utils";
-import { Text, View } from "app/design-system";
+import { ActivityIndicator, Text, View } from "app/design-system";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
 import { UserAvatar } from "app/ui/userAvatar";
 import { useUserCollectionQuery } from "app/api/graphql";
-import { useEffect, useMemo, useState } from "react";
-import { getUser } from "app/api/algolia";
+import { useUserWithId } from "app/api/algolia";
 import useErrorReport from "app/hooks/useErrorReport";
+import { useEffect } from "react";
 
 export default function BeatmakerScreen() {
   const id = useBeatmakerParam();
   const reportError = useErrorReport();
-  const [displayName, setDisplayName] = useState<string>("");
-  const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(null);
-  const { data, loading } = useUserCollectionQuery({
+  const user = useUserWithId(id);
+  const collection = useUserCollectionQuery({
     skip: !id,
     variables: {
       userId: id!,
     },
   });
-  const entries = data?.entries?.filter(isSome) ?? [];
-
-  const fetchUser = useMemo(
-    () => async () => {
-      if (!id) return;
-
-      try {
-        const user = await getUser(id);
-        setAvatarUrl(user.avatarUrl);
-        setDisplayName(user.displayName ?? "");
-      } catch (e) {
-        reportError(e);
-        return;
-      }
-    },
-    [id, reportError]
-  );
+  const entries = collection.data?.entries?.filter(isSome) ?? [];
 
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    if (collection.error) {
+      reportError(collection.error);
+    }
+  }, [collection.error, reportError]);
+
+  useEffect(() => {
+    if (user.error) {
+      reportError(user.error);
+    }
+  }, [user.error, reportError]);
 
   return (
     <View className="flex-1 w-full bg-blue-dark">
       <Text className="text-lg ml-8 font-bold hidden web:flex">Beatmaker</Text>
       <View className="w-full bg-beatmakerAvatarBackground flex flex-row items-center py-4 px-8 web:mt-4">
-        <UserAvatar
-          size="large"
-          avatarUrl={avatarUrl}
-          displayName={displayName}
-        />
-        <Text className="ml-4 font-bold text-lg">{displayName}</Text>
+        {user.isValidating ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <>
+            <UserAvatar
+              size="large"
+              avatarUrl={user.data?.avatarUrl}
+              displayName={user.data?.displayName}
+            />
+            <Text className="ml-4 font-bold text-lg">
+              {user.data?.displayName}
+            </Text>
+          </>
+        )}
       </View>
       <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg">
         Beatmaker collection
       </Text>
       <ProfileBeatsList
         beats={entries}
-        loading={loading}
+        loading={collection.loading}
         emptyStateText="They don't have any beats in their collection yet"
       />
     </View>
