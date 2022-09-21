@@ -64,6 +64,7 @@ module.exports = {
         joinBtnBackground: "#00aeef",
         loginTextColor: "#000000",
         black: "black",
+        beatmakerAvatarBackground: "#121316",
       },
     },
   },

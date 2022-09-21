@@ -1,10 +1,10 @@
-import { SearchScreen } from "app/features/dashboard/search";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ChartScreen } from "app/features/dashboard/chart";
 import { MobileTabBarWrapper } from "app/ui/navigation/mobileTabBarWrapper";
 import { ProfileNavigation } from "./profile";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import { SearchNavigation } from "app/navigation/native/search";
 
 const Tab = createBottomTabNavigator<{
   search: undefined;
@@ -21,7 +21,7 @@ export function DashboardNavigation() {
       }}
       tabBar={() => <MobileTabBarWrapper />}
     >
-      <Tab.Screen component={SearchScreen} name="search" />
+      <Tab.Screen component={SearchNavigation} name="search" />
       <Tab.Screen component={ChartScreen} name="chart" />
       {user ? (
         <>
