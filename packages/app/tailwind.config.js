@@ -73,9 +73,9 @@ module.exports = {
     plugin(({ addUtilities }) => {
       addUtilities({
         btn: `bg-blue/95 flex flex-row items-center justify-center rounded-full h-12 px-4`,
-        title: `text-3xl mb-6 font-bold text-black`,
-        "section-title": `text-2xl font-bold text-black mt-4`,
-        paragraph: `mt-4 text-sm md:text-md text-black`,
+        title: `text-3xl mb-6 font-bold`,
+        "section-title": `text-2xl font-bold mt-8`,
+        paragraph: `mt-4 text-sm md:text-md`,
       });
     }),
   ],
