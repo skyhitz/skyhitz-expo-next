@@ -10,4 +10,4 @@ function Icon({ size = 24, color = "currentColor" }: IconProps) {
   );
 }
 
-export default Icon
+export default Icon;
