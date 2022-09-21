@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <View className="flex-row justify-center sm:justify-between items-center p-3 w-full flex-wrap">
       <View className="flex sm:flex-row">
-        <TextLink href="/home" tw="flex flex-row justify-start items-center">
+        <TextLink href="/" tw="flex flex-row justify-start items-center">
           <View className="flex flex-row items-center">
             <SkyhitzLogo />
             <Text className="pl-4 text-lg font-raleway tracking-[12px]">
