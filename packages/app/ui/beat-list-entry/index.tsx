@@ -1,4 +1,4 @@
-import { Image, Text, View } from "app/design-system";
+import { Image, Text, TextLink, View } from "app/design-system";
 import { Entry } from "app/api/graphql";
 import { Pressable } from "react-native";
 import { imageUrlSmall } from "app/utils/entry";
@@ -16,14 +16,16 @@ export function BeatListEntry({
   onPress: () => void;
 }) {
   return (
-    <Pressable onPress={onPress}>
+    <TextLink href={`/dashboard/search/beat/${entry.id}`}>
       <View className="w-full flex items-center flex-row py-2">
-        <Image
-          style={{ width: 40, height: 40 }}
-          source={{
-            uri: entry.imageUrl ? imageUrlSmall(entry.imageUrl) : "",
-          }}
-        />
+        <Pressable onPress={onPress}>
+          <Image
+            style={{ width: 40, height: 40 }}
+            source={{
+              uri: entry.imageUrl ? imageUrlSmall(entry.imageUrl) : "",
+            }}
+          />
+        </Pressable>
         {spot && (
           <Text className="text-2xl leading-none text-center ml-2 w-11">
             {spot}
@@ -46,6 +48,6 @@ export function BeatListEntry({
           <ShowMore entry={entry} />
         </View>
       </View>
-    </Pressable>
+    </TextLink>
   );
 }
