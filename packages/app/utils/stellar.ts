@@ -58,7 +58,7 @@ async function buildTransactionWithFee(accountPublicKey: string) {
     getFee(),
   ]);
   return new TransactionBuilder(account, {
-    fee: fee,
+    fee,
     networkPassphrase: getNetworkPassphrase(),
   });
 }

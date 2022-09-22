@@ -167,7 +167,7 @@ export function ClientContextProvider({
 
       const newClient = await Client.init({
         projectId: Config.PROJECT_ID,
-        metadata: metadata,
+        metadata,
       });
       setClient(newClient);
       await subscribeToEvents(newClient);
@@ -178,14 +178,14 @@ export function ClientContextProvider({
 
   const requestClient = useCallback(
     async (method: string, xdr: string) => {
-      if (!client) throw "WalletConnect Client not initialized";
+      if (!client) throw new Error("WalletConnect Client not initialized");
       const currentSession = session ?? (await connect());
-      if (!currentSession) throw "There is no active session";
+      if (!currentSession) throw new Error("There is no active session");
       const result = await client.request({
         topic: currentSession.topic,
         chainId: Config.CHAIN_ID,
         request: {
-          method: method,
+          method,
           params: {
             xdr,
           },

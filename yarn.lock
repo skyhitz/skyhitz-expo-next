@@ -1255,12 +1255,12 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@dripsy/core@^3.8.1":
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/@dripsy/core/-/core-3.8.1.tgz#92991558fd4b0442acb92445ed8510915ed14322"
-  integrity sha512-Wiw4MuQndoGDoXeEObqOkfsU+J06HPaJ8qCb5At3juGe9A3OfR2sPB9XFazGaY4/5szfcF2O1EODsl9bYd8GhA==
+"@dripsy/core@3.6.0", "@dripsy/core@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@dripsy/core/-/core-3.6.0.tgz#4dcb9567a836c9aad0d04729c02f63dcc9bf9926"
+  integrity sha512-g7gH/IyOf2TtN7BVzzv8TBEqu0BBJNtMWiQY3RVUi6kgNFjCVfFb01RVXYrTRGUxxwzHN51L2HRlfPcTMOipIA==
   dependencies:
-    "@expo/html-elements" "^0.2.0"
+    "@expo/html-elements" "^0.0.1"
     "@react-native-community/hooks" "^2.6.0"
     "@theme-ui/css" "^0.4.0-rc.1"
     stable-hash "^0.0.2"
@@ -1570,10 +1570,10 @@
     tmp "^0.0.33"
     tslib "^1.10.0"
 
-"@expo/html-elements@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@expo/html-elements/-/html-elements-0.2.0.tgz#dcf1df1c5350289ffb3934809582b2a85651e507"
-  integrity sha512-bdkOwWXX7E4ha8rKZDSYRtW/XhDlO7mj+8YzKOywxOjGsJqZ5N0HZireHH8sQxq7krdFnpXADL5c/0HX3gIesA==
+"@expo/html-elements@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@expo/html-elements/-/html-elements-0.0.1.tgz#ed3aaa5c76de2dd26fd51b532d6d63e3d7f2d8e5"
+  integrity sha512-dSBl3WBjdmJ907Na42Ce9uknwUBKIDnpDFBPz6ikMQYaQFb97pXZQSCo2bnOhbER7ieeLy8RPm+VDtTIVlfZ1Q==
 
 "@expo/image-utils@0.3.18":
   version "0.3.18"
@@ -5961,12 +5961,12 @@ dotenv@^16.0.0, dotenv@^16.0.2:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.2.tgz#0b0f8652c016a3858ef795024508cddc4bffc5bf"
   integrity sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==
 
-dripsy@^3.6.0:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/dripsy/-/dripsy-3.8.1.tgz#b7b470ac32be2a366c093365958deaca078b1199"
-  integrity sha512-etxz67YoWxA+EQQpMkPZ5lztpdGn76BOBTrPVRhGTbmms6H0Z30DJ1XL3ouIVIPg4/JL/8bkMO3Vua0ElmSAqg==
+dripsy@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/dripsy/-/dripsy-3.6.0.tgz#e8871fb619df7de77133e074bfbdf3637a1bee0e"
+  integrity sha512-ZdJBlW1USKu44UlmyytO3BH82sf7eTHf1RAm4EUfuOk8nUaZvA+hWzEXCmTljg3r5Bq8xL2VY6zC6bFzy56HpA==
   dependencies:
-    "@dripsy/core" "^3.8.1"
+    "@dripsy/core" "^3.6.0"
 
 dset@^3.1.2:
   version "3.1.2"

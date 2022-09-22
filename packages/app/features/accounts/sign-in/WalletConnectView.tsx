@@ -44,7 +44,7 @@ export function WalletConnectView({ publicKey }: Props) {
     <View className="flex items-center justify-center">
       {loading ? (
         <>
-          <ActivityIndicator size={"large"} />
+          <ActivityIndicator size="large" />
           <Text className="text-lg text-center mt-2">Authentication</Text>
         </>
       ) : (
