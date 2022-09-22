@@ -11,6 +11,7 @@ import { ErrorType } from "app/types";
 import { any } from "ramda";
 import { isSome } from "app/utils";
 import { useToast } from "react-native-toast-notifications";
+import { ComponentAuthGuard } from "app/utils/authGuard";
 
 type Props = {
   size: number;
@@ -18,7 +19,7 @@ type Props = {
   entry: Entry;
 };
 
-export function LikeButton({ size, className, entry }: Props) {
+function LikeButton({ size, className, entry }: Props) {
   const [likeEntry] = useLikeEntryMutation();
   const toast = useToast();
   const { data: userLikesData } = useUserLikesQuery();
@@ -46,5 +47,13 @@ export function LikeButton({ size, className, entry }: Props) {
     <Pressable className={className} onPress={update}>
       <Like size={size} color={likeColor} fill={active} />
     </Pressable>
+  );
+}
+
+export default function LikeBtn(props: Props) {
+  return (
+    <ComponentAuthGuard>
+      <LikeButton {...props} />
+    </ComponentAuthGuard>
   );
 }
