@@ -24,7 +24,7 @@ export function Credits({ className }: Props) {
       >
         <Text>Withdraw</Text>
       </Pressable>
-      <Modal visible={modalVisible} transparent={true}>
+      <Modal visible={modalVisible} transparent>
         <KeyboardAvoidingView behavior="padding" className="flex-1">
           <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70 px-2">
             <View className="flex items-center w-full max-w-lg bg-blue-field p-4">
@@ -41,21 +41,21 @@ export function Credits({ className }: Props) {
                   {({ handleSubmit }) => (
                     <View className="flex w-full">
                       <FormInputWithIcon
-                        placeholder={"Stellar Address (Without Memo)"}
+                        placeholder="Stellar Address (Without Memo)"
                         icon={Wallet}
                         containerClassNames="py-1 mt-12"
                       />
                       <Line />
                       <FormInputWithIcon
-                        placeholder={"XML to withdraw"}
+                        placeholder="XML to withdraw"
                         icon={Dollar}
                         containerClassNames="py-1 mt-8"
                       />
                       <Line />
                       <Text className="text-xs leading-none mt-4">
-                        Withdraw to Stellar Public Network address only. Don
-                        {"'"}t send if a memo is required, funds will be lost if
-                        you send to a wallet that requires a Memo
+                        Withdraw to Stellar Public Network address only. Don't
+                        send if a memo is required, funds will be lost if you
+                        send to a wallet that requires a Memo
                       </Text>
                       <Pressable
                         className="btn mx-4 h-10 mt-16"

@@ -24,7 +24,7 @@ export default function useUploadFileToNFTStorage(): ReturnType {
       });
 
       request.onreadystatechange = () => {
-        if (request.readyState == 4) {
+        if (request.readyState === 4) {
           setProgress(0);
           const { value, ok, error } = JSON.parse(request.responseText);
           if (!ok) {
