@@ -44,12 +44,14 @@ module.exports = {
           light: "#dbdbdb",
         },
         lightGreen: "#5CE67E",
-        tabIconDefault: "rgba(255,255,255, 0.65)",
-        tabIconSelected: "#eee",
-        tabBar: "#fefefe",
         valid: {
           DEFAULT: "rgba(15,172,141,.8)",
           dark: "#192225",
+        },
+        tab: {
+          DEFAULT: "rgba(255, 255, 255, 0.6)",
+          selected: "rgb(238,238,238)",
+          disabled: "rgba(255, 255, 255, 0.2)",
         },
         warningBackground: "#EAEB5E",
         warningText: "#666804",
