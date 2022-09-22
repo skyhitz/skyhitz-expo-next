@@ -12,6 +12,7 @@ import { Config } from "app/config";
 import { DashboardNavigation } from "./tab";
 import TermsScreen from "app/features/legal/termsScreen";
 import PrivacyScreen from "app/features/legal/privacyScreen";
+import { tw } from "app/design-system/tailwind";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -102,7 +103,16 @@ export function NativeNavigation() {
             name="terms"
             component={TermsScreen}
             options={{
-              title: "Terms of Service",
+              title: "Terms of Use",
+              headerBackTitleVisible: false,
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: tw.color("blue-dark"),
+              },
+              headerTintColor: tw.color("white"),
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
             }}
           />
           <Stack.Screen
@@ -110,6 +120,15 @@ export function NativeNavigation() {
             component={PrivacyScreen}
             options={{
               title: "Privacy Policy",
+              headerBackTitleVisible: false,
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: tw.color("blue-dark"),
+              },
+              headerTintColor: tw.color("white"),
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
             }}
           />
         </>

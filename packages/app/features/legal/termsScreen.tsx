@@ -2,11 +2,15 @@ import Navbar from "app/ui/navbar";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import { ScrollView } from "app/design-system/ScrollView";
 import { Text } from "app/design-system";
+import { tw } from "app/design-system/tailwind";
 
 export default function TermsScreen() {
   return (
-    <SafeAreaView className="flex flex-1 bg-blue-dark max-h-[100vh]">
-      <Navbar />
+    <SafeAreaView
+      edges={["bottom"]}
+      className="flex flex-1 bg-blue-dark max-h-[100vh]"
+    >
+      {tw.prefixMatch("web") && <Navbar />}
       <ScrollView className="p-8 flex-1">
         <Text className="title">TERMS OF USE</Text>
         <Text className="section-title">OVERVIEW</Text>

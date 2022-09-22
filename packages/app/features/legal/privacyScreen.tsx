@@ -2,13 +2,17 @@ import { ScrollView } from "app/design-system/ScrollView";
 import { Text } from "app/design-system";
 import Navbar from "app/ui/navbar";
 import { SafeAreaView } from "app/design-system/safe-area-view";
+import { tw } from "app/design-system/tailwind";
 
 export default function PrivacyScreen() {
   return (
-    <SafeAreaView className="flex flex-1 bg-blue-dark max-h-[100vh]">
-      <Navbar />
+    <SafeAreaView
+      edges={["bottom"]}
+      className="flex flex-1 bg-blue-dark max-h-[100vh]"
+    >
+      {tw.prefixMatch("web") && <Navbar />}
       <ScrollView className="p-8 flex-1">
-        <Text className="title">PRIVACY STATEMENT</Text>
+        <Text className="title">PRIVACY POLICY</Text>
         <Text className="section-title">
           SECTION 1 - WHAT DO WE DO WITH YOUR INFORMATION?
         </Text>
