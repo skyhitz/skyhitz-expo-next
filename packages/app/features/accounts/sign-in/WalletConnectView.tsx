@@ -38,7 +38,6 @@ export function WalletConnectView({ publicKey }: Props) {
         }
       }
     };
-    console.log("start");
     generateAndSignXdr();
   }, [publicKey, signXdr, signIn]);
 

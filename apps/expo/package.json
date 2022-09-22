@@ -3,6 +3,7 @@
     "@expo-google-fonts/inter": "^0.2.2",
     "@expo-google-fonts/raleway": "^0.2.2",
     "@expo/vector-icons": "^13.0.0",
+    "@types/text-encoding": "^0.0.36",
     "app": "*",
     "babel-plugin-inline-dotenv": "^1.7.0",
     "buffer": "^6.0.3",

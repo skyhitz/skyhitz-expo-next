@@ -9,4 +9,5 @@ export const ProductionConfig: ConfigInterface = {
   STRIPE_PUBLISHABLE_KEY: "pk_live_AXVKTAaPwHycRifItu3Mn4Cm",
   SCHEMA: "skyhitz:///",
   CHAIN_ID: "stellar:pubnet",
+  PROJECT_ID: "422a527ddc3ed4c5fff60954fcc8ed83",
 };

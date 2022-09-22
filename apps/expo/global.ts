@@ -1,14 +1,15 @@
 import { Platform, LogBox } from "react-native";
-
+import { TextEncoder, TextDecoder } from 'text-encoding';
+import { Buffer } from 'buffer';
+import process from 'process';
 export interface Global {
-
-    self: any
-    Buffer: any
+    self: Global;
+    Buffer: typeof Buffer;
     process: {
         version: string
-    }
-    TextEncoder: () => any
-    TextDecoder: () => any
+    };
+    TextEncoder: () => typeof TextEncoder;
+    TextDecoder: () => typeof TextDecoder;
 }
   
 declare var global: Global
@@ -24,13 +25,13 @@ if (Platform.OS !== "web") {
     ]);
 }
 
-const { TextEncoder, TextDecoder } = require('text-encoding');
+
 
 global.TextEncoder = () => TextEncoder;
 global.TextDecoder = () => TextDecoder;
 
 
-global.Buffer = require('buffer').Buffer
-global.process = require('process')
+global.Buffer = Buffer;
+global.process = process;
 global.process.version = 'v0.9.';
   

@@ -9,4 +9,5 @@ export const DevelopmentConfig: ConfigInterface = {
   STRIPE_PUBLISHABLE_KEY: "pk_test_jiDVP0p6iRtILtE4FzFfMACc",
   SCHEMA: "exp://192.168.103.24:19000/--/",
   CHAIN_ID: "stellar:testnet",
+  PROJECT_ID: "422a527ddc3ed4c5fff60954fcc8ed83",
 };

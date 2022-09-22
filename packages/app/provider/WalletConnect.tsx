@@ -13,8 +13,8 @@ import {
 } from "react";
 import { getSdkError } from "@walletconnect/utils";
 import { Alert, Platform } from "react-native";
-import { Config } from "app/config";
 import * as Clipboard from "expo-clipboard";
+import { Config } from "app/config";
 
 interface IContext {
   session: SessionTypes.Struct | undefined;
@@ -41,12 +41,12 @@ export function ClientContextProvider({
     setAccounts([]);
   };
 
-  const onSessionConnected = useCallback((_session: SessionTypes.Struct) => {
-    const allNamespaceAccounts = Object.values(_session.namespaces)
+  const onSessionConnected = useCallback((session: SessionTypes.Struct) => {
+    const allNamespaceAccounts = Object.values(session.namespaces)
       .map((namespace) => namespace.accounts)
       .flat();
 
-    setSession(_session);
+    setSession(session);
     setAccounts(allNamespaceAccounts);
   }, []);
 
@@ -59,7 +59,7 @@ export function ClientContextProvider({
       const requiredNamespaces = {
         stellar: {
           methods: ["stellar_signAndSubmitXDR", "stellar_signXDR"],
-          chains: ["stellar:pubnet", "stellar:testnet"],
+          chains: [Config.CHAIN_ID],
           events: [],
         },
       };
@@ -100,7 +100,6 @@ export function ClientContextProvider({
       }
 
       const session = await approval();
-      console.log("Established session:", session);
       await onSessionConnected(session);
       if (Platform.OS === "web") {
         QRCodeModal.close();
@@ -111,6 +110,7 @@ export function ClientContextProvider({
         QRCodeModal.close();
       }
       console.error(e);
+      return undefined;
     }
   }, [client, onSessionConnected]);
 
@@ -128,30 +128,28 @@ export function ClientContextProvider({
     reset();
   }, [client, session]);
 
-  const _subscribeToEvents = useCallback(
-    (_client: Client) => {
-      if (typeof _client === "undefined") {
+  const subscribeToEvents = useCallback(
+    (wcClient: Client) => {
+      if (typeof wcClient === "undefined") {
         throw new Error("WalletConnect is not initialized");
       }
 
-      _client.on("session_ping", (args) => {
+      wcClient.on("session_ping", (args) => {
         console.log("EVENT", "session_ping", args);
       });
 
-      _client.on("session_event", (args) => {
+      wcClient.on("session_event", (args) => {
         console.log("EVENT", "session_event", args);
       });
 
-      _client.on("session_update", ({ topic, params }) => {
-        console.log("EVENT", "session_update", { topic, params });
+      wcClient.on("session_update", ({ topic, params }) => {
         const { namespaces } = params;
-        const _session = _client.session.get(topic);
-        const updatedSession = { ..._session, namespaces };
+        const currentSession = wcClient.session.get(topic);
+        const updatedSession = { ...currentSession, namespaces };
         onSessionConnected(updatedSession);
       });
 
-      _client.on("session_delete", () => {
-        console.log("EVENT", "session_delete");
+      wcClient.on("session_delete", () => {
         reset();
       });
     },
@@ -166,21 +164,17 @@ export function ClientContextProvider({
         url: "https://skyhitz.io",
         icons: ["https://skyhitz.io/img/icon-512.png"],
       };
-      const PROJECT_ID = "422a527ddc3ed4c5fff60954fcc8ed83";
 
-      const _client = await Client.init({
-        // logger: "debug",
-        projectId: PROJECT_ID,
+      const newClient = await Client.init({
+        projectId: Config.PROJECT_ID,
         metadata: metadata,
       });
-
-      console.log("CREATED CLIENT: ", _client);
-      setClient(_client);
-      await _subscribeToEvents(_client);
+      setClient(newClient);
+      await subscribeToEvents(newClient);
     } catch (err) {
-      throw err;
+      console.log("error", err);
     }
-  }, [_subscribeToEvents]);
+  }, [subscribeToEvents]);
 
   const requestClient = useCallback(
     async (method: string, xdr: string) => {

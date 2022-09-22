@@ -7,4 +7,5 @@ export interface ConfigInterface {
   STRIPE_PUBLISHABLE_KEY: string;
   SCHEMA: string;
   CHAIN_ID: string;
+  PROJECT_ID: string;
 }
