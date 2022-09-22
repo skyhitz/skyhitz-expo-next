@@ -10,9 +10,8 @@ import {
   playingHistoryAtom,
   shuffleAtom,
 } from "app/state/playback";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { isSome } from "app/utils";
-import { useContext } from "react";
 import { PlaybackContext } from "../provider/playback";
 import { videoSrc } from "app/utils/entry";
 import { isPlayingAtom } from "../state/playback";
