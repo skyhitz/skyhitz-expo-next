@@ -34,7 +34,7 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
       <WalletconnectBtn />
       <Separator />
       <Formik
-        validateOnMount={true}
+        validateOnMount
         initialValues={initialValues}
         onSubmit={handleSignIn}
         validationSchema={signInFormSchema}
@@ -61,7 +61,7 @@ export function SignInForm({ onEmailSend }: SignInFormProps) {
               onSubmitEditing={() => handleSubmit()}
               editable={!loading}
               autoCapitalize="none"
-              keyboardType={"email-address"}
+              keyboardType="email-address"
             />
             <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
               {(touched.usernameOrEmail && errors.usernameOrEmail) ||

@@ -49,7 +49,6 @@ export default function EditProfileScreen() {
     } catch (e: any) {
       console.error(e);
       toast.show(e?.message ?? "Unknown error", { type: "danger" });
-      return;
     }
   };
 
@@ -71,7 +70,7 @@ export default function EditProfileScreen() {
   return (
     <Formik
       initialValues={initialValues}
-      validateOnMount={true}
+      validateOnMount
       validationSchema={editProfileFormSchema}
       onSubmit={handleUpdateUser}
     >
@@ -97,7 +96,7 @@ export default function EditProfileScreen() {
             />
             <FormInputWithIcon
               value={values.displayName ?? ""}
-              placeholder={"Display Name"}
+              placeholder="Display Name"
               onChangeText={handleChange("displayName")}
               icon={AccountBox}
               editable={!loading}
@@ -105,7 +104,7 @@ export default function EditProfileScreen() {
             <Line />
             <FormInputWithIcon
               value={values.description ?? ""}
-              placeholder={"Description"}
+              placeholder="Description"
               onChangeText={handleChange("description")}
               icon={InfoCircle}
               editable={!loading}
@@ -113,7 +112,7 @@ export default function EditProfileScreen() {
             <Line />
             <FormInputWithIcon
               value={values.username ?? ""}
-              placeholder={"Username"}
+              placeholder="Username"
               onChangeText={handleChange("username")}
               icon={PersonOutline}
             />
@@ -122,7 +121,7 @@ export default function EditProfileScreen() {
             </Text>
             <FormInputWithIcon
               value={values.email ?? ""}
-              placeholder={"Email address"}
+              placeholder="Email address"
               onChangeText={handleChange("email")}
               icon={MailOutline}
               editable={!loading}

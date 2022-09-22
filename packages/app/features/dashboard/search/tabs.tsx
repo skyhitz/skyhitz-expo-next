@@ -4,7 +4,7 @@ export type Tabs = "Beats" | "Beatmakers";
 
 type TabBarProps = {
   selected: Tabs;
-  onTabClick?: (_: Tabs) => void;
+  onTabClick?: (tab: Tabs) => void;
 };
 
 export function TabBar({ onTabClick, selected }: TabBarProps) {

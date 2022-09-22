@@ -9,5 +9,5 @@ export function WebNavigation({ children }: { children: React.ReactNode }) {
   if (route && route.includes("dashboard")) {
     return <DashboardNavigation>{children}</DashboardNavigation>;
   }
-  return <View className={"flex flex-1"}>{children}</View>;
+  return <View className="flex flex-1">{children}</View>;
 }
