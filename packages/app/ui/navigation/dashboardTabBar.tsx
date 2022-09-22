@@ -36,16 +36,14 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
           source={require("app/assets/images/icon.png")}
         />
       </Link>
-      <Link
-        viewProps={{ style: LinkStyle }}
-        href={user ? "/dashboard/profile" : "/"}
-      >
-        <Icon
-          name="account-outline"
-          size={32}
-          color={tw.color(user ? "tab" : "tab-disabled")}
-        />
-      </Link>
+      {user && (
+        <Link
+          viewProps={{ style: LinkStyle }}
+          href={user ? "/dashboard/profile" : "/"}
+        >
+          <Icon name="account-outline" size={32} color={tw.color("tab")} />
+        </Link>
+      )}
     </View>
   );
 }
