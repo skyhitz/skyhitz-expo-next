@@ -3,6 +3,7 @@ import WalletConnectIcon from "app/ui/icons/walletconnect-icon";
 import { Button } from "app/design-system";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { Config } from "app/config";
+import useErrorReport from "app/hooks/useErrorReport";
 
 type Props = {
   onConnected: (_publicKey: string) => void;
@@ -13,6 +14,7 @@ type Props = {
 export const WalletConnectBtn = ({ onConnected, disabled, loading }: Props) => {
   const [waitingForApproval, setWaitingForApproval] = useState<boolean>(false);
   const { connect, accounts } = useWalletConnectClient();
+  const reportError = useErrorReport();
 
   useEffect(() => {
     if (accounts.length && waitingForApproval) {
@@ -27,7 +29,7 @@ export const WalletConnectBtn = ({ onConnected, disabled, loading }: Props) => {
       const session = await connect();
       setWaitingForApproval(false);
       if (!session) {
-        // add toast
+        reportError("Connnection was cancelled");
       }
     } else {
       const publicKey = accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
