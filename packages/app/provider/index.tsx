@@ -7,6 +7,7 @@ import { useDeviceContext } from "twrnc";
 import { tw } from "app/design-system/tailwind";
 import { SafeArea } from "app/provider/safe-area";
 import { PlaybackProvider } from "./playback";
+import { ClientContextProvider } from "./WalletConnect";
 import SkyhitzToastProvider from "app/provider/toast";
 
 export function Provider({ children }: { children: React.ReactNode }) {
@@ -18,9 +19,11 @@ export function Provider({ children }: { children: React.ReactNode }) {
           <FontProvider>
             <Dripsy>
               <SkyhitzToastProvider>
-                <PlaybackProvider>
-                  <NavigationProvider>{children}</NavigationProvider>
-                </PlaybackProvider>
+                <ClientContextProvider>
+                  <PlaybackProvider>
+                    <NavigationProvider>{children}</NavigationProvider>
+                  </PlaybackProvider>
+                </ClientContextProvider>
               </SkyhitzToastProvider>
             </Dripsy>
           </FontProvider>

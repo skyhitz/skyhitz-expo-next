@@ -27,7 +27,7 @@ const textStyle = {
 
 const containerStyle = {
   default: "px-5 py-3 w-40",
-  large: "px-10 py-5 w-72",
+  large: "px-10 py-3 w-72",
   primary: "bg-blue",
   secondary: "bg-grey",
 };

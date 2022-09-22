@@ -8,12 +8,14 @@ import { MintForm } from "app/types";
 import { useCallback, useState } from "react";
 import { useIndexEntryMutation } from "../api/graphql";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
+import { useWalletConnectClient } from "app/provider/WalletConnect";
 
 type MintStatus =
   | "Uninitialized"
   | "Uploading files"
   | "Uploading metadata"
   | "Submitting"
+  | "Sign transaction in your wallet"
   | "Indexing"
   | "Success"
   | "Error"
@@ -37,6 +39,7 @@ export function useMintNFT(): MintResult {
   const [issuer, setIssuer] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
   const [indexEntry] = useIndexEntryMutation();
+  const { signAndSubmitXdr } = useWalletConnectClient();
 
   const indexNFT = useCallback(
     async (nftIssuer: string = issuer) => {
@@ -116,8 +119,33 @@ export function useMintNFT(): MintResult {
       });
       if (entry?.createEntry?.success && entry.createEntry.submitted) {
         indexNFT(data.getIssuer);
+      } else if (entry?.createEntry?.success && entry?.createEntry?.xdr) {
+        // unsubmitted case, we need to sign and submit transaction ourselves
+        setStatus("Sign transaction in your wallet");
+        const xdr = entry.createEntry.xdr;
+        try {
+          const response = await signAndSubmitXdr(xdr);
+          const { status } = response as { status: string };
+          if (status === "success") {
+            indexNFT(data.getIssuer);
+          } else {
+            setStatus("Error");
+            setError(
+              "Something went wrong during signing and submitting transaction in your wallet."
+            );
+          }
+        } catch (ex) {
+          setStatus("Error");
+
+          if (typeof ex === "string") {
+            setError(ex);
+          } else {
+            setError(
+              "Something went wrong during signing and submitting transaction in your wallet."
+            );
+          }
+        }
       } else {
-        // TODO handle unsubmitted case with wallet connect
         setStatus("Error");
         setError(entry?.createEntry?.message ?? "Couldn't submit transaction.");
       }
@@ -131,6 +159,7 @@ export function useMintNFT(): MintResult {
       imageCid,
       videoCid,
       indexNFT,
+      signAndSubmitXdr,
     ]
   );
 

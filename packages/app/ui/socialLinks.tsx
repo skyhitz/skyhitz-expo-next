@@ -1,59 +1,44 @@
-import { View } from "app/design-system";
-import { A } from "dripsy";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { Pressable, View } from "app/design-system";
+import Twitter from "app/ui/icons/twitter";
+import Discord from "app/ui/icons/discord";
+import Instagram from "app/ui/icons/instagram";
+import Github from "app/ui/icons/github";
+import { tw } from "app/design-system/tailwind";
+import { Linking } from "react-native";
 
-const ICON_SIZE = 18;
+const iconSize = 18;
+const iconColor = tw.color("white");
 
 const SocialLinks = () => {
   return (
     <View className="flex-row">
-      <A
-        style={{ marginRight: 8 }}
-        href="https://twitter.com/skyhitz"
+      <Pressable
+        className="mr-2"
+        onPress={() => Linking.openURL("https://twitter.com/skyhitz")}
         aria-label="Read more about Skyhitz on twitter"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
-        }}
       >
-        <Icon name="twitter" size={ICON_SIZE} />
-      </A>
-      <A
-        style={{ marginRight: 8 }}
-        href="https://discord.gg/2C3HzsPEuZ"
+        <Twitter size={iconSize} color={iconColor} />
+      </Pressable>
+      <Pressable
+        className="mr-2"
+        onPress={() => Linking.openURL("https://discord.com/invite/2C3HzsPEuZ")}
         aria-label="Join our server on Discord"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
-        }}
       >
-        <Icon name="discord" size={ICON_SIZE} />
-      </A>
-      <A
-        style={{ marginRight: 8 }}
-        href="https://instagram.com/skyhitz"
+        <Discord size={iconSize} color={iconColor} />
+      </Pressable>
+      <Pressable
+        className="mr-2"
+        onPress={() => Linking.openURL("https://instagram.com/skyhitz")}
         aria-label="Read more about Skyhitz on instagram"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
-        }}
       >
-        <Icon name="instagram" size={ICON_SIZE} />
-      </A>
-      <A
-        href="https://github.com/skyhitz"
+        <Instagram size={iconSize} color={iconColor} />
+      </Pressable>
+      <Pressable
+        onPress={() => Linking.openURL("https://github.com/skyhitz")}
         aria-label="Audit the code of Skyhitz on github"
-        // @ts-expect-error react-native-web only types
-        hrefAttrs={{
-          target: "_blank",
-          rel: "noreferrer",
-        }}
       >
-        <Icon name="github" size={ICON_SIZE} />
-      </A>
+        <Github size={iconSize} color={iconColor} />
+      </Pressable>
     </View>
   );
 };
