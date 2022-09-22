@@ -49,9 +49,7 @@ export default function PrivacyScreen() {
           If after you opt-in, you change your mind, you may withdraw your
           consent for us to contact you, for the continued collection, use or
           disclosure of your information, at anytime, by contacting us at
-          alejandro@skyhitzmusic.com or mailing us at: Skyhitz 2nd Floor, Mill
-          Mall Tower Wickhams Cay 1 Road Town, Tortola, 1110, Virgin Islands,
-          British
+          support@skyhitz.io
         </Text>
         <Text className="section-title">SECTION 3 - DISCLOSURE</Text>
         <Text className="paragraph">
@@ -185,7 +183,7 @@ export default function PrivacyScreen() {
           If you would like to: access, correct, amend or delete any personal
           information we have about you, register a complaint, or simply want
           more information contact our Privacy Compliance Officer at
-          alejandro@skyhitzmusic.com.
+          support@skyhitz.io.
         </Text>
       </ScrollView>
     </SafeAreaView>

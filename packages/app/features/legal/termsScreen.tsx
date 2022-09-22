@@ -436,7 +436,7 @@ export default function TermsScreen() {
         <Text className="section-title">SECTION 20 - CONTACT INFORMATION</Text>
         <Text className="paragraph">
           Questions about the Terms of Service should be sent to us at
-          alejandro@skyhitzmusic.com.
+          support@skyhitz.io.
         </Text>
       </ScrollView>
     </SafeAreaView>
