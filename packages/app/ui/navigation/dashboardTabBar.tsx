@@ -37,10 +37,7 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
         />
       </Link>
       {user && (
-        <Link
-          viewProps={{ style: LinkStyle }}
-          href={user ? "/dashboard/profile" : "/"}
-        >
+        <Link viewProps={{ style: LinkStyle }} href="/dashboard/profile">
           <Icon name="account-outline" size={32} color={tw.color("tab")} />
         </Link>
       )}
