@@ -1,9 +1,10 @@
 import { View } from "app/design-system";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Image, StyleProp, ViewStyle } from "react-native";
 import { Link } from "solito/link";
 import { tw } from "app/design-system/tailwind";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
+import Search from "app/ui/icons/search";
+import User from "app/ui/icons/user";
 
 const LinkStyle: StyleProp<ViewStyle> = {
   flex: 1,
@@ -25,7 +26,7 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
       className={`flex bg-blue-dark ${rootViewStyle} pb-[${insets.bottom}px]`}
     >
       <Link viewProps={{ style: LinkStyle }} href={"/dashboard/search"}>
-        <Icon name="magnify" size={32} color="white" />
+        <Search size={28} color={tw.color("white")} />
       </Link>
       <Link viewProps={{ style: LinkStyle }} href={"/dashboard/chart"}>
         <Image
@@ -34,7 +35,7 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
         />
       </Link>
       <Link viewProps={{ style: LinkStyle }} href={"/dashboard/profile"}>
-        <Icon name="account-outline" size={32} color="white" />
+        <User size={28} color={tw.color("white")} />
       </Link>
     </View>
   );
