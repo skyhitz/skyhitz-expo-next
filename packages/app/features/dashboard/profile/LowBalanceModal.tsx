@@ -19,7 +19,7 @@ export function LowBalanceModal({
   publicKey,
 }: Props) {
   return (
-    <Modal visible={visible} transparent={true}>
+    <Modal visible={visible} transparent>
       <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70 px-2">
         <View className="flex items-center w-full max-w-lg bg-blue-field p-4 rounded-xl">
           <View className="flex-row items-center w-full">

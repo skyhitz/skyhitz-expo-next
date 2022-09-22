@@ -67,7 +67,7 @@ async function buildTransactionWithFee(accountPublicKey: string) {
     await getFee(),
   ]);
   return new TransactionBuilder(account, {
-    fee: fee,
+    fee,
     networkPassphrase: getHorizonConfig().networkPassphrase,
   });
 }

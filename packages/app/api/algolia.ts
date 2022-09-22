@@ -23,7 +23,7 @@ function withGetFirst<T>(search: SearchType<T>) {
     const result = await search(query, requestOptions);
 
     if (!result.hits[0]) {
-      throw { message: "No hits found" };
+      throw new Error("No hits found");
     }
 
     return result.hits[0];

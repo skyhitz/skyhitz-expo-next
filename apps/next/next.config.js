@@ -2,27 +2,27 @@
 const nextConfig = {
   reactStrictMode: false,
   webpack5: true,
-  exportPathMap: async function () {
+  async exportPathMap() {
     return {
-      '/home': { page: '/' },
-    }
+      "/home": { page: "/" },
+    };
   },
-}
+};
 
-const { withExpo } = require('@expo/next-adapter')
-const withFonts = require('next-fonts')
-const withImages = require('next-images')
-const withPlugins = require('next-compose-plugins')
-const withTM = require('next-transpile-modules')([
-  'solito',
-  'dripsy',
-  '@dripsy/core',
-  'app',
-  'twrnc',
-])
-require('dotenv').config({
-  path:'../../.env'
-})
+const { withExpo } = require("@expo/next-adapter");
+const withFonts = require("next-fonts");
+const withImages = require("next-images");
+const withPlugins = require("next-compose-plugins");
+const withTM = require("next-transpile-modules")([
+  "solito",
+  "dripsy",
+  "@dripsy/core",
+  "app",
+  "twrnc",
+]);
+require("dotenv").config({
+  path: "../../.env",
+});
 
 module.exports = withPlugins(
   [
@@ -39,4 +39,4 @@ module.exports = withPlugins(
     [withExpo, { projectRoot: __dirname }],
   ],
   nextConfig
-)
+);

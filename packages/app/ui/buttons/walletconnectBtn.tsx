@@ -5,7 +5,7 @@ import WalletConnectIcon from "app/ui/icons/walletconnect-icon";
 // import { WalletConnectStore } from 'app/state/wallet-connect'
 import { Pressable, Text } from "app/design-system";
 
-const WalletConnectBtn = ({}: { signInWithXDR?: (_: any) => {} }) => {
+const WalletConnectBtn = (_: { signInWithXDR?: (_: any) => object }) => {
   // const state = "idle"
   // const { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
 

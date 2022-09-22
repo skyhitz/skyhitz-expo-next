@@ -4,7 +4,7 @@ import { SecureStorage } from "app/utils/secure-storage";
 import { useRouter } from "solito/router";
 import { User } from "app/api/graphql";
 
-export function useLogIn(): (_: User) => void {
+export function useLogIn(): (user: User) => void {
   const setUserData = useSetRecoilState(userAtom);
   const { push } = useRouter();
 
