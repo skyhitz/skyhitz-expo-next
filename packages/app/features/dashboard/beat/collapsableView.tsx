@@ -13,7 +13,7 @@ type Props = {
   className?: string;
 };
 const iconStyle: IconProps = {
-  size: 22,
+  size: 24,
   color: tw.color("white"),
 };
 export const CollapsableView = ({
@@ -27,13 +27,13 @@ export const CollapsableView = ({
 
   return (
     <View
-      className={`border-[0.5px] border-grey-light rounded-lg ${
+      className={`border-[0.5px] mt-4 border-grey-light rounded-lg ${
         className ?? ""
       }`}
     >
-      <View className="flex flex-row items-center p-1.5 ">
+      <View className="flex flex-row items-center p-5 ">
         {icon && icon(iconStyle)}
-        <Text className="flex-1 mx-2">{headerText}</Text>
+        <Text className="flex-1 mx-2 font-bold">{headerText}</Text>
         <Pressable onPress={() => setCollapsed(!collapsed)}>
           {collapsed ? (
             <ChevronDown {...iconStyle} />
@@ -43,8 +43,8 @@ export const CollapsableView = ({
         </Pressable>
       </View>
       <View
-        className={`py-2 px-0.5 border-t-[0.5px] border-grey-light ${
-          collapsed ? "hidden" : ""
+        className={`border-t-[0.5px] border-grey-light ${
+          collapsed || !children ? "hidden" : ""
         }`}
       >
         {children}
