@@ -10,6 +10,7 @@ import Animated from "react-native-reanimated";
 import { VideoPlayer } from "app/ui/VideoPlayer";
 import { useRecoilValue } from "recoil";
 import { currentEntryAtom, playbackStateAtom } from "app/state/playback";
+import { ComponentAuthGuard } from "app/utils/authGuard";
 
 const { height } = Dimensions.get("window");
 
@@ -62,14 +63,15 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
                 {entry?.artist}
               </Text>
             </View>
-
-            <Button
-              text="Buy Now"
-              onPress={() => {
-                //TODO
-              }}
-              className="mb-5"
-            />
+            <ComponentAuthGuard>
+              <Button
+                text="Buy Now"
+                onPress={() => {
+                  //TODO
+                }}
+                className="mb-5"
+              />
+            </ComponentAuthGuard>
             <PlayerButtonsRow size="large" />
             {entry && <LikesList entry={entry} />}
           </>
