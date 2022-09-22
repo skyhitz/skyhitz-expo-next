@@ -2,7 +2,6 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.2",
     "@expo-google-fonts/raleway": "^0.2.2",
-    "@expo/vector-icons": "^13.0.0",
     "app": "*",
     "babel-plugin-inline-dotenv": "^1.7.0",
     "expo": "^45.0.0",
