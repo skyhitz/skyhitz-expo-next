@@ -27,10 +27,10 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
     <View
       className={`flex bg-blue-dark ${rootViewStyle} pb-[${insets.bottom}px]`}
     >
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/search"}>
+      <Link viewProps={{ style: LinkStyle }} href="/dashboard/search">
         <Icon name="magnify" size={32} color={tw.color("tab")} />
       </Link>
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/chart"}>
+      <Link viewProps={{ style: LinkStyle }} href="/dashboard/chart">
         <Image
           style={tw`w-8 h-8 rounded-full border-2 border-tab`}
           source={require("app/assets/images/icon.png")}
