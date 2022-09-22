@@ -3,7 +3,7 @@ import { userAtom } from "app/state/user";
 import { SecureStorage } from "app/utils/secure-storage";
 import { User } from "app/api/graphql";
 
-export function useLogIn(): (_: User) => void {
+export function useLogIn(): (user: User) => void {
   const setUserData = useSetRecoilState(userAtom);
 
   const logIn = async (user: User) => {
