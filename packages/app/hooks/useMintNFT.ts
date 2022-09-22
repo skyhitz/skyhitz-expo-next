@@ -50,11 +50,9 @@ export function useMintNFT(): MintResult {
       });
       if (indexed?.indexEntry?.success) {
         setStatus("Success");
-        return;
       } else {
         setStatus("IndexError");
         setError(indexed?.indexEntry?.message ?? "Couldn't index new entry");
-        return;
       }
     },
     [setStatus, setError, indexEntry, issuer]
@@ -91,9 +89,9 @@ export function useMintNFT(): MintResult {
       setIssuer(data.getIssuer);
 
       const json = {
-        name: name,
-        description: description,
-        code: code,
+        name,
+        description,
+        code,
         issuer: data.getIssuer,
         domain: "skyhitz.io",
         supply: 1,
@@ -113,9 +111,9 @@ export function useMintNFT(): MintResult {
         variables: {
           fileCid: videoCid,
           metaCid: nftCid,
-          code: code,
+          code,
           forSale: availableForSale,
-          price: parseInt(price ?? "0") || 0,
+          price: parseInt(price ?? "0", 10) || 0,
           equityForSale: (equityForSale ?? 0) / 100,
         },
       });
@@ -150,7 +148,6 @@ export function useMintNFT(): MintResult {
       } else {
         setStatus("Error");
         setError(entry?.createEntry?.message ?? "Couldn't submit transaction.");
-        return;
       }
     },
     [

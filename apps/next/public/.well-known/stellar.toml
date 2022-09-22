@@ -1,0 +1,24 @@
+VERSION="2.1.0"
+
+NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+ASSET_METADATA_SERVER="https://api.skyhitz.io/api/assets"
+
+ACCOUNTS=[
+"GBGNRA46ZTWAO3L2QWBQBUMFKXELI3DWOB2PZAVL6YIFQQTFFQXQMQCJ",
+"GCAETBNBFKVGLYFXKCLMKT6ZVHFXHRSDFSEW7ODIUJYC6R7H2QJ6OKGU"
+]
+
+[DOCUMENTATION]
+ORG_NAME="Skyhitz"
+ORG_URL="https://skyhitz.io"
+ORG_LOGO="https://skyhitz.io/img/icon-512.png"
+ORG_DESCRIPTION="Music NFT Marketplace on Stellar"
+ORG_TWITTER="Skyhitz"
+ORG_OFFICIAL_EMAIL="support@skyhitz.io"
+ORG_SUPPORT_EMAIL="support@skyhitz.io"
+
+[[PRINCIPALS]]
+name="Skyhitz"
+email="hello@skyhitz.io"
+twitter="skyhitz"
+github="skyhitz"

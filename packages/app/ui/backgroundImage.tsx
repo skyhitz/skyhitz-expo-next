@@ -26,7 +26,7 @@ const BackgroundImage = () => (
       }}
       imageStyle={{ opacity: 0.9 }}
       resizeMode="repeat"
-    ></ImageBackground>
+    />
   </ImageBackground>
 );
 

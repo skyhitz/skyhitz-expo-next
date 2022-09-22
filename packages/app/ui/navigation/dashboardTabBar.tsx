@@ -1,9 +1,12 @@
 import { View } from "app/design-system";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Image, StyleProp, ViewStyle } from "react-native";
 import { Link } from "solito/link";
 import { tw } from "app/design-system/tailwind";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
+import Search from "app/ui/icons/search";
+import User from "app/ui/icons/user";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 const LinkStyle: StyleProp<ViewStyle> = {
   flex: 1,
@@ -16,6 +19,7 @@ const LinkStyle: StyleProp<ViewStyle> = {
 
 export default function DashboardTabBar({ column }: { column?: boolean }) {
   const insets = useSafeArea();
+  const user = useRecoilValue(userAtom);
   const rootViewStyle = column
     ? "flex-col"
     : "flex-row border-t-2 border-white";
@@ -24,18 +28,20 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
     <View
       className={`flex bg-blue-dark ${rootViewStyle} pb-[${insets.bottom}px]`}
     >
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/search"}>
-        <Icon name="magnify" size={32} color="white" />
+      <Link viewProps={{ style: LinkStyle }} href="/dashboard/search">
+        <Search size={28} color={tw.color("white")} />
       </Link>
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/chart"}>
+      <Link viewProps={{ style: LinkStyle }} href="/dashboard/chart">
         <Image
-          style={tw`w-8 h-8 rounded-full border border-white`}
+          style={tw`w-8 h-8 rounded-full border-2 border-tab`}
           source={require("app/assets/images/icon.png")}
         />
       </Link>
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/profile"}>
-        <Icon name="account-outline" size={32} color="white" />
-      </Link>
+      {user && (
+        <Link viewProps={{ style: LinkStyle }} href="/dashboard/profile">
+          <User size={28} color={tw.color("white")} />
+        </Link>
+      )}
     </View>
   );
 }

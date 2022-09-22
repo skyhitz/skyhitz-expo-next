@@ -1,9 +1,9 @@
 import { precomputeValues } from "@capsizecss/core";
-import { Platform, PixelRatio } from "react-native";
+import { PixelRatio, Platform } from "react-native";
 
 export const fontFamily = (font: string) => {
   if (Platform.OS === "web") {
-    return font.replace(/\-/g, " ");
+    return font.replace(/-/g, " ");
   }
 
   return font;

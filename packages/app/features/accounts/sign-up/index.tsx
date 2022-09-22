@@ -59,7 +59,7 @@ export function SignUp() {
       <BackgroundImage />
       <View className="w-72 md:w-96">
         <Formik
-          validateOnMount={true}
+          validateOnMount
           initialValues={initialValues}
           onSubmit={handleSignUp}
           validationSchema={signUpFormSchema}
@@ -82,7 +82,7 @@ export function SignUp() {
                 placeholder="Username"
                 showFeedback={touched.username}
                 valid={!errors.username}
-                autoFocus={true}
+                autoFocus
                 blurOnSubmit={false}
                 onSubmitEditing={() => displayedNameInputRef.current?.focus()}
                 editable={!loading}
@@ -117,13 +117,9 @@ export function SignUp() {
                 onSubmitEditing={() => handleSubmit()}
                 editable={!loading}
                 autoCapitalize="none"
-                keyboardType={"email-address"}
+                keyboardType="email-address"
               />
-              <Text
-                className={
-                  "w-full text-center text-sm text-[#d9544f] mt-4 min-h-5"
-                }
-              >
+              <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
                 {(touched.username && errors.username) ||
                   (touched.displayedName && errors.displayedName) ||
                   (touched.email && errors.email) ||

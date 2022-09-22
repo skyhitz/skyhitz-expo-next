@@ -35,7 +35,7 @@ export function AuthenticationView({
         </Text>
       ) : (
         <>
-          <ActivityIndicator size={"large"} />
+          <ActivityIndicator size="large" />
           <Text className="text-lg text-center mt-2">Authentication</Text>
         </>
       )}

@@ -4,7 +4,7 @@ import { FlatList } from "react-native";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { Text } from "app/design-system";
 import { usePlayback } from "app/hooks/usePlayback";
-import { usePagination } from "../../../hooks/usePagination";
+import { usePagination } from "app/hooks/usePagination";
 import { useCallback } from "react";
 
 export function ChartScreen() {
@@ -23,7 +23,7 @@ export function ChartScreen() {
   return (
     <SafeAreaView
       edges={["top"]}
-      className="w-full max-w-6xl mx-auto flex-1 flex p-4 pb-0 bg-blue-dark"
+      className="w-full max-w-6xl mx-auto flex-1 flex px-4 bg-blue-dark"
     >
       <FlatList
         ListHeaderComponent={ListHeader}
