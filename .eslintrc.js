@@ -20,5 +20,9 @@ module.exports = {
       },
     ],
     "jsx-a11y/alt-text": [0],
+    "import/order": [0],
+    "@typescript-eslint/array-type": [0],
+    "no-unused-expressions": [0],
+    "react/no-unescaped-entities": [0],
   },
 };
