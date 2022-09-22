@@ -74,12 +74,13 @@ export type Mutation = {
   buyEntry?: Maybe<ConditionalXdr>;
   cancelSubscription?: Maybe<Scalars["String"]>;
   createEntry?: Maybe<ConditionalXdr>;
-  createUserWithEmail?: Maybe<User>;
+  createUserWithEmail?: Maybe<SuccessResponse>;
   indexEntry?: Maybe<IndexEntryResult>;
   likeEntry?: Maybe<Scalars["Boolean"]>;
   removeEntry?: Maybe<Scalars["Boolean"]>;
   requestToken?: Maybe<Scalars["Boolean"]>;
-  signIn?: Maybe<User>;
+  signInWithToken?: Maybe<User>;
+  signInWithXDR?: Maybe<User>;
   subscribeUser?: Maybe<Scalars["String"]>;
   updatePricing?: Maybe<ConditionalXdr>;
   updateUser?: Maybe<User>;
@@ -140,10 +141,14 @@ export type MutationRequestTokenArgs = {
 };
 
 /** Create users or entries */
-export type MutationSignInArgs = {
-  signedXDR?: InputMaybe<Scalars["String"]>;
+export type MutationSignInWithTokenArgs = {
   token: Scalars["String"];
   uid: Scalars["String"];
+};
+
+/** Create users or entries */
+export type MutationSignInWithXdrArgs = {
+  signedXDR: Scalars["String"];
 };
 
 /** Create users or entries */
@@ -237,6 +242,13 @@ export type QueryTopChartArgs = {
   page?: InputMaybe<Scalars["Int"]>;
 };
 
+/** This is a SuccessResponse */
+export type SuccessResponse = {
+  __typename?: "SuccessResponse";
+  message?: Maybe<Scalars["String"]>;
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
 /** This represents a User */
 export type User = {
   __typename?: "User";
@@ -282,15 +294,9 @@ export type CreateUserWithEmailMutationVariables = Exact<{
 export type CreateUserWithEmailMutation = {
   __typename?: "Mutation";
   createUserWithEmail?: {
-    __typename?: "User";
-    avatarUrl?: string | null;
-    displayName?: string | null;
-    email?: string | null;
-    username?: string | null;
-    id?: string | null;
-    description?: string | null;
-    jwt?: string | null;
-    publicKey?: string | null;
+    __typename?: "SuccessResponse";
+    success?: boolean | null;
+    message?: string | null;
   } | null;
 };
 
@@ -327,15 +333,34 @@ export type RequestTokenMutation = {
   requestToken?: boolean | null;
 };
 
-export type SignInMutationVariables = Exact<{
+export type SignInWithTokenMutationVariables = Exact<{
   token: Scalars["String"];
   uid: Scalars["String"];
-  signedXDR?: InputMaybe<Scalars["String"]>;
 }>;
 
-export type SignInMutation = {
+export type SignInWithTokenMutation = {
   __typename?: "Mutation";
-  signIn?: {
+  signInWithToken?: {
+    __typename?: "User";
+    avatarUrl?: string | null;
+    displayName?: string | null;
+    username?: string | null;
+    id?: string | null;
+    jwt?: string | null;
+    publishedAt?: string | null;
+    email?: string | null;
+    description?: string | null;
+    publicKey?: string | null;
+  } | null;
+};
+
+export type SignInWithXdrMutationVariables = Exact<{
+  signedXDR: Scalars["String"];
+}>;
+
+export type SignInWithXdrMutation = {
+  __typename?: "Mutation";
+  signInWithXDR?: {
     __typename?: "User";
     avatarUrl?: string | null;
     displayName?: string | null;
@@ -589,14 +614,8 @@ export const CreateUserWithEmailDocument = gql`
       username: $username
       publicKey: $publicKey
     ) {
-      avatarUrl
-      displayName
-      email
-      username
-      id
-      description
-      jwt
-      publicKey
+      success
+      message
     }
   }
 `;
@@ -794,9 +813,9 @@ export type RequestTokenMutationOptions = Apollo.BaseMutationOptions<
   RequestTokenMutation,
   RequestTokenMutationVariables
 >;
-export const SignInDocument = gql`
-  mutation signIn($token: String!, $uid: String!, $signedXDR: String) {
-    signIn(token: $token, uid: $uid, signedXDR: $signedXDR) {
+export const SignInWithTokenDocument = gql`
+  mutation signInWithToken($token: String!, $uid: String!) {
+    signInWithToken(token: $token, uid: $uid) {
       avatarUrl
       displayName
       username
@@ -809,47 +828,107 @@ export const SignInDocument = gql`
     }
   }
 `;
-export type SignInMutationFn = Apollo.MutationFunction<
-  SignInMutation,
-  SignInMutationVariables
+export type SignInWithTokenMutationFn = Apollo.MutationFunction<
+  SignInWithTokenMutation,
+  SignInWithTokenMutationVariables
 >;
 
 /**
- * __useSignInMutation__
+ * __useSignInWithTokenMutation__
  *
- * To run a mutation, you first call `useSignInMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSignInMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useSignInWithTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInWithTokenMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [signInMutation, { data, loading, error }] = useSignInMutation({
+ * const [signInWithTokenMutation, { data, loading, error }] = useSignInWithTokenMutation({
  *   variables: {
  *      token: // value for 'token'
  *      uid: // value for 'uid'
+ *   },
+ * });
+ */
+export function useSignInWithTokenMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SignInWithTokenMutation,
+    SignInWithTokenMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    SignInWithTokenMutation,
+    SignInWithTokenMutationVariables
+  >(SignInWithTokenDocument, options);
+}
+export type SignInWithTokenMutationHookResult = ReturnType<
+  typeof useSignInWithTokenMutation
+>;
+export type SignInWithTokenMutationResult =
+  Apollo.MutationResult<SignInWithTokenMutation>;
+export type SignInWithTokenMutationOptions = Apollo.BaseMutationOptions<
+  SignInWithTokenMutation,
+  SignInWithTokenMutationVariables
+>;
+export const SignInWithXdrDocument = gql`
+  mutation signInWithXDR($signedXDR: String!) {
+    signInWithXDR(signedXDR: $signedXDR) {
+      avatarUrl
+      displayName
+      username
+      id
+      jwt
+      publishedAt
+      email
+      description
+      publicKey
+    }
+  }
+`;
+export type SignInWithXdrMutationFn = Apollo.MutationFunction<
+  SignInWithXdrMutation,
+  SignInWithXdrMutationVariables
+>;
+
+/**
+ * __useSignInWithXdrMutation__
+ *
+ * To run a mutation, you first call `useSignInWithXdrMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInWithXdrMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInWithXdrMutation, { data, loading, error }] = useSignInWithXdrMutation({
+ *   variables: {
  *      signedXDR: // value for 'signedXDR'
  *   },
  * });
  */
-export function useSignInMutation(
+export function useSignInWithXdrMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    SignInMutation,
-    SignInMutationVariables
+    SignInWithXdrMutation,
+    SignInWithXdrMutationVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<SignInMutation, SignInMutationVariables>(
-    SignInDocument,
-    options
-  );
+  return Apollo.useMutation<
+    SignInWithXdrMutation,
+    SignInWithXdrMutationVariables
+  >(SignInWithXdrDocument, options);
 }
-export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
-export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
-export type SignInMutationOptions = Apollo.BaseMutationOptions<
-  SignInMutation,
-  SignInMutationVariables
+export type SignInWithXdrMutationHookResult = ReturnType<
+  typeof useSignInWithXdrMutation
+>;
+export type SignInWithXdrMutationResult =
+  Apollo.MutationResult<SignInWithXdrMutation>;
+export type SignInWithXdrMutationOptions = Apollo.BaseMutationOptions<
+  SignInWithXdrMutation,
+  SignInWithXdrMutationVariables
 >;
 export const UpdateUserDocument = gql`
   mutation updateUser(

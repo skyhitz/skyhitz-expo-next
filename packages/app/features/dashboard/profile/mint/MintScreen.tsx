@@ -31,6 +31,7 @@ export function MintScreen() {
         return `${status} ${progress}%`;
       case "Indexing":
       case "Submitting":
+      case "Sign transaction in your wallet":
         return status;
       case "IndexError":
         return "Retry Indexing";

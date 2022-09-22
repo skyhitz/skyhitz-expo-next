@@ -1,0 +1,13 @@
+mutation signInWithToken($token: String!, $uid: String!) {
+  signInWithToken(token: $token, uid: $uid) {
+    avatarUrl
+    displayName
+    username
+    id
+    jwt
+    publishedAt
+    email
+    description
+    publicKey
+  }
+}

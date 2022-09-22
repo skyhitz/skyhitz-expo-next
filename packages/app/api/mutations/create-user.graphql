@@ -10,13 +10,7 @@ mutation createUserWithEmail(
     username: $username
     publicKey: $publicKey
   ) {
-    avatarUrl
-    displayName
-    email
-    username
-    id
-    description
-    jwt
-    publicKey
+    success
+    message
   }
 }

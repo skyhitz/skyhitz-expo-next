@@ -22,5 +22,8 @@
     "web": "cd apps/next && yarn next",
     "ci": "tsc --noEmit && eslint packages/app && prettier --check packages/app",
     "graphql:gen": "cd packages/app && graphql-codegen --config codegen.yml"
+  },
+  "resolutions": {
+    "@dripsy/core": "3.6.0"
   }
 }
