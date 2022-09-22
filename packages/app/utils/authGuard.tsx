@@ -7,13 +7,13 @@ import { SplashScreen } from "app/features/splash/splashScreen";
 type Props = {
   children: ReactNode;
   redirect?: boolean;
-  fallback?: ReactNode;
+  fallback?: () => ReactNode;
 };
 
 export function AuthGuard({
   children,
   redirect = true,
-  fallback = <SplashScreen />,
+  fallback = SplashScreen,
 }: Props) {
   const user = useRecoilValue(userAtom);
   const { push } = useRouter();
@@ -24,18 +24,18 @@ export function AuthGuard({
     }
   }, [user, push, redirect]);
 
-  // if auth with a valid user show protected page
+  // if auth with a valid user show protected stuff
   if (user) {
     return <>{children}</>;
   }
 
-  /* otherwise don't return anything, will do a redirect from useEffect */
-  return <>{fallback}</>;
+  /* otherwise return fallback, will do a redirect from useEffect */
+  return <>{fallback()}</>;
 }
 
 export function ComponentAuthGuard({ children }: { children: ReactNode }) {
   return (
-    <AuthGuard fallback={null} redirect={false}>
+    <AuthGuard fallback={() => null} redirect={false}>
       {children}
     </AuthGuard>
   );
