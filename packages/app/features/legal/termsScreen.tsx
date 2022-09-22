@@ -351,7 +351,6 @@ export default function TermsScreen() {
           incidental damages, in such states or jurisdictions, our liability
           shall be limited to the maximum extent permitted by law.
         </Text>
-        <Text className="paragraph"></Text>
         <Text className="section-title">SECTION 14 - INDEMNIFICATION</Text>
         <Text className="paragraph">
           You agree to indemnify, defend and hold harmless Skyhitz and our

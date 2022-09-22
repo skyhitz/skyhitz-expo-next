@@ -25,16 +25,16 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
     <View
       className={`flex bg-blue-dark ${rootViewStyle} pb-[${insets.bottom}px]`}
     >
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/search"}>
+      <Link viewProps={{ style: LinkStyle }} href="/dashboard/search">
         <Search size={28} color={tw.color("white")} />
       </Link>
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/chart"}>
+      <Link viewProps={{ style: LinkStyle }} href="/dashboard/chart">
         <Image
           style={tw`w-8 h-8 rounded-full border border-white`}
           source={require("app/assets/images/icon.png")}
         />
       </Link>
-      <Link viewProps={{ style: LinkStyle }} href={"/dashboard/profile"}>
+      <Link viewProps={{ style: LinkStyle }} href="/dashboard/profile">
         <User size={28} color={tw.color("white")} />
       </Link>
     </View>
