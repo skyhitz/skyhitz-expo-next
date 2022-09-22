@@ -9,5 +9,15 @@ mutation signIn($token: String!, $uid: String!, $signedXDR: String) {
     email
     description
     publicKey
+    lastPlayedEntry {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
   }
 }
