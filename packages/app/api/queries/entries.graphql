@@ -10,3 +10,16 @@ query userCollection($userId: String!) {
     issuer
   }
 }
+
+query entry($id: String!) {
+  entries(id: $id) {
+    imageUrl
+    videoUrl
+    description
+    title
+    id
+    artist
+    code
+    issuer
+  }
+}
