@@ -1,5 +1,5 @@
 import { CollapsableView } from "app/features/dashboard/beat/collapsableView";
-import useAssetHolders from "app/hooks/useAssetHolders";
+import useAssetHolders from "app/hooks/stellar-expert/useAssetHolders";
 import { Maybe } from "app/types";
 import { Text, View } from "app/design-system";
 
@@ -24,7 +24,9 @@ export function Owners({
   return (
     <CollapsableView headerText="Owners">
       <View className="m-5">
-        {data?.map(Holder) ?? <Text>No one owns this asset</Text>}
+        {data?.map((item) => <Holder {...item} key={item.account} />) ?? (
+          <Text>No one owns this asset</Text>
+        )}
       </View>
     </CollapsableView>
   );

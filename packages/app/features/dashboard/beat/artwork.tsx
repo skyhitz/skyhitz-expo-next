@@ -9,7 +9,7 @@ export function Artwork({ uri }: { uri: Maybe<string> }) {
       source={{
         uri: imageSrc(uri),
       }}
-      className="aspect-square"
+      className="aspect-square mx-5 md:mx-0"
     />
   );
 }
