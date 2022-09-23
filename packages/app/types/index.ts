@@ -41,4 +41,6 @@ export type ChangeAvatarImg = {
   url: string;
 };
 
+export type Maybe<T> = T | null | undefined;
+
 export type EditProfileForm = Omit<UpdateUserMutationVariables, "avatarUrl">;
