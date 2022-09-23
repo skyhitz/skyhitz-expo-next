@@ -1,14 +1,21 @@
 import { Config } from "app/config";
 import {
-  TransactionBuilder,
   Account,
-  Networks,
   BASE_FEE,
+  Networks,
   Operation,
+  TransactionBuilder,
 } from "stellar-base";
+import { Maybe } from "app/types";
 
 const stellarExplorer = "https://stellar.expert/explorer/";
 const horizonTestnet = "https://horizon-testnet.stellar.org";
+
+export const getAssetId = (code: Maybe<string>, issuer: Maybe<string>) => {
+  if (code && issuer) {
+    return `${code}-${issuer}`;
+  }
+};
 
 export const stellarAssetLink = (code: string, issuer: string) =>
   `${stellarExplorer}${
