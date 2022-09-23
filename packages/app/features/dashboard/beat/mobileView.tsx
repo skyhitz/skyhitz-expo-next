@@ -12,23 +12,16 @@ import { tw } from "app/design-system/tailwind";
 import { View } from "app/design-system";
 import { Entry } from "app/api/graphql";
 
-export default function MobileView({
-  id,
-  title,
-  artist,
-  issuer,
-  code,
-  description,
-  imageUrl,
-}: Entry) {
+export default function MobileView(entry: Entry) {
+  const { title, artist, issuer, code, description, imageUrl } = entry;
   return (
     <ScrollView className="bg-blue-dark" contentContainerStyle={tw`mx-4 pb-4`}>
       <View className="mx-auto w-full max-w-lg">
         <Artwork uri={imageUrl} />
         <TitleAndAuthor title={title} artist={artist} />
         <Description description={description} />
-        <Price id={id} />
-        <Likes id={id} />
+        <Price issuer={issuer} code={code} />
+        <Likes entry={entry} />
         <Offers code={code} issuer={issuer} />
         <Owners code={code} issuer={issuer} />
         <Activity code={code} issuer={issuer} />

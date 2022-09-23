@@ -12,15 +12,8 @@ import { Price } from "app/features/dashboard/beat/price";
 import { Description } from "app/features/dashboard/beat/description";
 import { Entry } from "app/api/graphql";
 
-export default function DesktopView({
-  id,
-  issuer,
-  artist,
-  code,
-  title,
-  imageUrl,
-  description,
-}: Entry) {
+export default function DesktopView(entry: Entry) {
+  const { issuer, artist, code, title, imageUrl, description } = entry;
   return (
     <ScrollView
       contentContainerStyle={tw`flex flex-row flex-1 items-start w-full max-w-screen-xl mx-auto pt-16`}
@@ -35,7 +28,7 @@ export default function DesktopView({
         <TitleAndAuthor artist={artist} title={title} />
         <Description description={description} />
         <Price issuer={issuer} code={code} />
-        <Likes id={id} />
+        <Likes entry={entry} />
         <Owners code={code} issuer={issuer} />
       </View>
     </ScrollView>

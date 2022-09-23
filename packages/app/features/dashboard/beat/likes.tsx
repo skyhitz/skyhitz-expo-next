@@ -6,10 +6,10 @@ import { IconProps } from "app/types";
 
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 
-export function Likes(props: Entry) {
+export function Likes({ entry }: { entry: Entry }) {
   return (
     <CollapsableView icon={FilledLike} headerText="Likes">
-      <LikesList classname="px-5 my-5" entry={props} />
+      <LikesList classname="px-5 my-5" entry={entry} />
     </CollapsableView>
   );
 }
