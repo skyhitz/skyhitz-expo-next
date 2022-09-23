@@ -1,10 +1,13 @@
 import { Image } from "app/design-system";
+import { Maybe } from "app/types";
+import { imageSrc } from "app/utils/entry";
 
-export function Artwork() {
+export function Artwork({ uri }: { uri: Maybe<string> }) {
+  if (!uri) return null;
   return (
     <Image
       source={{
-        uri: "https://skyhitz.io/cdn-cgi/image/width=200/https://cloudflare-ipfs.com/ipfs/bafkreiasainuvfiyc7v2nclpewx2gzr65dq5etwwdvuo7pcxswhvwl6cea",
+        uri: imageSrc(uri),
       }}
       className="aspect-square"
     />
