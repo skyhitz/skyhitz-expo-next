@@ -1,7 +1,7 @@
 import { Maybe } from "app/types";
 import { getAssetId } from "app/utils/stellar";
 import useSWR from "swr";
-import { Config } from "app/config";
+import fetcher from "./stellarExperFetcher";
 
 type ResponseType = {
   _links: unknown;
@@ -30,23 +30,14 @@ type ResponseType = {
   };
 };
 
-const fetcher = async (assetId: string) => {
-  const url = `${Config.STELLAR_EXPERT_URL}/asset/${assetId}/history/all`;
-  const result = await fetch(url);
-  const json = await result.json();
-  const data = json as ResponseType;
-  if (!data) {
-    console.log("Unknown response", json);
-    throw new Error("Unknown response");
-  }
-  return data._embedded._records;
-};
-
 export default function useAssetHistory(
   code: Maybe<string>,
   issuer: Maybe<string>
 ) {
   const id = getAssetId(code, issuer);
-  const result = useSWR(id, id ? fetcher : null);
+  const result = useSWR(
+    [id, "history/all?limit=100"],
+    id ? fetcher<ResponseType> : null
+  );
   return result;
 }
