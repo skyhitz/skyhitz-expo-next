@@ -1,14 +1,13 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
+import { IconProps } from "app/types";
 
 function Icon({
   size = 24,
   fill = false,
   color = "currentColor",
-}: {
-  size: number;
+}: IconProps & {
   fill?: boolean;
-  color?: string;
 }) {
   return (
     <Svg
