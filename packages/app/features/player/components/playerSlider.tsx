@@ -24,7 +24,9 @@ export function PlayerSlider() {
     <View className="flex flex-row items-center justify-between w-full">
       <Text className="text-white text-xs mr-3 w-10 text-right">
         {Math.floor(currentTime / 60)}:
-        {(currentTime % 60).toFixed().padStart(2, "0")}
+        {Math.floor(currentTime % 60)
+          .toString()
+          .padStart(2, "0")}
       </Text>
 
       <View
@@ -58,7 +60,10 @@ export function PlayerSlider() {
       </View>
 
       <Text className="text-white text-xs ml-3 w-10">
-        {Math.floor(songTime / 60)}:{(songTime % 60).toFixed().padStart(2, "0")}
+        {Math.floor(songTime / 60)}:
+        {Math.floor(songTime % 60)
+          .toString()
+          .padStart(2, "0")}
       </Text>
     </View>
   );

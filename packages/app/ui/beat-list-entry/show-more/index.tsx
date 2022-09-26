@@ -11,10 +11,12 @@ import { PriceFront } from "app/ui/price";
 import { IconProps } from "app/types";
 import useEntryPrice from "app/hooks/useEntryPrice";
 import { ComponentAuthGuard } from "app/utils/authGuard";
+import { useRouter } from "solito/router";
 
 export function ShowMore({ entry }: { entry: Entry }) {
   const [showing, setShowing] = useState(false);
   const price = useEntryPrice(entry.code, entry.issuer);
+  const { push } = useRouter();
 
   return (
     <>
@@ -31,6 +33,11 @@ export function ShowMore({ entry }: { entry: Entry }) {
           />
           <LikesList entry={entry} classname="max-w-sm" />
           {!!price && <BuyNowBtn price={price} />}
+          <Button
+            text="See details"
+            onPress={() => push(`/dashboard/search/beat/${entry.id}`)}
+          />
+
           <CancelBtn onPress={() => setShowing(false)} />
         </SafeAreaView>
       </Modal>
