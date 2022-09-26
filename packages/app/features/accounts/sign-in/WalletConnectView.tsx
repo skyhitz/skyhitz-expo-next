@@ -25,7 +25,6 @@ export function WalletConnectView({ publicKey }: Props) {
       const result = await signXdr(xdr);
       const { signedXDR } = result as { signedXDR: string };
       const { data } = await signIn({ variables: { signedXDR } });
-      console.log(data);
       if (data?.signInWithXDR) {
         logIn(data.signInWithXDR);
       }
