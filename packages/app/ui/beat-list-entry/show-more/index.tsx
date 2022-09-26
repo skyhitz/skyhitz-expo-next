@@ -10,6 +10,7 @@ import { LikesList } from "app/features/player/components/likesList";
 import { PriceFront } from "app/ui/price";
 import { IconProps } from "app/types";
 import useEntryPrice from "app/hooks/useEntryPrice";
+import { ComponentAuthGuard } from "app/utils/authGuard";
 
 export function ShowMore({ entry }: { entry: Entry }) {
   const [showing, setShowing] = useState(false);
@@ -21,7 +22,7 @@ export function ShowMore({ entry }: { entry: Entry }) {
         <VerticalDots size={30} color={tw.color("white")} />
       </Pressable>
 
-      <Modal transparent={true} visible={showing} animationType="fade">
+      <Modal transparent visible={showing} animationType="fade">
         <SafeAreaView className="bg-blue-field/90 flex-1 items-center justify-around pt-10 sm:pt-20 px-8">
           <BeatInfo
             imageUrl={entry.imageUrl ?? ""}
@@ -41,13 +42,15 @@ function BuyNowBtn({ price }: { price: number }) {
   const PriceIcon = (_: IconProps) => <PriceFront price={price} />;
 
   return (
-    <Button
-      icon={PriceIcon}
-      text=" - Buy Now"
-      className="flex-row-reverse"
-      onPress={() => {
-        /*TODO*/
-      }}
-    />
+    <ComponentAuthGuard>
+      <Button
+        icon={PriceIcon}
+        text=" - Buy Now"
+        className="flex-row-reverse"
+        onPress={() => {
+          /*TODO*/
+        }}
+      />
+    </ComponentAuthGuard>
   );
 }

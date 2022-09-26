@@ -5,10 +5,14 @@ import { useCallback } from "react";
 export default function useErrorReport() {
   const toast = useToast();
   const reportError = useCallback(
-    (e: any) => {
+    (e: any, defaultMessage: string = "UnknownError") => {
       console.error(e);
+      let message: string = defaultMessage;
       const err = e as ErrorType;
-      toast.show(err ? err.message : "UnknownError", { type: "danger" });
+      if (err.message) {
+        message = err.message;
+      }
+      toast.show(message, { type: "danger" });
     },
     [toast]
   );

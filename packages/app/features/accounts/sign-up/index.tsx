@@ -1,15 +1,16 @@
-import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
+import { Button, Text, View } from "app/design-system";
 import { Platform, TextInput } from "react-native";
 import BackgroundImage from "app/ui/backgroundImage";
-import WalletconnectBtn from "app/ui/buttons/walletconnectBtn";
+import { WalletConnectBtn } from "app/ui/buttons/walletconnectBtn";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { Separator } from "app/ui/orSeparator";
 import StyledTextInput from "app/features/accounts/styledTextInput";
 import { Formik, FormikProps } from "formik";
-import { useEffect, useRef } from "react";
-import { useLogIn } from "app/hooks/useLogIn";
+import { useEffect, useRef, useState } from "react";
 import { useCreateUserWithEmailMutation } from "app/api/graphql";
 import { signUpFormSchema } from "app/validation";
+import { useRouter } from "solito/router";
+import { isEmpty, not } from "ramda";
 
 type FormFields = {
   username: string;
@@ -18,16 +19,16 @@ type FormFields = {
 };
 
 export function SignUp() {
-  const logIn = useLogIn();
-
+  const [publicKey, setPublicKey] = useState<string>("");
   const [createUserWithEmail, { loading, error, data }] =
     useCreateUserWithEmailMutation();
+  const { replace } = useRouter();
 
   useEffect(() => {
-    if (data?.createUserWithEmail) {
-      logIn(data.createUserWithEmail);
+    if (data?.createUserWithEmail?.success) {
+      replace("/sign-in");
     }
-  }, [data, logIn]);
+  }, [data, replace]);
 
   const handleSignUp = async (formData: FormFields) => {
     if (loading) return;
@@ -36,7 +37,7 @@ export function SignUp() {
         displayName: formData.displayedName,
         username: formData.username,
         email: formData.email,
-        publicKey: "",
+        publicKey,
       },
     });
   };
@@ -57,10 +58,8 @@ export function SignUp() {
     >
       <BackgroundImage />
       <View className="w-72 md:w-96">
-        <WalletconnectBtn />
-        <Separator />
         <Formik
-          validateOnMount={true}
+          validateOnMount
           initialValues={initialValues}
           onSubmit={handleSignUp}
           validationSchema={signUpFormSchema}
@@ -74,7 +73,7 @@ export function SignUp() {
             isValid,
             handleSubmit,
           }: FormikProps<FormFields>) => (
-            <View>
+            <View className="items-center">
               <StyledTextInput
                 value={values.username}
                 onChangeText={handleChange("username")}
@@ -83,7 +82,7 @@ export function SignUp() {
                 placeholder="Username"
                 showFeedback={touched.username}
                 valid={!errors.username}
-                autoFocus={true}
+                autoFocus
                 blurOnSubmit={false}
                 onSubmitEditing={() => displayedNameInputRef.current?.focus()}
                 editable={!loading}
@@ -118,31 +117,36 @@ export function SignUp() {
                 onSubmitEditing={() => handleSubmit()}
                 editable={!loading}
                 autoCapitalize="none"
-                keyboardType={"email-address"}
+                keyboardType="email-address"
               />
-              <Text
-                className={
-                  "w-full text-center text-sm text-[#d9544f] mt-4 min-h-5"
-                }
-              >
+              <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
                 {(touched.username && errors.username) ||
                   (touched.displayedName && errors.displayedName) ||
                   (touched.email && errors.email) ||
                   error?.message ||
                   " "}
               </Text>
-              <Pressable
-                onPress={() => handleSubmit()}
-                className={`btn mt-6 ${
-                  isValid && !loading ? "" : "opacity-50"
-                }`}
-              >
-                {loading ? (
-                  <ActivityIndicator color="white" />
-                ) : (
-                  <Text className="tracking-0.5">Join</Text>
-                )}
-              </Pressable>
+              <Button
+                text="Join"
+                loading={loading && isEmpty(publicKey)}
+                disabled={!isValid}
+                onPress={() => {
+                  setPublicKey("");
+                  handleSubmit();
+                }}
+                size="large"
+                className="mt-5"
+              />
+              <Separator />
+
+              <WalletConnectBtn
+                disabled={!isValid}
+                loading={loading && not(isEmpty(publicKey))}
+                onConnected={(publicKey: string) => {
+                  setPublicKey(publicKey);
+                  handleSubmit();
+                }}
+              />
             </View>
           )}
         </Formik>

@@ -83,8 +83,8 @@ export function VideoPlayer({ width, height, style }: Props) {
         }}
         resizeMode={ResizeMode.CONTAIN}
         style={{
-          height: height,
-          width: width,
+          height,
+          width,
           alignItems: "center",
           justifyContent: "center",
         }}

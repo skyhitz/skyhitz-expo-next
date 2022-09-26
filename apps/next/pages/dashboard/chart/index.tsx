@@ -1,11 +1,6 @@
-import React from "react"
-import { ChartScreen } from "app/features/dashboard/chart"
-import { AuthGuard } from "app/utils/authGuard"
+import React from "react";
+import { ChartScreen } from "app/features/dashboard/chart";
 
 export default function ChartPage() {
-  return (
-    <AuthGuard>
-      <ChartScreen />
-    </AuthGuard>
-  )
+  return <ChartScreen />;
 }

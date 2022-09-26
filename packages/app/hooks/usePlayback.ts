@@ -10,9 +10,8 @@ import {
   playingHistoryAtom,
   shuffleAtom,
 } from "app/state/playback";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { isSome } from "app/utils";
-import { useContext } from "react";
 import { PlaybackContext } from "../provider/playback";
 import { videoSrc } from "app/utils/entry";
 import { isPlayingAtom } from "../state/playback";
@@ -40,7 +39,7 @@ export function usePlayback(): PlaybackResult {
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingAtom);
   const shuffle = useRecoilValue(shuffleAtom);
   const { playback } = useContext(PlaybackContext);
-  const [setLastPlayedEntry] = useSetLastPlayedEntryMutation()
+  const [setLastPlayedEntry] = useSetLastPlayedEntryMutation();
 
   const _loadAndPlay = useCallback(
     async (entry: Entry) => {
@@ -59,7 +58,7 @@ export function usePlayback(): PlaybackResult {
         await playback.loadAsync(source, initialStatus, true);
         setIsPlaying(true);
         await playback.playAsync();
-        setLastPlayedEntry({variables: {entryId: entry.id!}})
+        setLastPlayedEntry({ variables: { entryId: entry.id! } });
       }
     },
     [
@@ -70,7 +69,7 @@ export function usePlayback(): PlaybackResult {
       playingHistory,
       setPosition,
       setDuration,
-      setLastPlayedEntry
+      setLastPlayedEntry,
     ]
   );
 

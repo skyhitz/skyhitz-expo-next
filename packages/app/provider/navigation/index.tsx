@@ -17,9 +17,11 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
             initialRouteName: "splash",
             screens: {
               splash: "splash",
-              home: "home",
+              home: "",
               "sign-in": "sign-in",
               "sign-up": "sign-up",
+              privacy: "privacy",
+              terms: "terms",
               dashboard: {
                 screens: {
                   search: {

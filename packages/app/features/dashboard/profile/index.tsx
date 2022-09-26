@@ -52,7 +52,7 @@ export function ProfileScreen() {
             <Text className="font-bold ml-1 mr-2.5">
               {paymentInfoData?.paymentsInfo?.credits?.toFixed(2) ?? ""}
             </Text>
-            <Link href={"/dashboard/profile/edit"}>
+            <Link href="/dashboard/profile/edit">
               <Cog color={tw.color("white")} size={18} />
             </Link>
           </View>

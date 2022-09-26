@@ -44,12 +44,14 @@ module.exports = {
           light: "#dbdbdb",
         },
         lightGreen: "#5CE67E",
-        tabIconDefault: "rgba(255,255,255, 0.65)",
-        tabIconSelected: "#eee",
-        tabBar: "#fefefe",
         valid: {
           DEFAULT: "rgba(15,172,141,.8)",
           dark: "#192225",
+        },
+        tab: {
+          DEFAULT: "rgba(255, 255, 255, 0.6)",
+          selected: "rgb(238,238,238)",
+          disabled: "rgba(255, 255, 255, 0.2)",
         },
         warningBackground: "#EAEB5E",
         warningText: "#666804",
@@ -73,6 +75,9 @@ module.exports = {
     plugin(({ addUtilities }) => {
       addUtilities({
         btn: `bg-blue/95 flex flex-row items-center justify-center rounded-full h-12 px-4`,
+        title: `text-3xl mb-6 font-bold`,
+        "section-title": `text-2xl font-bold mt-8`,
+        paragraph: `mt-4 text-sm md:text-md`,
       });
     }),
   ],

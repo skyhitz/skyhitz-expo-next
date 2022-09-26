@@ -1,47 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import WalletConnectIcon from "app/ui/icons/walletconnect-icon";
-// import QRCodeModal from '@walletconnect/qrcode-modal'
-// import { signManageDataOp } from "app/stellar"
-// import { WalletConnectStore } from 'app/state/wallet-connect'
-import { Pressable, Text } from "app/design-system";
+import { Button } from "app/design-system";
+import { useWalletConnectClient } from "app/provider/WalletConnect";
+import { Config } from "app/config";
+import useErrorReport from "app/hooks/useErrorReport";
 
-const WalletConnectBtn = ({}: { signInWithXDR?: (_: any) => {} }) => {
-  // const state = "idle"
-  // const { uri, signXdr, publicKey, connect, state } = WalletConnectStore()
-
-  // useEffect(() => {
-  //   if (!uri) return QRCodeModal.close()
-  //   QRCodeModal.open(uri, () => {}, {
-  //     desktopLinks: [],
-  //     mobileLinks: ['lobstr'],
-  //   })
-  // }, [uri])
-
-  // const handleSignInWithXdr = async (publicKey: string) => {
-  //   const xdr = await signManageDataOp(publicKey)
-  // const { signedXDR } = await (signXdr(xdr) as Promise<{ signedXDR: string }>)
-  // signInWithXDR && signInWithXDR(signedXDR)
-  // }
-
-  const handleConnect = () => {};
-
-  // useEffect(() => {
-  //   if (publicKey && signInWithXDR) handleSignInWithXdr(publicKey)
-  // }, [publicKey])
-
-  return (
-    <Pressable onPress={handleConnect} className="btn w-full">
-      <Text className="font-bold mr-4">
-        {/*{state === 'session-proposal'*/}
-        {/*  ? 'Waiting for approval'*/}
-        {/*  : state === 'session-created'*/}
-        {/*  ? 'Connected'*/}
-        {/*  : 'WalletConnect'}*/}
-        WalletConnect
-      </Text>
-      <WalletConnectIcon color="white" />
-    </Pressable>
-  );
+type Props = {
+  onConnected: (_publicKey: string) => void;
+  disabled?: boolean;
+  loading?: boolean;
 };
 
-export default WalletConnectBtn;
+export const WalletConnectBtn = ({ onConnected, disabled, loading }: Props) => {
+  const [waitingForApproval, setWaitingForApproval] = useState<boolean>(false);
+  const { connect, accounts } = useWalletConnectClient();
+  const reportError = useErrorReport();
+
+  useEffect(() => {
+    if (accounts.length && waitingForApproval) {
+      const publicKey = accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
+      onConnected(publicKey);
+    }
+  }, [accounts, onConnected, waitingForApproval]);
+
+  const onPress = async () => {
+    if (!accounts.length) {
+      setWaitingForApproval(true);
+      const session = await connect();
+      setWaitingForApproval(false);
+      if (!session) {
+        reportError("Connnection was cancelled");
+      }
+    } else {
+      const publicKey = accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
+      onConnected(publicKey);
+    }
+  };
+
+  return (
+    <Button
+      text={waitingForApproval ? "Waiting for approval..." : "WalletConnect"}
+      onPress={onPress}
+      disabled={disabled || waitingForApproval}
+      icon={WalletConnectIcon}
+      size="large"
+      loading={loading}
+    />
+  );
+};
