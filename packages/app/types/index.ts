@@ -36,6 +36,11 @@ export type MintForm = {
   equityForSale?: number;
 };
 
+export type WithdrawForm = {
+  address: string;
+  amount: number;
+};
+
 export type ChangeAvatarImg = {
   blob?: Blob;
   url: string;

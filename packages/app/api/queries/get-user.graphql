@@ -8,6 +8,7 @@ query authenticatedUser {
     description
     jwt
     publicKey
+    managed
     lastPlayedEntry {
       imageUrl
       videoUrl

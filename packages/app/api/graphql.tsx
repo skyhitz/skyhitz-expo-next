@@ -84,7 +84,7 @@ export type Mutation = {
   subscribeUser?: Maybe<Scalars["String"]>;
   updatePricing?: Maybe<ConditionalXdr>;
   updateUser?: Maybe<User>;
-  withdrawToExternalWallet?: Maybe<Scalars["Boolean"]>;
+  withdrawToExternalWallet?: Maybe<SuccessResponse>;
 };
 
 /** Create users or entries */
@@ -263,6 +263,7 @@ export type User = {
   email?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["String"]>;
   jwt?: Maybe<Scalars["String"]>;
+  managed?: Maybe<Scalars["Boolean"]>;
   lastPlayedEntry?: Maybe<Entry>;
   publicKey?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["String"]>;
@@ -370,6 +371,7 @@ export type SignInWithTokenMutation = {
     email?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
     lastPlayedEntry?: {
       __typename?: "Entry";
       imageUrl?: string | null;
@@ -401,6 +403,7 @@ export type SignInWithXdrMutation = {
     email?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
     lastPlayedEntry?: {
       __typename?: "Entry";
       imageUrl?: string | null;
@@ -437,6 +440,21 @@ export type UpdateUserMutation = {
     jwt?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
+  } | null;
+};
+
+export type WithdrawToExternalWalletMutationVariables = Exact<{
+  address: Scalars["String"];
+  amount: Scalars["Int"];
+}>;
+
+export type WithdrawToExternalWalletMutation = {
+  __typename?: "Mutation";
+  withdrawToExternalWallet?: {
+    __typename?: "SuccessResponse";
+    success?: boolean | null;
+    message?: string | null;
   } | null;
 };
 
@@ -501,6 +519,7 @@ export type AuthenticatedUserQuery = {
     description?: string | null;
     jwt?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
     lastPlayedEntry?: {
       __typename?: "Entry";
       imageUrl?: string | null;
@@ -928,6 +947,7 @@ export const SignInWithTokenDocument = gql`
       email
       description
       publicKey
+      managed
       lastPlayedEntry {
         imageUrl
         videoUrl
@@ -997,6 +1017,7 @@ export const SignInWithXdrDocument = gql`
       email
       description
       publicKey
+      managed
       lastPlayedEntry {
         imageUrl
         videoUrl
@@ -1078,6 +1099,7 @@ export const UpdateUserDocument = gql`
       jwt
       description
       publicKey
+      managed
     }
   }
 `;
@@ -1128,6 +1150,59 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
+export const WithdrawToExternalWalletDocument = gql`
+  mutation withdrawToExternalWallet($address: String!, $amount: Int!) {
+    withdrawToExternalWallet(address: $address, amount: $amount) {
+      success
+      message
+    }
+  }
+`;
+export type WithdrawToExternalWalletMutationFn = Apollo.MutationFunction<
+  WithdrawToExternalWalletMutation,
+  WithdrawToExternalWalletMutationVariables
+>;
+
+/**
+ * __useWithdrawToExternalWalletMutation__
+ *
+ * To run a mutation, you first call `useWithdrawToExternalWalletMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWithdrawToExternalWalletMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [withdrawToExternalWalletMutation, { data, loading, error }] = useWithdrawToExternalWalletMutation({
+ *   variables: {
+ *      address: // value for 'address'
+ *      amount: // value for 'amount'
+ *   },
+ * });
+ */
+export function useWithdrawToExternalWalletMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    WithdrawToExternalWalletMutation,
+    WithdrawToExternalWalletMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    WithdrawToExternalWalletMutation,
+    WithdrawToExternalWalletMutationVariables
+  >(WithdrawToExternalWalletDocument, options);
+}
+export type WithdrawToExternalWalletMutationHookResult = ReturnType<
+  typeof useWithdrawToExternalWalletMutation
+>;
+export type WithdrawToExternalWalletMutationResult =
+  Apollo.MutationResult<WithdrawToExternalWalletMutation>;
+export type WithdrawToExternalWalletMutationOptions =
+  Apollo.BaseMutationOptions<
+    WithdrawToExternalWalletMutation,
+    WithdrawToExternalWalletMutationVariables
+  >;
 export const UserCollectionDocument = gql`
   query userCollection($userId: String!) {
     entries(userId: $userId) {
@@ -1317,6 +1392,7 @@ export const AuthenticatedUserDocument = gql`
       description
       jwt
       publicKey
+      managed
       lastPlayedEntry {
         imageUrl
         videoUrl
