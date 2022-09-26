@@ -8,5 +8,6 @@ query authenticatedUser {
     description
     jwt
     publicKey
+    managed
   }
 }

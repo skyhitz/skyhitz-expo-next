@@ -127,7 +127,7 @@ export default function EditProfileScreen() {
               editable={!loading}
             />
             <Line />
-            <WithdrawCredits className="mt-8" />
+            {user.managed && <WithdrawCredits className="mt-8" />}
           </View>
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />

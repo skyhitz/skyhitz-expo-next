@@ -9,5 +9,6 @@ mutation signInWithXDR($signedXDR: String!) {
     email
     description
     publicKey
+    managed
   }
 }

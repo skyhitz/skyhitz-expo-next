@@ -9,5 +9,6 @@ mutation signInWithToken($token: String!, $uid: String!) {
     email
     description
     publicKey
+    managed
   }
 }

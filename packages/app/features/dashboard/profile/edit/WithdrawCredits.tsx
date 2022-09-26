@@ -1,5 +1,5 @@
 import { Button, Modal, Pressable, Text, View } from "app/design-system";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import X from "app/ui/icons/x";
 import Wallet from "app/ui/icons/wallet";
@@ -9,20 +9,52 @@ import { Formik, FormikProps } from "formik";
 import { Line } from "app/ui/orSeparator";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
-import { usePaymentsInfoQuery } from "app/api/graphql";
+import {
+  usePaymentsInfoQuery,
+  useWithdrawToExternalWalletMutation,
+} from "app/api/graphql";
 import { WithdrawForm } from "app/types";
 import { withdrawFormSchema } from "app/validation";
+import { useToast } from "react-native-toast-notifications";
 
 type Props = { className?: string };
 
 export function WithdrawCredits({ className }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
   const { data: paymentInfoData } = usePaymentsInfoQuery();
+  const [withdraw, { data, loading, error }] =
+    useWithdrawToExternalWalletMutation();
+  const toast = useToast();
 
   const initialValues: WithdrawForm = {
     address: "",
     amount: 0,
   };
+
+  useEffect(() => {
+    if (data?.withdrawToExternalWallet?.success) {
+      setModalVisible(false);
+      toast.show("Amount successfully transfered to your external wallet", {
+        type: "success",
+      });
+    }
+  }, [data, toast]);
+
+  const onSubmit = useCallback(
+    async ({ address, amount }: WithdrawForm): Promise<void> => {
+      try {
+        await withdraw({
+          variables: {
+            address,
+            amount,
+          },
+        });
+      } catch (_) {
+        // no-op, just to catch error
+      }
+    },
+    [withdraw]
+  );
 
   return (
     <View className={className}>
@@ -51,10 +83,11 @@ export function WithdrawCredits({ className }: Props) {
                 </Text>
                 <Formik
                   initialValues={initialValues}
-                  onSubmit={console.log}
+                  onSubmit={onSubmit}
                   validationSchema={withdrawFormSchema(
                     paymentInfoData?.paymentsInfo?.credits ?? 1
                   )}
+                  validateOnMount
                 >
                   {({
                     handleSubmit,
@@ -77,7 +110,7 @@ export function WithdrawCredits({ className }: Props) {
                         value={
                           values.amount > 0 ? values.amount.toString() : ""
                         }
-                        placeholder="XML to withdraw"
+                        placeholder="XLM to withdraw"
                         icon={Dollar}
                         containerClassNames="py-1 mt-8 w-full"
                         onChangeText={(text) => {
@@ -90,11 +123,6 @@ export function WithdrawCredits({ className }: Props) {
                           }
                         }}
                       />
-                      {errors.address || errors.amount ? (
-                        <Text className="w-full text-center text-sm text-[#d9544f] my-4 min-h-5">
-                          {errors.address || errors.amount || " "}
-                        </Text>
-                      ) : null}
 
                       <Line />
                       <Text className="text-xs leading-none my-4">
@@ -112,11 +140,17 @@ export function WithdrawCredits({ className }: Props) {
                         Withdrawal fee:{" "}
                         {(values.amount * 0.06).toFixed(6).toString()} XLM
                       </Text>
+                      {(errors.address || errors.amount || error) && (
+                        <Text className="w-full text-center text-sm text-[#d9544f] my-4 min-h-5">
+                          {errors.address || errors.amount || error?.message}
+                        </Text>
+                      )}
 
                       <Button
                         text="Withdraw"
                         onPress={handleSubmit}
                         disabled={!isValid}
+                        loading={loading}
                       />
                     </View>
                   )}

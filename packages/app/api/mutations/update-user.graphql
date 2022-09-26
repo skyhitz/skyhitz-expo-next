@@ -22,5 +22,6 @@ mutation updateUser(
     jwt
     description
     publicKey
+    managed
   }
 }

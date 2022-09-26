@@ -1,0 +1,6 @@
+mutation withdrawToExternalWallet($address: String!, $amount: Int!) {
+  withdrawToExternalWallet(address: $address, amount: $amount) {
+    success
+    message
+  }
+}
