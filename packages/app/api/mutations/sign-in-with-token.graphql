@@ -10,5 +10,15 @@ mutation signInWithToken($token: String!, $uid: String!) {
     description
     publicKey
     managed
+    lastPlayedEntry {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
   }
 }

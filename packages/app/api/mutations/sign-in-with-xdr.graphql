@@ -10,5 +10,15 @@ mutation signInWithXDR($signedXDR: String!) {
     description
     publicKey
     managed
+    lastPlayedEntry {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
   }
 }
