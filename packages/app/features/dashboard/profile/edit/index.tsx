@@ -11,7 +11,7 @@ import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/dashboard/profile/edit/logOutBtn";
 import { values as vals } from "ramda";
 import { ChangeUserAvatar } from "app/features/dashboard/profile/edit/changeUserAvatar";
-import { Credits } from "app/features/dashboard/profile/edit/credits";
+import { WithdrawCredits } from "app/features/dashboard/profile/edit/WithdrawCredits";
 import { userAtom } from "app/state/user";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import { ScrollView } from "app/design-system/ScrollView";
@@ -127,7 +127,7 @@ export default function EditProfileScreen() {
               editable={!loading}
             />
             <Line />
-            <Credits className="mt-8" />
+            <WithdrawCredits className="mt-8" />
           </View>
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />

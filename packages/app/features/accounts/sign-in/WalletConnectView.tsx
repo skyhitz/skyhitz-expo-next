@@ -25,6 +25,7 @@ export function WalletConnectView({ publicKey }: Props) {
       const result = await signXdr(xdr);
       const { signedXDR } = result as { signedXDR: string };
       const { data } = await signIn({ variables: { signedXDR } });
+      console.log(data);
       if (data?.signInWithXDR) {
         logIn(data.signInWithXDR);
       }
@@ -35,7 +36,6 @@ export function WalletConnectView({ publicKey }: Props) {
   }, [publicKey, signXdr, signIn, reportError, logIn]);
 
   useEffect(() => {
-    console.log("use effect");
     generateAndSignXdr();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
