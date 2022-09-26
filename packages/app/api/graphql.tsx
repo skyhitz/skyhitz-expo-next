@@ -1,6 +1,5 @@
-import * as Apollo from "@apollo/client";
 import { gql } from "@apollo/client";
-
+import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -79,6 +78,7 @@ export type Mutation = {
   likeEntry?: Maybe<Scalars["Boolean"]>;
   removeEntry?: Maybe<Scalars["Boolean"]>;
   requestToken?: Maybe<Scalars["Boolean"]>;
+  setLastPlayedEntry?: Maybe<SuccessResponse>;
   signInWithToken?: Maybe<User>;
   signInWithXDR?: Maybe<User>;
   subscribeUser?: Maybe<Scalars["String"]>;
@@ -138,6 +138,11 @@ export type MutationRemoveEntryArgs = {
 export type MutationRequestTokenArgs = {
   publicKey: Scalars["String"];
   usernameOrEmail: Scalars["String"];
+};
+
+/** Create users or entries */
+export type MutationSetLastPlayedEntryArgs = {
+  entryId: Scalars["String"];
 };
 
 /** Create users or entries */
@@ -258,6 +263,7 @@ export type User = {
   email?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["String"]>;
   jwt?: Maybe<Scalars["String"]>;
+  lastPlayedEntry?: Maybe<Entry>;
   publicKey?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["String"]>;
   username?: Maybe<Scalars["String"]>;
@@ -333,6 +339,19 @@ export type RequestTokenMutation = {
   requestToken?: boolean | null;
 };
 
+export type SetLastPlayedEntryMutationVariables = Exact<{
+  entryId: Scalars["String"];
+}>;
+
+export type SetLastPlayedEntryMutation = {
+  __typename?: "Mutation";
+  setLastPlayedEntry?: {
+    __typename?: "SuccessResponse";
+    success?: boolean | null;
+    message?: string | null;
+  } | null;
+};
+
 export type SignInWithTokenMutationVariables = Exact<{
   token: Scalars["String"];
   uid: Scalars["String"];
@@ -351,6 +370,17 @@ export type SignInWithTokenMutation = {
     email?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    lastPlayedEntry?: {
+      __typename?: "Entry";
+      imageUrl?: string | null;
+      videoUrl?: string | null;
+      description?: string | null;
+      title?: string | null;
+      id?: string | null;
+      artist?: string | null;
+      code?: string | null;
+      issuer?: string | null;
+    } | null;
   } | null;
 };
 
@@ -371,6 +401,17 @@ export type SignInWithXdrMutation = {
     email?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    lastPlayedEntry?: {
+      __typename?: "Entry";
+      imageUrl?: string | null;
+      videoUrl?: string | null;
+      description?: string | null;
+      title?: string | null;
+      id?: string | null;
+      artist?: string | null;
+      code?: string | null;
+      issuer?: string | null;
+    } | null;
   } | null;
 };
 
@@ -460,6 +501,17 @@ export type AuthenticatedUserQuery = {
     description?: string | null;
     jwt?: string | null;
     publicKey?: string | null;
+    lastPlayedEntry?: {
+      __typename?: "Entry";
+      imageUrl?: string | null;
+      videoUrl?: string | null;
+      description?: string | null;
+      title?: string | null;
+      id?: string | null;
+      artist?: string | null;
+      code?: string | null;
+      issuer?: string | null;
+    } | null;
   } | null;
 };
 
@@ -813,6 +865,57 @@ export type RequestTokenMutationOptions = Apollo.BaseMutationOptions<
   RequestTokenMutation,
   RequestTokenMutationVariables
 >;
+export const SetLastPlayedEntryDocument = gql`
+  mutation setLastPlayedEntry($entryId: String!) {
+    setLastPlayedEntry(entryId: $entryId) {
+      success
+      message
+    }
+  }
+`;
+export type SetLastPlayedEntryMutationFn = Apollo.MutationFunction<
+  SetLastPlayedEntryMutation,
+  SetLastPlayedEntryMutationVariables
+>;
+
+/**
+ * __useSetLastPlayedEntryMutation__
+ *
+ * To run a mutation, you first call `useSetLastPlayedEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetLastPlayedEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setLastPlayedEntryMutation, { data, loading, error }] = useSetLastPlayedEntryMutation({
+ *   variables: {
+ *      entryId: // value for 'entryId'
+ *   },
+ * });
+ */
+export function useSetLastPlayedEntryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SetLastPlayedEntryMutation,
+    SetLastPlayedEntryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    SetLastPlayedEntryMutation,
+    SetLastPlayedEntryMutationVariables
+  >(SetLastPlayedEntryDocument, options);
+}
+export type SetLastPlayedEntryMutationHookResult = ReturnType<
+  typeof useSetLastPlayedEntryMutation
+>;
+export type SetLastPlayedEntryMutationResult =
+  Apollo.MutationResult<SetLastPlayedEntryMutation>;
+export type SetLastPlayedEntryMutationOptions = Apollo.BaseMutationOptions<
+  SetLastPlayedEntryMutation,
+  SetLastPlayedEntryMutationVariables
+>;
 export const SignInWithTokenDocument = gql`
   mutation signInWithToken($token: String!, $uid: String!) {
     signInWithToken(token: $token, uid: $uid) {
@@ -825,6 +928,16 @@ export const SignInWithTokenDocument = gql`
       email
       description
       publicKey
+      lastPlayedEntry {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+      }
     }
   }
 `;
@@ -884,6 +997,16 @@ export const SignInWithXdrDocument = gql`
       email
       description
       publicKey
+      lastPlayedEntry {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+      }
     }
   }
 `;
@@ -1194,6 +1317,16 @@ export const AuthenticatedUserDocument = gql`
       description
       jwt
       publicKey
+      lastPlayedEntry {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+      }
     }
   }
 `;

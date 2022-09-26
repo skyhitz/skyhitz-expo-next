@@ -1,5 +1,5 @@
 import { ResizeMode, Video } from "expo-av";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ImageBackground, Platform, ViewStyle } from "react-native";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -12,6 +12,7 @@ import {
 import { PlaybackContext } from "../provider/playback";
 import { imageSrc, videoSrc } from "app/utils/entry";
 import { usePlayback } from "app/hooks/usePlayback";
+import { userAtom } from "app/state/user";
 
 type Props = {
   width: number;
@@ -25,8 +26,9 @@ export function VideoPlayer({ width, height, style }: Props) {
   const [playbackState, setPlaybackState] = useRecoilState(playbackStateAtom);
   const isLooping = useRecoilValue(loopAtom);
   const entry = useRecoilValue(currentEntryAtom);
-  const { setPlayback } = useContext(PlaybackContext);
-  const { skipForward } = usePlayback();
+  const { playback, setPlayback } = useContext(PlaybackContext);
+  const user = useRecoilValue(userAtom);
+  const { skipForward, playEntry } = usePlayback();
 
   const getVideoUri = () => {
     // we need to provide correct uri only for web
@@ -36,6 +38,13 @@ export function VideoPlayer({ width, height, style }: Props) {
     }
     return "";
   };
+
+  useEffect(() => {
+    // play the last played entry
+    if (playback && playbackState === "IDLE" && user?.lastPlayedEntry) {
+      playEntry(user.lastPlayedEntry, [user.lastPlayedEntry]);
+    }
+  }, [playback, user, playEntry, playbackState]);
 
   return (
     <ImageBackground
@@ -50,7 +59,7 @@ export function VideoPlayer({ width, height, style }: Props) {
           uri: getVideoUri(),
         }}
         ref={(ref) => {
-          if (ref !== null) {
+          if (ref && !playback) {
             setPlayback(ref);
           }
         }}
