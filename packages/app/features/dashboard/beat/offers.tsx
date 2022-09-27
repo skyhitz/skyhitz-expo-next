@@ -1,4 +1,4 @@
-import { CollapsableView } from "app/features/dashboard/beat/collapsableView";
+import { CollapsableView } from "app/ui/CollapsableView";
 import { Text, View } from "app/design-system";
 import { Maybe } from "app/types";
 import useAssetOffers from "app/hooks/stellar-expert/useAssetOffers";

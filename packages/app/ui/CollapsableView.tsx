@@ -11,6 +11,7 @@ import Animated, {
   Extrapolation,
   withSpring,
 } from "react-native-reanimated";
+
 type Props = {
   initCollapsed?: boolean;
   children?: ReactNode;
@@ -30,6 +31,7 @@ const iconStyle: IconProps = {
   size: 24,
   color: tw.color("white"),
 };
+
 export const CollapsableView = ({
   children,
   initCollapsed,
@@ -56,7 +58,7 @@ export const CollapsableView = ({
 
   return (
     <View
-      className={`border-[0.5px] mt-4 border-grey-light rounded-lg ${
+      className={`border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent w-full ${
         className ?? ""
       }`}
     >

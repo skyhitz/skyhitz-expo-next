@@ -7,15 +7,11 @@ import { BeatInfo } from "app/ui/beat-list-entry/show-more/beatInfo";
 import { CancelBtn } from "app/ui/beat-list-entry/show-more/cancelBtn";
 import VerticalDots from "app/ui/icons/verticalDots";
 import { LikesList } from "app/features/player/components/likesList";
-import { PriceFront } from "app/ui/price";
-import { IconProps } from "app/types";
-import useEntryPrice from "app/hooks/useEntryPrice";
-import { ComponentAuthGuard } from "app/utils/authGuard";
 import { useRouter } from "solito/router";
+import { BuyNowBtn } from "app/ui/buttons/ButNowBtn";
 
 export function ShowMore({ entry }: { entry: Entry }) {
   const [showing, setShowing] = useState(false);
-  const price = useEntryPrice(entry.code, entry.issuer);
   const { push } = useRouter();
 
   return (
@@ -31,8 +27,8 @@ export function ShowMore({ entry }: { entry: Entry }) {
             title={entry.title ?? ""}
             artist={entry.artist ?? ""}
           />
-          <LikesList entry={entry} classname="max-w-sm" />
-          {!!price && <BuyNowBtn price={price} />}
+          <LikesList entry={entry} classname="max-w-sm" showLikeButton />
+          <BuyNowBtn entry={entry} showPrice />
           <Button
             text="See details"
             onPress={() => push(`/dashboard/search/beat/${entry.id}`)}
@@ -42,22 +38,5 @@ export function ShowMore({ entry }: { entry: Entry }) {
         </SafeAreaView>
       </Modal>
     </>
-  );
-}
-
-function BuyNowBtn({ price }: { price: number }) {
-  const PriceIcon = (_: IconProps) => <PriceFront price={price} />;
-
-  return (
-    <ComponentAuthGuard>
-      <Button
-        icon={PriceIcon}
-        text=" - Buy Now"
-        className="flex-row-reverse"
-        onPress={() => {
-          /*TODO*/
-        }}
-      />
-    </ComponentAuthGuard>
   );
 }
