@@ -12,7 +12,7 @@ type Props = {
 
 export function PriceContainer({ entry }: Props) {
   const offer = useEntryOffer(entry.code, entry.issuer);
-  const usd = useUSDPrice(offer.price);
+  const usd = useUSDPrice(offer.price * offer.amount);
 
   if (!offer.price) {
     return null;
