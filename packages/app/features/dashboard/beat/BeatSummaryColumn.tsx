@@ -3,7 +3,7 @@ import { Entry, EntryDetails } from "app/api/graphql";
 import { Pressable, Text, View } from "app/design-system";
 import InfoCircle from "app/ui/icons/info-circle";
 import { PriceContainer } from "./PriceContainer";
-import { Owners } from "./owners";
+import { Owners } from "./BeatOwners";
 import { usePlayback } from "app/hooks/usePlayback";
 import PlayIcon from "app/ui/icons/play";
 import LikeButton from "app/ui/buttons/likeButton";

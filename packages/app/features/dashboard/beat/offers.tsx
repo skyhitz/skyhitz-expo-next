@@ -1,6 +1,7 @@
 import { CollapsableView } from "app/ui/CollapsableView";
 import { Text, View } from "app/design-system";
 import { EntryActivity } from "app/api/graphql";
+import { ArrowsUpDownIcon } from "app/ui/icons/arrows-up-down";
 
 const typeNumberMeaning: Record<number, string> = {
   0: "Account created",
@@ -30,7 +31,7 @@ function OfferEntry({
 }
 export function Offers({ offers }: { offers: EntryActivity[] }) {
   return (
-    <CollapsableView headerText="Offers">
+    <CollapsableView headerText="Offers" icon={ArrowsUpDownIcon}>
       <View className="mx-5 my-4.5">
         {offers?.map((item) => (
           <OfferEntry

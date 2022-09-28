@@ -36,9 +36,9 @@ export default function BeatScreen() {
               }}
               className="aspect-square max-w-125 max-h-125 w-full"
             />
+            <Details code={code} issuer={issuer} />
             {entry.offers && <Offers offers={entry.offers} />}
             {entry.history && <Activity activities={entry.history} />}
-            <Details code={code} issuer={issuer} />
           </View>
           <BeatSummaryColumn entryDetails={entry} />
         </>
@@ -53,9 +53,9 @@ export default function BeatScreen() {
             className="aspect-square max-w-125 max-h-125 w-full mb-3"
           />
           <BeatSummaryColumn entryDetails={entry} />
+          <Details code={code} issuer={issuer} />
           {entry.offers && <Offers offers={entry.offers} />}
           {entry.history && <Activity activities={entry.history} />}
-          <Details code={code} issuer={issuer} />
         </>
       );
     }

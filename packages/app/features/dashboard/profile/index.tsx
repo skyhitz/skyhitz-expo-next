@@ -58,7 +58,7 @@ export function ProfileScreen() {
           </View>
           <View className="flex flex-row items-center">
             <Wallet color={tw.color("white")} size={18} />
-            <TextEllipsis text={user.publicKey!} />
+            <TextEllipsis text={user.publicKey!} containerClassName="mx-2" />
           </View>
         </View>
       </View>

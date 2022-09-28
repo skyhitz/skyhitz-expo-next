@@ -7,9 +7,14 @@ const textEllipsisLength = 2;
 type Props = {
   text: string;
   className?: string;
+  containerClassName?: string;
 };
 
-export function TextEllipsis({ text, className = "" }: Props) {
+export function TextEllipsis({
+  text,
+  className = "",
+  containerClassName = "",
+}: Props) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
   const [displayedText, setDisplayedText] = useState(text);
   const [charLength, setCharLength] = useState(0);
@@ -35,7 +40,7 @@ export function TextEllipsis({ text, className = "" }: Props) {
 
   return (
     <View
-      className="flex-1 mx-2.5 flex-row h-3"
+      className={`flex-1 flex-row h-3 ${containerClassName}`}
       onLayout={(e) => {
         setWrapperWidth(e.nativeEvent.layout.width);
       }}
