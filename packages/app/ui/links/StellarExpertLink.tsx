@@ -7,11 +7,18 @@ type Props = {
   text?: string;
   path: string;
   align?: "left" | "right";
+  fixedWidth?: number;
 };
 
-export function StellarExpertLink({ id, path, text, align = "right" }: Props) {
+export function StellarExpertLink({
+  id,
+  path,
+  text,
+  align = "right",
+  fixedWidth,
+}: Props) {
   return (
-    <View className="grow-1">
+    <View className={fixedWidth ? `w-${fixedWidth} h-3` : "grow-1 h-3"}>
       <Pressable
         onPress={() => {
           Linking.openURL(`${Config.STELLAR_EXPERT_URL}/${path}/${id}`);

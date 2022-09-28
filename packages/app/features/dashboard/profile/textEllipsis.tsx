@@ -21,14 +21,16 @@ export function TextEllipsis({
 
   useEffect(() => {
     if (!charLength || !wrapperWidth) return;
-    const availableTextLength = wrapperWidth / charLength;
+    const availableTextLength = Math.floor(wrapperWidth / charLength);
     if (availableTextLength >= text.length) {
       setDisplayedText(text);
       return;
     }
 
     const lengthToCut = text.length - availableTextLength + textEllipsisLength;
-    const cutStart = Math.round(text.length / 2 - lengthToCut / 2);
+    const cutStart = Math.round(
+      Math.floor(text.length / 2) - Math.ceil(lengthToCut / 2)
+    );
     const cutText = pipe(
       split(""),
       remove(cutStart, lengthToCut),
@@ -46,7 +48,7 @@ export function TextEllipsis({
       }}
     >
       <Text
-        className={`text-xs font-bold absolute leading-5 ${className}`}
+        className={`text-xs font-bold absolute leading-5 ${className} max-line-1`}
         onLayout={(e) => {
           if (charLength) return;
           setCharLength(e.nativeEvent.layout.width / displayedText.length);
