@@ -8,5 +8,16 @@ query authenticatedUser {
     description
     jwt
     publicKey
+    managed
+    lastPlayedEntry {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
   }
 }

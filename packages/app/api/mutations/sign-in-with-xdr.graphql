@@ -9,5 +9,16 @@ mutation signInWithXDR($signedXDR: String!) {
     email
     description
     publicKey
+    managed
+    lastPlayedEntry {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
   }
 }

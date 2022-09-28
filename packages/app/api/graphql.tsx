@@ -391,6 +391,19 @@ export type RequestTokenMutation = {
   requestToken?: boolean | null;
 };
 
+export type SetLastPlayedEntryMutationVariables = Exact<{
+  entryId: Scalars["String"];
+}>;
+
+export type SetLastPlayedEntryMutation = {
+  __typename?: "Mutation";
+  setLastPlayedEntry?: {
+    __typename?: "SuccessResponse";
+    success?: boolean | null;
+    message?: string | null;
+  } | null;
+};
+
 export type SignInWithTokenMutationVariables = Exact<{
   token: Scalars["String"];
   uid: Scalars["String"];
@@ -409,6 +422,18 @@ export type SignInWithTokenMutation = {
     email?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
+    lastPlayedEntry?: {
+      __typename?: "Entry";
+      imageUrl?: string | null;
+      videoUrl?: string | null;
+      description?: string | null;
+      title?: string | null;
+      id?: string | null;
+      artist?: string | null;
+      code?: string | null;
+      issuer?: string | null;
+    } | null;
   } | null;
 };
 
@@ -429,6 +454,18 @@ export type SignInWithXdrMutation = {
     email?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
+    lastPlayedEntry?: {
+      __typename?: "Entry";
+      imageUrl?: string | null;
+      videoUrl?: string | null;
+      description?: string | null;
+      title?: string | null;
+      id?: string | null;
+      artist?: string | null;
+      code?: string | null;
+      issuer?: string | null;
+    } | null;
   } | null;
 };
 
@@ -454,6 +491,21 @@ export type UpdateUserMutation = {
     jwt?: string | null;
     description?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
+  } | null;
+};
+
+export type WithdrawToExternalWalletMutationVariables = Exact<{
+  address: Scalars["String"];
+  amount: Scalars["Int"];
+}>;
+
+export type WithdrawToExternalWalletMutation = {
+  __typename?: "Mutation";
+  withdrawToExternalWallet?: {
+    __typename?: "SuccessResponse";
+    success?: boolean | null;
+    message?: string | null;
   } | null;
 };
 
@@ -549,6 +601,18 @@ export type AuthenticatedUserQuery = {
     description?: string | null;
     jwt?: string | null;
     publicKey?: string | null;
+    managed?: boolean | null;
+    lastPlayedEntry?: {
+      __typename?: "Entry";
+      imageUrl?: string | null;
+      videoUrl?: string | null;
+      description?: string | null;
+      title?: string | null;
+      id?: string | null;
+      artist?: string | null;
+      code?: string | null;
+      issuer?: string | null;
+    } | null;
   } | null;
 };
 
@@ -921,6 +985,57 @@ export type RequestTokenMutationOptions = Apollo.BaseMutationOptions<
   RequestTokenMutation,
   RequestTokenMutationVariables
 >;
+export const SetLastPlayedEntryDocument = gql`
+  mutation setLastPlayedEntry($entryId: String!) {
+    setLastPlayedEntry(entryId: $entryId) {
+      success
+      message
+    }
+  }
+`;
+export type SetLastPlayedEntryMutationFn = Apollo.MutationFunction<
+  SetLastPlayedEntryMutation,
+  SetLastPlayedEntryMutationVariables
+>;
+
+/**
+ * __useSetLastPlayedEntryMutation__
+ *
+ * To run a mutation, you first call `useSetLastPlayedEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetLastPlayedEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setLastPlayedEntryMutation, { data, loading, error }] = useSetLastPlayedEntryMutation({
+ *   variables: {
+ *      entryId: // value for 'entryId'
+ *   },
+ * });
+ */
+export function useSetLastPlayedEntryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SetLastPlayedEntryMutation,
+    SetLastPlayedEntryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    SetLastPlayedEntryMutation,
+    SetLastPlayedEntryMutationVariables
+  >(SetLastPlayedEntryDocument, options);
+}
+export type SetLastPlayedEntryMutationHookResult = ReturnType<
+  typeof useSetLastPlayedEntryMutation
+>;
+export type SetLastPlayedEntryMutationResult =
+  Apollo.MutationResult<SetLastPlayedEntryMutation>;
+export type SetLastPlayedEntryMutationOptions = Apollo.BaseMutationOptions<
+  SetLastPlayedEntryMutation,
+  SetLastPlayedEntryMutationVariables
+>;
 export const SignInWithTokenDocument = gql`
   mutation signInWithToken($token: String!, $uid: String!) {
     signInWithToken(token: $token, uid: $uid) {
@@ -933,6 +1048,17 @@ export const SignInWithTokenDocument = gql`
       email
       description
       publicKey
+      managed
+      lastPlayedEntry {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+      }
     }
   }
 `;
@@ -992,6 +1118,17 @@ export const SignInWithXdrDocument = gql`
       email
       description
       publicKey
+      managed
+      lastPlayedEntry {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+      }
     }
   }
 `;
@@ -1063,6 +1200,7 @@ export const UpdateUserDocument = gql`
       jwt
       description
       publicKey
+      managed
     }
   }
 `;
@@ -1113,6 +1251,59 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
   UpdateUserMutation,
   UpdateUserMutationVariables
 >;
+export const WithdrawToExternalWalletDocument = gql`
+  mutation withdrawToExternalWallet($address: String!, $amount: Int!) {
+    withdrawToExternalWallet(address: $address, amount: $amount) {
+      success
+      message
+    }
+  }
+`;
+export type WithdrawToExternalWalletMutationFn = Apollo.MutationFunction<
+  WithdrawToExternalWalletMutation,
+  WithdrawToExternalWalletMutationVariables
+>;
+
+/**
+ * __useWithdrawToExternalWalletMutation__
+ *
+ * To run a mutation, you first call `useWithdrawToExternalWalletMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWithdrawToExternalWalletMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [withdrawToExternalWalletMutation, { data, loading, error }] = useWithdrawToExternalWalletMutation({
+ *   variables: {
+ *      address: // value for 'address'
+ *      amount: // value for 'amount'
+ *   },
+ * });
+ */
+export function useWithdrawToExternalWalletMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    WithdrawToExternalWalletMutation,
+    WithdrawToExternalWalletMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    WithdrawToExternalWalletMutation,
+    WithdrawToExternalWalletMutationVariables
+  >(WithdrawToExternalWalletDocument, options);
+}
+export type WithdrawToExternalWalletMutationHookResult = ReturnType<
+  typeof useWithdrawToExternalWalletMutation
+>;
+export type WithdrawToExternalWalletMutationResult =
+  Apollo.MutationResult<WithdrawToExternalWalletMutation>;
+export type WithdrawToExternalWalletMutationOptions =
+  Apollo.BaseMutationOptions<
+    WithdrawToExternalWalletMutation,
+    WithdrawToExternalWalletMutationVariables
+  >;
 export const EntryDocument = gql`
   query entry($id: String!) {
     entry(id: $id) {
@@ -1326,6 +1517,17 @@ export const AuthenticatedUserDocument = gql`
       description
       jwt
       publicKey
+      managed
+      lastPlayedEntry {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+      }
     }
   }
 `;

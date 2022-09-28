@@ -1,0 +1,6 @@
+mutation setLastPlayedEntry($entryId: String!) {
+  setLastPlayedEntry(entryId: $entryId) {
+    success
+    message
+  }
+}

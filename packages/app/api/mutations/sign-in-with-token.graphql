@@ -9,5 +9,16 @@ mutation signInWithToken($token: String!, $uid: String!) {
     email
     description
     publicKey
+    managed
+    lastPlayedEntry {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
   }
 }

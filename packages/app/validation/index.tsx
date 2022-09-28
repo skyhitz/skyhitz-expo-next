@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { object, SchemaOf, string } from "yup";
-import { EditProfileForm, MintForm, SignInForm } from "app/types";
+import { EditProfileForm, MintForm, SignInForm, WithdrawForm } from "app/types";
 import { ImageInfo } from "expo-image-picker";
 
 export const usernameSchema = Yup.string()
@@ -57,6 +57,18 @@ export const mintFormSchema: SchemaOf<MintForm> = object().shape({
     .min(1, "Equity should be within range 0 - 100")
     .max(100, "Equity should be within range 0 - 100"),
 });
+
+export const withdrawFormSchema: (
+  currentBalance: number
+) => SchemaOf<WithdrawForm> = (currentBalance: number) => {
+  return object().shape({
+    address: Yup.string().required("Stellar Address is required"),
+    amount: Yup.number()
+      .required("Amount is required")
+      .min(1, "Minimal amount to withdraw is 1XLM")
+      .max(currentBalance, "You can't withdraw more than your balance"),
+  });
+};
 
 const validateImgSquare = (image: ImageInfo) => {
   if (image.height !== image.width) {
