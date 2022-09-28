@@ -1,4 +1,3 @@
-import { isSome } from "app/utils";
 import { ActivityIndicator, Text, View } from "app/design-system";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
@@ -18,7 +17,7 @@ export default function BeatmakerScreen() {
       userId: id!,
     },
   });
-  const entries = collection.data?.entries?.filter(isSome) ?? [];
+  const entries = collection.data?.userEntries ?? [];
 
   useEffect(() => {
     if (collection.error) {

@@ -1,7 +1,6 @@
 import { CollapsableView } from "app/ui/CollapsableView";
-import useAssetHistory from "app/hooks/stellar-expert/useAssetHistory";
-import { Maybe } from "app/types";
 import { Text, View } from "app/design-system";
+import { EntryActivity } from "app/api/graphql";
 
 const typeNumberMeaning: Record<number, string> = {
   0: "Account created",
@@ -21,30 +20,25 @@ function ActivityEntry({
   operation: string;
   type: number;
 }) {
+  console.log(date);
+
   return (
     <View className="flex flex-row justify-between my-0.5">
       <Text>{operation}</Text>
       <Text>{typeNumberMeaning[type] ?? "Unknown activity"}</Text>
-      <Text>{date}</Text>
+      <Text>{date.toLocaleDateString("en-us")}</Text>
     </View>
   );
 }
 
-export function Activity({
-  code,
-  issuer,
-}: {
-  code: Maybe<string>;
-  issuer: Maybe<string>;
-}) {
-  const { data } = useAssetHistory(code, issuer);
+export function Activity({ activities }: { activities: EntryActivity[] }) {
   return (
     <CollapsableView headerText="Activity">
       <View className="mx-5 my-4.5">
-        {data?.map((item) => (
+        {activities?.map((item) => (
           <ActivityEntry
             key={item.id}
-            date={new Date(item.ts)}
+            date={new Date(item.ts * 1000)}
             operation={item.id}
             type={item.type}
           />

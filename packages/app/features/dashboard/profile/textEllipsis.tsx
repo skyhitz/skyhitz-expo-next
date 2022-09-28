@@ -4,7 +4,12 @@ import { Text, View } from "app/design-system";
 
 const textEllipsisLength = 2;
 
-export function TextEllipsis({ text }: { text: string }) {
+type Props = {
+  text: string;
+  className?: string;
+};
+
+export function TextEllipsis({ text, className = "" }: Props) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
   const [displayedText, setDisplayedText] = useState(text);
   const [charLength, setCharLength] = useState(0);
@@ -36,7 +41,7 @@ export function TextEllipsis({ text }: { text: string }) {
       }}
     >
       <Text
-        className="text-xs font-bold absolute leading-5"
+        className={`text-xs font-bold absolute leading-5 ${className}`}
         onLayout={(e) => {
           if (charLength) return;
           setCharLength(e.nativeEvent.layout.width / displayedText.length);

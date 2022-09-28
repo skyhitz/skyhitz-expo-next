@@ -1,7 +1,7 @@
 import { CollapsableView } from "app/ui/CollapsableView";
-import useAssetHolders from "app/hooks/stellar-expert/useAssetHolders";
-import { Maybe } from "app/types";
 import { Text, View } from "app/design-system";
+import { isEmpty } from "ramda";
+import { EntryHolder } from "app/api/graphql";
 
 function Holder({ account, balance }: { account: string; balance: string }) {
   return (
@@ -12,21 +12,29 @@ function Holder({ account, balance }: { account: string; balance: string }) {
   );
 }
 
-export function Owners({
-  code,
-  issuer,
-}: {
-  code: Maybe<string>;
-  issuer: Maybe<string>;
-}) {
-  const { data } = useAssetHolders(code, issuer);
-  // TODO: add pie chart
+type Props = {
+  holders: EntryHolder[];
+};
+
+export function Owners({ holders }: Props) {
+  const Content = () => {
+    if (isEmpty(holders)) {
+      return <Text>No one owns this asset</Text>;
+    } else {
+      return (
+        <>
+          {holders.map((item) => (
+            <Holder {...item} key={item.account} />
+          ))}
+        </>
+      );
+    }
+  };
+
   return (
     <CollapsableView headerText="Owners">
       <View className="m-5">
-        {data?.map((item) => <Holder {...item} key={item.account} />) ?? (
-          <Text>No one owns this asset</Text>
-        )}
+        <Content />
       </View>
     </CollapsableView>
   );

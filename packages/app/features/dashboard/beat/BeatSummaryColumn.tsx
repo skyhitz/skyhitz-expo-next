@@ -1,5 +1,5 @@
 import { tw } from "app/design-system/tailwind";
-import { Entry } from "app/api/graphql";
+import { Entry, EntryDetails } from "app/api/graphql";
 import { Pressable, Text, View } from "app/design-system";
 import InfoCircle from "app/ui/icons/info-circle";
 import { PriceContainer } from "./PriceContainer";
@@ -13,23 +13,23 @@ import { IconProps } from "app/types";
 import { LikesList } from "app/features/player/components/likesList";
 
 type Props = {
-  entry: Entry;
+  entryDetails: EntryDetails;
 };
 
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 
-export function BeatSummaryColumn({ entry }: Props) {
-  const { issuer, artist, code, title, description } = entry;
+export function BeatSummaryColumn({ entryDetails }: Props) {
+  const { artist, title, description } = entryDetails;
   const { playEntry } = usePlayback();
 
+  const entry = entryDetails as Entry;
+
   return (
-    <View className="flex md:flex-1 md:ml-2">
+    <View className="flex md:flex-1 md:ml-2 w-full">
       <View className="mb-4">
         <Text className="text-3xl md:text-7xl font-bold">{title}</Text>
         <Text className="md:text-2xl">{artist}</Text>
         <View className="flex-row mt-3 items-center">
-          <Text className="text-grey-light">Owned by TODO</Text>
-          <View className="w-0.25 h-6 bg-grey-light mx-3" />
           <Pressable onPress={() => playEntry(entry, [entry])}>
             <PlayIcon color={tw.color("grey-light")} />
           </Pressable>
@@ -46,7 +46,7 @@ export function BeatSummaryColumn({ entry }: Props) {
       <CollapsableView icon={FilledLike} headerText="Likes">
         <LikesList classname="px-5 my-5" entry={entry} />
       </CollapsableView>
-      <Owners code={code} issuer={issuer} />
+      {entryDetails.holders && <Owners holders={entryDetails.holders} />}
     </View>
   );
 }

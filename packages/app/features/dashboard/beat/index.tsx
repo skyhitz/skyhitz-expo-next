@@ -1,11 +1,11 @@
 import { useBeatParam } from "app/hooks/param/useBeatParam";
 import { tw } from "app/design-system/tailwind";
-import { useEntryQuery } from "app/api/graphql";
+import { EntryDetails, useEntryQuery } from "app/api/graphql";
 import { ScrollView } from "app/design-system/ScrollView";
 import { ActivityIndicator, Image, View } from "app/design-system";
 import { Offers } from "./offers";
 import { Activity } from "./activity";
-import { Details } from "./details";
+import { Details } from "./BeatDetails";
 import { imageSrc } from "app/utils/entry";
 import { BeatSummaryColumn } from "./BeatSummaryColumn";
 
@@ -15,9 +15,8 @@ export default function BeatScreen() {
     variables: { id: id! },
     skip: !id,
   });
-  const [entry] = data?.entries ?? [{}];
 
-  if (loading || !entry) {
+  if (loading || !data?.entry) {
     return (
       <View className="flex-1 flex items-center justify-center">
         <ActivityIndicator />
@@ -25,9 +24,8 @@ export default function BeatScreen() {
     );
   }
 
-  const { issuer, code, imageUrl } = entry;
-
-  const Content = () => {
+  const Content = ({ entry }: { entry: EntryDetails }) => {
+    const { issuer, code, imageUrl } = entry;
     if (tw.prefixMatch("md")) {
       return (
         <>
@@ -38,11 +36,11 @@ export default function BeatScreen() {
               }}
               className="aspect-square max-w-125 max-h-125 w-full"
             />
-            <Offers code={code} issuer={issuer} />
-            <Activity code={code} issuer={issuer} />
+            {entry.offers && <Offers offers={entry.offers} />}
+            {entry.history && <Activity activities={entry.history} />}
             <Details code={code} issuer={issuer} />
           </View>
-          <BeatSummaryColumn entry={entry} />
+          <BeatSummaryColumn entryDetails={entry} />
         </>
       );
     } else {
@@ -54,9 +52,9 @@ export default function BeatScreen() {
             }}
             className="aspect-square max-w-125 max-h-125 w-full mb-3"
           />
-          <BeatSummaryColumn entry={entry} />
-          <Offers code={code} issuer={issuer} />
-          <Activity code={code} issuer={issuer} />
+          <BeatSummaryColumn entryDetails={entry} />
+          {entry.offers && <Offers offers={entry.offers} />}
+          {entry.history && <Activity activities={entry.history} />}
           <Details code={code} issuer={issuer} />
         </>
       );
@@ -67,7 +65,7 @@ export default function BeatScreen() {
     <ScrollView
       contentContainerStyle={tw`flex md:flex-row flex-1 items-start w-full max-w-screen-xl mx-auto p-4`}
     >
-      <Content />
+      <Content entry={data.entry} />
     </ScrollView>
   );
 }
