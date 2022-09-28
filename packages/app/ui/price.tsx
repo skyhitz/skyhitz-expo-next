@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "app/design-system";
 import Dollar from "app/ui/icons/dollar";
 import { tw } from "app/design-system/tailwind";
-import useEntryPrice from "app/hooks/useEntryPrice";
+import { useEntryOffer } from "app/hooks/useEntryOffer";
 import { openURL } from "expo-linking";
 import { stellarAssetLink } from "app/utils/stellar";
 
@@ -12,13 +12,8 @@ type PriceProps = {
   defaultPrice?: number;
 };
 
-export default function Price({
-  className,
-  code,
-  defaultPrice = 0,
-  issuer,
-}: PriceProps) {
-  const entryPrice = useEntryPrice(code, issuer);
+export default function Price({ className, code, issuer }: PriceProps) {
+  const offer = useEntryOffer(code, issuer);
 
   const onPress = () => {
     if (code && issuer) {
@@ -26,23 +21,33 @@ export default function Price({
     }
   };
 
+  if (!offer.price) {
+    return null;
+  }
+
   return (
     <Pressable onPress={onPress}>
-      <PriceFront className={className} price={entryPrice ?? defaultPrice} />
+      <PriceFront className={className} offer={offer} />
     </Pressable>
   );
 }
 
 type PriceFrontProps = {
   className?: string;
-  price: number;
+  offer: {
+    price: number;
+    amount: number;
+  };
 };
 
-export function PriceFront({ className = "", price }: PriceFrontProps) {
+export function PriceFront({ className = "", offer }: PriceFrontProps) {
   return (
     <View className={`flex flex-row items-center ${className}`}>
       <Dollar size={10} color={tw.color("white")} />
-      {price > 0 && <Text className="text-sm ml-1">{price}</Text>}
+      <Text className="text-sm ml-1">
+        {(offer.price * offer.amount).toFixed()} for{" "}
+        {(offer.amount * 100).toFixed()}%
+      </Text>
     </View>
   );
 }

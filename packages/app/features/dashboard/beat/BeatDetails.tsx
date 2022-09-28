@@ -2,8 +2,9 @@ import { CollapsableView } from "app/ui/CollapsableView";
 import { Text, View } from "app/design-system";
 import { Config } from "app/config";
 import { ReactElement } from "react";
-import { StellarAccountLink } from "app/ui/links/StellarAccountLink";
+import { StellarExpertLink } from "app/ui/links/StellarExpertLink";
 import { Details as DetailsIcon } from "app/ui/icons/details";
+import { getAssetId } from "../../../utils/stellar";
 
 type Props = {
   issuer: string;
@@ -36,9 +37,18 @@ export function Details({ issuer, code }: Props) {
       <View className="mx-5 my-4.5">
         <Row
           label="Issuer address:"
-          trailingWidget={<StellarAccountLink address={issuer} />}
+          trailingWidget={<StellarExpertLink id={issuer} path="account" />}
         />
-        <Row label="Asset code:" value={code} />
+        <Row
+          label="Asset code:"
+          trailingWidget={
+            <StellarExpertLink
+              id={getAssetId(code, issuer)}
+              text={code}
+              path="asset"
+            />
+          }
+        />
         <Row label="Chain:" value={Config.CHAIN_ID} />
       </View>
     </CollapsableView>

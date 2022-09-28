@@ -29,18 +29,20 @@ export default function BeatScreen() {
     if (tw.prefixMatch("md")) {
       return (
         <>
-          <View className="flex flex-1 mr-2 items-center">
-            <Image
-              source={{
-                uri: imageSrc(imageUrl!),
-              }}
-              className="aspect-square max-w-125 max-h-125 w-full"
-            />
-            <Details code={code} issuer={issuer} />
-            {entry.offers && <Offers offers={entry.offers} />}
-            {entry.history && <Activity activities={entry.history} />}
+          <View className="flex-row w-full">
+            <View className="flex flex-1 mr-2 items-center justify-between">
+              <Image
+                source={{
+                  uri: imageSrc(imageUrl!),
+                }}
+                className="aspect-square max-w-125 max-h-125 w-full"
+              />
+              <Details code={code} issuer={issuer} />
+            </View>
+            <BeatSummaryColumn entryDetails={entry} />
           </View>
-          <BeatSummaryColumn entryDetails={entry} />
+          {entry.offers && <Offers offers={entry.offers} />}
+          {entry.history && <Activity activities={entry.history} />}
         </>
       );
     } else {
@@ -63,7 +65,7 @@ export default function BeatScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={tw`flex md:flex-row flex-1 items-start w-full max-w-screen-xl mx-auto p-4`}
+      contentContainerStyle={tw`flex flex-1 items-start w-full max-w-screen-xl mx-auto p-4`}
     >
       <Content entry={data.entry} />
     </ScrollView>

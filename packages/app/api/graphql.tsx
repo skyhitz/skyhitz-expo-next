@@ -62,7 +62,7 @@ export type EntryActivity = {
   price?: Maybe<ActivityPrice>;
   sourceAmount?: Maybe<Scalars["String"]>;
   ts: Scalars["Int"];
-  tx?: Maybe<Scalars["String"]>;
+  tx: Scalars["String"];
   type: Scalars["Int"];
 };
 
@@ -485,7 +485,20 @@ export type EntryQuery = {
       ts: number;
       accounts?: Array<string | null> | null;
       assets?: Array<string | null> | null;
-      tx?: string | null;
+      tx: string;
+      offer?: string | null;
+      amount?: string | null;
+      sourceAmount?: string | null;
+      price?: { __typename?: "ActivityPrice"; n: number; d: number } | null;
+    }> | null;
+    offers?: Array<{
+      __typename?: "EntryActivity";
+      id: string;
+      type: number;
+      ts: number;
+      accounts?: Array<string | null> | null;
+      assets?: Array<string | null> | null;
+      tx: string;
       offer?: string | null;
       amount?: string | null;
       sourceAmount?: string | null;
@@ -1116,6 +1129,21 @@ export const EntryDocument = gql`
         balance
       }
       history {
+        id
+        type
+        ts
+        accounts
+        assets
+        tx
+        offer
+        amount
+        price {
+          n
+          d
+        }
+        sourceAmount
+      }
+      offers {
         id
         type
         ts

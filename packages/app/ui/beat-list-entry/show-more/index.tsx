@@ -28,7 +28,7 @@ export function ShowMore({ entry }: { entry: Entry }) {
             artist={entry.artist ?? ""}
           />
           <LikesList entry={entry} classname="max-w-sm" showLikeButton />
-          <BuyNowBtn entry={entry} showPrice />
+          <BuyNowBtn entry={entry} />
           <Button
             text="See details"
             onPress={() => push(`/dashboard/search/beat/${entry.id}`)}

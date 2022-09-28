@@ -1,19 +1,15 @@
 import { Entry } from "app/api/graphql";
 import { Button } from "app/design-system";
-import useEntryPrice from "app/hooks/useEntryPrice";
-import { IconProps } from "app/types";
-import { PriceFront } from "app/ui/price";
+
 import { ComponentAuthGuard } from "app/utils/authGuard";
+import { useEntryOffer } from "app/hooks/useEntryOffer";
 
 type Props = {
   entry: Entry;
-  showPrice?: boolean;
 };
 
-export function BuyNowBtn({ entry, showPrice }: Props) {
-  const price = useEntryPrice(entry.code, entry.issuer);
-
-  const PriceIcon = (_: IconProps) => <PriceFront price={price} />;
+export function BuyNowBtn({ entry }: Props) {
+  const price = useEntryOffer(entry.code, entry.issuer);
 
   if (!price) {
     return null;
@@ -22,7 +18,6 @@ export function BuyNowBtn({ entry, showPrice }: Props) {
   return (
     <ComponentAuthGuard>
       <Button
-        icon={showPrice ? PriceIcon : undefined}
         text="Buy Now"
         className="flex-row-reverse"
         onPress={() => {

@@ -6,15 +6,12 @@ import {
   Operation,
   TransactionBuilder,
 } from "stellar-base";
-import { Maybe } from "app/types";
 
 const stellarExplorer = "https://stellar.expert/explorer/";
 const horizonTestnet = "https://horizon-testnet.stellar.org";
 
-export const getAssetId = (code: Maybe<string>, issuer: Maybe<string>) => {
-  if (code && issuer) {
-    return `${code}-${issuer}`;
-  }
+export const getAssetId = (code: string, issuer: string) => {
+  return `${code}-${issuer}`;
 };
 
 export const stellarAssetLink = (code: string, issuer: string) =>

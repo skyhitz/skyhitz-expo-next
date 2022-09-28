@@ -2,7 +2,7 @@ import { CollapsableView } from "app/ui/CollapsableView";
 import { Text, View } from "app/design-system";
 import { compose, isEmpty, map, prop, sum } from "ramda";
 import { EntryHolder } from "app/api/graphql";
-import { StellarAccountLink } from "app/ui/links/StellarAccountLink";
+import { StellarExpertLink } from "app/ui/links/StellarExpertLink";
 import { PeopleIcon } from "app/ui/icons/people";
 function Holder({
   account,
@@ -13,7 +13,7 @@ function Holder({
 }) {
   return (
     <View className="flex flex-row w-full justify-between">
-      <StellarAccountLink address={account} />
+      <StellarExpertLink id={account} path="account" />
       <Text className="flex-1 text-right">{percentage.toFixed(2)}%</Text>
     </View>
   );

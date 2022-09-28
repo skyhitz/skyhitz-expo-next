@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { Config } from "app/config";
 
 type FetchData = {
   asks: { price: number; amount: number }[];
@@ -11,13 +10,10 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-export default function useEntryPrice(
-  code?: string | null,
-  issuer?: string | null
-) {
+export default function useUSDPrice(xlm: number): number {
   const { data } = useSWR(
-    `${Config.HORIZON_URL}/order_book?selling_asset_type=credit_alphanum12&selling_asset_code=${code}&selling_asset_issuer=${issuer}&buying_asset_type=native`,
-    code && issuer ? fetcher : null,
+    "https://horizon.stellar.org/order_book?selling_asset_type=native&buying_asset_type=credit_alphanum4&buying_asset_code=USDC&buying_asset_issuer=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=1",
+    fetcher,
     {
       dedupingInterval: 30000,
     }
@@ -25,7 +21,7 @@ export default function useEntryPrice(
 
   if (data && data.asks && data.asks[0]) {
     const ask = data.asks[0];
-    return Math.round(ask.price * ask.amount);
+    return ask.price * xlm;
   }
 
   return 0;
