@@ -18,8 +18,12 @@ export default function Price({ className, entry, hovered }: PriceProps) {
     return null;
   }
 
-  if (!hovered) {
-    return <BuyNowBtn entry={entry} />;
+  if (hovered) {
+    return (
+      <View className={`${className}`}>
+        <BuyNowBtn entry={entry} />
+      </View>
+    );
   } else
     return (
       <View className={`flex flex-row items-center ${className}`}>
