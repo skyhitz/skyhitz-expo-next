@@ -1,53 +1,33 @@
-import { Pressable, Text, View } from "app/design-system";
+import { Text, View } from "app/design-system";
 import Dollar from "app/ui/icons/dollar";
 import { tw } from "app/design-system/tailwind";
 import { useEntryOffer } from "app/hooks/useEntryOffer";
-import { openURL } from "expo-linking";
-import { stellarAssetLink } from "app/utils/stellar";
+import { BuyNowBtn } from "app/ui/buttons/ButNowBtn";
+import { Entry } from "app/api/graphql";
 
 type PriceProps = {
-  code?: string | null;
-  issuer?: string | null;
+  entry: Entry;
   className?: string;
-  defaultPrice?: number;
+  hovered?: boolean;
 };
 
-export default function Price({ className, code, issuer }: PriceProps) {
-  const offer = useEntryOffer(code, issuer);
-
-  const onPress = () => {
-    if (code && issuer) {
-      return openURL(stellarAssetLink(code, issuer));
-    }
-  };
+export default function Price({ className, entry, hovered }: PriceProps) {
+  const offer = useEntryOffer(entry.code, entry.issuer);
 
   if (!offer.price) {
     return null;
   }
 
-  return (
-    <Pressable onPress={onPress}>
-      <PriceFront className={className} offer={offer} />
-    </Pressable>
-  );
-}
-
-type PriceFrontProps = {
-  className?: string;
-  offer: {
-    price: number;
-    amount: number;
-  };
-};
-
-export function PriceFront({ className = "", offer }: PriceFrontProps) {
-  return (
-    <View className={`flex flex-row items-center ${className}`}>
-      <Dollar size={10} color={tw.color("white")} />
-      <Text className="text-sm ml-1">
-        {(offer.price * offer.amount).toFixed()} for{" "}
-        {(offer.amount * 100).toFixed()}%
-      </Text>
-    </View>
-  );
+  if (!hovered) {
+    return <BuyNowBtn entry={entry} />;
+  } else
+    return (
+      <View className={`flex flex-row items-center ${className}`}>
+        <Dollar size={10} color={tw.color("white")} />
+        <Text className="text-sm ml-1">
+          {(offer.price * offer.amount).toFixed()} for{" "}
+          {(offer.amount * 100).toFixed()}%
+        </Text>
+      </View>
+    );
 }

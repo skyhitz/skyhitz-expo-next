@@ -23,6 +23,7 @@ export function BuyNowBtn({ entry }: Props) {
         onPress={() => {
           /*TODO*/
         }}
+        useTouchable
       />
     </ComponentAuthGuard>
   );
