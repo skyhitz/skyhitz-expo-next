@@ -10,7 +10,6 @@ type TextProps = { className?: string } & ComponentProps<
 
 export function TouchableWithoutFeedback({ className, ...props }: TextProps) {
   useSx();
-  console.log(tailwind.style(className));
   const DripsyTouchable = styled(NativeTouchable)();
 
   return <DripsyTouchable {...props} sx={{ ...tailwind.style(className) }} />;

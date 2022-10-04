@@ -13,6 +13,7 @@ import { imageUrlSmall } from "app/utils/entry";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
+import { ApolloError } from "@apollo/client";
 
 type Props = {
   visible: boolean;
@@ -132,7 +133,11 @@ export function PaymentConfirmationModal({
                   onCompleted: onMutationCompleted,
                 });
               } catch (ex) {
-                setError(ex.message);
+                if (ex instanceof ApolloError) {
+                  setError(ex.message);
+                } else {
+                  setError("Unknown error");
+                }
               }
             }}
             disabled={
