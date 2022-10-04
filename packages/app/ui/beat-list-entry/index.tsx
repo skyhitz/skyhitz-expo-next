@@ -4,8 +4,10 @@ import { Pressable } from "react-native";
 import { imageUrlSmall } from "app/utils/entry";
 import Price from "app/ui/price";
 import LikeButton from "app/ui/buttons/likeButton";
-import { ShowMore } from "app/ui/beat-list-entry/show-more";
+import VerticalDots from "app/ui/icons/verticalDots";
 import { ReactElement } from "react";
+import { useRouter } from "solito/router";
+import { tw } from "app/design-system/tailwind";
 
 export type PressableState = Readonly<{
   hovered?: boolean;
@@ -20,6 +22,7 @@ export function BeatListEntry({
   spot?: number;
   onPress: () => void;
 }) {
+  const { push } = useRouter();
   return (
     <Pressable onPress={onPress}>
       {({ hovered }: PressableState): ReactElement => {
@@ -54,7 +57,11 @@ export function BeatListEntry({
                 hovered={hovered}
               />
               <LikeButton size={20} entry={entry} />
-              <ShowMore entry={entry} />
+              <Pressable
+                onPress={() => push(`/dashboard/search/beat/${entry.id}`)}
+              >
+                <VerticalDots size={30} color={tw.color("white")} />
+              </Pressable>
             </View>
           </View>
         );
