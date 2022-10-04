@@ -58,7 +58,9 @@ export function BeatListEntry({
               />
               <LikeButton size={20} entry={entry} />
               <Pressable
-                onPress={() => push(`/dashboard/search/beat/${entry.id}`)}
+                onPress={() => {
+                  push(`/dashboard/beat/${entry.id}`);
+                }}
               >
                 <VerticalDots size={30} color={tw.color("white")} />
               </Pressable>

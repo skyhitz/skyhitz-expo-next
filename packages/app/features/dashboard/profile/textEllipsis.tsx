@@ -48,7 +48,7 @@ export function TextEllipsis({
       }}
     >
       <Text
-        className={`text-xs font-bold absolute leading-5 ${className} max-line-1`}
+        className={`text-xs font-bold absolute leading-5 ${className}`}
         onLayout={(e) => {
           if (charLength) return;
           setCharLength(e.nativeEvent.layout.width / displayedText.length);

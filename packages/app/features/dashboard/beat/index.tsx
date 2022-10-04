@@ -18,7 +18,7 @@ export default function BeatScreen() {
 
   if (loading || !data?.entry) {
     return (
-      <View className="flex-1 flex items-center justify-center">
+      <View className="flex-1 flex items-center justify-center bg-blue-dark">
         <ActivityIndicator />
       </View>
     );
@@ -64,10 +64,12 @@ export default function BeatScreen() {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={tw`flex flex-1 items-start w-full max-w-screen-xl mx-auto p-4`}
-    >
-      <Content entry={data.entry} />
-    </ScrollView>
+    <View className="flex-1 flex bg-blue-dark">
+      <ScrollView
+        contentContainerStyle={tw`flex min-h-full items-start w-full max-w-screen-xl mx-auto p-4 bg-blue-dark`}
+      >
+        <Content entry={data.entry} />
+      </ScrollView>
+    </View>
   );
 }
