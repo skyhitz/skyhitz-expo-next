@@ -31,7 +31,7 @@ export function BuyNowBtn({ entry }: Props) {
       <PaymentConfirmationModal
         visible={modalVisible}
         entry={entry}
-        price={price.price * price.amount}
+        price={price.price}
         equityForSale={price.amount}
         hideModal={() => setModalVisible(false)}
       />

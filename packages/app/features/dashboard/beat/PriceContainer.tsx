@@ -1,7 +1,7 @@
 import { Entry } from "app/api/graphql";
 import { useEntryOffer } from "app/hooks/useEntryOffer";
 import { Text, View } from "app/design-system";
-import { BuyNowBtn } from "app/ui/buttons/ButNowBtn";
+import { BuyNowBtn } from "app/ui/buttons/BuyNowBtn";
 import Dollar from "app/ui/icons/dollar";
 import { tw } from "app/design-system/tailwind";
 import useUSDPrice from "app/hooks/useUSDPrice";

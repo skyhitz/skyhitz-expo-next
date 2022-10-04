@@ -12,7 +12,7 @@ function Holder({
   percentage: number;
 }) {
   return (
-    <View className="flex flex-row w-full justify-between">
+    <View className="flex flex-row w-full justify-between my-2">
       <StellarExpertLink id={account} path="account" />
       <Text className="flex-1 text-right">{percentage.toFixed(2)}%</Text>
     </View>

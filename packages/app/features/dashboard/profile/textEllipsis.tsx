@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { insert, join, pipe, remove, split } from "ramda";
+import { insert, join, max, pipe, remove, split } from "ramda";
 import { Text, View } from "app/design-system";
 
-const textEllipsisLength = 2;
+const textEllipsisLength = 3;
 
 type Props = {
   text: string;
   className?: string;
   containerClassName?: string;
+  minCharLength?: number;
 };
 
 export function TextEllipsis({
   text,
   className = "",
   containerClassName = "",
+  minCharLength = 8,
 }: Props) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
   const [displayedText, setDisplayedText] = useState(text);
@@ -51,7 +53,12 @@ export function TextEllipsis({
         className={`text-xs font-bold absolute leading-5 ${className}`}
         onLayout={(e) => {
           if (charLength) return;
-          setCharLength(e.nativeEvent.layout.width / displayedText.length);
+          setCharLength(
+            max(
+              e.nativeEvent.layout.width / displayedText.length,
+              minCharLength
+            )
+          );
         }}
       >
         {displayedText}

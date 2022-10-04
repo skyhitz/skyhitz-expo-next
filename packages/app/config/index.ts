@@ -10,7 +10,7 @@ const testingStagingModeOn =
 
 const prodModeOn = process.env.NEXT_PUBLIC_EXPO_SKYHITZ_ENV === "production";
 
-let config: ConfigInterface = StagingConfig;
+let config: ConfigInterface = DevelopmentConfig;
 
 if (testingModeOn) {
   config = DevelopmentConfig;
