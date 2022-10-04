@@ -21,7 +21,7 @@ export default function Price({ className, entry, hovered }: PriceProps) {
   if (hovered) {
     return (
       <View className={`${className}`}>
-        <BuyNowBtn entry={entry} />
+        <BuyNowBtn entry={entry} invalidate={offer.invalidate} />
       </View>
     );
   } else

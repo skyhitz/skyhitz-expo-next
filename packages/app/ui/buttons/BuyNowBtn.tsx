@@ -8,9 +8,10 @@ import { PaymentConfirmationModal } from "app/ui/modal/PaymentConfirmationModal"
 
 type Props = {
   entry: Entry;
+  invalidate: () => void;
 };
 
-export function BuyNowBtn({ entry }: Props) {
+export function BuyNowBtn({ entry, invalidate }: Props) {
   const price = useEntryOffer(entry.code, entry.issuer);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -33,7 +34,12 @@ export function BuyNowBtn({ entry }: Props) {
         entry={entry}
         price={price.price}
         equityForSale={price.amount}
-        hideModal={() => setModalVisible(false)}
+        hideModal={(success: boolean) => {
+          setModalVisible(false);
+          if (success) {
+            invalidate();
+          }
+        }}
       />
     </ComponentAuthGuard>
   );

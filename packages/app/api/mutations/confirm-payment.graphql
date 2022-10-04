@@ -1,0 +1,6 @@
+mutation ConfirmPayment($resultXdr: String!) {
+  confirmPayment(resultXdr: $resultXdr) {
+    success
+    message
+  }
+}

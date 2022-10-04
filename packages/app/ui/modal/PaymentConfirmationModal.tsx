@@ -14,10 +14,11 @@ import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { ApolloError } from "@apollo/client";
+import { useConfirmPaymentMutation } from "../../api/graphql";
 
 type Props = {
   visible: boolean;
-  hideModal: () => void;
+  hideModal: (success: boolean) => void;
   price: number;
   equityForSale: number;
   entry: Entry;
@@ -31,6 +32,7 @@ export function PaymentConfirmationModal({
 }: Props) {
   const { data: paymentInfoData } = usePaymentsInfoQuery();
   const [buy, { loading }] = useBuyEntryMutation();
+  const [confirm] = useConfirmPaymentMutation();
   const { signAndSubmitXdr } = useWalletConnectClient();
   const [error, setError] = useState<string | undefined>();
   const [message, setMessage] = useState<string | undefined>();
@@ -39,6 +41,7 @@ export function PaymentConfirmationModal({
   const onMutationCompleted = async (data: BuyEntryMutation) => {
     if (data?.buyEntry?.success) {
       if (data.buyEntry.submitted) {
+        hideModal(true);
         toast.show("You have successfully bought an NFT", {
           type: "success",
         });
@@ -51,7 +54,11 @@ export function PaymentConfirmationModal({
           setMessage(undefined);
           const { status } = response as { status: string };
           if (status === "success") {
-            // TODO request to the backend to send email
+            await confirm({ variables: { resultXdr: data.buyEntry.xdr } });
+            hideModal(true);
+            toast.show("You have successfully bought an NFT", {
+              type: "success",
+            });
           } else {
             setError(
               "Something went wrong during signing and submitting transaction in your wallet."
@@ -74,7 +81,10 @@ export function PaymentConfirmationModal({
     <Modal visible={visible} transparent>
       <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70 px-2">
         <View className="flex items-center w-full max-w-lg bg-blue-field p-4">
-          <Pressable className="absolute right-2 top-2 " onPress={hideModal}>
+          <Pressable
+            className="absolute right-2 top-2 "
+            onPress={() => hideModal(false)}
+          >
             <X color={tw.color("white")} />
           </Pressable>
           <Text className="text-lg font-bold">Confirm payment</Text>

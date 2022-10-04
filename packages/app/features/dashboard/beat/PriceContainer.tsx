@@ -32,7 +32,7 @@ export function PriceContainer({ entry }: Props) {
           ${usd.toFixed(2)}
         </Text>
       </View>
-      <BuyNowBtn entry={entry} />
+      <BuyNowBtn entry={entry} invalidate={offer.invalidate} />
     </View>
   );
 }
