@@ -1,5 +1,5 @@
 query userCollection($userId: String!) {
-  entries(userId: $userId) {
+  userEntries(userId: $userId) {
     imageUrl
     videoUrl
     description

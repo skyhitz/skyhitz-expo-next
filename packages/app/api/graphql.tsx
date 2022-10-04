@@ -21,6 +21,13 @@ export type Scalars = {
   Float: number;
 };
 
+/** This is an ActivityPrice */
+export type ActivityPrice = {
+  __typename?: "ActivityPrice";
+  d: Scalars["Int"];
+  n: Scalars["Int"];
+};
+
 /** This is an ConditionalXDR */
 export type ConditionalXdr = {
   __typename?: "ConditionalXDR";
@@ -41,6 +48,45 @@ export type Entry = {
   issuer?: Maybe<Scalars["String"]>;
   title?: Maybe<Scalars["String"]>;
   videoUrl?: Maybe<Scalars["String"]>;
+};
+
+/** This is an EntryActivity */
+export type EntryActivity = {
+  __typename?: "EntryActivity";
+  accounts?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  amount?: Maybe<Scalars["String"]>;
+  assets?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  createdOffer?: Maybe<Scalars["String"]>;
+  id: Scalars["String"];
+  offer?: Maybe<Scalars["String"]>;
+  price?: Maybe<ActivityPrice>;
+  sourceAmount?: Maybe<Scalars["String"]>;
+  ts: Scalars["Int"];
+  tx: Scalars["String"];
+  type: Scalars["Int"];
+};
+
+/** This is an EntryDetails */
+export type EntryDetails = {
+  __typename?: "EntryDetails";
+  artist: Scalars["String"];
+  code: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+  history?: Maybe<Array<EntryActivity>>;
+  holders?: Maybe<Array<EntryHolder>>;
+  id: Scalars["String"];
+  imageUrl: Scalars["String"];
+  issuer: Scalars["String"];
+  offers?: Maybe<Array<EntryActivity>>;
+  title: Scalars["String"];
+  videoUrl: Scalars["String"];
+};
+
+/** This is an EntryHolder */
+export type EntryHolder = {
+  __typename?: "EntryHolder";
+  account: Scalars["String"];
+  balance: Scalars["String"];
 };
 
 /** Entry Likes */
@@ -205,21 +251,21 @@ export type PublicUser = {
 export type Query = {
   __typename?: "Query";
   authenticatedUser?: Maybe<User>;
-  entries?: Maybe<Array<Maybe<Entry>>>;
+  entry?: Maybe<EntryDetails>;
   entryLikes?: Maybe<EntryLikes>;
   entryPrice?: Maybe<EntryPrice>;
   getIssuer?: Maybe<Scalars["String"]>;
   paymentsInfo?: Maybe<PaymentsInfo>;
   recentlyAdded?: Maybe<Array<Maybe<Entry>>>;
   topChart?: Maybe<Array<Maybe<Entry>>>;
+  userEntries?: Maybe<Array<Entry>>;
   userLikes?: Maybe<Array<Maybe<Entry>>>;
   xlmPrice?: Maybe<Scalars["String"]>;
 };
 
 /** Get users or entries */
-export type QueryEntriesArgs = {
-  id?: InputMaybe<Scalars["String"]>;
-  userId?: InputMaybe<Scalars["String"]>;
+export type QueryEntryArgs = {
+  id: Scalars["String"];
 };
 
 /** Get users or entries */
@@ -247,6 +293,11 @@ export type QueryTopChartArgs = {
   page?: InputMaybe<Scalars["Int"]>;
 };
 
+/** Get users or entries */
+export type QueryUserEntriesArgs = {
+  userId: Scalars["String"];
+};
+
 /** This is a SuccessResponse */
 export type SuccessResponse = {
   __typename?: "SuccessResponse";
@@ -263,8 +314,8 @@ export type User = {
   email?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["String"]>;
   jwt?: Maybe<Scalars["String"]>;
-  managed?: Maybe<Scalars["Boolean"]>;
   lastPlayedEntry?: Maybe<Entry>;
+  managed?: Maybe<Scalars["Boolean"]>;
   publicKey?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["String"]>;
   username?: Maybe<Scalars["String"]>;
@@ -458,23 +509,54 @@ export type WithdrawToExternalWalletMutation = {
   } | null;
 };
 
-export type UserCollectionQueryVariables = Exact<{
-  userId: Scalars["String"];
+export type EntryQueryVariables = Exact<{
+  id: Scalars["String"];
 }>;
 
-export type UserCollectionQuery = {
+export type EntryQuery = {
   __typename?: "Query";
-  entries?: Array<{
-    __typename?: "Entry";
-    imageUrl?: string | null;
-    videoUrl?: string | null;
+  entry?: {
+    __typename?: "EntryDetails";
+    imageUrl: string;
+    videoUrl: string;
     description?: string | null;
-    title?: string | null;
-    id?: string | null;
-    artist?: string | null;
-    code?: string | null;
-    issuer?: string | null;
-  } | null> | null;
+    title: string;
+    id: string;
+    artist: string;
+    code: string;
+    issuer: string;
+    holders?: Array<{
+      __typename?: "EntryHolder";
+      account: string;
+      balance: string;
+    }> | null;
+    history?: Array<{
+      __typename?: "EntryActivity";
+      id: string;
+      type: number;
+      ts: number;
+      accounts?: Array<string | null> | null;
+      assets?: Array<string | null> | null;
+      tx: string;
+      offer?: string | null;
+      amount?: string | null;
+      sourceAmount?: string | null;
+      price?: { __typename?: "ActivityPrice"; n: number; d: number } | null;
+    }> | null;
+    offers?: Array<{
+      __typename?: "EntryActivity";
+      id: string;
+      type: number;
+      ts: number;
+      accounts?: Array<string | null> | null;
+      assets?: Array<string | null> | null;
+      tx: string;
+      offer?: string | null;
+      amount?: string | null;
+      sourceAmount?: string | null;
+      price?: { __typename?: "ActivityPrice"; n: number; d: number } | null;
+    }> | null;
+  } | null;
 };
 
 export type EntryLikesQueryVariables = Exact<{
@@ -581,6 +663,25 @@ export type TopChartQuery = {
     code?: string | null;
     issuer?: string | null;
   } | null> | null;
+};
+
+export type UserCollectionQueryVariables = Exact<{
+  userId: Scalars["String"];
+}>;
+
+export type UserCollectionQuery = {
+  __typename?: "Query";
+  userEntries?: Array<{
+    __typename?: "Entry";
+    imageUrl?: string | null;
+    videoUrl?: string | null;
+    description?: string | null;
+    title?: string | null;
+    id?: string | null;
+    artist?: string | null;
+    code?: string | null;
+    issuer?: string | null;
+  }> | null;
 };
 
 export type UserLikesQueryVariables = Exact<{ [key: string]: never }>;
@@ -1203,9 +1304,9 @@ export type WithdrawToExternalWalletMutationOptions =
     WithdrawToExternalWalletMutation,
     WithdrawToExternalWalletMutationVariables
   >;
-export const UserCollectionDocument = gql`
-  query userCollection($userId: String!) {
-    entries(userId: $userId) {
+export const EntryDocument = gql`
+  query entry($id: String!) {
+    entry(id: $id) {
       imageUrl
       videoUrl
       description
@@ -1214,59 +1315,83 @@ export const UserCollectionDocument = gql`
       artist
       code
       issuer
+      holders {
+        account
+        balance
+      }
+      history {
+        id
+        type
+        ts
+        accounts
+        assets
+        tx
+        offer
+        amount
+        price {
+          n
+          d
+        }
+        sourceAmount
+      }
+      offers {
+        id
+        type
+        ts
+        accounts
+        assets
+        tx
+        offer
+        amount
+        price {
+          n
+          d
+        }
+        sourceAmount
+      }
     }
   }
 `;
 
 /**
- * __useUserCollectionQuery__
+ * __useEntryQuery__
  *
- * To run a query within a React component, call `useUserCollectionQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useEntryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUserCollectionQuery({
+ * const { data, loading, error } = useEntryQuery({
  *   variables: {
- *      userId: // value for 'userId'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useUserCollectionQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    UserCollectionQuery,
-    UserCollectionQueryVariables
-  >
+export function useEntryQuery(
+  baseOptions: Apollo.QueryHookOptions<EntryQuery, EntryQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<UserCollectionQuery, UserCollectionQueryVariables>(
-    UserCollectionDocument,
+  return Apollo.useQuery<EntryQuery, EntryQueryVariables>(
+    EntryDocument,
     options
   );
 }
-export function useUserCollectionLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    UserCollectionQuery,
-    UserCollectionQueryVariables
-  >
+export function useEntryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<EntryQuery, EntryQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<UserCollectionQuery, UserCollectionQueryVariables>(
-    UserCollectionDocument,
+  return Apollo.useLazyQuery<EntryQuery, EntryQueryVariables>(
+    EntryDocument,
     options
   );
 }
-export type UserCollectionQueryHookResult = ReturnType<
-  typeof useUserCollectionQuery
->;
-export type UserCollectionLazyQueryHookResult = ReturnType<
-  typeof useUserCollectionLazyQuery
->;
-export type UserCollectionQueryResult = Apollo.QueryResult<
-  UserCollectionQuery,
-  UserCollectionQueryVariables
+export type EntryQueryHookResult = ReturnType<typeof useEntryQuery>;
+export type EntryLazyQueryHookResult = ReturnType<typeof useEntryLazyQuery>;
+export type EntryQueryResult = Apollo.QueryResult<
+  EntryQuery,
+  EntryQueryVariables
 >;
 export const EntryLikesDocument = gql`
   query entryLikes($id: String!) {
@@ -1638,6 +1763,71 @@ export type TopChartLazyQueryHookResult = ReturnType<
 export type TopChartQueryResult = Apollo.QueryResult<
   TopChartQuery,
   TopChartQueryVariables
+>;
+export const UserCollectionDocument = gql`
+  query userCollection($userId: String!) {
+    userEntries(userId: $userId) {
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
+    }
+  }
+`;
+
+/**
+ * __useUserCollectionQuery__
+ *
+ * To run a query within a React component, call `useUserCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserCollectionQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserCollectionQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    UserCollectionQuery,
+    UserCollectionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserCollectionQuery, UserCollectionQueryVariables>(
+    UserCollectionDocument,
+    options
+  );
+}
+export function useUserCollectionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    UserCollectionQuery,
+    UserCollectionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserCollectionQuery, UserCollectionQueryVariables>(
+    UserCollectionDocument,
+    options
+  );
+}
+export type UserCollectionQueryHookResult = ReturnType<
+  typeof useUserCollectionQuery
+>;
+export type UserCollectionLazyQueryHookResult = ReturnType<
+  typeof useUserCollectionLazyQuery
+>;
+export type UserCollectionQueryResult = Apollo.QueryResult<
+  UserCollectionQuery,
+  UserCollectionQueryVariables
 >;
 export const UserLikesDocument = gql`
   query userLikes {

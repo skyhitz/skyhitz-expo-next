@@ -73,7 +73,7 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
               />
             </ComponentAuthGuard>
             <PlayerButtonsRow size="large" />
-            {entry && <LikesList entry={entry} />}
+            {entry && <LikesList entry={entry} showLikeButton />}
           </>
         )}
       </SafeAreaView>

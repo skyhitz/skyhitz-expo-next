@@ -1,0 +1,46 @@
+query entry($id: String!) {
+  entry(id: $id) {
+    imageUrl
+    videoUrl
+    description
+    title
+    id
+    artist
+    code
+    issuer
+    holders {
+      account
+      balance
+    }
+    history {
+      id
+      type
+      ts
+      accounts
+      assets
+      tx
+      offer
+      amount
+      price {
+        n
+        d
+      }
+      sourceAmount
+    }
+    offers {
+      id
+      type
+      ts
+      accounts
+      assets
+      tx
+      offer
+      amount
+      price {
+        n
+        d
+      }
+      sourceAmount
+    }
+  }
+}

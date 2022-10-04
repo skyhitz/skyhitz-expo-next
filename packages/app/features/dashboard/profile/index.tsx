@@ -58,7 +58,7 @@ export function ProfileScreen() {
           </View>
           <View className="flex flex-row items-center">
             <Wallet color={tw.color("white")} size={18} />
-            <TextEllipsis text={user.publicKey!} />
+            <TextEllipsis text={user.publicKey!} containerClassName="mx-2" />
           </View>
         </View>
       </View>
@@ -70,7 +70,7 @@ export function ProfileScreen() {
       />
       <ProfileRow
         icon={<StarBorder size={24} color={tw.color("blue")} />}
-        trailingNumber={userCollectionData?.entries?.length}
+        trailingNumber={userCollectionData?.userEntries?.length}
         title="Collections"
         onPress={() => push("/dashboard/profile/collection")}
       />

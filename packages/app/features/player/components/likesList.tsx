@@ -9,9 +9,10 @@ import React from "react";
 type Props = {
   entry: Entry;
   classname?: string;
+  showLikeButton?: boolean;
 };
 
-export function LikesList({ entry, classname = "" }: Props) {
+export function LikesList({ entry, classname = "", showLikeButton }: Props) {
   const { data, loading } = useEntryLikesQuery({
     variables: {
       id: entry.id!,
@@ -30,7 +31,7 @@ export function LikesList({ entry, classname = "" }: Props) {
     <View className={`w-full mb-10 flex ${classname}`}>
       <View className="flex flex-row justify-between items-center">
         <Text className="text-sm text-white">Liked By</Text>
-        <LikeButton size={24} entry={entry} />
+        {showLikeButton && <LikeButton size={24} entry={entry} />}
       </View>
       <View className="flex flex-row mt-2.5 min-h-10">
         <FlatList

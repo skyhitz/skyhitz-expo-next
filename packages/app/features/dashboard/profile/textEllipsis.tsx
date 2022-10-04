@@ -4,21 +4,33 @@ import { Text, View } from "app/design-system";
 
 const textEllipsisLength = 2;
 
-export function TextEllipsis({ text }: { text: string }) {
+type Props = {
+  text: string;
+  className?: string;
+  containerClassName?: string;
+};
+
+export function TextEllipsis({
+  text,
+  className = "",
+  containerClassName = "",
+}: Props) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
   const [displayedText, setDisplayedText] = useState(text);
   const [charLength, setCharLength] = useState(0);
 
   useEffect(() => {
     if (!charLength || !wrapperWidth) return;
-    const availableTextLength = wrapperWidth / charLength;
+    const availableTextLength = Math.floor(wrapperWidth / charLength);
     if (availableTextLength >= text.length) {
       setDisplayedText(text);
       return;
     }
 
     const lengthToCut = text.length - availableTextLength + textEllipsisLength;
-    const cutStart = Math.round(text.length / 2 - lengthToCut / 2);
+    const cutStart = Math.round(
+      Math.floor(text.length / 2) - Math.ceil(lengthToCut / 2)
+    );
     const cutText = pipe(
       split(""),
       remove(cutStart, lengthToCut),
@@ -30,13 +42,13 @@ export function TextEllipsis({ text }: { text: string }) {
 
   return (
     <View
-      className="flex-1 mx-2.5 flex-row h-3"
+      className={`flex-1 flex-row h-3 ${containerClassName}`}
       onLayout={(e) => {
         setWrapperWidth(e.nativeEvent.layout.width);
       }}
     >
       <Text
-        className="text-xs font-bold absolute leading-5"
+        className={`text-xs font-bold absolute leading-5 ${className} max-line-1`}
         onLayout={(e) => {
           if (charLength) return;
           setCharLength(e.nativeEvent.layout.width / displayedText.length);
