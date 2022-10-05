@@ -14,7 +14,6 @@ import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { ApolloError } from "@apollo/client";
-import { useConfirmPaymentMutation } from "../../api/graphql";
 
 type Props = {
   visible: boolean;
@@ -31,16 +30,17 @@ export function PaymentConfirmationModal({
   entry,
 }: Props) {
   const { data: paymentInfoData } = usePaymentsInfoQuery();
-  const [buy, { loading }] = useBuyEntryMutation();
-  const [confirm] = useConfirmPaymentMutation();
+  const [buy] = useBuyEntryMutation();
   const { signAndSubmitXdr } = useWalletConnectClient();
   const [error, setError] = useState<string | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>();
   const toast = useToast();
 
   const onMutationCompleted = async (data: BuyEntryMutation) => {
     if (data?.buyEntry?.success) {
       if (data.buyEntry.submitted) {
+        setLoading(false);
         hideModal(true);
         toast.show("You have successfully bought an NFT", {
           type: "success",
@@ -52,9 +52,10 @@ export function PaymentConfirmationModal({
         try {
           const response = await signAndSubmitXdr(xdr);
           setMessage(undefined);
+          setLoading(false);
+
           const { status } = response as { status: string };
           if (status === "success") {
-            await confirm({ variables: { resultXdr: data.buyEntry.xdr } });
             hideModal(true);
             toast.show("You have successfully bought an NFT", {
               type: "success",
@@ -133,6 +134,7 @@ export function PaymentConfirmationModal({
             className="mt-4"
             text="Confirm"
             onPress={async () => {
+              setLoading(true);
               try {
                 await buy({
                   variables: {
@@ -143,6 +145,7 @@ export function PaymentConfirmationModal({
                   onCompleted: onMutationCompleted,
                 });
               } catch (ex) {
+                setLoading(false);
                 if (ex instanceof ApolloError) {
                   setError(ex.message);
                 } else {

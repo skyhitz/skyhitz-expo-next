@@ -20,6 +20,7 @@ export default function ProfileBeatsList({
   return (
     <View className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto">
       <FlatList
+        keyExtractor={(item) => item.id!}
         data={beats}
         renderItem={({ item }) => (
           <BeatListEntry entry={item} onPress={() => playEntry(item, beats)} />

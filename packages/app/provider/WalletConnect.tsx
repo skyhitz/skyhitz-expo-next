@@ -15,8 +15,11 @@ import { getSdkError } from "@walletconnect/utils";
 import { Alert, Platform } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import { Config } from "app/config";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 interface IContext {
+  initialized: boolean;
   session: SessionTypes.Struct | undefined;
   connect: () => Promise<SessionTypes.Struct | undefined>;
   disconnect: () => Promise<void>;
@@ -35,6 +38,8 @@ export function ClientContextProvider({
   const [client, setClient] = useState<Client>();
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [accounts, setAccounts] = useState<string[]>([]);
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const user = useRecoilValue(userAtom);
 
   const reset = () => {
     setSession(undefined);
@@ -171,6 +176,7 @@ export function ClientContextProvider({
       });
       setClient(newClient);
       await subscribeToEvents(newClient);
+      setInitialized(true);
     } catch (err) {
       console.log("error", err);
     }
@@ -181,6 +187,15 @@ export function ClientContextProvider({
       if (!client) throw new Error("WalletConnect Client not initialized");
       const currentSession = session ?? (await connect());
       if (!currentSession) throw new Error("There is no active session");
+      // check if the publicKey match with the one of the current user
+      const publicKey = Object.values(
+        currentSession.namespaces
+      )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
+      console.log(publicKey);
+      if (user?.publicKey && user.publicKey !== publicKey) {
+        console.log("disconnect");
+        return;
+      }
       const result = await client.request({
         topic: currentSession.topic,
         chainId: Config.CHAIN_ID,
@@ -224,8 +239,17 @@ export function ClientContextProvider({
       disconnect,
       signXdr,
       signAndSubmitXdr,
+      initialized,
     }),
-    [accounts, session, connect, disconnect, signXdr, signAndSubmitXdr]
+    [
+      accounts,
+      session,
+      connect,
+      disconnect,
+      signXdr,
+      signAndSubmitXdr,
+      initialized,
+    ]
   );
 
   return (
