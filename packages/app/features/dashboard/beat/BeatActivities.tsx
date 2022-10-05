@@ -4,7 +4,13 @@ import { EntryActivity } from "app/api/graphql";
 import { ArrowsUpDownIcon } from "app/ui/icons/arrows-up-down";
 import { StellarExpertLink } from "app/ui/links/StellarExpertLink";
 
-export function BeatActivity({ activity }: { activity: EntryActivity }) {
+export function BeatActivity({
+  activity,
+  index,
+}: {
+  activity: EntryActivity;
+  index: number;
+}) {
   const date = new Date(activity.ts * 1000);
 
   const AssetTransfered = () => {
@@ -14,19 +20,19 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
     const sender = activity.accounts[0]!;
     const receiver = activity.accounts[1]!;
     return (
-      <View className="flex-row flex-wrap">
+      <View className="flex-row flex-wrap items-center">
         <StellarExpertLink
           id={sender}
           path="account"
           fixedWidth={20}
-          align="left"
+          align="start"
         />
-        <Text> Transfered Asset to </Text>
+        <Text className="my-1 md:my-0 text-sm"> Transfered Asset to </Text>
         <StellarExpertLink
           id={receiver}
           path="account"
           fixedWidth={20}
-          align="left"
+          align="start"
         />
       </View>
     );
@@ -47,14 +53,14 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
     const account = activity.accounts[0]!;
     if (amount === "0") {
       return (
-        <View className="flex-row flex-wrap">
+        <View className="flex-row flex-wrap items-center">
           <StellarExpertLink
             id={account}
             path="account"
             fixedWidth={20}
-            align="left"
+            align="start"
           />
-          <Text> Cancelled offer</Text>
+          <Text className="my-1 md:my-0 text-sm"> Cancelled offer</Text>
         </View>
       );
     }
@@ -70,19 +76,19 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
           id={account}
           path="account"
           fixedWidth={20}
-          align="left"
+          align="start"
         />
-        <Text>
+        <Text className="my-1 md:my-0 text-sm">
           {" "}
           Created a {type} offer {amount}{" "}
         </Text>
         <StellarExpertLink id={buyAsset} path="asset" fixedWidth={20} />
-        <Text> for {price} </Text>
+        <Text className="my-1 md:my-0 text-sm"> for {price} </Text>
         <StellarExpertLink
           id={sellAsset}
           path="asset"
           fixedWidth={20}
-          align="left"
+          align="start"
         />
       </View>
     );
@@ -96,14 +102,14 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
     const asset = activity.assets[0]!;
 
     return (
-      <View className="flex-row flex-wrap">
+      <View className="flex-row flex-wrap items-center">
         <StellarExpertLink
           id={account}
           path="account"
           fixedWidth={20}
-          align="left"
+          align="start"
         />
-        <Text> Established trustline to </Text>
+        <Text className="my-1 md:my-0 text-sm"> Established trustline to </Text>
         <StellarExpertLink id={asset} path="asset" fixedWidth={20} />
       </View>
     );
@@ -114,8 +120,6 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
       activity?.accounts?.length !== 2 ||
       !activity.sourceAmount ||
       !activity.amount ||
-      !activity.price?.n ||
-      !activity.price?.d ||
       activity.assets?.length !== 2
     ) {
       return <Text>Unsupported activity type</Text>;
@@ -126,21 +130,31 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
     const sellAsset = activity.assets[0]!;
 
     return (
-      <View className="flex-row flex-wrap items-center">
+      <View className="md:flex-row flex-wrap md:items-center">
         <StellarExpertLink
           id={buyer}
           path="account"
           fixedWidth={20}
-          align="left"
+          align="start"
         />
-        <Text>Transfered {activity.sourceAmount} </Text>
-        <StellarExpertLink id={sellAsset} path="asset" fixedWidth={20} />
-        <Text> in exchange for {activity.amount} </Text>
+        <Text className="my-1 md:my-0 text-sm">
+          Transfered {activity.sourceAmount}{" "}
+        </Text>
+        <StellarExpertLink
+          id={sellAsset}
+          path="asset"
+          fixedWidth={20}
+          align="center"
+        />
+        <Text className="my-1 md:my-0 text-sm">
+          {" "}
+          in exchange for {activity.amount}{" "}
+        </Text>
         <StellarExpertLink
           id={buyAsset}
           path="asset"
           fixedWidth={20}
-          align="left"
+          align="start"
         />
       </View>
     );
@@ -152,6 +166,8 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
         return <Text>Account Created</Text>;
       case 1:
         return <AssetTransfered />;
+      case 2:
+        return <Transfer />;
       case 3:
         return <Offer type="sell" />;
       case 6:
@@ -161,16 +177,21 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
       case 13:
         return <Transfer />;
       default:
+        console.log(activity);
         return <Text>Unsupported activity type</Text>;
     }
   };
+
+  const bgColor = index % 2 === 1 ? "bg-blue-dark" : "bg-blue-transparent";
   return (
-    <View className="flex flex-row my-2">
-      <StellarExpertLink id={activity.tx} path="tx" align="left" />
-      <View className="flex-5 mx-2">
+    <View className={`flex md:flex-row py-3 px-5 md:items-center ${bgColor}`}>
+      <StellarExpertLink id={activity.tx} path="tx" align="start" />
+      <View className="flex-5 my-2 md:mx-2 md:my-0">
         <CenterWidget />
       </View>
-      <Text>{date.toLocaleDateString("en-us")}</Text>
+      <Text className="text-sm my-2 md:my-0 text-grey">
+        {date.toLocaleDateString("en-us")}
+      </Text>
     </View>
   );
 }
@@ -178,9 +199,9 @@ export function BeatActivity({ activity }: { activity: EntryActivity }) {
 export function Activity({ activities }: { activities: EntryActivity[] }) {
   return (
     <CollapsableView headerText="Activity" icon={ArrowsUpDownIcon}>
-      <View className="mx-5 my-4.5">
-        {activities?.map((item) => (
-          <BeatActivity key={item.id} activity={item} />
+      <View>
+        {activities?.map((item, index) => (
+          <BeatActivity key={item.id} activity={item} index={index} />
         )) ?? <Text>No activity</Text>}
       </View>
     </CollapsableView>

@@ -61,7 +61,7 @@ export const CollapsableView = ({
 
   return (
     <View
-      className={`border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent w-full ${
+      className={`border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent w-full overflow-hidden ${
         className ?? ""
       }`}
     >

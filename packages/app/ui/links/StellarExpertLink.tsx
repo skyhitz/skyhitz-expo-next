@@ -6,7 +6,7 @@ type Props = {
   id: string;
   text?: string;
   path: string;
-  align?: "left" | "right";
+  align?: "start" | "end" | "center";
   fixedWidth?: number;
 };
 
@@ -14,7 +14,7 @@ export function StellarExpertLink({
   id,
   path,
   text,
-  align = "right",
+  align = "end",
   fixedWidth,
 }: Props) {
   return (
@@ -27,9 +27,7 @@ export function StellarExpertLink({
         <TextEllipsis
           className="text-blue"
           text={text ?? id}
-          containerClassName={
-            align === "left" ? "justify-start" : "justify-end"
-          }
+          containerClassName={`justify-${align}`}
         />
       </Pressable>
     </View>
