@@ -17,27 +17,14 @@ type Props = {
 export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
   const { playPause, playbackState, entry, isPlaying } = usePlayback();
 
-  if (playbackState === "ERROR") {
-    return (
-      <Animated.View
-        style={[
-          tw.style(
-            "flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5"
-          ),
-          animatedStyle,
-        ]}
-      >
-        <Text className="text-red">Something went wrong. Try again.</Text>
-      </Animated.View>
-    );
-  }
-
   return (
     <Animated.View
       style={[
         tw.style(
           `flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5 ${
-            playbackState === "IDLE" ? "hidden" : ""
+            playbackState === "IDLE" || playbackState === "ERROR"
+              ? "hidden"
+              : ""
           }`
         ),
         animatedStyle,

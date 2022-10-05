@@ -28,7 +28,7 @@ export function VideoPlayer({ width, height, style }: Props) {
     // we need to provide correct uri only for web
     // on native we can change uri using loadAsync
     if (Platform.OS === "web" && entry) {
-      return videoSrc(entry.videoUrl!);
+      return videoSrc(entry.videoUrl!, playbackState === "FALLBACK");
     }
     return "";
   };
@@ -66,6 +66,10 @@ export function VideoPlayer({ width, height, style }: Props) {
           justifyContent: "center",
         }}
         onReadyForDisplay={onReadyForDisplay}
+        onError={(e) => {
+          console.log("Error");
+          console.log(e);
+        }}
       />
     </ImageBackground>
   );

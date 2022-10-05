@@ -17,6 +17,7 @@ import { PlaybackState } from "app/types";
 import { isSome } from "app/utils";
 import { append, findIndex, init, last } from "ramda";
 import { videoSrc } from "app/utils/entry";
+import { useErrorReport } from "app/hooks/useErrorReport";
 
 export type PlaybackApi = {
   playback: null | Playback;
@@ -80,25 +81,64 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [shuffle, setShuffle] = useState<boolean>(false);
   const [setLastPlayedEntry] = useSetLastPlayedEntryMutation();
+  const reportError = useErrorReport();
+  let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
 
-  const _loadAndPlay = useCallback(
-    async (entry: Entry) => {
+  const onError = useCallback(() => {
+    setPlaybackState("ERROR");
+    reportError(Error("Couldn't play that beat. Try Again!"));
+    setEntry(null);
+    setPlayingHistory([]);
+    setPlaylist([]);
+    setDuration(0);
+    setPosition(0);
+  }, [
+    setPlaybackState,
+    reportError,
+    setEntry,
+    setPlayingHistory,
+    setPlaylist,
+    setDuration,
+    setPosition,
+  ]);
+
+  const loadAndPlay = useCallback(
+    async (entry: Entry, fallback = false) => {
       if (!isSome(entry.videoUrl)) return;
-      const videoUrl = videoSrc(entry.videoUrl);
+      const videoUrl = videoSrc(entry.videoUrl, fallback);
       if (playback !== null) {
-        await playback.unloadAsync();
+        const res = await playback.unloadAsync();
+        console.log("unloaded", res);
         const source = { uri: videoUrl };
         const initialStatus = {
           shouldPlay: true,
         };
-        setDuration(0);
-        setPosition(0);
-        setEntry(entry);
-        setPlayingHistory(append(entry, playingHistory));
-        await playback.loadAsync(source, initialStatus, true);
+        if (!fallback) {
+          setDuration(0);
+          setPosition(0);
+          setEntry(entry);
+          setPlayingHistory(append(entry, playingHistory));
+        }
+
+        console.log("starting loading");
+        const result = await playback.loadAsync(source, initialStatus, true);
+        console.log("loaded", result);
+
         setIsPlaying(true);
         await playback.playAsync();
+        console.log("playing");
+
         setLastPlayedEntry({ variables: { entryId: entry.id! } });
+
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          if (fallback) {
+            onError();
+          } else {
+            setPlaybackState("FALLBACK");
+            loadAndPlay(entry, true);
+          }
+        }, 10000);
       }
     },
     [
@@ -110,6 +150,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       setPosition,
       setDuration,
       setLastPlayedEntry,
+      timeoutId,
     ]
   );
 
@@ -125,9 +166,9 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       setPlaybackState("LOADING");
-      await _loadAndPlay(newEntry);
+      await loadAndPlay(newEntry);
     },
-    [entry, playback, isPlaying, _loadAndPlay, setPlaylist, setPlaybackState]
+    [entry, playback, isPlaying, loadAndPlay, setPlaylist, setPlaybackState]
   );
 
   const playPause = useCallback(async () => {
@@ -179,8 +220,8 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     } else {
       nextIndex = (currentIndex + 1) % playlist.length;
     }
-    await _loadAndPlay(playlist[nextIndex]!);
-  }, [playback, entry, _loadAndPlay, shuffle, playlist, setPlaybackState]);
+    await loadAndPlay(playlist[nextIndex]!);
+  }, [playback, entry, loadAndPlay, shuffle, playlist, setPlaybackState]);
 
   const skipBackward = useCallback(async () => {
     const previousEntry = last(init(playingHistory));
@@ -193,13 +234,13 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     }
     setPlaybackState("LOADING");
     await playback?.pauseAsync();
-    await _loadAndPlay(previousEntry);
+    await loadAndPlay(previousEntry);
     setPlayingHistory(init(playingHistory));
   }, [
     playingHistory,
     playback,
     setPlayingHistory,
-    _loadAndPlay,
+    loadAndPlay,
     setPlaybackState,
     isPlaying,
   ]);
@@ -213,7 +254,14 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     (status: AVPlaybackStatus) => {
       if (!status.isLoaded) {
         if (status.error) {
-          setPlaybackState("ERROR");
+          clearTimeout(timeoutId);
+          console.log(status.error);
+          if (playbackState === "FALLBACK") {
+            setPlaybackState("ERROR");
+            reportError(Error("Couldn't play that beat. Try Again!"));
+          } else {
+            setPlaybackState("FALLBACK");
+          }
         }
         return;
       }
@@ -234,14 +282,16 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       looping,
       playbackState,
       setPlaybackState,
+      timeoutId,
     ]
   );
 
   const onReadyForDisplay = useCallback(() => {
-    if (playbackState === "LOADING") {
+    if (playbackState === "LOADING" || playbackState === "FALLBACK") {
+      clearTimeout(timeoutId);
       setPlaybackState("PLAYING");
     }
-  }, [playbackState, setPlaybackState]);
+  }, [playbackState, setPlaybackState, timeoutId]);
 
   useEffect(() => {
     Audio.setAudioModeAsync({

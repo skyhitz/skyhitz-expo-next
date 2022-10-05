@@ -33,6 +33,8 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
   } = usePlayback();
   const sizeModificator = size === "large" ? 6 : 0;
 
+  console.log(playbackState);
+
   return (
     <View
       className={`flex flex-row w-full justify-evenly items-center ${style[size]}`}
@@ -46,7 +48,7 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
       <Pressable onPress={skipBackward}>
         <PrevIcon color={tw.color("white")} size={18 + sizeModificator} />
       </Pressable>
-      {playbackState === "LOADING" ? (
+      {playbackState === "LOADING" || playbackState === "FALLBACK" ? (
         <ActivityIndicator />
       ) : (
         <Pressable onPress={playPause}>

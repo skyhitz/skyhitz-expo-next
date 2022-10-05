@@ -10,7 +10,7 @@ export function PlayerBar() {
   return (
     <View
       className={`flex flex-row justify-between items-center h-20 bg-blue-transparent ${
-        playbackState === "IDLE" ? "hidden" : ""
+        playbackState === "IDLE" || playbackState === "ERROR" ? "hidden" : ""
       }`}
     >
       <View className="p-4 w-52 flex flex-row items-center">

@@ -30,7 +30,7 @@ export function PlayerSlider() {
       <View
         className="flex-1"
         pointerEvents={
-          any(equals(playbackState), ["LOADING", "IDLE", "ERROR"])
+          any(equals(playbackState), ["LOADING", "IDLE", "ERROR", "FALLBACK"])
             ? "none"
             : "auto"
         }
