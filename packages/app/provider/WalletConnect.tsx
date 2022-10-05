@@ -90,7 +90,6 @@ export function ClientContextProvider({
         Alert.alert("WalletConnect link", uri, [
           {
             text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
             style: "cancel",
           },
           {
@@ -191,9 +190,8 @@ export function ClientContextProvider({
       const publicKey = Object.values(
         currentSession.namespaces
       )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
-      console.log(publicKey);
       if (user?.publicKey && user.publicKey !== publicKey) {
-        console.log("disconnect");
+        disconnect();
         return;
       }
       const result = await client.request({

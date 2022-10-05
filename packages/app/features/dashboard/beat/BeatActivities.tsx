@@ -177,7 +177,6 @@ export function BeatActivity({
       case 13:
         return <Transfer />;
       default:
-        console.log(activity);
         return <Text>Unsupported activity type</Text>;
     }
   };
