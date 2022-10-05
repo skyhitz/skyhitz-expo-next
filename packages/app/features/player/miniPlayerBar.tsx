@@ -5,12 +5,7 @@ import { tw } from "app/design-system/tailwind";
 import PlayIcon from "app/ui/icons/play";
 import PauseIcon from "app/ui/icons/pause";
 import Animated from "react-native-reanimated";
-import { useRecoilValue } from "recoil";
-import {
-  currentEntryAtom,
-  isPlayingAtom,
-  playbackStateAtom,
-} from "app/state/playback";
+
 import { usePlayback } from "app/hooks/usePlayback";
 import { ActivityIndicator } from "app/design-system/activityIndicator";
 
@@ -20,10 +15,7 @@ type Props = {
 };
 
 export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
-  const isPlaying = useRecoilValue(isPlayingAtom);
-  const playbackState = useRecoilValue(playbackStateAtom);
-  const { playPause } = usePlayback();
-  const entry = useRecoilValue(currentEntryAtom);
+  const { playPause, playbackState, entry, isPlaying } = usePlayback();
 
   if (playbackState === "ERROR") {
     return (

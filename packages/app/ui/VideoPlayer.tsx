@@ -1,15 +1,7 @@
 import { ResizeMode, Video } from "expo-av";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { ImageBackground, Platform, ViewStyle } from "react-native";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  currentDurationAtom,
-  currentEntryAtom,
-  currentPositionAtom,
-  loopAtom,
-  playbackStateAtom,
-} from "app/state/playback";
-import { PlaybackContext } from "../provider/playback";
+import { useRecoilValue } from "recoil";
 import { imageSrc, videoSrc } from "app/utils/entry";
 import { usePlayback } from "app/hooks/usePlayback";
 import { userAtom } from "app/state/user";
@@ -21,14 +13,16 @@ type Props = {
 };
 
 export function VideoPlayer({ width, height, style }: Props) {
-  const setDuration = useSetRecoilState(currentDurationAtom);
-  const setPosition = useSetRecoilState(currentPositionAtom);
-  const [playbackState, setPlaybackState] = useRecoilState(playbackStateAtom);
-  const isLooping = useRecoilValue(loopAtom);
-  const entry = useRecoilValue(currentEntryAtom);
-  const { playback, setPlayback } = useContext(PlaybackContext);
   const user = useRecoilValue(userAtom);
-  const { skipForward, playEntry } = usePlayback();
+  const {
+    onReadyForDisplay,
+    playEntry,
+    entry,
+    playback,
+    setPlayback,
+    playbackState,
+    onPlaybackStatusUpdate,
+  } = usePlayback();
 
   const getVideoUri = () => {
     // we need to provide correct uri only for web
@@ -63,24 +57,7 @@ export function VideoPlayer({ width, height, style }: Props) {
             setPlayback(ref);
           }
         }}
-        onPlaybackStatusUpdate={(status) => {
-          if (!status.isLoaded) {
-            return;
-          }
-
-          if (
-            status.didJustFinish &&
-            playbackState === "PLAYING" &&
-            !isLooping
-          ) {
-            skipForward();
-          }
-
-          if (status.isPlaying && !status.isBuffering) {
-            setPosition(status.positionMillis);
-            setDuration(status.durationMillis ?? 0);
-          }
-        }}
+        onPlaybackStatusUpdate={onPlaybackStatusUpdate}
         resizeMode={ResizeMode.CONTAIN}
         style={{
           height,
@@ -88,14 +65,7 @@ export function VideoPlayer({ width, height, style }: Props) {
           alignItems: "center",
           justifyContent: "center",
         }}
-        onError={(_) => {
-          setPlaybackState("ERROR");
-        }}
-        onReadyForDisplay={() => {
-          if (playbackState === "LOADING") {
-            setPlaybackState("PLAYING");
-          }
-        }}
+        onReadyForDisplay={onReadyForDisplay}
       />
     </ImageBackground>
   );

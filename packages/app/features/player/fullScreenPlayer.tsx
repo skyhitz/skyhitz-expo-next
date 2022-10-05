@@ -8,9 +8,8 @@ import { PlayerSlider } from "./components/playerSlider";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import Animated from "react-native-reanimated";
 import { VideoPlayer } from "app/ui/VideoPlayer";
-import { useRecoilValue } from "recoil";
-import { currentEntryAtom, playbackStateAtom } from "app/state/playback";
 import { ComponentAuthGuard } from "app/utils/authGuard";
+import { usePlayback } from "app/hooks/usePlayback";
 
 const { height } = Dimensions.get("window");
 
@@ -20,8 +19,7 @@ type Props = {
 };
 
 export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
-  const entry = useRecoilValue(currentEntryAtom);
-  const playbackState = useRecoilValue(playbackStateAtom);
+  const { playbackState, entry } = usePlayback();
 
   return (
     <Animated.View

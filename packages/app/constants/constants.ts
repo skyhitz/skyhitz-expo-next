@@ -5,5 +5,6 @@ export const nftStorageApi = `https://api.nft.storage`;
 export const imagesGateway = "https://ipfs.io/ipfs";
 export const skyhitzCdn = "https://skyhitz.io/cdn-cgi/image";
 export const videosGateway = "https://ipfs.io/ipfs";
+export const ipfsFallback = "https://cloudflare-ipfs.com/ipfs";
 export const ipfsProtocol = "ipfs://";
 export const userDataKey = "sk:user";

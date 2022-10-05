@@ -7,14 +7,7 @@ import PauseIcon from "app/ui/icons/pause";
 import LoopIcon from "app/ui/icons/repeat";
 import { Pressable } from "app/design-system/pressable";
 import { tw } from "app/design-system/tailwind";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { usePlayback } from "app/hooks/usePlayback";
-import {
-  isPlayingAtom,
-  loopAtom,
-  playbackStateAtom,
-  shuffleAtom,
-} from "app/state/playback";
 import { ActivityIndicator } from "app/design-system/activityIndicator";
 
 const style = {
@@ -27,20 +20,26 @@ type Props = {
 };
 
 export function PlayerButtonsRow({ size = "default" }: Props) {
-  const [shuffleActive, setShuffleActive] = useRecoilState(shuffleAtom);
-  const loopActive = useRecoilValue(loopAtom);
-  const isPlaying = useRecoilValue(isPlayingAtom);
-  const playbackState = useRecoilValue(playbackStateAtom);
-  const { playPause, skipForward, skipBackward, toggleLoop } = usePlayback();
+  const {
+    playPause,
+    skipForward,
+    skipBackward,
+    toggleLoop,
+    shuffle,
+    playbackState,
+    isPlaying,
+    looping,
+    toggleShuffle,
+  } = usePlayback();
   const sizeModificator = size === "large" ? 6 : 0;
 
   return (
     <View
       className={`flex flex-row w-full justify-evenly items-center ${style[size]}`}
     >
-      <Pressable onPress={() => setShuffleActive(!shuffleActive)}>
+      <Pressable onPress={toggleShuffle}>
         <ShuffleIcon
-          color={shuffleActive ? tw.color("blue-light") : tw.color("white")}
+          color={shuffle ? tw.color("blue-light") : tw.color("white")}
           size={14 + sizeModificator}
         />
       </Pressable>
@@ -63,7 +62,7 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
       </Pressable>
       <Pressable onPress={toggleLoop}>
         <LoopIcon
-          color={loopActive ? tw.color("blue-light") : tw.color("white")}
+          color={looping ? tw.color("blue-light") : tw.color("white")}
           size={14 + sizeModificator}
         />
       </Pressable>
