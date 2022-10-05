@@ -4,6 +4,25 @@ import { EntryActivity } from "app/api/graphql";
 import { ArrowsUpDownIcon } from "app/ui/icons/arrows-up-down";
 import { StellarExpertLink } from "app/ui/links/StellarExpertLink";
 
+type LinkWithLabelProps = {
+  type: "account" | "asset" | "tx";
+  id: string;
+  className?: string;
+};
+
+function LinkWithLabel({ type, id, className = "w-20" }: LinkWithLabelProps) {
+  const label =
+    type === "tx"
+      ? "Transaction"
+      : type.charAt(0).toUpperCase() + type.slice(1);
+  return (
+    <View className="flex-row md:ml-1 items-center">
+      <Text className="text-grey text-sm">{label}: </Text>
+      <StellarExpertLink id={id} path={type} className={className} />
+    </View>
+  );
+}
+
 export function BeatActivity({
   activity,
   index,
@@ -15,25 +34,17 @@ export function BeatActivity({
 
   const AssetTransfered = () => {
     if (activity?.accounts?.length !== 2) {
-      return <Text>Unsupported activity type</Text>;
+      return (
+        <Text className="my-1 md:my-0 text-sm">Unsupported activity type</Text>
+      );
     }
     const sender = activity.accounts[0]!;
     const receiver = activity.accounts[1]!;
     return (
-      <View className="flex-row flex-wrap items-center">
-        <StellarExpertLink
-          id={sender}
-          path="account"
-          fixedWidth={20}
-          align="start"
-        />
-        <Text className="my-1 md:my-0 text-sm"> Transfered Asset to </Text>
-        <StellarExpertLink
-          id={receiver}
-          path="account"
-          fixedWidth={20}
-          align="start"
-        />
+      <View className="md:flex-row flex md:items-center md:flex-wrap">
+        <LinkWithLabel type="account" id={sender} />
+        <Text className="my-1 md:my-0 text-sm">Transfered Asset to</Text>
+        <LinkWithLabel type="account" id={receiver} />
       </View>
     );
   };
@@ -48,19 +59,16 @@ export function BeatActivity({
       !activity.price?.d ||
       activity.assets?.length !== 2
     ) {
-      return <Text>Unsupported activity type</Text>;
+      return (
+        <Text className="my-1 md:my-0 text-sm">Unsupported activity type</Text>
+      );
     }
     const account = activity.accounts[0]!;
     if (amount === "0") {
       return (
-        <View className="flex-row flex-wrap items-center">
-          <StellarExpertLink
-            id={account}
-            path="account"
-            fixedWidth={20}
-            align="start"
-          />
-          <Text className="my-1 md:my-0 text-sm"> Cancelled offer</Text>
+        <View className="md:flex-row flex md:items-center md:flex-wrap">
+          <LinkWithLabel type="account" id={account} />
+          <Text className="my-1 md:my-0 text-sm">Cancelled offer</Text>
         </View>
       );
     }
@@ -71,46 +79,32 @@ export function BeatActivity({
     const sellAsset = activity.assets[type === "buy" ? 0 : 1]!;
 
     return (
-      <View className="flex-row flex-wrap items-center">
-        <StellarExpertLink
-          id={account}
-          path="account"
-          fixedWidth={20}
-          align="start"
-        />
+      <View className="md:flex-row flex md:items-center md:flex-wrap">
+        <LinkWithLabel type="account" id={account} />
         <Text className="my-1 md:my-0 text-sm">
-          {" "}
-          Created a {type} offer {amount}{" "}
+          Created a {type} offer {amount}
         </Text>
-        <StellarExpertLink id={buyAsset} path="asset" fixedWidth={20} />
-        <Text className="my-1 md:my-0 text-sm"> for {price} </Text>
-        <StellarExpertLink
-          id={sellAsset}
-          path="asset"
-          fixedWidth={20}
-          align="start"
-        />
+        <LinkWithLabel type="asset" id={buyAsset} />
+        <Text className="my-1 md:my-0 text-sm">for {price}</Text>
+        <LinkWithLabel type="asset" id={sellAsset} />
       </View>
     );
   };
 
   const EstablishedTrustline = () => {
     if (activity?.accounts?.length !== 1 || activity.assets?.length !== 1) {
-      return <Text>Unsupported activity type</Text>;
+      return (
+        <Text className="my-1 md:my-0 text-sm">Unsupported activity type</Text>
+      );
     }
     const account = activity.accounts[0]!;
     const asset = activity.assets[0]!;
 
     return (
-      <View className="flex-row flex-wrap items-center">
-        <StellarExpertLink
-          id={account}
-          path="account"
-          fixedWidth={20}
-          align="start"
-        />
-        <Text className="my-1 md:my-0 text-sm"> Established trustline to </Text>
-        <StellarExpertLink id={asset} path="asset" fixedWidth={20} />
+      <View className="md:flex-row flex md:items-center md:flex-wrap">
+        <LinkWithLabel type="account" id={account} />
+        <Text className="my-1 md:my-0 text-sm">Established trustline to</Text>
+        <LinkWithLabel type="asset" id={asset} />
       </View>
     );
   };
@@ -122,7 +116,9 @@ export function BeatActivity({
       !activity.amount ||
       activity.assets?.length !== 2
     ) {
-      return <Text>Unsupported activity type</Text>;
+      return (
+        <Text className="my-1 md:my-0 text-sm">Unsupported activity type</Text>
+      );
     }
     const buyer = activity.accounts[0]!;
 
@@ -130,32 +126,16 @@ export function BeatActivity({
     const sellAsset = activity.assets[0]!;
 
     return (
-      <View className="md:flex-row flex-wrap md:items-center">
-        <StellarExpertLink
-          id={buyer}
-          path="account"
-          fixedWidth={20}
-          align="start"
-        />
+      <View className="md:flex-row flex-column md:items-center md:flex-wrap">
+        <LinkWithLabel type="account" id={buyer} />
         <Text className="my-1 md:my-0 text-sm">
-          Transfered {activity.sourceAmount}{" "}
+          Transfered {activity.sourceAmount}
         </Text>
-        <StellarExpertLink
-          id={sellAsset}
-          path="asset"
-          fixedWidth={20}
-          align="center"
-        />
+        <LinkWithLabel type="asset" id={sellAsset} />
         <Text className="my-1 md:my-0 text-sm">
-          {" "}
-          in exchange for {activity.amount}{" "}
+          in exchange for {activity.amount}
         </Text>
-        <StellarExpertLink
-          id={buyAsset}
-          path="asset"
-          fixedWidth={20}
-          align="start"
-        />
+        <LinkWithLabel type="asset" id={buyAsset} />
       </View>
     );
   };
@@ -177,15 +157,20 @@ export function BeatActivity({
       case 13:
         return <Transfer />;
       default:
-        return <Text>Unsupported activity type</Text>;
+        return (
+          <Text className="my-1 md:my-0 text-sm">
+            Unsupported activity type
+          </Text>
+        );
     }
   };
 
   const bgColor = index % 2 === 1 ? "bg-blue-dark" : "bg-blue-transparent";
   return (
-    <View className={`flex md:flex-row py-3 px-5 md:items-center ${bgColor}`}>
-      <StellarExpertLink id={activity.tx} path="tx" align="start" />
-      <View className="flex-5 my-2 md:mx-2 md:my-0">
+    <View className={`md:flex-row py-3 px-5 md:items-center ${bgColor}`}>
+      <LinkWithLabel type="tx" id={activity.tx} className="w-30" />
+
+      <View className="md:flex-1 my-2 md:mx-2 md:my-0">
         <CenterWidget />
       </View>
       <Text className="text-sm my-2 md:my-0 text-grey">
