@@ -215,19 +215,16 @@ export function ClientContextProvider({
   const authNewSession = useCallback(async () => {
     if (!client) throw new Error("Client not initiliazed");
     const newSession = await connect();
-    console.log(newSession);
     if (!newSession) {
       throw new Error("Couldn't establish wallet connect session");
     }
     const publicKey = Object.values(
       newSession.namespaces
     )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
-    console.log(publicKey);
     if (!publicKey) {
       throw new Error("Invalid public key");
     }
     const xdr = await buildTransactionForAuth(publicKey);
-    console.log(xdr);
     const result = await client.request({
       topic: newSession.topic,
       chainId: Config.CHAIN_ID,

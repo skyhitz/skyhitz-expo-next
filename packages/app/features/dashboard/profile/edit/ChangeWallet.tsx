@@ -25,9 +25,7 @@ export function ChangeWallet() {
 
       const result = await authNewSession();
       const { signedXDR } = result as { signedXDR: string };
-      console.log(result);
       const { data } = await changeWallet({ variables: { signedXDR } });
-      console.log(data);
       if (data?.changeWallet) {
         setLoading(false);
         setUser(data.changeWallet);
