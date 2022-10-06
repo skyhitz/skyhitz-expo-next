@@ -32,6 +32,8 @@ const iconStyle: IconProps = {
   color: tw.color("white"),
 };
 
+const DEFAULT_HEIGHT = 100;
+
 export const CollapsableView = ({
   children,
   initCollapsed,
@@ -39,8 +41,9 @@ export const CollapsableView = ({
   icon,
   className,
 }: Props) => {
-  const [collapsed, setCollapsed] = useState(initCollapsed);
-  const [height, setHeight] = useState(100);
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const [collapsed, setCollapsed] = useState<boolean>(initCollapsed === true);
+  const [height, setHeight] = useState<number>(DEFAULT_HEIGHT);
   const collapsableHeight = useSharedValue(initCollapsed ? 0 : height);
 
   const collapsibleStyle = useAnimatedStyle(() => {
@@ -58,7 +61,7 @@ export const CollapsableView = ({
 
   return (
     <View
-      className={`border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent w-full ${
+      className={`border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent w-full overflow-hidden ${
         className ?? ""
       }`}
     >
@@ -89,9 +92,12 @@ export const CollapsableView = ({
       >
         <View
           onLayout={(e) => {
-            setHeight(e.nativeEvent.layout.height);
-            if (!collapsed) {
-              collapsableHeight.value = e.nativeEvent.layout.height;
+            if (!initialized) {
+              setInitialized(true);
+              setHeight(e.nativeEvent.layout.height);
+              if (!collapsed) {
+                collapsableHeight.value = e.nativeEvent.layout.height;
+              }
             }
           }}
         >

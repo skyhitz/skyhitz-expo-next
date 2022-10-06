@@ -2,13 +2,20 @@ import {
   GetIssuerQuery,
   useCreateEntryMutation,
   useGetIssuerLazyQuery,
+  useIndexEntryMutation,
+  UserCollectionDocument,
+  RecentlyAddedDocument,
+  TopChartDocument,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
 import { MintForm } from "app/types";
 import { useCallback, useState } from "react";
-import { useIndexEntryMutation } from "../api/graphql";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
+import { useApolloClient, ApolloError } from "@apollo/client";
+import { prepend } from "ramda";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 type MintStatus =
   | "Uninitialized"
@@ -40,19 +47,66 @@ export function useMintNFT(): MintResult {
   const [createEntry] = useCreateEntryMutation();
   const [indexEntry] = useIndexEntryMutation();
   const { signAndSubmitXdr } = useWalletConnectClient();
+  const { cache } = useApolloClient();
+  const user = useRecoilValue(userAtom);
 
   const indexNFT = useCallback(
     async (nftIssuer: string = issuer) => {
       setError(undefined);
       setStatus("Indexing");
-      const { data: indexed } = await indexEntry({
-        variables: { issuer: nftIssuer },
-      });
-      if (indexed?.indexEntry?.success) {
+      try {
+        const { data: indexedEntry } = await indexEntry({
+          variables: { issuer: nftIssuer },
+        });
+        cache.updateQuery(
+          {
+            query: RecentlyAddedDocument,
+            variables: { page: 0 },
+            overwrite: true,
+          },
+          (cachedData) => ({
+            recentlyAdded: prepend(
+              indexedEntry?.indexEntry,
+              cachedData.recentlyAdded ?? []
+            ),
+          })
+        );
+        cache.updateQuery(
+          {
+            query: TopChartDocument,
+            variables: { page: 0 },
+            overwrite: true,
+          },
+          (cachedData) => ({
+            topChart: prepend(
+              indexedEntry?.indexEntry,
+              cachedData.topChart ?? []
+            ),
+          })
+        );
+        cache.updateQuery(
+          {
+            query: UserCollectionDocument,
+            variables: { userId: user?.id },
+            overwrite: true,
+          },
+          (cachedData) => ({
+            userEntries: prepend(
+              indexedEntry?.indexEntry,
+              cachedData.userEntries ?? []
+            ),
+          })
+        );
+
         setStatus("Success");
-      } else {
+      } catch (ex) {
         setStatus("IndexError");
-        setError(indexed?.indexEntry?.message ?? "Couldn't index new entry");
+
+        if (ex instanceof ApolloError) {
+          setError(ex.message);
+        } else {
+          setError("Couldn't index new entry");
+        }
       }
     },
     [setStatus, setError, indexEntry, issuer]
