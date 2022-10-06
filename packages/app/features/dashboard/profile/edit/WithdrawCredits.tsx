@@ -16,6 +16,7 @@ import {
 import { WithdrawForm } from "app/types";
 import { withdrawFormSchema } from "app/validation";
 import { useToast } from "react-native-toast-notifications";
+import { convertToString } from "app/utils/float";
 
 export function WithdrawCredits() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -72,7 +73,8 @@ export function WithdrawCredits() {
                 <Text className="text-lg font-bold">Withdraw credits</Text>
                 <Text className="w-full mt-16">
                   Current Balance:{" "}
-                  {paymentInfoData?.paymentsInfo?.credits ?? "0.00"}
+                  {convertToString(paymentInfoData?.paymentsInfo?.credits ?? 0)}
+                  XLM
                 </Text>
                 <Formik
                   initialValues={initialValues}
@@ -130,8 +132,8 @@ export function WithdrawCredits() {
                       </Text>
                       <Line />
                       <Text className="text-sm leading-none my-4">
-                        Withdrawal fee:{" "}
-                        {(values.amount * 0.06).toFixed(6).toString()} XLM
+                        Withdrawal fee: {convertToString(values.amount * 0.06)}{" "}
+                        XLM
                       </Text>
                       {(errors.address || errors.amount || error) && (
                         <Text className="w-full text-center text-sm text-[#d9544f] my-4 min-h-5">

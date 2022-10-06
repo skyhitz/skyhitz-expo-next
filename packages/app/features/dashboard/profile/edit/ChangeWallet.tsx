@@ -1,31 +1,50 @@
 import { Button, Text, View } from "app/design-system";
-import React, { useCallback, useEffect } from "react";
-import { usePaymentsInfoQuery } from "app/api/graphql";
+import React, { useCallback, useState } from "react";
+import { useChangeWalletMutation, usePaymentsInfoQuery } from "app/api/graphql";
 import { useToast } from "react-native-toast-notifications";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userAtom } from "app/state/user";
 import { StellarExpertLink } from "app/ui/links/StellarExpertLink";
+import { buildTransactionForAuth } from "app/utils/stellar";
+import { useWalletConnectClient } from "app/provider/WalletConnect";
+import useErrorReport from "app/hooks/useErrorReport";
+import { convertToString } from "app/utils/float";
 
 export function ChangeWallet() {
-  const user = useRecoilValue(userAtom);
+  const [user, setUser] = useRecoilState(userAtom);
   const { data: paymentInfoData } = usePaymentsInfoQuery();
+  const [changeWallet] = useChangeWalletMutation();
+  const { authNewSession } = useWalletConnectClient();
+  const reportError = useErrorReport();
   const toast = useToast();
-
-  useEffect(() => {
-    // if (data?.withdrawToExternalWallet?.success) {
-    //   setModalVisible(false);
-    //   toast.show("Amount successfully transfered to your external wallet", {
-    //     type: "success",
-    //   });
-    // }
-  }, [toast]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = useCallback(async (): Promise<void> => {
     try {
-    } catch (_) {
-      // no-op, just to catch error
+      setLoading(true);
+
+      const result = await authNewSession();
+      const { signedXDR } = result as { signedXDR: string };
+      console.log(result);
+      const { data } = await changeWallet({ variables: { signedXDR } });
+      console.log(data);
+      if (data?.changeWallet) {
+        setLoading(false);
+        setUser(data.changeWallet);
+        toast.show("Wallet successfully changed.", { type: "success" });
+      }
+    } catch (err) {
+      setLoading(false);
+      reportError(err, "There was an error during wallet change procedure");
     }
-  }, []);
+  }, [
+    toast,
+    buildTransactionForAuth,
+    authNewSession,
+    changeWallet,
+    setUser,
+    reportError,
+  ]);
 
   return (
     <View className="mt-8">
@@ -37,13 +56,14 @@ export function ChangeWallet() {
       {user?.managed && (
         <>
           <Text className="text-sm my-2">
-            Current balance: {paymentInfoData?.paymentsInfo?.credits ?? "0.00"}
+            Current balance:{" "}
+            {convertToString(paymentInfoData?.paymentsInfo?.credits ?? 0)}XLM
           </Text>
           <Text className="text-sm leading-none my-2">
             Withdrawal fee:{" "}
-            {((paymentInfoData?.paymentsInfo?.credits ?? 0) * 0.06)
-              .toFixed(6)
-              .toString()}{" "}
+            {convertToString(
+              (paymentInfoData?.paymentsInfo?.credits ?? 0) * 0.06
+            )}{" "}
             XLM
           </Text>
           <Text className="text-xs text-grey leading-none mt-2">
@@ -57,7 +77,8 @@ export function ChangeWallet() {
         text="Change Wallet"
         onPress={onSubmit}
         className="mt-8"
-        //   loading={loading}
+        loading={loading}
+        disabled={loading}
       />
     </View>
   );

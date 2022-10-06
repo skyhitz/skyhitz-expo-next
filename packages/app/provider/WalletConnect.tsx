@@ -15,6 +15,7 @@ import { getSdkError } from "@walletconnect/utils";
 import { Alert, Platform } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import { Config } from "app/config";
+import { buildTransactionForAuth } from "app/utils/stellar";
 
 interface IContext {
   session: SessionTypes.Struct | undefined;
@@ -23,6 +24,7 @@ interface IContext {
   accounts: string[];
   signXdr: (_xdr: string) => Promise<null | unknown>;
   signAndSubmitXdr: (_xdr: string) => Promise<null | unknown>;
+  authNewSession: () => Promise<unknown>;
 }
 
 export const ClientContext = createContext<IContext>({} as IContext);
@@ -210,6 +212,35 @@ export function ClientContextProvider({
     [requestClient]
   );
 
+  const authNewSession = useCallback(async () => {
+    if (!client) throw new Error("Client not initiliazed");
+    const newSession = await connect();
+    console.log(newSession);
+    if (!newSession) {
+      throw new Error("Couldn't establish wallet connect session");
+    }
+    const publicKey = Object.values(
+      newSession.namespaces
+    )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
+    console.log(publicKey);
+    if (!publicKey) {
+      throw new Error("Invalid public key");
+    }
+    const xdr = await buildTransactionForAuth(publicKey);
+    console.log(xdr);
+    const result = await client.request({
+      topic: newSession.topic,
+      chainId: Config.CHAIN_ID,
+      request: {
+        method: "stellar_signXDR",
+        params: {
+          xdr,
+        },
+      },
+    });
+    return result;
+  }, [client, connect, buildTransactionForAuth]);
+
   useEffect(() => {
     if (!client) {
       createClient();
@@ -224,8 +255,17 @@ export function ClientContextProvider({
       disconnect,
       signXdr,
       signAndSubmitXdr,
+      authNewSession,
     }),
-    [accounts, session, connect, disconnect, signXdr, signAndSubmitXdr]
+    [
+      accounts,
+      session,
+      connect,
+      disconnect,
+      signXdr,
+      signAndSubmitXdr,
+      authNewSession,
+    ]
   );
 
   return (
