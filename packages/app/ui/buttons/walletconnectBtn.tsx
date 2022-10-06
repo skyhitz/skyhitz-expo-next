@@ -3,7 +3,7 @@ import WalletConnectIcon from "app/ui/icons/walletconnect-icon";
 import { Button } from "app/design-system";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { Config } from "app/config";
-import useErrorReport from "app/hooks/useErrorReport";
+import { useErrorReport } from "app/hooks/useErrorReport";
 
 type Props = {
   onConnected: (_publicKey: string) => void;

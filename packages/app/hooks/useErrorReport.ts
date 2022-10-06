@@ -2,7 +2,7 @@ import { useToast } from "react-native-toast-notifications";
 import { ErrorType } from "app/types";
 import { useCallback } from "react";
 
-export default function useErrorReport() {
+export function useErrorReport() {
   const toast = useToast();
   const reportError = useCallback(
     (e: any, defaultMessage: string = "UnknownError") => {

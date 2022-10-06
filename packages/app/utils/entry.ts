@@ -1,5 +1,6 @@
 import {
   imagesGateway,
+  ipfsFallback,
   ipfsProtocol,
   skyhitzCdn,
   videosGateway,
@@ -9,9 +10,11 @@ export function isIpfs(url: string) {
   return !!url?.startsWith(ipfsProtocol);
 }
 
-export function videoSrc(videoUrl: string) {
-  if (isIpfs(videoUrl))
-    return `${videosGateway}/${videoUrl.replace(ipfsProtocol, "")}`;
+export function videoSrc(videoUrl: string, useFallback = false) {
+  if (isIpfs(videoUrl)) {
+    const gateway = useFallback ? ipfsFallback : videosGateway;
+    return `${gateway}/${videoUrl.replace(ipfsProtocol, "")}`;
+  }
   return videoUrl;
 }
 

@@ -4,7 +4,7 @@ import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
 import { UserAvatar } from "app/ui/userAvatar";
 import { useUserCollectionQuery } from "app/api/graphql";
 import { useUserWithId } from "app/api/algolia";
-import useErrorReport from "app/hooks/useErrorReport";
+import { useErrorReport } from "app/hooks/useErrorReport";
 import { useEffect } from "react";
 
 export default function BeatmakerScreen() {

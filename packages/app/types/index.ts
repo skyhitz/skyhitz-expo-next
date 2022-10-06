@@ -2,6 +2,7 @@ import { UpdateUserMutationVariables } from "app/api/graphql";
 
 export type PlaybackState =
   | "LOADING"
+  | "FALLBACK"
   | "PLAYING"
   | "PAUSED"
   | "SEEKING"
