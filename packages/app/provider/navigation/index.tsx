@@ -23,18 +23,18 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
               privacy: "privacy",
               terms: "terms",
               dashboard: {
+                path: "dashboard",
                 screens: {
                   search: {
-                    path: "dashboard/search",
                     screens: {
-                      "search-for": "",
+                      "search-for": "search",
                       beatmaker: "beatmaker/:id",
                       beat: "beat/:id",
                     },
                   },
-                  chart: "dashboard/chart",
+                  chart: "chart",
                   profile: {
-                    path: "dashboard/profile",
+                    path: "profile",
                     screens: {
                       "user-details": "",
                       mint: "mint",

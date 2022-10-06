@@ -37,7 +37,14 @@ export function Details({ issuer, code }: Props) {
       <View className="mx-5 my-4.5">
         <Row
           label="Issuer address:"
-          trailingWidget={<StellarExpertLink id={issuer} path="account" />}
+          trailingWidget={
+            <StellarExpertLink
+              id={issuer}
+              path="account"
+              className="grow-1"
+              align="end"
+            />
+          }
         />
         <Row
           label="Asset code:"
@@ -46,6 +53,8 @@ export function Details({ issuer, code }: Props) {
               id={getAssetId(code, issuer)}
               text={code}
               path="asset"
+              className="grow-1"
+              align="end"
             />
           }
         />

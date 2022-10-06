@@ -1,0 +1,7 @@
+mutation BuyEntry($id: String!, $amount: Float!, $price: Float!) {
+  buyEntry(id: $id, amount: $amount, price: $price) {
+    xdr
+    success
+    submitted
+  }
+}

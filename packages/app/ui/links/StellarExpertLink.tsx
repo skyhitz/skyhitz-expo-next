@@ -6,19 +6,19 @@ type Props = {
   id: string;
   text?: string;
   path: string;
-  align?: "left" | "right";
-  fixedWidth?: number;
+  align?: "start" | "end" | "center";
+  className?: string;
 };
 
 export function StellarExpertLink({
   id,
   path,
   text,
-  align = "right",
-  fixedWidth,
+  align = "start",
+  className,
 }: Props) {
   return (
-    <View className={fixedWidth ? `w-${fixedWidth} h-3` : "grow-1 h-3"}>
+    <View className={`${className} h-3`}>
       <Pressable
         onPress={() => {
           Linking.openURL(`${Config.STELLAR_EXPERT_URL}/${path}/${id}`);
@@ -27,9 +27,7 @@ export function StellarExpertLink({
         <TextEllipsis
           className="text-blue"
           text={text ?? id}
-          containerClassName={
-            align === "left" ? "justify-start" : "justify-end"
-          }
+          containerClassName={`justify-${align}`}
         />
       </Pressable>
     </View>
