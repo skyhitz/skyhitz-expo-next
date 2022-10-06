@@ -137,7 +137,9 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
           setLastPlayedEntry({ variables: { entryId: entry.id! } });
         }
 
-        clearTimeout(timeoutId);
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
         const id = setTimeout(() => {
           if (fallback) {
             resetPlayer();
@@ -284,7 +286,9 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
 
   const onReadyForDisplay = useCallback(async () => {
     if (playbackState === "LOADING" || playbackState === "FALLBACK") {
-      clearTimeout(timeoutId);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       if (shouldPlay) {
         setPlaybackState("PLAYING");
         await playback?.playAsync();
@@ -297,7 +301,9 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   const onError = useCallback(
     (error: string) => {
       console.error(error);
-      clearTimeout(timeoutId);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       if (playbackState === "FALLBACK" || !entry) {
         resetPlayer();
       } else {
