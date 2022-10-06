@@ -15,7 +15,7 @@ type Props = {
 };
 
 export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
-  const { playPause, playbackState, entry, isPlaying } = usePlayback();
+  const { playPause, playbackState, entry } = usePlayback();
 
   return (
     <Animated.View
@@ -38,11 +38,11 @@ export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
           </Text>
         </View>
       </Pressable>
-      {playbackState === "LOADING" ? (
+      {playbackState === "LOADING" || playbackState === "FALLBACK" ? (
         <ActivityIndicator />
       ) : (
         <Pressable onPress={playPause}>
-          {isPlaying ? (
+          {playbackState === "PLAYING" ? (
             <PauseIcon color={tw.color("white")} size={22} />
           ) : (
             <PlayIcon color={tw.color("white")} size={22} />

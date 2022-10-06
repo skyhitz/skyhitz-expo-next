@@ -36,7 +36,7 @@ export function VideoPlayer({ width, height, style }: Props) {
   useEffect(() => {
     // play the last played entry
     if (playback && playbackState === "IDLE" && user?.lastPlayedEntry) {
-      playEntry(user.lastPlayedEntry, [user.lastPlayedEntry]);
+      playEntry(user.lastPlayedEntry, [user.lastPlayedEntry], false);
     }
   }, [playback, user, playEntry, playbackState]);
 
@@ -66,10 +66,6 @@ export function VideoPlayer({ width, height, style }: Props) {
           justifyContent: "center",
         }}
         onReadyForDisplay={onReadyForDisplay}
-        onError={(e) => {
-          console.log("Error");
-          console.log(e);
-        }}
       />
     </ImageBackground>
   );

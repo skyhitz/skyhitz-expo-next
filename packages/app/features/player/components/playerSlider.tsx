@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Slider from "@react-native-community/slider";
 import { tw } from "app/design-system/tailwind";
 import { Text, View } from "app/design-system";
@@ -6,16 +6,12 @@ import { usePlayback } from "app/hooks/usePlayback";
 import { any, equals } from "ramda";
 
 export function PlayerSlider() {
-  const {
-    startSeeking,
-    onSeekCompleted,
-    duration,
-    position,
-    playbackState,
-    onSeeking,
-  } = usePlayback();
+  const { startSeeking, onSeekCompleted, duration, position, playbackState } =
+    usePlayback();
+  const [seekPosition, setSeekPosition] = useState<number>(position);
   const songTime = duration / 1000;
-  const currentTime = position / 1000;
+  const currentTime =
+    playbackState === "SEEKING" ? seekPosition / 1000 : position / 1000;
   const value = duration !== 0 ? position / duration : 0;
 
   return (
@@ -43,7 +39,11 @@ export function PlayerSlider() {
           onSlidingStart={(_) => {
             startSeeking();
           }}
-          onValueChange={onSeeking}
+          onValueChange={(newValue) => {
+            if (playbackState === "SEEKING") {
+              setSeekPosition(newValue * duration);
+            }
+          }}
           onSlidingComplete={onSeekCompleted}
           minimumTrackTintColor={tw.color("blue")}
           maximumTrackTintColor={tw.color("blue-track")}

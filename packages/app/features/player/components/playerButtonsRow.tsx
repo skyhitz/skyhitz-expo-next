@@ -27,13 +27,10 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
     toggleLoop,
     shuffle,
     playbackState,
-    isPlaying,
     looping,
     toggleShuffle,
   } = usePlayback();
   const sizeModificator = size === "large" ? 6 : 0;
-
-  console.log(playbackState);
 
   return (
     <View
@@ -52,7 +49,7 @@ export function PlayerButtonsRow({ size = "default" }: Props) {
         <ActivityIndicator />
       ) : (
         <Pressable onPress={playPause}>
-          {isPlaying ? (
+          {playbackState === "PLAYING" ? (
             <PauseIcon color={tw.color("white")} size={22 + sizeModificator} />
           ) : (
             <PlayIcon color={tw.color("white")} size={22 + sizeModificator} />

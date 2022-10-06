@@ -15,17 +15,20 @@ import { Playback } from "expo-av/build/AV";
 import { Entry, useSetLastPlayedEntryMutation } from "app/api/graphql";
 import { PlaybackState } from "app/types";
 import { isSome } from "app/utils";
-import { append, findIndex, init, last } from "ramda";
+import { any, append, equals, findIndex, init, last } from "ramda";
 import { videoSrc } from "app/utils/entry";
 import { useErrorReport } from "app/hooks/useErrorReport";
 
 export type PlaybackApi = {
   playback: null | Playback;
   setPlayback: (playback: Playback) => void;
-  playEntry: (entry: Entry, playlist: Entry[]) => Promise<void>;
+  playEntry: (
+    entry: Entry,
+    playlist: Entry[],
+    shouldPlayEntry?: boolean
+  ) => Promise<void>;
   playPause: () => Promise<void>;
   startSeeking: () => Promise<void>;
-  onSeeking: (value: number) => void;
   onSeekCompleted: (position: number) => Promise<void>;
   skipForward: () => Promise<void>;
   skipBackward: () => Promise<void>;
@@ -37,7 +40,6 @@ export type PlaybackApi = {
   duration: number;
   position: number;
   looping: boolean;
-  isPlaying: boolean;
   shuffle: boolean;
   toggleShuffle: () => void;
   onPlaybackStatusUpdate: (status: AVPlaybackStatus) => void;
@@ -47,10 +49,9 @@ export type PlaybackApi = {
 export const PlaybackContext = createContext<PlaybackApi>({
   playback: null,
   setPlayback: (_) => null,
-  playEntry: async (_, __) => {},
+  playEntry: async (_, __, ___) => {},
   playPause: async () => {},
   startSeeking: async () => {},
-  onSeeking: () => {},
   onSeekCompleted: async (_) => {},
   skipForward: async () => {},
   skipBackward: async () => {},
@@ -62,7 +63,6 @@ export const PlaybackContext = createContext<PlaybackApi>({
   duration: 0,
   position: 0,
   looping: false,
-  isPlaying: false,
   shuffle: false,
   toggleShuffle: () => {},
   onPlaybackStatusUpdate: (_) => {},
@@ -78,11 +78,13 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   const [position, setPosition] = useState<number>(0);
   const [looping, setLooping] = useState<boolean>(false);
   const [playlist, setPlaylist] = useState<Entry[]>([]);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [shouldPlay, setShouldPlay] = useState<boolean>(false);
   const [shuffle, setShuffle] = useState<boolean>(false);
   const [setLastPlayedEntry] = useSetLastPlayedEntryMutation();
   const reportError = useErrorReport();
-  let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+  const [timeoutId, setTimeoutId] = useState<
+    ReturnType<typeof setTimeout> | undefined
+  >();
 
   const onError = useCallback(() => {
     setPlaybackState("ERROR");
@@ -102,13 +104,12 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     setPosition,
   ]);
 
-  const loadAndPlay = useCallback(
+  const loadBeat = useCallback(
     async (entry: Entry, fallback = false) => {
       if (!isSome(entry.videoUrl)) return;
       const videoUrl = videoSrc(entry.videoUrl, fallback);
       if (playback !== null) {
-        const res = await playback.unloadAsync();
-        console.log("unloaded", res);
+        await playback.unloadAsync();
         const source = { uri: videoUrl };
         const initialStatus = {
           shouldPlay: true,
@@ -120,30 +121,23 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
           setPlayingHistory(append(entry, playingHistory));
         }
 
-        console.log("starting loading");
-        const result = await playback.loadAsync(source, initialStatus, true);
-        console.log("loaded", result);
-
-        setIsPlaying(true);
-        await playback.playAsync();
-        console.log("playing");
-
+        await playback.loadAsync(source, initialStatus, true);
         setLastPlayedEntry({ variables: { entryId: entry.id! } });
 
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
+        const id = setTimeout(() => {
           if (fallback) {
             onError();
           } else {
             setPlaybackState("FALLBACK");
-            loadAndPlay(entry, true);
+            loadBeat(entry, true);
           }
         }, 10000);
+        setTimeoutId(id);
       }
     },
     [
       playback,
-      setIsPlaying,
       setEntry,
       setPlayingHistory,
       playingHistory,
@@ -155,58 +149,59 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   );
 
   const playEntry = useCallback(
-    async (newEntry: Entry, playlist: Entry[]) => {
+    async (newEntry: Entry, playlist: Entry[], shouldPlayEntry = true) => {
       setPlaylist(playlist);
+      setShouldPlay(shouldPlayEntry);
       if (newEntry.id === entry?.id) {
         // if the new entry is the same as the current one, just set position to 0
         await playback?.setStatusAsync({
           positionMillis: 0,
-          shouldPlay: isPlaying,
+          shouldPlay: shouldPlayEntry,
         });
         return;
       }
       setPlaybackState("LOADING");
-      await loadAndPlay(newEntry);
+      await loadBeat(newEntry);
     },
-    [entry, playback, isPlaying, loadAndPlay, setPlaylist, setPlaybackState]
+    [
+      entry,
+      playback,
+      shouldPlay,
+      loadBeat,
+      setPlaylist,
+      setPlaybackState,
+      setShouldPlay,
+    ]
   );
 
   const playPause = useCallback(async () => {
     if (playback === null) return;
-    if (isPlaying) {
-      setIsPlaying(false);
+    if (playbackState === "PLAYING") {
+      setShouldPlay(false);
       setPlaybackState("PAUSED");
       await playback.pauseAsync();
-    } else {
-      setIsPlaying(true);
+    } else if (playbackState === "PAUSED") {
+      setShouldPlay(true);
       setPlaybackState("PLAYING");
       await playback.playAsync();
     }
-  }, [playback, isPlaying, setIsPlaying, setPlaybackState]);
+  }, [playback, setShouldPlay, playbackState, setPlaybackState]);
 
   const startSeeking = useCallback(async () => {
     setPlaybackState("SEEKING");
     await playback?.pauseAsync();
   }, [playback, setPlaybackState]);
 
-  const onSeeking = useCallback(
-    (value: number) => {
-      if (playbackState === "SEEKING") {
-        setPosition(value * duration);
-      }
-    },
-    [playbackState, setPosition, duration]
-  );
-
   const onSeekCompleted = useCallback(
     async (value: number) => {
-      setPlaybackState(isPlaying ? "PLAYING" : "PAUSED");
+      setPosition(value * duration);
+      setPlaybackState(shouldPlay ? "PLAYING" : "PAUSED");
       await playback?.setStatusAsync({
         positionMillis: value * duration,
-        shouldPlay: isPlaying,
+        shouldPlay,
       });
     },
-    [duration, playback, isPlaying, setPlaybackState]
+    [duration, playback, shouldPlay, setPlaybackState]
   );
 
   const skipForward = useCallback(async () => {
@@ -220,29 +215,29 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     } else {
       nextIndex = (currentIndex + 1) % playlist.length;
     }
-    await loadAndPlay(playlist[nextIndex]!);
-  }, [playback, entry, loadAndPlay, shuffle, playlist, setPlaybackState]);
+    await loadBeat(playlist[nextIndex]!);
+  }, [playback, entry, loadBeat, shuffle, playlist, setPlaybackState]);
 
   const skipBackward = useCallback(async () => {
     const previousEntry = last(init(playingHistory));
     if (previousEntry === undefined) {
       await playback?.setStatusAsync({
         positionMillis: 0,
-        shouldPlay: isPlaying,
+        shouldPlay,
       });
       return;
     }
     setPlaybackState("LOADING");
     await playback?.pauseAsync();
-    await loadAndPlay(previousEntry);
+    await loadBeat(previousEntry);
     setPlayingHistory(init(playingHistory));
   }, [
     playingHistory,
     playback,
     setPlayingHistory,
-    loadAndPlay,
+    loadBeat,
     setPlaybackState,
-    isPlaying,
+    shouldPlay,
   ]);
 
   const toggleLoop = useCallback(async () => {
@@ -255,7 +250,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       if (!status.isLoaded) {
         if (status.error) {
           clearTimeout(timeoutId);
-          console.log(status.error);
           if (playbackState === "FALLBACK") {
             setPlaybackState("ERROR");
             reportError(Error("Couldn't play that beat. Try Again!"));
@@ -270,7 +264,10 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         skipForward();
       }
 
-      if (status.isPlaying && !status.isBuffering) {
+      if (
+        !isNaN(status.durationMillis ?? NaN) &&
+        any(equals(playbackState), ["PLAYING", "LOADING", "FALLBACK"])
+      ) {
         setPosition(status.positionMillis);
         setDuration(status.durationMillis ?? 0);
       }
@@ -286,12 +283,17 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     ]
   );
 
-  const onReadyForDisplay = useCallback(() => {
+  const onReadyForDisplay = useCallback(async () => {
     if (playbackState === "LOADING" || playbackState === "FALLBACK") {
       clearTimeout(timeoutId);
-      setPlaybackState("PLAYING");
+      if (shouldPlay) {
+        setPlaybackState("PLAYING");
+        await playback?.playAsync();
+      } else {
+        setPlaybackState("PAUSED");
+      }
     }
-  }, [playbackState, setPlaybackState, timeoutId]);
+  }, [playbackState, setPlaybackState, timeoutId, playback]);
 
   useEffect(() => {
     Audio.setAudioModeAsync({
@@ -312,7 +314,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       playEntry,
       playPause,
       startSeeking,
-      onSeeking,
       onSeekCompleted,
       skipForward,
       skipBackward,
@@ -324,7 +325,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       duration,
       position,
       looping,
-      isPlaying,
       shuffle,
       toggleShuffle: () => setShuffle(!shuffle),
       onPlaybackStatusUpdate,
@@ -336,7 +336,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       playEntry,
       playPause,
       startSeeking,
-      onSeeking,
       onSeekCompleted,
       skipForward,
       skipBackward,
@@ -348,7 +347,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       duration,
       position,
       looping,
-      isPlaying,
       shuffle,
       setShuffle,
       onPlaybackStatusUpdate,
