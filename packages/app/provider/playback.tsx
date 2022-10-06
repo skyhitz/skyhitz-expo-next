@@ -18,6 +18,8 @@ import { isSome } from "app/utils";
 import { any, append, equals, findIndex, init, last } from "ramda";
 import { videoSrc } from "app/utils/entry";
 import { useErrorReport } from "app/hooks/useErrorReport";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 export type PlaybackApi = {
   playback: null | Playback;
@@ -34,6 +36,7 @@ export type PlaybackApi = {
   skipBackward: () => Promise<void>;
   toggleLoop: () => Promise<void>;
   entry: Entry | null;
+  playbackUri: string;
   playbackState: PlaybackState;
   playingHistory: Entry[];
   playlist: Entry[];
@@ -44,6 +47,7 @@ export type PlaybackApi = {
   toggleShuffle: () => void;
   onPlaybackStatusUpdate: (status: AVPlaybackStatus) => void;
   onReadyForDisplay: () => void;
+  onError: (error: string) => void;
 };
 
 export const PlaybackContext = createContext<PlaybackApi>({
@@ -57,6 +61,7 @@ export const PlaybackContext = createContext<PlaybackApi>({
   skipBackward: async () => {},
   toggleLoop: async () => {},
   entry: null,
+  playbackUri: "",
   playbackState: "IDLE",
   playingHistory: [],
   playlist: [],
@@ -67,9 +72,12 @@ export const PlaybackContext = createContext<PlaybackApi>({
   toggleShuffle: () => {},
   onPlaybackStatusUpdate: (_) => {},
   onReadyForDisplay: () => {},
+  onError: () => {},
 });
 
 export function PlaybackProvider({ children }: { children: React.ReactNode }) {
+  const user = useRecoilValue(userAtom);
+  const [playbackUri, setPlaybackUri] = useState<string>("");
   const [playback, setPlayback] = useState<Playback | null>(null);
   const [entry, setEntry] = useState<Entry | null>(null);
   const [playbackState, setPlaybackState] = useState<PlaybackState>("IDLE");
@@ -86,10 +94,11 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     ReturnType<typeof setTimeout> | undefined
   >();
 
-  const onError = useCallback(() => {
+  const resetPlayer = useCallback(() => {
     setPlaybackState("ERROR");
     reportError(Error("Couldn't play that beat. Try Again!"));
     setEntry(null);
+    setPlaybackUri("");
     setPlayingHistory([]);
     setPlaylist([]);
     setDuration(0);
@@ -98,6 +107,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     setPlaybackState,
     reportError,
     setEntry,
+    setPlaybackUri,
     setPlayingHistory,
     setPlaylist,
     setDuration,
@@ -105,14 +115,14 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   ]);
 
   const loadBeat = useCallback(
-    async (entry: Entry, fallback = false) => {
+    async (entry: Entry, fallback = false, shouldPlayEntry = shouldPlay) => {
       if (!isSome(entry.videoUrl)) return;
       const videoUrl = videoSrc(entry.videoUrl, fallback);
       if (playback !== null) {
         await playback.unloadAsync();
         const source = { uri: videoUrl };
         const initialStatus = {
-          shouldPlay: true,
+          shouldPlay: shouldPlayEntry,
         };
         if (!fallback) {
           setDuration(0);
@@ -120,14 +130,17 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
           setEntry(entry);
           setPlayingHistory(append(entry, playingHistory));
         }
+        setPlaybackUri(videoUrl);
 
-        await playback.loadAsync(source, initialStatus, true);
-        setLastPlayedEntry({ variables: { entryId: entry.id! } });
+        playback.loadAsync(source, initialStatus, true);
+        if (user) {
+          setLastPlayedEntry({ variables: { entryId: entry.id! } });
+        }
 
         clearTimeout(timeoutId);
         const id = setTimeout(() => {
           if (fallback) {
-            onError();
+            resetPlayer();
           } else {
             setPlaybackState("FALLBACK");
             loadBeat(entry, true);
@@ -139,12 +152,15 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     [
       playback,
       setEntry,
+      setPlaybackUri,
       setPlayingHistory,
       playingHistory,
       setPosition,
       setDuration,
       setLastPlayedEntry,
+      resetPlayer,
       timeoutId,
+      shouldPlay,
     ]
   );
 
@@ -161,7 +177,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       setPlaybackState("LOADING");
-      await loadBeat(newEntry);
+      await loadBeat(newEntry, false, shouldPlayEntry);
     },
     [
       entry,
@@ -248,15 +264,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   const onPlaybackStatusUpdate = useCallback(
     (status: AVPlaybackStatus) => {
       if (!status.isLoaded) {
-        if (status.error) {
-          clearTimeout(timeoutId);
-          if (playbackState === "FALLBACK") {
-            setPlaybackState("ERROR");
-            reportError(Error("Couldn't play that beat. Try Again!"));
-          } else {
-            setPlaybackState("FALLBACK");
-          }
-        }
         return;
       }
 
@@ -272,15 +279,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         setDuration(status.durationMillis ?? 0);
       }
     },
-    [
-      skipForward,
-      setPosition,
-      setDuration,
-      looping,
-      playbackState,
-      setPlaybackState,
-      timeoutId,
-    ]
+    [skipForward, setPosition, setDuration, looping, playbackState]
   );
 
   const onReadyForDisplay = useCallback(async () => {
@@ -294,6 +293,20 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       }
     }
   }, [playbackState, setPlaybackState, timeoutId, playback]);
+
+  const onError = useCallback(
+    (error: string) => {
+      console.error(error);
+      clearTimeout(timeoutId);
+      if (playbackState === "FALLBACK" || !entry) {
+        resetPlayer();
+      } else {
+        setPlaybackState("FALLBACK");
+        loadBeat(entry, true);
+      }
+    },
+    [playbackState, entry, resetPlayer, loadBeat, timeoutId]
+  );
 
   useEffect(() => {
     Audio.setAudioModeAsync({
@@ -319,6 +332,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       skipBackward,
       toggleLoop,
       entry,
+      playbackUri,
       playbackState,
       playingHistory,
       playlist,
@@ -329,6 +343,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       toggleShuffle: () => setShuffle(!shuffle),
       onPlaybackStatusUpdate,
       onReadyForDisplay,
+      onError,
     }),
     [
       playback,
@@ -341,6 +356,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       skipBackward,
       toggleLoop,
       entry,
+      playbackUri,
       playbackState,
       playingHistory,
       playlist,
@@ -351,6 +367,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       setShuffle,
       onPlaybackStatusUpdate,
       onReadyForDisplay,
+      onError,
     ]
   );
 

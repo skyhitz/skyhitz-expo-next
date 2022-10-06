@@ -2,7 +2,7 @@ import { ResizeMode, Video } from "expo-av";
 import { useEffect } from "react";
 import { ImageBackground, Platform, ViewStyle } from "react-native";
 import { useRecoilValue } from "recoil";
-import { imageSrc, videoSrc } from "app/utils/entry";
+import { imageSrc } from "app/utils/entry";
 import { usePlayback } from "app/hooks/usePlayback";
 import { userAtom } from "app/state/user";
 
@@ -18,17 +18,19 @@ export function VideoPlayer({ width, height, style }: Props) {
     onReadyForDisplay,
     playEntry,
     entry,
+    playbackUri,
     playback,
     setPlayback,
     playbackState,
     onPlaybackStatusUpdate,
+    onError,
   } = usePlayback();
 
   const getVideoUri = () => {
     // we need to provide correct uri only for web
     // on native we can change uri using loadAsync
     if (Platform.OS === "web" && entry) {
-      return videoSrc(entry.videoUrl!, playbackState === "FALLBACK");
+      return playbackUri;
     }
     return "";
   };
@@ -66,6 +68,7 @@ export function VideoPlayer({ width, height, style }: Props) {
           justifyContent: "center",
         }}
         onReadyForDisplay={onReadyForDisplay}
+        onError={onError}
       />
     </ImageBackground>
   );

@@ -1,11 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 import { ReactNode, useMemo } from "react";
-import { useAuthStatus } from "app/hooks/useAuthStatus";
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
-  useAuthStatus();
-
   return (
     <NavigationContainer
       // TODO: find how to do it right
