@@ -105,13 +105,6 @@ export type EntryPrice = {
   price?: Maybe<Scalars["String"]>;
 };
 
-/** Result of the indexEntry mutation */
-export type IndexEntryResult = {
-  __typename?: "IndexEntryResult";
-  message?: Maybe<Scalars["String"]>;
-  success?: Maybe<Scalars["Boolean"]>;
-};
-
 /** Create users or entries */
 export type Mutation = {
   __typename?: "Mutation";
@@ -121,7 +114,7 @@ export type Mutation = {
   changeWallet?: Maybe<User>;
   createEntry?: Maybe<ConditionalXdr>;
   createUserWithEmail?: Maybe<SuccessResponse>;
-  indexEntry?: Maybe<IndexEntryResult>;
+  indexEntry?: Maybe<Entry>;
   likeEntry?: Maybe<Scalars["Boolean"]>;
   removeEntry?: Maybe<Scalars["Boolean"]>;
   requestToken?: Maybe<Scalars["Boolean"]>;
@@ -328,6 +321,22 @@ export type User = {
   version?: Maybe<Scalars["Int"]>;
 };
 
+export type BuyEntryMutationVariables = Exact<{
+  id: Scalars["String"];
+  amount: Scalars["Float"];
+  price: Scalars["Float"];
+}>;
+
+export type BuyEntryMutation = {
+  __typename?: "Mutation";
+  buyEntry?: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success?: boolean | null;
+    submitted?: boolean | null;
+  } | null;
+};
+
 export type ChangeWalletMutationVariables = Exact<{
   signedXDR: Scalars["String"];
 }>;
@@ -393,9 +402,15 @@ export type IndexEntryMutationVariables = Exact<{
 export type IndexEntryMutation = {
   __typename?: "Mutation";
   indexEntry?: {
-    __typename?: "IndexEntryResult";
-    success?: boolean | null;
-    message?: string | null;
+    __typename?: "Entry";
+    imageUrl?: string | null;
+    videoUrl?: string | null;
+    description?: string | null;
+    title?: string | null;
+    id?: string | null;
+    artist?: string | null;
+    code?: string | null;
+    issuer?: string | null;
   } | null;
 };
 
@@ -729,6 +744,57 @@ export type UserLikesQuery = {
   } | null> | null;
 };
 
+export const BuyEntryDocument = gql`
+  mutation BuyEntry($id: String!, $amount: Float!, $price: Float!) {
+    buyEntry(id: $id, amount: $amount, price: $price) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type BuyEntryMutationFn = Apollo.MutationFunction<
+  BuyEntryMutation,
+  BuyEntryMutationVariables
+>;
+
+/**
+ * __useBuyEntryMutation__
+ *
+ * To run a mutation, you first call `useBuyEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBuyEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [buyEntryMutation, { data, loading, error }] = useBuyEntryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      amount: // value for 'amount'
+ *      price: // value for 'price'
+ *   },
+ * });
+ */
+export function useBuyEntryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    BuyEntryMutation,
+    BuyEntryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<BuyEntryMutation, BuyEntryMutationVariables>(
+    BuyEntryDocument,
+    options
+  );
+}
+export type BuyEntryMutationHookResult = ReturnType<typeof useBuyEntryMutation>;
+export type BuyEntryMutationResult = Apollo.MutationResult<BuyEntryMutation>;
+export type BuyEntryMutationOptions = Apollo.BaseMutationOptions<
+  BuyEntryMutation,
+  BuyEntryMutationVariables
+>;
 export const ChangeWalletDocument = gql`
   mutation changeWallet($signedXDR: String!) {
     changeWallet(signedXDR: $signedXDR) {
@@ -928,8 +994,14 @@ export type CreateUserWithEmailMutationOptions = Apollo.BaseMutationOptions<
 export const IndexEntryDocument = gql`
   mutation IndexEntry($issuer: String!) {
     indexEntry(issuer: $issuer) {
-      success
-      message
+      imageUrl
+      videoUrl
+      description
+      title
+      id
+      artist
+      code
+      issuer
     }
   }
 `;

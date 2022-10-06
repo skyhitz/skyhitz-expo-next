@@ -4,6 +4,7 @@ import { ActivityIndicator } from "app/design-system/activityIndicator";
 import { tw } from "./tailwind";
 import { IconProps } from "app/types";
 import { ReactElement } from "react";
+import { TouchableWithoutFeedback } from "./TouchableWithoutFeedback";
 
 type Props = {
   loading?: boolean;
@@ -16,6 +17,7 @@ type Props = {
   disabled?: boolean;
   className?: string;
   onDisabledPress?: () => void;
+  useTouchable?: boolean;
 };
 
 const textStyle = {
@@ -45,13 +47,19 @@ const Button = ({
   disabled = false,
   className,
   onDisabledPress,
+  useTouchable = false,
 }: Props) => {
   const defaultIconProps = {
     color: disabled ? tw.color("grey") : tw.color("white"),
     size: 22,
   };
+
+  const PressableComponent = useTouchable
+    ? TouchableWithoutFeedback
+    : Pressable;
+
   return (
-    <Pressable
+    <PressableComponent
       className={`flex-row items-center justify-center rounded-full ${
         containerStyle[size]
       } ${disabled ? disabledStyle : containerStyle[variant]} ${
@@ -79,7 +87,7 @@ const Button = ({
           {icon !== undefined && icon(iconProps ?? defaultIconProps)}
         </>
       )}
-    </Pressable>
+    </PressableComponent>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useSignInWithXdrMutation } from "app/api/graphql";
 import { ActivityIndicator, Button, Text, View } from "app/design-system";
-import useErrorReport from "app/hooks/useErrorReport";
+import { useErrorReport } from "app/hooks/useErrorReport";
 import { useLogIn } from "app/hooks/useLogIn";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { buildTransactionForAuth } from "app/utils/stellar";

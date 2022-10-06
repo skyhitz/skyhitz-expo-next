@@ -10,18 +10,20 @@ import PieChartIcon from "app/ui/icons/pie";
 import Slider from "@react-native-community/slider";
 import { UploadInputWithIcon } from "app/ui/inputs/UploadInputWithIcon";
 import { mintFormSchema, validateArtwork, validateVideo } from "app/validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useMintNFT } from "app/hooks/useMintNFT";
 import { any, equals, not } from "ramda";
 import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
 import { useRouter } from "solito/router";
+import { useErrorReport } from "app/hooks/useErrorReport";
 
 export function MintScreen() {
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
   const { back } = useRouter();
   const { mint, retryIndex, progress, status, error } = useMintNFT();
+  const reportError = useErrorReport();
   useMediaLibraryPermission();
 
   const buttonTitle = () => {
@@ -39,6 +41,12 @@ export function MintScreen() {
         return "Mint";
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      reportError(Error(error));
+    }
+  }, [error]);
 
   const initialValues: MintForm = {
     artist: "",
@@ -212,9 +220,6 @@ export function MintScreen() {
                 onPress={back}
               />
             </View>
-            {error !== null && (
-              <Text className="mt-5 text-red text-center">{error}</Text>
-            )}
           </View>
         )}
       </Formik>

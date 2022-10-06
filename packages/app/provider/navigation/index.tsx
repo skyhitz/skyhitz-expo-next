@@ -1,11 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 import { ReactNode, useMemo } from "react";
-import { useAuthStatus } from "app/hooks/useAuthStatus";
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
-  useAuthStatus();
-
   return (
     <NavigationContainer
       // TODO: find how to do it right
@@ -23,18 +20,18 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
               privacy: "privacy",
               terms: "terms",
               dashboard: {
+                path: "dashboard",
                 screens: {
                   search: {
-                    path: "dashboard/search",
                     screens: {
-                      "search-for": "",
+                      "search-for": "search",
                       beatmaker: "beatmaker/:id",
                       beat: "beat/:id",
                     },
                   },
-                  chart: "dashboard/chart",
+                  chart: "chart",
                   profile: {
-                    path: "dashboard/profile",
+                    path: "profile",
                     screens: {
                       "user-details": "",
                       mint: "mint",

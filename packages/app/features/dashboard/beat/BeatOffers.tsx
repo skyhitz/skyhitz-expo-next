@@ -7,9 +7,9 @@ import { BeatActivity } from "./BeatActivities";
 export function Offers({ offers }: { offers: EntryActivity[] }) {
   return (
     <CollapsableView headerText="Offers" icon={ArrowsUpDownIcon}>
-      <View className="mx-5 my-4.5">
-        {offers?.map((item) => (
-          <BeatActivity key={item.id} activity={item} />
+      <View>
+        {offers?.map((item, index) => (
+          <BeatActivity key={item.id} activity={item} index={index} />
         )) ?? <Text>No offers</Text>}
       </View>
     </CollapsableView>

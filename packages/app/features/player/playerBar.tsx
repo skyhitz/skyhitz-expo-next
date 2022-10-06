@@ -2,17 +2,15 @@ import { Text, View } from "app/design-system";
 import { PlayerSlider } from "./components/playerSlider";
 import { PlayerButtonsRow } from "./components/playerButtonsRow";
 import { VideoPlayer } from "app/ui/VideoPlayer";
-import { useRecoilValue } from "recoil";
-import { currentEntryAtom, playbackStateAtom } from "app/state/playback";
+import { usePlayback } from "app/hooks/usePlayback";
 
 export function PlayerBar() {
-  const entry = useRecoilValue(currentEntryAtom);
-  const playbackState = useRecoilValue(playbackStateAtom);
+  const { entry, playbackState } = usePlayback();
 
   return (
     <View
       className={`flex flex-row justify-between items-center h-20 bg-blue-transparent ${
-        playbackState === "IDLE" ? "hidden" : ""
+        playbackState === "IDLE" || playbackState === "ERROR" ? "hidden" : ""
       }`}
     >
       <View className="p-4 w-52 flex flex-row items-center">

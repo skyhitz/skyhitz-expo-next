@@ -1,6 +1,12 @@
 mutation IndexEntry($issuer: String!) {
   indexEntry(issuer: $issuer) {
-    success
-    message
+    imageUrl
+    videoUrl
+    description
+    title
+    id
+    artist
+    code
+    issuer
   }
 }

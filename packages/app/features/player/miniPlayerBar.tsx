@@ -5,12 +5,7 @@ import { tw } from "app/design-system/tailwind";
 import PlayIcon from "app/ui/icons/play";
 import PauseIcon from "app/ui/icons/pause";
 import Animated from "react-native-reanimated";
-import { useRecoilValue } from "recoil";
-import {
-  currentEntryAtom,
-  isPlayingAtom,
-  playbackStateAtom,
-} from "app/state/playback";
+
 import { usePlayback } from "app/hooks/usePlayback";
 import { ActivityIndicator } from "app/design-system/activityIndicator";
 
@@ -20,32 +15,16 @@ type Props = {
 };
 
 export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
-  const isPlaying = useRecoilValue(isPlayingAtom);
-  const playbackState = useRecoilValue(playbackStateAtom);
-  const { playPause } = usePlayback();
-  const entry = useRecoilValue(currentEntryAtom);
-
-  if (playbackState === "ERROR") {
-    return (
-      <Animated.View
-        style={[
-          tw.style(
-            "flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5"
-          ),
-          animatedStyle,
-        ]}
-      >
-        <Text className="text-red">Something went wrong. Try again.</Text>
-      </Animated.View>
-    );
-  }
+  const { playPause, playbackState, entry } = usePlayback();
 
   return (
     <Animated.View
       style={[
         tw.style(
           `flex flex-row justify-between items-center h-10 bg-blue-transparent px-2.5 ${
-            playbackState === "IDLE" ? "hidden" : ""
+            playbackState === "IDLE" || playbackState === "ERROR"
+              ? "hidden"
+              : ""
           }`
         ),
         animatedStyle,
@@ -59,11 +38,11 @@ export function MiniPlayerBar({ onTogglePress, animatedStyle }: Props) {
           </Text>
         </View>
       </Pressable>
-      {playbackState === "LOADING" ? (
+      {playbackState === "LOADING" || playbackState === "FALLBACK" ? (
         <ActivityIndicator />
       ) : (
         <Pressable onPress={playPause}>
-          {isPlaying ? (
+          {playbackState === "PLAYING" ? (
             <PauseIcon color={tw.color("white")} size={22} />
           ) : (
             <PlayIcon color={tw.color("white")} size={22} />

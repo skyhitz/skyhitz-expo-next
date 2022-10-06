@@ -7,7 +7,7 @@ import { userAtom } from "app/state/user";
 import { StellarExpertLink } from "app/ui/links/StellarExpertLink";
 import { buildTransactionForAuth } from "app/utils/stellar";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
-import useErrorReport from "app/hooks/useErrorReport";
+import { useErrorReport } from "app/hooks/useErrorReport";
 import { convertToString } from "app/utils/float";
 
 export function ChangeWallet() {
@@ -49,7 +49,7 @@ export function ChangeWallet() {
       <Text className="font-bold text-sm">Change Wallet</Text>
       <View className="flex-row mt-8">
         <Text className="text-sm">Current Account: </Text>
-        <StellarExpertLink id={user?.publicKey!} path="account" align="left" />
+        <StellarExpertLink id={user?.publicKey!} path="account" />
       </View>
       {user?.managed && (
         <>
