@@ -16,10 +16,9 @@ import {
 import { WithdrawForm } from "app/types";
 import { withdrawFormSchema } from "app/validation";
 import { useToast } from "react-native-toast-notifications";
+import { convertToString } from "app/utils/float";
 
-type Props = { className?: string };
-
-export function WithdrawCredits({ className }: Props) {
+export function WithdrawCredits() {
   const [modalVisible, setModalVisible] = useState(false);
   const { data: paymentInfoData } = usePaymentsInfoQuery();
   const [withdraw, { data, loading, error }] =
@@ -57,14 +56,9 @@ export function WithdrawCredits({ className }: Props) {
   );
 
   return (
-    <View className={className}>
-      <Text className="font-bold text-sm">Credits</Text>
-      <Pressable
-        onPress={() => setModalVisible(true)}
-        className="btn w-52 h-10 mt-4"
-      >
-        <Text>Withdraw</Text>
-      </Pressable>
+    <View className="mt-8">
+      <Text className="font-bold text-sm mb-4">Credits</Text>
+      <Button text="Withdraw" onPress={() => setModalVisible(true)} />
       <Modal visible={modalVisible} transparent>
         <KeyboardAvoidingView behavior="padding" className="flex-1">
           <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70 px-2">
@@ -76,10 +70,11 @@ export function WithdrawCredits({ className }: Props) {
                 <X color={tw.color("white")} />
               </Pressable>
               <View className="w-72 flex items-center">
-                <Text>Withdraw credits</Text>
+                <Text className="text-lg font-bold">Withdraw credits</Text>
                 <Text className="w-full mt-16">
                   Current Balance:{" "}
-                  {paymentInfoData?.paymentsInfo?.credits ?? "0.00"}
+                  {convertToString(paymentInfoData?.paymentsInfo?.credits ?? 0)}
+                  XLM
                 </Text>
                 <Formik
                   initialValues={initialValues}
@@ -137,8 +132,8 @@ export function WithdrawCredits({ className }: Props) {
                       </Text>
                       <Line />
                       <Text className="text-sm leading-none my-4">
-                        Withdrawal fee:{" "}
-                        {(values.amount * 0.06).toFixed(6).toString()} XLM
+                        Withdrawal fee: {convertToString(values.amount * 0.06)}{" "}
+                        XLM
                       </Text>
                       {(errors.address || errors.amount || error) && (
                         <Text className="w-full text-center text-sm text-[#d9544f] my-4 min-h-5">

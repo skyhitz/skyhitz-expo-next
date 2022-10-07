@@ -111,6 +111,7 @@ export type Mutation = {
   buyCredits?: Maybe<Scalars["String"]>;
   buyEntry?: Maybe<ConditionalXdr>;
   cancelSubscription?: Maybe<Scalars["String"]>;
+  changeWallet?: Maybe<User>;
   createEntry?: Maybe<ConditionalXdr>;
   createUserWithEmail?: Maybe<SuccessResponse>;
   indexEntry?: Maybe<Entry>;
@@ -137,6 +138,11 @@ export type MutationBuyEntryArgs = {
   amount: Scalars["Float"];
   id: Scalars["String"];
   price: Scalars["Float"];
+};
+
+/** Create users or entries */
+export type MutationChangeWalletArgs = {
+  signedXDR: Scalars["String"];
 };
 
 /** Create users or entries */
@@ -328,6 +334,28 @@ export type BuyEntryMutation = {
     xdr?: string | null;
     success?: boolean | null;
     submitted?: boolean | null;
+  } | null;
+};
+
+export type ChangeWalletMutationVariables = Exact<{
+  signedXDR: Scalars["String"];
+}>;
+
+export type ChangeWalletMutation = {
+  __typename?: "Mutation";
+  changeWallet?: {
+    __typename?: "User";
+    avatarUrl?: string | null;
+    displayName?: string | null;
+    email?: string | null;
+    username?: string | null;
+    id?: string | null;
+    publishedAt?: string | null;
+    version?: number | null;
+    jwt?: string | null;
+    description?: string | null;
+    publicKey?: string | null;
+    managed?: boolean | null;
   } | null;
 };
 
@@ -766,6 +794,66 @@ export type BuyEntryMutationResult = Apollo.MutationResult<BuyEntryMutation>;
 export type BuyEntryMutationOptions = Apollo.BaseMutationOptions<
   BuyEntryMutation,
   BuyEntryMutationVariables
+>;
+export const ChangeWalletDocument = gql`
+  mutation changeWallet($signedXDR: String!) {
+    changeWallet(signedXDR: $signedXDR) {
+      avatarUrl
+      displayName
+      email
+      username
+      id
+      publishedAt
+      version
+      jwt
+      description
+      publicKey
+      managed
+    }
+  }
+`;
+export type ChangeWalletMutationFn = Apollo.MutationFunction<
+  ChangeWalletMutation,
+  ChangeWalletMutationVariables
+>;
+
+/**
+ * __useChangeWalletMutation__
+ *
+ * To run a mutation, you first call `useChangeWalletMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeWalletMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeWalletMutation, { data, loading, error }] = useChangeWalletMutation({
+ *   variables: {
+ *      signedXDR: // value for 'signedXDR'
+ *   },
+ * });
+ */
+export function useChangeWalletMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ChangeWalletMutation,
+    ChangeWalletMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ChangeWalletMutation,
+    ChangeWalletMutationVariables
+  >(ChangeWalletDocument, options);
+}
+export type ChangeWalletMutationHookResult = ReturnType<
+  typeof useChangeWalletMutation
+>;
+export type ChangeWalletMutationResult =
+  Apollo.MutationResult<ChangeWalletMutation>;
+export type ChangeWalletMutationOptions = Apollo.BaseMutationOptions<
+  ChangeWalletMutation,
+  ChangeWalletMutationVariables
 >;
 export const CreateEntryDocument = gql`
   mutation CreateEntry(

@@ -1,0 +1,15 @@
+mutation changeWallet($signedXDR: String!) {
+  changeWallet(signedXDR: $signedXDR) {
+    avatarUrl
+    displayName
+    email
+    username
+    id
+    publishedAt
+    version
+    jwt
+    description
+    publicKey
+    managed
+  }
+}
