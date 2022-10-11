@@ -24,7 +24,8 @@
       "associatedDomains": [
         "applinks:skyhitz.io",
         "applinks:skyhitz-expo-next.vercel.app"
-      ]
+      ],
+      "usesIcloudStorage": true
     },
     "android": {
       "package": "io.skyhitz.skyhitz",
