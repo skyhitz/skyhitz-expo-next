@@ -14,7 +14,7 @@ export function PlayerBar() {
       }`}
     >
       <View className="p-4 w-52 flex flex-row items-center">
-        <VideoPlayer width={40} height={40} />
+        <VideoPlayer fixedSize={40} />
         <View className="pl-4 h-full justify-end">
           <Text
             className="text-sm text-left font-bold text-white"

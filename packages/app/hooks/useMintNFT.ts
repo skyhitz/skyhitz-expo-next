@@ -67,7 +67,7 @@ export function useMintNFT(): MintResult {
           (cachedData) => ({
             recentlyAdded: prepend(
               indexedEntry?.indexEntry,
-              cachedData.recentlyAdded ?? []
+              cachedData?.recentlyAdded ?? []
             ),
           })
         );
@@ -80,7 +80,7 @@ export function useMintNFT(): MintResult {
           (cachedData) => ({
             topChart: prepend(
               indexedEntry?.indexEntry,
-              cachedData.topChart ?? []
+              cachedData?.topChart ?? []
             ),
           })
         );
@@ -93,13 +93,14 @@ export function useMintNFT(): MintResult {
           (cachedData) => ({
             userEntries: prepend(
               indexedEntry?.indexEntry,
-              cachedData.userEntries ?? []
+              cachedData?.userEntries ?? []
             ),
           })
         );
 
         setStatus("Success");
       } catch (ex) {
+        console.log(ex);
         setStatus("IndexError");
 
         if (ex instanceof ApolloError) {
