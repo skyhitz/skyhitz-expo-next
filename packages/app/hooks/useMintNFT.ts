@@ -100,7 +100,6 @@ export function useMintNFT(): MintResult {
 
         setStatus("Success");
       } catch (ex) {
-        console.log(ex);
         setStatus("IndexError");
 
         if (ex instanceof ApolloError) {
