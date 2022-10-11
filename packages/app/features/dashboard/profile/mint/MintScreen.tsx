@@ -181,7 +181,7 @@ export function MintScreen() {
               containerClassNames="border-b border-white"
               icon={InfoIcon}
               label="Media File"
-              type="other"
+              type="video"
               onUploadFinished={setVideoBlob}
               validateFile={validateVideo}
               onClear={() => setVideoBlob(null)}
