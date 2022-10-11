@@ -22,7 +22,6 @@ export function useOnAuthRedirect(): Result {
     });
     const getInitialUrl = async () => {
       const link = await Linking.getInitialURL();
-      console.log(link);
       if (link && link.startsWith(Config.APP_URL)) {
         const path = link.replace(Config.APP_URL, "");
         setInitialPath(path);
