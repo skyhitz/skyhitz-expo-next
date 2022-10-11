@@ -122,9 +122,9 @@ export const validateArtwork = (image: MediaFileInfo): string | null => {
 export const validateVideo = (video: MediaFileInfo): string | null => {
   const isMp4 = video.uri.startsWith("data:video/mp4");
   const isWav = video.uri.startsWith("data:audio/wav");
-  const isAiff = video.uri.startsWith("data:audio/aiff");
+  const isAiff = video.uri.startsWith("data:audio/mpeg");
   if (!isMp4 && !isWav && !isAiff) {
-    return "Supported media formats: .mp4, .wav, .aiff";
+    return "Supported media formats: .mp4, .wav, .mp3";
   }
   return null;
 };

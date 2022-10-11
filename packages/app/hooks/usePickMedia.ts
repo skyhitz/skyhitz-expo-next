@@ -36,7 +36,7 @@ export default function usePickMedia(
       result = { image: type === "image", ...file };
     } else {
       const file = await DocumentPicker.getDocumentAsync({
-        type: ["video/mp4", "audio/wav", "audio/x-aiff"],
+        type: ["video/mp4", "audio/wav", "audio/mp3"],
       });
       if (!file || file.type === "cancel") return;
       result = { image: false, ...file };
