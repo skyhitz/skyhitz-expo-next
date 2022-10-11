@@ -126,7 +126,7 @@ export function BeatActivity({
     const sellAsset = activity.assets[0]!;
 
     return (
-      <View className="md:flex-row flex-column md:items-center md:flex-wrap">
+      <View className="md:flex-row flex md:items-center md:flex-wrap">
         <LinkWithLabel type="account" id={buyer} />
         <Text className="my-1 md:my-0 text-sm">
           Transfered {activity.sourceAmount}

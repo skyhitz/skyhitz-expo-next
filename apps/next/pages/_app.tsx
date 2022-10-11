@@ -4,6 +4,7 @@ import React from "react";
 import type { SolitoAppProps } from "solito";
 import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
+import "../global";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   return (

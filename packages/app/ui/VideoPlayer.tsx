@@ -24,6 +24,7 @@ export function VideoPlayer({ width, height, style }: Props) {
     playbackState,
     onPlaybackStatusUpdate,
     onError,
+    resetPlayer,
   } = usePlayback();
 
   const getVideoUri = () => {
@@ -34,6 +35,13 @@ export function VideoPlayer({ width, height, style }: Props) {
     }
     return "";
   };
+
+  useEffect(() => {
+    return () => {
+      // resets player when component is unmounted
+      resetPlayer();
+    };
+  }, []);
 
   useEffect(() => {
     // play the last played entry
