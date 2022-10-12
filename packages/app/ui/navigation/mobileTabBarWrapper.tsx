@@ -15,7 +15,7 @@ import {
   GestureDetector,
   Gesture,
 } from "react-native-gesture-handler";
-import { Dimensions } from "react-native";
+import { Dimensions, Platform } from "react-native";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 import { tw } from "app/design-system/tailwind";
 import { usePlayback } from "app/hooks/usePlayback";
@@ -46,6 +46,7 @@ export function MobileTabBarWrapper() {
   const gestureHandler = useMemo(
     () =>
       Gesture.Pan()
+        .enabled(Platform.OS !== "web")
         .onStart((_) => {
           dragStart.value = y.value;
         })

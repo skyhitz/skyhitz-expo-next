@@ -31,9 +31,9 @@ export function VideoPlayer({ width, height, style }: Props) {
     // we need to provide correct uri only for web
     // on native we can change uri using loadAsync
     if (Platform.OS === "web" && entry) {
-      return playbackUri;
+      return { uri: playbackUri };
     }
-    return "";
+    return undefined;
   };
 
   useEffect(() => {
@@ -59,9 +59,7 @@ export function VideoPlayer({ width, height, style }: Props) {
       ]}
     >
       <Video
-        source={{
-          uri: getVideoUri(),
-        }}
+        source={getVideoUri()}
         ref={(ref) => {
           if (ref && !playback) {
             setPlayback(ref);
