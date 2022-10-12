@@ -18,7 +18,6 @@
     "crypto-browserify": "^3.12.0",
     "dripsy": "3.6.0",
     "@dripsy/core": "3.6.0",
-    "expo-device": "~4.0.3",
     "expo-linking": "^3.0.0",
     "formik": "^2.2.9",
     "graphql": "^16.5.0",
