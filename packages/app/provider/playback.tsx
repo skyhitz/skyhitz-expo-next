@@ -20,6 +20,7 @@ import { videoSrc } from "app/utils/entry";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import { Platform } from "react-native";
 
 export type PlaybackApi = {
   playback: null | Playback;
@@ -122,22 +123,15 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       const videoUrl = videoSrc(entry.videoUrl, fallback);
       if (playback !== null) {
         await playback.unloadAsync();
-        const source = { uri: videoUrl };
-        const initialStatus = {
-          shouldPlay: shouldPlayEntry,
-        };
+
         if (!fallback) {
+          setPlaybackState("LOADING");
           setDuration(0);
           setPosition(0);
           setEntry(entry);
           setPlayingHistory(append(entry, playingHistory));
         }
         setPlaybackUri(videoUrl);
-
-        playback.loadAsync(source, initialStatus, true);
-        if (user) {
-          setLastPlayedEntry({ variables: { entryId: entry.id! } });
-        }
 
         if (timeoutId) {
           clearTimeout(timeoutId);
@@ -153,6 +147,27 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
           }
         }, 10000);
         setTimeoutId(id);
+
+        const source = { uri: videoUrl };
+        const initialStatus = {
+          shouldPlay: shouldPlayEntry,
+        };
+
+        await playback.loadAsync(source, initialStatus, true);
+
+        if (Platform.OS !== "web") {
+          clearTimeout(id);
+          if (shouldPlayEntry) {
+            setPlaybackState("PLAYING");
+            await playback?.playAsync();
+          } else {
+            setPlaybackState("PAUSED");
+          }
+        }
+
+        if (user) {
+          setLastPlayedEntry({ variables: { entryId: entry.id! } });
+        }
       }
     },
     [
@@ -160,6 +175,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       setEntry,
       setPlaybackUri,
       setPlayingHistory,
+      setPlaybackState,
       playingHistory,
       setPosition,
       setDuration,
@@ -182,7 +198,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         });
         return;
       }
-      setPlaybackState("LOADING");
       await loadBeat(newEntry, false, shouldPlayEntry);
     },
     [
@@ -227,8 +242,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   );
 
   const skipForward = useCallback(async () => {
-    setPlaybackState("LOADING");
-    await playback?.pauseAsync();
     const currentIndex = findIndex((item) => item?.id === entry?.id, playlist);
     if (currentIndex < 0) return;
     let nextIndex: number;
@@ -237,6 +250,8 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     } else {
       nextIndex = (currentIndex + 1) % playlist.length;
     }
+    setPlaybackState("PAUSED");
+    await playback?.pauseAsync();
     await loadBeat(playlist[nextIndex]!);
   }, [playback, entry, loadBeat, shuffle, playlist, setPlaybackState]);
 
@@ -249,7 +264,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       });
       return;
     }
-    setPlaybackState("LOADING");
+    setPlaybackState("PAUSED");
     await playback?.pauseAsync();
     await loadBeat(previousEntry);
     setPlayingHistory(init(playingHistory));
@@ -272,7 +287,6 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       if (!status.isLoaded) {
         return;
       }
-
       if (status.didJustFinish && playbackState === "PLAYING" && !looping) {
         skipForward();
       }

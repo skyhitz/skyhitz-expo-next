@@ -1,19 +1,29 @@
 import { ResizeMode, Video } from "expo-av";
-import { useEffect } from "react";
-import { ImageBackground, Platform, ViewStyle } from "react-native";
+import { useEffect, useState } from "react";
+import { Dimensions, Platform, ViewStyle } from "react-native";
 import { useRecoilValue } from "recoil";
 import { imageSrc } from "app/utils/entry";
 import { usePlayback } from "app/hooks/usePlayback";
 import { userAtom } from "app/state/user";
+import { min } from "ramda";
+import { Image, View } from "dripsy";
+import { tw } from "app/design-system/tailwind";
 
 type Props = {
-  width: number;
-  height: number;
+  maxHeight?: number;
+  fixedSize?: number;
   style?: ViewStyle;
 };
 
-export function VideoPlayer({ width, height, style }: Props) {
+const windowWidth = Dimensions.get("window").width;
+
+export function VideoPlayer({
+  fixedSize,
+  maxHeight = windowWidth,
+  style,
+}: Props) {
   const user = useRecoilValue(userAtom);
+  const [aspectRatio, setAspectRatio] = useState<number>(0);
   const {
     onReadyForDisplay,
     playEntry,
@@ -50,14 +60,33 @@ export function VideoPlayer({ width, height, style }: Props) {
     }
   }, [playback, user, playEntry, playbackState]);
 
+  useEffect(() => {
+    if (playbackState === "LOADING" || playbackState === "FALLBACK") {
+      setAspectRatio(0);
+    }
+  }, [playbackState]);
+
+  let posterSize = 0;
+  let playerWidth = fixedSize ?? min(maxHeight * aspectRatio, windowWidth);
+  let playerHeight = fixedSize ?? min(playerWidth / aspectRatio, maxHeight);
+
+  if (aspectRatio === 0) {
+    posterSize = fixedSize ?? min(windowWidth, maxHeight);
+    playerWidth = 0;
+    playerHeight = 0;
+  }
+
   return (
-    <ImageBackground
-      source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : undefined }}
-      style={[
-        { width, height, alignItems: "center", justifyContent: "center" },
-        style,
-      ]}
-    >
+    <View style={[tw.style("justify-center items-center"), style]}>
+      <Image
+        source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : undefined }}
+        style={[
+          {
+            width: posterSize,
+            height: posterSize,
+          },
+        ]}
+      />
       <Video
         source={getVideoUri()}
         ref={(ref) => {
@@ -68,14 +97,30 @@ export function VideoPlayer({ width, height, style }: Props) {
         onPlaybackStatusUpdate={onPlaybackStatusUpdate}
         resizeMode={ResizeMode.CONTAIN}
         style={{
-          height,
-          width,
+          height: playerHeight,
+          width: playerWidth,
           alignItems: "center",
           justifyContent: "center",
         }}
-        onReadyForDisplay={onReadyForDisplay}
+        onReadyForDisplay={(event: any) => {
+          let videoAspectRatio = 0;
+          if (event.naturalSize) {
+            const { width, height } = event.naturalSize;
+            if (width && height) {
+              videoAspectRatio = width / height;
+            }
+          } else if (event?.target) {
+            const { videoHeight, videoWidth } = event.target;
+            if (videoHeight && videoWidth) {
+              videoAspectRatio = videoWidth / videoHeight;
+            }
+          }
+          setAspectRatio(videoAspectRatio);
+
+          onReadyForDisplay();
+        }}
         onError={onError}
       />
-    </ImageBackground>
+    </View>
   );
 }

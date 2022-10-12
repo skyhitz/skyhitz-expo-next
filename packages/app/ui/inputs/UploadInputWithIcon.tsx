@@ -1,24 +1,23 @@
 import { ActivityIndicator, Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import { TextProps } from "app/design-system/textInput";
-import { IconProps } from "app/types";
+import { IconProps, MediaFileInfo } from "app/types";
 import { ReactElement, useEffect } from "react";
 import CheckIcon from "app/ui/icons/check";
 import UploadIcon from "app/ui/icons/upload";
 import { Pressable } from "react-native";
-import { ImageInfo } from "expo-image-picker";
 import XIcon from "app/ui/icons/x";
 import usePickMedia from "app/hooks/usePickMedia";
 
 type Props = {
-  type: "video" | "image";
+  type: "other" | "image";
   label: string;
   onUploadFinished: (_blob: Blob) => void;
   onClear: () => void;
   icon: (_props: IconProps) => ReactElement;
   iconProps?: IconProps;
   containerClassNames?: string;
-  validateFile: (_file: ImageInfo) => string | null;
+  validateFile: (_file: MediaFileInfo) => string | null;
   success: boolean;
 };
 

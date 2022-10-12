@@ -36,7 +36,7 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
         >
           <ChevronDown size={24} color={tw.color("white")} />
         </Pressable>
-        <VideoPlayer width={200} height={200} style={{ marginBottom: 40 }} />
+        <VideoPlayer maxHeight={200} style={{ marginBottom: 40 }} />
 
         {playbackState === "ERROR" ? (
           <View>

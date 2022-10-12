@@ -1,7 +1,12 @@
 import * as Yup from "yup";
 import { object, SchemaOf, string } from "yup";
-import { EditProfileForm, MintForm, SignInForm, WithdrawForm } from "app/types";
-import { ImageInfo } from "expo-image-picker";
+import {
+  EditProfileForm,
+  MediaFileInfo,
+  MintForm,
+  SignInForm,
+  WithdrawForm,
+} from "app/types";
 
 export const usernameSchema = Yup.string()
   .required("Username is required.")
@@ -70,14 +75,17 @@ export const withdrawFormSchema: (
   });
 };
 
-const validateImgSquare = (image: ImageInfo) => {
+const validateImgSquare = (image: MediaFileInfo) => {
+  if (!image.image) {
+    return "File is not an image!";
+  }
   if (image.height !== image.width) {
     return "Only square images supported!";
   }
   return null;
 };
 
-const validateImgFormatOneOf = (image: ImageInfo, formats = ["png"]) => {
+const validateImgFormatOneOf = (image: MediaFileInfo, formats = ["png"]) => {
   for (const format of formats) {
     if (image.uri.startsWith(`data:image/${format}`)) return null;
     if (image.uri.endsWith(`.${format}`)) return null;
@@ -86,21 +94,24 @@ const validateImgFormatOneOf = (image: ImageInfo, formats = ["png"]) => {
   return "Unsupported image format";
 };
 
-const validateImgWideEnough = (image: ImageInfo, minWidth = 3000) => {
+const validateImgWideEnough = (image: MediaFileInfo, minWidth = 3000) => {
+  if (!image.image) {
+    return "File is not an image!";
+  }
   if (image.width < minWidth) {
     return `Image should be at least ${minWidth}px wide!`;
   }
   return null;
 };
 
-export const validateProfilePicture = (image: ImageInfo): string | null => {
+export const validateProfilePicture = (image: MediaFileInfo): string | null => {
   return (
     validateImgSquare(image) ??
     validateImgFormatOneOf(image, ["png", "jpg", "jpeg"])
   );
 };
 
-export const validateArtwork = (image: ImageInfo): string | null => {
+export const validateArtwork = (image: MediaFileInfo): string | null => {
   return (
     validateImgSquare(image) ??
     validateImgFormatOneOf(image) ??
@@ -108,10 +119,12 @@ export const validateArtwork = (image: ImageInfo): string | null => {
   );
 };
 
-export const validateVideo = (video: ImageInfo): string | null => {
+export const validateVideo = (video: MediaFileInfo): string | null => {
   const isMp4 = video.uri.startsWith("data:video/mp4");
-  if (!isMp4) {
-    return "Only mp4 files supported!";
+  const isWav = video.uri.startsWith("data:audio/wav");
+  const isAiff = video.uri.startsWith("data:audio/mpeg");
+  if (!isMp4 && !isWav && !isAiff) {
+    return "Supported media formats: .mp4, .wav, .mp3";
   }
   return null;
 };
