@@ -8,7 +8,7 @@ import { PaymentConfirmationModal } from "app/ui/modal/PaymentConfirmationModal"
 
 type Props = {
   entry: Entry;
-  invalidate: () => void;
+  invalidate?: () => void;
 };
 
 export function BuyNowBtn({ entry, invalidate }: Props) {
@@ -36,7 +36,7 @@ export function BuyNowBtn({ entry, invalidate }: Props) {
         equityForSale={price.amount}
         hideModal={(success: boolean) => {
           setModalVisible(false);
-          if (success) {
+          if (success && invalidate) {
             invalidate();
           }
         }}

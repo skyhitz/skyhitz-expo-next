@@ -1,4 +1,4 @@
-import { Button, Pressable, Text, View } from "app/design-system";
+import { Pressable, Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import ChevronDown from "app/ui/icons/chevron-down";
 import { Dimensions, ViewStyle } from "react-native";
@@ -8,8 +8,8 @@ import { PlayerSlider } from "./components/playerSlider";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import Animated from "react-native-reanimated";
 import { VideoPlayer } from "app/ui/VideoPlayer";
-import { ComponentAuthGuard } from "app/utils/authGuard";
 import { usePlayback } from "app/hooks/usePlayback";
+import { BuyNowBtn } from "app/ui/buttons/BuyNowBtn";
 
 const { height } = Dimensions.get("window");
 
@@ -38,7 +38,7 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
         </Pressable>
         <VideoPlayer maxHeight={200} style={{ marginBottom: 40 }} />
 
-        {playbackState === "ERROR" ? (
+        {playbackState === "ERROR" || !entry ? (
           <View>
             <Text className="text-red">Something went wrong. Try again.</Text>
           </View>
@@ -61,15 +61,7 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
                 {entry?.artist}
               </Text>
             </View>
-            <ComponentAuthGuard>
-              <Button
-                text="Buy Now"
-                onPress={() => {
-                  //TODO
-                }}
-                className="mb-5"
-              />
-            </ComponentAuthGuard>
+            <BuyNowBtn entry={entry!} />
             <PlayerButtonsRow size="large" />
             {entry && <LikesList entry={entry} showLikeButton />}
           </>
