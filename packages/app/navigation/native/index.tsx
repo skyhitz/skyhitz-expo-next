@@ -10,6 +10,10 @@ import { tw } from "app/design-system/tailwind";
 import { useAuthStatus } from "app/hooks/useAuthStatus";
 import { useRecoilValue } from "recoil";
 import { appInitializedAtom } from "app/state/user";
+import { useEffect } from "react";
+import { Linking } from "react-native";
+import { Config } from "app/config";
+import { useRouter } from "solito/router";
 
 const Stack = createNativeStackNavigator<{
   splash: undefined;
@@ -24,8 +28,22 @@ const Stack = createNativeStackNavigator<{
 
 export function NativeNavigation() {
   const initialized = useRecoilValue(appInitializedAtom);
+  const { push } = useRouter();
 
   useAuthStatus();
+
+  useEffect(() => {
+    if (initialized) {
+      Linking.addEventListener("url", (event) => {
+        const path = event.url.replace(Config.APP_URL, "");
+        push(path);
+      });
+
+      return () => {
+        Linking.removeAllListeners("url");
+      };
+    }
+  }, [push, initialized]);
 
   return (
     <Stack.Navigator

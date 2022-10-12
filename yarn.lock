@@ -2426,7 +2426,7 @@
     tslib "^2.4.0"
     webcrypto-core "^1.7.4"
 
-"@react-native-async-storage/async-storage@^1.17.7":
+"@react-native-async-storage/async-storage@~1.17.3":
   version "1.17.10"
   resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.10.tgz#8d6a4771912be8454a9e215eebd469b1b8e2e638"
   integrity sha512-KrR021BmBLsA0TT1AAsfH16bHYy0MSbhdAeBAqpriak3GS1T2alFcdTUvn13p0ZW6FKRD6Bd3ryU2zhU/IYYJQ==
@@ -2607,10 +2607,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.8.1.tgz#6e785431db49318048fdd14b601998437b6cc200"
   integrity sha512-DCmCIC0Gn9m6K0Mlg2MwNmTxMEpBu5lTLsI6b/XUAv/vLGa6o+X7RhCai4FWeqkjCU36+ZOwaLzDo4NBWMXaoQ==
 
-"@react-native-community/slider@^4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.3.1.tgz#3d5a43b93ff225577097c767c73f5fca2452105f"
-  integrity sha512-1UOKwABK+F2+Vzj7pI3UjRzWXrjI7yNECW/JNvfIXdpaS2/Vf/YH3XEszpG+8ZueEPSxNK2S271NGEWlheaExg==
+"@react-native-community/slider@4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.2.1.tgz#8f1c8cf62de1bd91ce1e32585f7eb666f21e5025"
+  integrity sha512-6HUS5HbB9bvEN4GiwBlxECgPWQIugHE+kfnxqX2jHUl1SE57MRpw00m1qVs4hXtEPQndBl6mAQiGbKCOtLPVbg==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"

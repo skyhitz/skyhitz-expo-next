@@ -51,5 +51,5 @@ export function useAuthStatus() {
       }
     };
     checkToken();
-  }, [setInitialized, setSkipQuery]);
+  }, [setInitialized, setSkipQuery, onAuthRedirect]);
 }
