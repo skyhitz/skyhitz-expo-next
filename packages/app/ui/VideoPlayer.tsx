@@ -34,16 +34,24 @@ export function VideoPlayer({
     playbackState,
     onPlaybackStatusUpdate,
     onError,
+    resetPlayer,
   } = usePlayback();
 
   const getVideoUri = () => {
     // we need to provide correct uri only for web
     // on native we can change uri using loadAsync
     if (Platform.OS === "web" && entry) {
-      return playbackUri;
+      return { uri: playbackUri };
     }
-    return "";
+    return undefined;
   };
+
+  useEffect(() => {
+    return () => {
+      // resets player when component is unmounted
+      resetPlayer();
+    };
+  }, []);
 
   useEffect(() => {
     // play the last played entry
@@ -80,9 +88,7 @@ export function VideoPlayer({
         ]}
       />
       <Video
-        source={{
-          uri: getVideoUri(),
-        }}
+        source={getVideoUri()}
         ref={(ref) => {
           if (ref && !playback) {
             setPlayback(ref);

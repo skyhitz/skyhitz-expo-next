@@ -49,6 +49,7 @@ export type PlaybackApi = {
   onPlaybackStatusUpdate: (status: AVPlaybackStatus) => void;
   onReadyForDisplay: () => void;
   onError: (error: string) => void;
+  resetPlayer: () => void;
 };
 
 export const PlaybackContext = createContext<PlaybackApi>({
@@ -74,6 +75,7 @@ export const PlaybackContext = createContext<PlaybackApi>({
   onPlaybackStatusUpdate: (_) => {},
   onReadyForDisplay: () => {},
   onError: () => {},
+  resetPlayer: () => {},
 });
 
 export function PlaybackProvider({ children }: { children: React.ReactNode }) {
@@ -96,8 +98,8 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
   >();
 
   const resetPlayer = useCallback(() => {
-    setPlaybackState("ERROR");
-    reportError(Error("Couldn't play that beat. Try Again!"));
+    setPlayback(null);
+    setPlaybackState("IDLE");
     setEntry(null);
     setPlaybackUri("");
     setPlayingHistory([]);
@@ -136,6 +138,8 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         }
         const id = setTimeout(() => {
           if (fallback) {
+            setPlaybackState("ERROR");
+            reportError(Error("Couldn't play that beat. Try Again!"));
             resetPlayer();
           } else {
             setPlaybackState("FALLBACK");
@@ -319,6 +323,8 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         clearTimeout(timeoutId);
       }
       if (playbackState === "FALLBACK" || !entry) {
+        setPlaybackState("ERROR");
+        reportError(Error("Couldn't play that beat. Try Again!"));
         resetPlayer();
       } else {
         setPlaybackState("FALLBACK");
@@ -364,6 +370,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       onPlaybackStatusUpdate,
       onReadyForDisplay,
       onError,
+      resetPlayer,
     }),
     [
       playback,
@@ -388,6 +395,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       onPlaybackStatusUpdate,
       onReadyForDisplay,
       onError,
+      resetPlayer,
     ]
   );
 
