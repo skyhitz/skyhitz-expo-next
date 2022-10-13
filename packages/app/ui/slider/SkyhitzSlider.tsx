@@ -2,32 +2,47 @@ import { View } from "app/design-system";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
+  SharedValue,
 } from "react-native-reanimated";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
 import { useMemo, useState } from "react";
 import { tw } from "app/design-system/tailwind";
 
-export function SkyhitzSlider() {
+type Props = {
+  minimumValue: number;
+  maximumValue: number;
+  value: SharedValue<number>;
+  onSlidingStart?: () => void;
+  onSlidingComplete?: () => void;
+};
+
+export function SkyhitzSlider({
+  minimumValue,
+  maximumValue,
+  value: x,
+  onSlidingStart,
+  onSlidingComplete,
+}: Props) {
   const [sliderWidth, setSliderWidth] = useState<number>(0);
   const [sliderHeight, setSliderHeight] = useState<number>(0);
-
-  const x = useSharedValue(0);
-  const dragStart = useSharedValue(0);
+  const dragStart = useSharedValue(x.value);
 
   const panGestureHandler = useMemo(
     () =>
       Gesture.Pan()
         .onStart((_) => {
-          dragStart.value = x.value;
+          console.log("drag start");
+          dragStart.value = x.value * sliderWidth;
         })
         .onUpdate((event) => {
-          x.value = Math.min(
-            sliderWidth,
-            Math.max(0, dragStart.value + event.translationX)
-          );
+          x.value =
+            Math.min(
+              sliderWidth,
+              Math.max(0, dragStart.value + event.translationX)
+            ) / sliderWidth;
         })
         .onEnd((event) => {
-          console.log(event);
+          console.log("drag end");
         })
         .hitSlop(10),
     [sliderWidth, dragStart]
@@ -36,11 +51,17 @@ export function SkyhitzSlider() {
   const tapGestureHandler = useMemo(
     () =>
       Gesture.Tap()
-        .onTouchesDown((e) => {
-          x.value = e.allTouches[0]?.x ?? x.value;
+        .onTouchesDown((event) => {
+          console.log("tap start");
+          if (event.allTouches[0]) {
+            x.value = event.allTouches[0].x / sliderWidth;
+          }
+        })
+        .onTouchesUp(() => {
+          console.log("tap end");
         })
         .hitSlop(10),
-    []
+    [sliderWidth]
   );
 
   const gestureHandler = useMemo(
@@ -50,19 +71,21 @@ export function SkyhitzSlider() {
 
   const sliderStyle = useAnimatedStyle(() => {
     return {
-      width: x.value,
+      width: (x.value / (maximumValue - minimumValue)) * sliderWidth,
     };
-  });
+  }, [sliderWidth]);
 
   const thumbStyle = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          translateX: x.value - sliderHeight / 2,
+          translateX:
+            (x.value / (maximumValue - minimumValue)) * sliderWidth -
+            sliderHeight / 2,
         },
       ],
     };
-  }, [sliderHeight]);
+  }, [sliderHeight, sliderWidth]);
 
   return (
     <GestureDetector gesture={gestureHandler}>
