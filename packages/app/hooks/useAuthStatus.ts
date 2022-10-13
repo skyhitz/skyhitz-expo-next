@@ -18,14 +18,14 @@ export function useAuthStatus() {
     if (data.authenticatedUser) {
       setUser(data?.authenticatedUser);
     }
-    onAuthRedirect(data.authenticatedUser !== undefined);
-    setInitialized(true);
     setSkipQuery(true);
+    setInitialized(true);
+    onAuthRedirect(data.authenticatedUser !== undefined);
   };
 
   const onAuthError = async () => {
-    setInitialized(true);
     setSkipQuery(true);
+    setInitialized(true);
     onAuthRedirect(false);
     // if the token is not valid, remove it from the storage
     await SecureStorage.clear("token");
@@ -46,11 +46,10 @@ export function useAuthStatus() {
         // check if token is valid
         setSkipQuery(false);
       } else {
-        onAuthRedirect(false);
-
         setInitialized(true);
+        onAuthRedirect(false);
       }
     };
     checkToken();
-  }, [setInitialized, setSkipQuery]);
+  }, [setInitialized, setSkipQuery, onAuthRedirect]);
 }

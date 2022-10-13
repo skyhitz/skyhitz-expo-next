@@ -2,6 +2,7 @@ import { Platform, LogBox } from "react-native";
 import { TextEncoder, TextDecoder } from "text-encoding";
 import { Buffer } from "buffer";
 import process from "process";
+import "@react-native-async-storage/async-storage";
 export interface Global {
   self: Global;
   Buffer: typeof Buffer;

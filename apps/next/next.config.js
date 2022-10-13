@@ -2,6 +2,15 @@
 const nextConfig = {
   reactStrictMode: false,
   webpack5: true,
+  async redirects() {
+    return [
+      {
+        source: "/.well-known/apple-app-site-association",
+        destination: "/api/.well-known/apple-app-site-association",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 const { withExpo } = require("@expo/next-adapter");
