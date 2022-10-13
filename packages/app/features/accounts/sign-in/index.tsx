@@ -21,10 +21,10 @@ export function SignIn() {
     >
       <BackgroundImage />
 
-      {emailSend ? (
-        <OpenEmailView />
-      ) : signInParam ? (
+      {signInParam ? (
         <AuthenticationView signInParam={signInParam} />
+      ) : emailSend ? (
+        <OpenEmailView />
       ) : not(isEmpty(publicKey)) ? (
         <WalletConnectView publicKey={publicKey} />
       ) : (

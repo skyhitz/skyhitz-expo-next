@@ -1,12 +1,13 @@
 import Navbar from "app/ui/navbar";
 import BackgroundImage from "app/ui/backgroundImage";
 import Footer from "app/ui/footer";
-import { Pressable, Text, TextLink, View } from "app/design-system";
+import { Pressable, Text, View } from "app/design-system";
 import { useLink } from "solito/link";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 import { StatusBar } from "react-native";
 import ChevronRight from "app/ui/icons/chevron-right";
 import { tw } from "app/design-system/tailwind";
+import { useRouter } from "solito/router";
 
 export function HomeScreen() {
   const insets = useSafeArea();
@@ -65,13 +66,14 @@ function LogInButton() {
 }
 
 function TryOutButton() {
+  const { push } = useRouter();
   return (
-    <TextLink
-      tw="flex flex-row items-center mx-auto mt-8 sm:hidden"
-      href="/dashboard/chart"
+    <Pressable
+      className="flex flex-row items-center mx-auto mt-8 sm:hidden"
+      onPress={() => push("/dashboard/chart")}
     >
       <Text className="text-sm">Try It Out</Text>
       <ChevronRight color={tw.color("white")} />
-    </TextLink>
+    </Pressable>
   );
 }

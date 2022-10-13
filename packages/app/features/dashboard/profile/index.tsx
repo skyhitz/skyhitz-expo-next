@@ -74,13 +74,14 @@ export function ProfileScreen() {
         title="Collections"
         onPress={() => push("/dashboard/profile/collection")}
       />
-      <Button
+      {/* Disabled for release */}
+      {/* <Button
         text="Buy XLM"
         onPress={() => {}}
         icon={Dollar}
         className="mx-auto my-16"
         size="large"
-      />
+      /> */}
       <Button
         text="Mint new NFT"
         onPress={() => {

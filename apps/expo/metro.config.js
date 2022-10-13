@@ -6,8 +6,8 @@ const { getDefaultConfig } = require("expo/metro-config");
 const path = require("path");
 
 // package aliases
-const crypto = require.resolve('crypto-browserify');
-const stream = require.resolve('readable-stream');
+const crypto = require.resolve("crypto-browserify");
+const stream = require.resolve("readable-stream");
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(__dirname, "../..");
@@ -21,7 +21,7 @@ config.resolver.nodeModulesPaths = [
 ];
 config.resolver.extraNodeModules = {
   crypto,
-  stream
-}
+  stream,
+};
 
 module.exports = config;
