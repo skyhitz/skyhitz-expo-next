@@ -8,7 +8,7 @@ export default function TermsScreen() {
   return (
     <SafeAreaView
       edges={["bottom"]}
-      className="flex flex-1 bg-blue-dark max-h-[100vh]"
+      className="flex flex-1 bg-blue-dark max-h-full"
     >
       {tw.prefixMatch("web") && <Navbar />}
       <ScrollView className="p-8 flex-1">

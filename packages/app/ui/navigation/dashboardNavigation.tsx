@@ -17,7 +17,7 @@ export function DashboardNavigation({
   useSx();
   const user = useRecoilValue(userAtom);
   return (
-    <View className="flex flex-1 max-h-[100vh] bg-blue-dark overflow-hidden">
+    <View className="flex flex-1 h-full bg-blue-dark overflow-hidden">
       <Navbar />
       <View className="flex flex-row flex-1">
         {!!user && tw.prefixMatch("sm") && <DashboardTabBar column />}
