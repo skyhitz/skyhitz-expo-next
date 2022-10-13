@@ -4,6 +4,7 @@ import { tw } from "app/design-system/tailwind";
 import { Text, View } from "app/design-system";
 import { usePlayback } from "app/hooks/usePlayback";
 import { any, equals } from "ramda";
+import { SkyhitzSlider } from "app/ui/slider/SkyhitzSlider";
 
 export function PlayerSlider() {
   const { startSeeking, onSeekCompleted, duration, position, playbackState } =
@@ -31,7 +32,7 @@ export function PlayerSlider() {
             : "auto"
         }
       >
-        <Slider
+        {/* <Slider
           style={{ flex: 1 }}
           minimumValue={0}
           maximumValue={1}
@@ -48,7 +49,8 @@ export function PlayerSlider() {
           minimumTrackTintColor={tw.color("blue")}
           maximumTrackTintColor={tw.color("blue-track")}
           thumbTintColor={tw.color("white")}
-        />
+        /> */}
+        <SkyhitzSlider />
       </View>
 
       <Text className="text-white text-xs ml-3 w-10">
