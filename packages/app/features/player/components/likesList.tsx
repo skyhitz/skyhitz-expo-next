@@ -5,14 +5,21 @@ import { UserAvatar } from "app/ui/userAvatar";
 import { FlatList } from "react-native";
 import { isSome } from "app/utils";
 import React from "react";
+import { AndroidHorizontalList } from "app/ui/Lists/AndroidHorizontalList";
 
 type Props = {
   entry: Entry;
   classname?: string;
   showLikeButton?: boolean;
+  useAndroidHorizontalList?: boolean;
 };
 
-export function LikesList({ entry, classname = "", showLikeButton }: Props) {
+export function LikesList({
+  entry,
+  classname = "",
+  showLikeButton,
+  useAndroidHorizontalList = false,
+}: Props) {
   const { data, loading } = useEntryLikesQuery({
     variables: {
       id: entry.id!,
@@ -21,7 +28,7 @@ export function LikesList({ entry, classname = "", showLikeButton }: Props) {
 
   const renderItem = ({ item }: { item: PublicUser }) => {
     return (
-      <View className="mr-2" key={item.id}>
+      <View className="mr-2">
         <UserAvatar avatarUrl={item.avatarUrl} displayName={item.displayName} />
       </View>
     );
@@ -34,14 +41,21 @@ export function LikesList({ entry, classname = "", showLikeButton }: Props) {
         {showLikeButton && <LikeButton size={24} entry={entry} />}
       </View>
       <View className="flex flex-row mt-2.5 min-h-10">
-        <FlatList
-          data={data?.entryLikes?.users?.filter(isSome)}
-          keyExtractor={(item) => item.id!}
-          renderItem={renderItem}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ListEmptyComponent={<ListEmptyComponent loading={loading} />}
-        />
+        {useAndroidHorizontalList ? (
+          <AndroidHorizontalList
+            data={data?.entryLikes?.users?.filter(isSome) ?? []}
+            renderItem={(item) => renderItem({ item })}
+            listEmptyComponent={<ListEmptyComponent loading={loading} />}
+          />
+        ) : (
+          <FlatList
+            data={data?.entryLikes?.users?.filter(isSome)}
+            renderItem={renderItem}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ListEmptyComponent={<ListEmptyComponent loading={loading} />}
+          />
+        )}
       </View>
     </View>
   );
