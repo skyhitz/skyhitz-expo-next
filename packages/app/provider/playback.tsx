@@ -122,15 +122,15 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       if (!isSome(entry.videoUrl)) return;
       const videoUrl = videoSrc(entry.videoUrl, fallback);
       if (playback !== null) {
-        await playback.unloadAsync();
-
         if (!fallback) {
           setPlaybackState("LOADING");
+          setEntry(entry);
           setDuration(0);
           setPosition(0);
-          setEntry(entry);
           setPlayingHistory(append(entry, playingHistory));
         }
+
+        await playback.unloadAsync();
         setPlaybackUri(videoUrl);
 
         if (timeoutId) {
@@ -292,11 +292,19 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (
-        !isNaN(status.durationMillis ?? NaN) &&
-        any(equals(playbackState), ["PLAYING", "LOADING", "FALLBACK"])
+        status.durationMillis &&
+        !isNaN(status.durationMillis) &&
+        any(equals(playbackState), ["LOADING", "FALLBACK"])
+      ) {
+        setDuration(status.durationMillis);
+      }
+
+      if (
+        status.positionMillis &&
+        !isNaN(status.positionMillis) &&
+        playbackState === "PLAYING"
       ) {
         setPosition(status.positionMillis);
-        setDuration(status.durationMillis ?? 0);
       }
     },
     [skipForward, setPosition, setDuration, looping, playbackState]
