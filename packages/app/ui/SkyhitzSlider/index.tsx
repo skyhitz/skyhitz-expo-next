@@ -2,36 +2,53 @@ import { View } from "app/design-system";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  SharedValue,
+  runOnUI,
+  runOnJS,
 } from "react-native-reanimated";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { tw } from "app/design-system/tailwind";
 
 type Props = {
   minimumValue: number;
   maximumValue: number;
-  value: SharedValue<number>;
+  value: number;
   onSlidingStart?: () => void;
-  onSlidingComplete?: () => void;
+  onValueChange?: (newValue: number) => void;
+  onSlidingComplete?: (newValue: number) => void;
 };
 
 export function SkyhitzSlider({
   minimumValue,
   maximumValue,
-  value: x,
+  value,
   onSlidingStart,
+  onValueChange,
   onSlidingComplete,
 }: Props) {
   const [sliderWidth, setSliderWidth] = useState<number>(0);
   const [sliderHeight, setSliderHeight] = useState<number>(0);
+  const x = useSharedValue(0);
   const dragStart = useSharedValue(x.value);
+  const isSliding = useSharedValue(false);
+
+  useEffect(() => {
+    const worklet = (num: number) => {
+      "worklet";
+      if (!isSliding.value) {
+        x.value = num;
+      }
+    };
+    const num = value / (maximumValue - minimumValue);
+    if (!isNaN(num)) {
+      runOnUI(worklet)(num);
+    }
+  }, [value, maximumValue, minimumValue]);
 
   const panGestureHandler = useMemo(
     () =>
       Gesture.Pan()
-        .onStart((_) => {
-          console.log("drag start");
+        .onStart(() => {
           dragStart.value = x.value * sliderWidth;
         })
         .onUpdate((event) => {
@@ -40,28 +57,57 @@ export function SkyhitzSlider({
               sliderWidth,
               Math.max(0, dragStart.value + event.translationX)
             ) / sliderWidth;
+          if (onValueChange) {
+            runOnJS(onValueChange)(x.value * (maximumValue - minimumValue));
+          }
         })
-        .onEnd((event) => {
-          console.log("drag end");
+        .onEnd(() => {
+          isSliding.value = false;
+          if (onSlidingComplete) {
+            runOnJS(onSlidingComplete)(x.value * (maximumValue - minimumValue));
+          }
         })
         .hitSlop(10),
-    [sliderWidth, dragStart]
+    [
+      sliderWidth,
+      dragStart,
+      maximumValue,
+      minimumValue,
+      onSlidingComplete,
+      onValueChange,
+    ]
   );
 
   const tapGestureHandler = useMemo(
     () =>
       Gesture.Tap()
         .onTouchesDown((event) => {
-          console.log("tap start");
           if (event.allTouches[0]) {
+            isSliding.value = true;
             x.value = event.allTouches[0].x / sliderWidth;
+            if (onValueChange) {
+              runOnJS(onValueChange)(x.value * (maximumValue - minimumValue));
+            }
+            if (onSlidingStart) {
+              runOnJS(onSlidingStart)();
+            }
           }
         })
         .onTouchesUp(() => {
-          console.log("tap end");
+          isSliding.value = false;
+          if (onSlidingComplete) {
+            runOnJS(onSlidingComplete)(x.value * (maximumValue - minimumValue));
+          }
         })
         .hitSlop(10),
-    [sliderWidth]
+    [
+      sliderWidth,
+      maximumValue,
+      minimumValue,
+      onValueChange,
+      onSlidingComplete,
+      onSlidingStart,
+    ]
   );
 
   const gestureHandler = useMemo(
@@ -71,7 +117,7 @@ export function SkyhitzSlider({
 
   const sliderStyle = useAnimatedStyle(() => {
     return {
-      width: (x.value / (maximumValue - minimumValue)) * sliderWidth,
+      width: x.value * sliderWidth,
     };
   }, [sliderWidth]);
 
@@ -79,9 +125,7 @@ export function SkyhitzSlider({
     return {
       transform: [
         {
-          translateX:
-            (x.value / (maximumValue - minimumValue)) * sliderWidth -
-            sliderHeight / 2,
+          translateX: x.value * sliderWidth - sliderHeight / 2,
         },
       ],
     };
@@ -90,14 +134,17 @@ export function SkyhitzSlider({
   return (
     <GestureDetector gesture={gestureHandler}>
       <View
-        className="flex-1 flex-row rounded-md bg-blue-track"
+        className="flex-1 flex-row rounded-md bg-blue-track max-h-2 min-h-2"
         onLayout={(e) => {
           setSliderWidth(e.nativeEvent.layout.width);
           setSliderHeight(e.nativeEvent.layout.height);
         }}
       >
         <Animated.View
-          style={[tw.style("h-full rounded-l-md bg-blue"), sliderStyle]}
+          style={[
+            tw.style("max-h-2 min-h-2 rounded-l-md bg-blue"),
+            sliderStyle,
+          ]}
         />
 
         <Animated.View
