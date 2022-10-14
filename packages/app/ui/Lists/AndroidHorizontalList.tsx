@@ -71,6 +71,7 @@ export function AndroidHorizontalList<T>({
       <Animated.View
         style={[tw.style("flex-row absolute"), listStyle]}
         onLayout={(e) => {
+          // 16 is the padding from the right
           setMaxTranslation(
             Math.max(e.nativeEvent.layout.width + 16 - width, 0)
           );

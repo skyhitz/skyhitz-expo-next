@@ -28,7 +28,7 @@ export function LikesList({
 
   const renderItem = ({ item }: { item: PublicUser }) => {
     return (
-      <View className="mr-2">
+      <View className="mr-2" key={item.id}>
         <UserAvatar avatarUrl={item.avatarUrl} displayName={item.displayName} />
       </View>
     );
