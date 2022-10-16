@@ -26,10 +26,10 @@ export function BeatSummaryColumn({ entryDetails }: Props) {
 
   return (
     <View className="flex md:flex-1 md:ml-2 w-full">
-      <View className="mb-4">
-        <Text className="text-3xl md:text-7xl font-bold">{title}</Text>
+      <View>
+        <Text className="text-3xl md:text-5xl font-bold mb-2">{title}</Text>
         <Text className="md:text-2xl">{artist}</Text>
-        <View className="flex-row mt-3 items-center">
+        <View className="flex-row mt-4 items-center">
           <Pressable onPress={() => playEntry(entry, [entry])}>
             <PlayIcon color={tw.color("grey-light")} />
           </Pressable>
