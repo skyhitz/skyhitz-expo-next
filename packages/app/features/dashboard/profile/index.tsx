@@ -79,7 +79,7 @@ export function ProfileScreen() {
         text="Buy XLM"
         onPress={() => {}}
         icon={Dollar}
-        className="mx-auto my-16"
+        className="mx-auto mt-16"
         size="large"
       /> */}
       <Button
@@ -88,7 +88,7 @@ export function ProfileScreen() {
           push("/dashboard/profile/mint");
         }}
         icon={Upload}
-        className="mx-auto"
+        className="mx-auto mt-16"
         size="large"
         disabled={(paymentInfoData?.paymentsInfo?.credits ?? 0) < 2}
         onDisabledPress={() => setModalVisible(true)}

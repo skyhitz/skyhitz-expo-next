@@ -72,8 +72,9 @@ export function VideoPlayer({
 
   if (aspectRatio === 0) {
     posterSize = fixedSize ?? min(windowWidth, maxHeight);
-    playerWidth = 0;
-    playerHeight = 0;
+    // we have to set it to 1 instead of 0 so it will load properly on android
+    playerWidth = 1;
+    playerHeight = 1;
   }
 
   return (

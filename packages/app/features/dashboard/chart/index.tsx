@@ -23,10 +23,10 @@ export function ChartScreen() {
   return (
     <SafeAreaView
       edges={["top"]}
-      className="w-full max-w-6xl mx-auto flex-1 flex px-4 bg-blue-dark"
+      className="w-full max-w-6xl mx-auto flex-1 flex px-4 bg-blue-dark pt-4"
     >
+      <Text className="text-2xl mb-4">Top Beats</Text>
       <FlatList
-        ListHeaderComponent={ListHeader}
         data={data}
         keyExtractor={(item) => item.id!}
         renderItem={({ item, index }) => (
@@ -40,8 +40,4 @@ export function ChartScreen() {
       />
     </SafeAreaView>
   );
-}
-
-function ListHeader() {
-  return <Text className="text-2xl mb-4">Top Beats</Text>;
 }
