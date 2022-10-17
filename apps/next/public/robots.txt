@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: 
+
+Sitemap: https://skyhitz.io/sitemap.xml
+
