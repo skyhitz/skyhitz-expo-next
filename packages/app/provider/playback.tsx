@@ -231,14 +231,14 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
 
   const onSeekCompleted = useCallback(
     async (value: number) => {
-      setPosition(value * duration);
+      setPosition(value);
       setPlaybackState(shouldPlay ? "PLAYING" : "PAUSED");
       await playback?.setStatusAsync({
-        positionMillis: value * duration,
+        positionMillis: value,
         shouldPlay,
       });
     },
-    [duration, playback, shouldPlay, setPlaybackState]
+    [playback, shouldPlay, setPlaybackState]
   );
 
   const skipForward = useCallback(async () => {
