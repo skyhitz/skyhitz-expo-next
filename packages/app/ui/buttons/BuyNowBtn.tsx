@@ -1,10 +1,14 @@
-import { Entry } from "app/api/graphql";
+import { Entry, UserCollectionDocument } from "app/api/graphql";
 import { Button } from "app/design-system";
 
 import { ComponentAuthGuard } from "app/utils/authGuard";
 import { useEntryOffer } from "app/hooks/useEntryOffer";
 import { useState } from "react";
 import { PaymentConfirmationModal } from "app/ui/modal/PaymentConfirmationModal";
+import { useApolloClient } from "@apollo/client";
+import { prepend } from "ramda";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 type Props = {
   entry: Entry;
@@ -14,6 +18,8 @@ type Props = {
 export function BuyNowBtn({ entry, invalidate }: Props) {
   const price = useEntryOffer(entry.code, entry.issuer);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { cache } = useApolloClient();
+  const user = useRecoilValue(userAtom);
 
   if (!price) {
     return null;
@@ -38,6 +44,16 @@ export function BuyNowBtn({ entry, invalidate }: Props) {
           setModalVisible(false);
           if (success && invalidate) {
             invalidate();
+            cache.updateQuery(
+              {
+                query: UserCollectionDocument,
+                variables: { userId: user?.id },
+                overwrite: true,
+              },
+              (cachedData) => ({
+                userEntries: prepend(entry, cachedData?.userEntries ?? []),
+              })
+            );
           }
         }}
       />
