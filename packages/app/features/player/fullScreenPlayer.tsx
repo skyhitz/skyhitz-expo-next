@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import ChevronDown from "app/ui/icons/chevron-down";
-import { Dimensions, ViewStyle } from "react-native";
+import { Dimensions, Platform, ViewStyle } from "react-native";
 import { LikesList } from "./components/likesList";
 import { PlayerButtonsRow } from "./components/playerButtonsRow";
 import { PlayerSlider } from "./components/playerSlider";
@@ -63,7 +63,13 @@ export function FullScreenPlayer({ onTogglePress, animatedStyle }: Props) {
             </View>
             <BuyNowBtn entry={entry!} />
             <PlayerButtonsRow size="large" />
-            {entry && <LikesList entry={entry} showLikeButton />}
+            {entry && (
+              <LikesList
+                entry={entry}
+                showLikeButton
+                useAndroidHorizontalList={Platform.OS === "android"}
+              />
+            )}
           </>
         )}
       </SafeAreaView>

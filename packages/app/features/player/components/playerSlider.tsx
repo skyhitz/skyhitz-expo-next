@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Slider from "@react-native-community/slider";
-import { tw } from "app/design-system/tailwind";
 import { Text, View } from "app/design-system";
 import { usePlayback } from "app/hooks/usePlayback";
 import { any, equals } from "ramda";
+import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
 
 export function PlayerSlider() {
   const { startSeeking, onSeekCompleted, duration, position, playbackState } =
@@ -12,7 +11,6 @@ export function PlayerSlider() {
   const songTime = duration / 1000;
   const currentTime =
     playbackState === "SEEKING" ? seekPosition / 1000 : position / 1000;
-  const value = duration !== 0 ? position / duration : 0;
 
   return (
     <View className="flex flex-row items-center justify-between w-full">
@@ -31,23 +29,13 @@ export function PlayerSlider() {
             : "auto"
         }
       >
-        <Slider
-          style={{ flex: 1 }}
+        <SkyhitzSlider
           minimumValue={0}
-          maximumValue={1}
-          value={value}
-          onSlidingStart={(_) => {
-            startSeeking();
-          }}
-          onValueChange={(newValue) => {
-            if (playbackState === "SEEKING") {
-              setSeekPosition(newValue * duration);
-            }
-          }}
+          maximumValue={duration}
+          value={position}
+          onValueChange={setSeekPosition}
+          onSlidingStart={startSeeking}
           onSlidingComplete={onSeekCompleted}
-          minimumTrackTintColor={tw.color("blue")}
-          maximumTrackTintColor={tw.color("blue-track")}
-          thumbTintColor={tw.color("white")}
         />
       </View>
 

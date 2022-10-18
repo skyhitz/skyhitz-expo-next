@@ -43,6 +43,12 @@ const theme = makeTheme({
     a: {
       color: "white",
     },
+    p: {
+      color: "white",
+    },
+    h1: {
+      color: "white",
+    },
     body: {
       fontWeight: "normal",
       ...textSizes["text-base"],

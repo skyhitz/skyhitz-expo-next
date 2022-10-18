@@ -7,7 +7,6 @@ import { Button, Text, View } from "app/design-system";
 import { Switch } from "react-native";
 import DollarIcon from "app/ui/icons/dollar";
 import PieChartIcon from "app/ui/icons/pie";
-import Slider from "@react-native-community/slider";
 import { UploadInputWithIcon } from "app/ui/inputs/UploadInputWithIcon";
 import { mintFormSchema, validateArtwork, validateVideo } from "app/validation";
 import { useEffect, useState } from "react";
@@ -17,8 +16,11 @@ import { any, equals, not } from "ramda";
 import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
 import { useRouter } from "solito/router";
 import { useErrorReport } from "app/hooks/useErrorReport";
+import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export function MintScreen() {
+  const [equityForSale, setEquityForSale] = useState<string>("1");
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
   const { back } = useRouter();
@@ -149,21 +151,22 @@ export function MintScreen() {
                 <View className="flex flex-row py-5 items-center border-b border-white">
                   <PieChartIcon size={24} color={tw.color("white")} />
                   <Text className="mx-4 text-sm w-40">
-                    Equity for Sale: {values.equityForSale}%
+                    Equity for Sale: {equityForSale}%
                   </Text>
-                  <Slider
-                    style={{ flex: 1 }}
-                    minimumValue={1}
-                    maximumValue={100}
-                    value={values.equityForSale}
-                    onValueChange={(value: number) => {
-                      setFieldValue("equityForSale", value);
-                    }}
-                    step={1}
-                    minimumTrackTintColor={tw.color("blue")}
-                    maximumTrackTintColor={tw.color("blue-track")}
-                    thumbTintColor={tw.color("white")}
-                  />
+                  <GestureHandlerRootView style={{ flex: 1 }}>
+                    <SkyhitzSlider
+                      minimumValue={1}
+                      maximumValue={100}
+                      value={values.equityForSale ?? 1}
+                      onValueChange={(value: number) => {
+                        setEquityForSale(value.toFixed());
+                      }}
+                      onSlidingComplete={(value: number) => {
+                        setFieldValue("equityForSale", value);
+                        setEquityForSale(value.toFixed());
+                      }}
+                    />
+                  </GestureHandlerRootView>
                 </View>
               </>
             )}
