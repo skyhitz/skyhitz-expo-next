@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
           name="keywords"
           content="stellar, xlm, mfts, crypto, music nfts, beats market, beats website, lofi beats, fresh beats, music creators, exclusive beats for sale"
         />
-        <meta name="twitter:card" content="media" />
+        <meta name="twitter:card" key="twitter:card" content="summary" />
         <meta name="twitter:site" content="@skyhitzio" />
         <meta property="og:title" content="Skyhitz" key="og:title" />
         <meta
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         <meta
           property="og:image"
           key="og:image"
-          content="https://skyhitz.io/skyhitz.png"
+          content="https://res.cloudinary.com/skyhitz/image/upload/c_scale,h_531,q_auto/v1583723774/web/social.png"
         />
         <meta property="og:url" key="og:url" content="https://skyhitz.io" />
         <meta property="fb:app_id" content="564403243666491" />
