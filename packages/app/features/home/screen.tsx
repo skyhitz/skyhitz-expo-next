@@ -1,7 +1,7 @@
 import Navbar from "app/ui/navbar";
 import BackgroundImage from "app/ui/backgroundImage";
 import Footer from "app/ui/footer";
-import { Pressable, Text, View } from "app/design-system";
+import { Pressable, View, H1, P, Text } from "app/design-system";
 import { useLink } from "solito/link";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 import { StatusBar } from "react-native";
@@ -13,19 +13,19 @@ export function HomeScreen() {
   const insets = useSafeArea();
   return (
     <View
-      className={`w-full h-full flex h-full pt-[${insets.top}px] pb-[${insets.bottom}px]`}
+      className={`w-full h-full flex pt-[${insets.top}px] pb-[${insets.bottom}px]`}
     >
       <BackgroundImage />
       <StatusBar barStyle="light-content" />
       <Navbar />
       <View className="mx-auto text-center flex-1 max-w-xs mt-6 sm:max-w-xl sm:mt-10">
-        <Text className="mt-4 text-center font-raleway text-4xl sm:text-6xl sm:leading-tight">
+        <H1 className="mt-4 text-center font-raleway text-4xl sm:text-6xl sm:leading-tight">
           Music NFTs on Stellar
-        </Text>
-        <Text className="mx-auto text-center mb-9 max-w-lg font-raleway font-semibold tracking-0.5 text-sm leading-6 mt-9 sm:text-lg sm:mt-8">
+        </H1>
+        <P className="mx-auto text-center mb-9 max-w-lg font-raleway font-semibold tracking-0.5 text-sm leading-6 mt-9 sm:text-lg sm:mt-8">
           Upload, buy or sell music NFTs on the Stellar Network. Join a
           community of beatmakers!
-        </Text>
+        </P>
         <View className="android:w-60 ios:w-60 mx-auto">
           <SignUpButton />
           <LogInButton />
