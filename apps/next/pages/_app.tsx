@@ -5,9 +5,8 @@ import type { SolitoAppProps } from "solito";
 import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
 import "../global";
-import { videoSrc } from "app/utils/entry";
+import { imageSrc, videoSrc } from "app/utils/entry";
 import { Config } from "app/config";
-import { imageUrlMedium } from "../../../packages/app/utils/entry";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   const entry = pageProps.entry;
@@ -36,11 +35,11 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             <meta property="og:type" content="video.other" />
             <meta
               property="twitter:image"
-              content={`${imageUrlMedium(entry.imageUrl!)}`}
+              content={`${imageSrc(entry.imageUrl!)}`}
             />
             <meta
               property="og:image"
-              content={`${imageUrlMedium(entry.imageUrl!)}`}
+              content={`${imageSrc(entry.imageUrl!)}`}
             />
             <meta
               property="twitter:player"
@@ -56,10 +55,7 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             <meta property="og:title" content={beatmaker.username} />
             <meta property="og:description" content={beatmaker.description} />
             <meta property="og:type" content="website" />
-            <meta
-              property="og:image"
-              content={imageUrlMedium(beatmaker.avatarUrl)}
-            />
+            <meta property="og:image" content={imageSrc(beatmaker.avatarUrl)} />
             <meta
               property="og:url"
               content={`${Config.APP_URL}/dashboard/beatmaker/${beatmaker.id}`}

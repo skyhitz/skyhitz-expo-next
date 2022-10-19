@@ -34,7 +34,6 @@ export function Image({ className, uri, fallbackUri, resizeMode }: ImageProps) {
           setLoaded(true);
         }}
         onError={() => {
-          console.log("error");
           if (fallbackUri && currentUri !== fallbackUri) {
             setCurrentUri(fallbackUri);
           }
