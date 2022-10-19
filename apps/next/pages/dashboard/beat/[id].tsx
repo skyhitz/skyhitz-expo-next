@@ -18,7 +18,9 @@ export const getStaticProps: GetStaticProps = async (props) => {
   const res = await entriesIndex.search("", {
     filters: `id:${id}`,
   });
+  console.log(res);
   const entry = res.hits[0];
+  console.log(entry);
 
   return {
     props: {
@@ -26,7 +28,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
     },
   };
 };
-export default function BeatPage(entry: Entry) {
+export default function BeatPage({ entry }: { entry: Entry }) {
   return (
     <>
       <Head>
