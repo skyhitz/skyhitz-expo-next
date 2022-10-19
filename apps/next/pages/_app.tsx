@@ -5,8 +5,10 @@ import type { SolitoAppProps } from "solito";
 import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
 import "../global";
+import { imageSrc, videoSrc } from "app/utils/entry";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
+  const entry = pageProps.entry;
   return (
     <>
       <Head>
@@ -22,21 +24,51 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
           name="keywords"
           content="stellar, xlm, mfts, crypto, music nfts, beats market, beats website, lofi beats, fresh beats, music creators, exclusive beats for sale"
         />
-        <meta name="twitter:card" key="twitter:card" content="summary" />
+        {entry ? (
+          <>
+            {" "}
+            <meta name="twitter:card" key="twitter:card" content="player" />
+            <meta property="og:title" content={`${entry.title}`} />
+            <meta property="twitter:title" content={`${entry.title}`} />
+            <meta property="og:description" content={`${entry.description}`} />
+            <meta property="og:type" content="video.other" />
+            <meta
+              property="twitter:image"
+              content={`${imageSrc(entry.imageUrl!)}`}
+            />
+            <meta
+              property="og:image"
+              content={`${imageSrc(entry.imageUrl!)}`}
+            />
+            <meta
+              property="twitter:player"
+              content={`${videoSrc(entry.videoUrl!)}`}
+            />
+            <meta property="twitter:player:width" content="480" />
+            <meta property="twitter:player:height" content="480" />
+            <meta property="og:url" content={`${videoSrc(entry.videoUrl!)}`} />
+          </>
+        ) : (
+          <>
+            <meta name="twitter:card" key="twitter:card" content="summary" />{" "}
+            <meta property="og:title" content="Skyhitz" key="og:title" />
+            <meta
+              property="og:description"
+              key="og:description"
+              content="Upload, buy or sell music NFTs on the Stellar Network. Join a music community of beatmakers!"
+            />
+            <meta property="og:type" key="og:type" content="website" />
+            <meta
+              property="og:image"
+              key="og:image"
+              content="https://res.cloudinary.com/skyhitz/image/upload/c_scale,h_531,q_auto/v1583723774/web/social.png"
+            />
+            <meta property="og:url" key="og:url" content="https://skyhitz.io" />{" "}
+          </>
+        )}
+
         <meta name="twitter:site" content="@skyhitzio" />
-        <meta property="og:title" content="Skyhitz" key="og:title" />
-        <meta
-          property="og:description"
-          key="og:description"
-          content="Upload, buy or sell music NFTs on the Stellar Network. Join a music community of beatmakers!"
-        />
-        <meta property="og:type" key="og:type" content="website" />
-        <meta
-          property="og:image"
-          key="og:image"
-          content="https://res.cloudinary.com/skyhitz/image/upload/c_scale,h_531,q_auto/v1583723774/web/social.png"
-        />
-        <meta property="og:url" key="og:url" content="https://skyhitz.io" />
+
         <meta property="fb:app_id" content="564403243666491" />
         <meta property="og:site_name" content="Skyhitz" />
         <meta
