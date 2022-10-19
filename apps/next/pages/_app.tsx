@@ -6,9 +6,11 @@ import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
 import "../global";
 import { imageSrc, videoSrc } from "app/utils/entry";
+import { Config } from "app/config";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
   const entry = pageProps.entry;
+  const beatmaker = pageProps.beatmaker;
   return (
     <>
       <Head>
@@ -26,7 +28,6 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         />
         {entry ? (
           <>
-            {" "}
             <meta name="twitter:card" key="twitter:card" content="player" />
             <meta property="og:title" content={`${entry.title}`} />
             <meta property="twitter:title" content={`${entry.title}`} />
@@ -48,9 +49,21 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             <meta property="twitter:player:height" content="480" />
             <meta property="og:url" content={`${videoSrc(entry.videoUrl!)}`} />
           </>
+        ) : beatmaker ? (
+          <>
+            <meta name="twitter:card" content="summary" />
+            <meta property="og:title" content={beatmaker.username} />
+            <meta property="og:description" content={beatmaker.description} />
+            <meta property="og:type" content="website" />
+            <meta property="og:image" content={beatmaker.avatarUrl} />
+            <meta
+              property="og:url"
+              content={`${Config.APP_URL}/dashboard/beatmaker/${beatmaker.id}`}
+            />
+          </>
         ) : (
           <>
-            <meta name="twitter:card" key="twitter:card" content="summary" />{" "}
+            <meta name="twitter:card" key="twitter:card" content="summary" />
             <meta property="og:title" content="Skyhitz" key="og:title" />
             <meta
               property="og:description"
@@ -63,7 +76,7 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
               key="og:image"
               content="https://res.cloudinary.com/skyhitz/image/upload/c_scale,h_531,q_auto/v1583723774/web/social.png"
             />
-            <meta property="og:url" key="og:url" content="https://skyhitz.io" />{" "}
+            <meta property="og:url" key="og:url" content="https://skyhitz.io" />
           </>
         )}
 

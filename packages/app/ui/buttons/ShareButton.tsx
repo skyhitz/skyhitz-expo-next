@@ -12,8 +12,9 @@ import { CopyIcon } from "app/ui/icons/copy";
 
 type Props = {
   url: string;
+  title: string;
 };
-export function ShareButton({ url }: Props) {
+export function ShareButton({ url, title }: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const onShare = async () => {
     try {
@@ -43,7 +44,7 @@ export function ShareButton({ url }: Props) {
           <View className="flex items-center max-w-md bg-blue-field p-4 rounded-xl">
             <View className="flex-row items-center w-full">
               <Text className="text-white text-base flex-1 text-center font-bold">
-                Share this beat!
+                {title}
               </Text>
               <Pressable onPress={() => setModalVisible(false)}>
                 <XIcon color={tw.color("white")} size={22} />

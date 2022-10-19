@@ -23,6 +23,7 @@ export const getStaticProps: GetStaticProps = async (props) => {
     },
   };
 };
+
 export default function BeatPage() {
   return <BeatScreen />;
 }

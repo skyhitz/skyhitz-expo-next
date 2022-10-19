@@ -40,7 +40,10 @@ export function BeatSummaryColumn({ entryDetails }: Props) {
           <LikeButton size={24} entry={entry} />
           <Text className="text-grey-light ml-1">Add to favorites</Text>
           <View className="w-0.25 h-6 bg-grey-light mx-3" />
-          <ShareButton url={`${Config.APP_URL}/dashboard/beat/${id}`} />
+          <ShareButton
+            url={`${Config.APP_URL}/dashboard/beat/${id}`}
+            title="Share this beat!"
+          />
         </View>
       </View>
       <PriceContainer entry={entry} />

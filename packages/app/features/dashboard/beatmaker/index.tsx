@@ -6,6 +6,8 @@ import { useUserCollectionQuery } from "app/api/graphql";
 import { useUserWithId } from "app/api/algolia";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useEffect } from "react";
+import { ShareButton } from "app/ui/buttons/ShareButton";
+import { Config } from "app/config";
 
 export default function BeatmakerScreen() {
   const id = useBeatmakerParam();
@@ -47,6 +49,11 @@ export default function BeatmakerScreen() {
             <Text className="ml-4 font-bold text-lg">
               {user.data?.displayName}
             </Text>
+            <View className="w-0.25 h-6 bg-grey-light mx-3" />
+            <ShareButton
+              url={`${Config.APP_URL}/dashboard/beatmaker/${id}`}
+              title="Share beatmaker!"
+            />
           </>
         )}
       </View>
