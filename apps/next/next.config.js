@@ -2,12 +2,11 @@
 const nextConfig = {
   reactStrictMode: false,
   webpack5: true,
-  async redirects() {
+  async headers() {
     return [
       {
         source: "/.well-known/apple-app-site-association",
-        destination: "/api/.well-known/apple-app-site-association",
-        permanent: false,
+        headers: [{ key: "content-type", value: "application/json" }],
       },
     ];
   },
