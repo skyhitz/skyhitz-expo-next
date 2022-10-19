@@ -20,13 +20,14 @@ export function Image({ className, uri, fallbackUri, resizeMode }: ImageProps) {
   return (
     <>
       {!loaded && (
-        <View className={`${className} items-center justify-center`}>
+        <View
+          className={`${className} items-center justify-center absolute z-10`}
+        >
           <ActivityIndicator />
         </View>
       )}
       <ImageDripsy
         sx={{
-          ...{ visibility: loaded ? "visible" : "hidden" },
           ...tailwind.style(className),
         }}
         source={{ uri: currentUri }}
