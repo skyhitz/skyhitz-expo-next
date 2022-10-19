@@ -4,10 +4,19 @@ const association = {
   applinks: {
     apps: [],
     details: [
-        {
-            appID: "GUHNL23262.io.skyhitz.skyhitz",
-            paths: ["/sign-in"]
-        }
+      {
+        "appIDs": [ "GUHNL23262.io.skyhitz.skyhitz" ],
+        "components": [
+          {
+             "/": "/sign-in*",
+             "?": { "token": "*", "uid": "*" },
+          }
+        ]
+      },
+      {
+          "appID": "GUHNL23262.io.skyhitz.skyhitz",
+          "paths": ["/sign-in*"]
+      }
     ],
   },
 }
