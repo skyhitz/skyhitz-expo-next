@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             <meta property="og:title" content={`${entry.title}`} />
             <meta property="twitter:title" content={`${entry.title}`} />
             <meta property="og:description" content={`${entry.description}`} />
-            <meta property="og:type" content="video.other" />
+            <meta property="og:type" content="website" />
             <meta
               property="twitter:image"
               content={`${imageUrlMedium(entry.imageUrl!)}`}
@@ -47,7 +47,17 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             />
             <meta property="twitter:player:width" content="480" />
             <meta property="twitter:player:height" content="480" />
-            <meta property="og:url" content={`${videoSrc(entry.videoUrl!)}`} />
+            <meta
+              property="og:video"
+              content={`${videoSrc(entry.videoUrl!)}`}
+            />
+            <meta property="og:video:type" content="video/mp4." />
+            <meta property="og:video:width" content="480" />
+            <meta property="og:video:height" content="480" />
+            <meta
+              property="og:url"
+              content={`${Config.APP_URL}/dashboard/beat/${entry.id}`}
+            />
           </>
         ) : beatmaker ? (
           <>
@@ -59,6 +69,9 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
               property="og:image"
               content={imageUrlMedium(beatmaker.avatarUrl)}
             />
+            <meta property="og:image:type" content="image/png" />
+            <meta property="og:image:width" content="480" />
+            <meta property="og:image:height" content="480" />
             <meta
               property="og:url"
               content={`${Config.APP_URL}/dashboard/beatmaker/${beatmaker.id}`}
@@ -75,7 +88,7 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             <meta property="og:type" content="website" />
             <meta
               property="og:image"
-              content="https://res.cloudinary.com/skyhitz/image/upload/c_scale,h_531,q_auto/v1583723774/web/social.png"
+              content={`${Config.APP_URL}/skyhitz.png`}
             />
             <meta property="og:url" key="og:url" content="https://skyhitz.io" />
           </>
