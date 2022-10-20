@@ -1,13 +1,13 @@
 import { Image, Text, View } from "app/design-system";
 import { Entry } from "app/api/graphql";
 import { Pressable } from "react-native";
-import { imageUrlSmall } from "app/utils/entry";
 import Price from "app/ui/price";
 import LikeButton from "app/ui/buttons/likeButton";
 import VerticalDots from "app/ui/icons/verticalDots";
 import { ReactElement } from "react";
 import { useRouter } from "solito/router";
 import { tw } from "app/design-system/tailwind";
+import { imageSrc, imageUrlSmall } from "app/utils/entry";
 
 export type PressableState = Readonly<{
   hovered?: boolean;
@@ -29,10 +29,9 @@ export function BeatListEntry({
         return (
           <View className="w-full flex items-center flex-row py-2">
             <Image
-              style={{ width: 40, height: 40 }}
-              source={{
-                uri: entry.imageUrl ? imageUrlSmall(entry.imageUrl) : "",
-              }}
+              className="w-10 h-10"
+              uri={entry.imageUrl ? imageUrlSmall(entry.imageUrl) : ""}
+              fallbackUri={entry.imageUrl ? imageSrc(entry.imageUrl) : ""}
             />
             {spot && (
               <Text className="text-2xl leading-none text-center ml-2 w-11">

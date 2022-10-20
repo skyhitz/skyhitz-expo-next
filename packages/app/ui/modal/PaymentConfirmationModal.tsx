@@ -9,7 +9,7 @@ import {
   BuyEntryMutation,
 } from "app/api/graphql";
 import { Line } from "app/ui/orSeparator";
-import { imageUrlSmall } from "app/utils/entry";
+import { imageSrc, imageUrlSmall } from "app/utils/entry";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
@@ -91,10 +91,9 @@ export function PaymentConfirmationModal({
           <Text className="text-lg font-bold">Confirm payment</Text>
           <View className="flex-row my-4 items-center">
             <Image
-              style={{ width: 40, height: 40 }}
-              source={{
-                uri: entry.imageUrl ? imageUrlSmall(entry.imageUrl) : "",
-              }}
+              className="w-10 h-10"
+              uri={entry.imageUrl ? imageUrlSmall(entry.imageUrl) : ""}
+              fallbackUri={entry.imageUrl ? imageSrc(entry.imageUrl) : ""}
             />
             <Text className="ml-2">
               {entry.title}-{entry.artist}
