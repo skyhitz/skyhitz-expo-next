@@ -5,15 +5,8 @@ const association = {
     "apps": [],
     "details": [
       {
-        "appIDs": [ "GUHNL23262.io.skyhitz.skyhitz" ],
-        "components": [
-          {
-            "/": "/sign-in/*",
-            "?": { "token": "*", "uid": "*" }
-          }
-        ],
         "appID": "GUHNL23262.io.skyhitz.skyhitz",
-        "paths": ["*", "/sign-in/*"]
+        "paths": ["/", "/sign-in/*", "/sign-in", "/dashboard/beat/*", "/dashboard/beatmaker/*"]
       }
     ]
   }

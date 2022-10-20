@@ -7,7 +7,7 @@ const nextConfig = {
       {
         source: "/.well-known/apple-app-site-association",
         destination: "/api/.well-known/apple-app-site-association",
-        permanent: true,
+        permanent: false,
       },
     ];
   },
