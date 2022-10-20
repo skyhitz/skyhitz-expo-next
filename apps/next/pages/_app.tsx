@@ -5,7 +5,7 @@ import type { SolitoAppProps } from "solito";
 import "raf/polyfill";
 import { WebNavigation } from "app/navigation/web";
 import "../global";
-import { imageSrc, videoSrc } from "app/utils/entry";
+import { imageUrlMedium, videoSrc } from "app/utils/entry";
 import { Config } from "app/config";
 
 function MyApp({ Component, pageProps }: SolitoAppProps) {
@@ -28,18 +28,18 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         />
         {entry ? (
           <>
-            <meta name="twitter:card" key="twitter:card" content="player" />
+            <meta name="twitter:card" content="player" />
             <meta property="og:title" content={`${entry.title}`} />
             <meta property="twitter:title" content={`${entry.title}`} />
             <meta property="og:description" content={`${entry.description}`} />
             <meta property="og:type" content="video.other" />
             <meta
               property="twitter:image"
-              content={`${imageSrc(entry.imageUrl!)}`}
+              content={`${imageUrlMedium(entry.imageUrl!)}`}
             />
             <meta
               property="og:image"
-              content={`${imageSrc(entry.imageUrl!)}`}
+              content={`${imageUrlMedium(entry.imageUrl!)}`}
             />
             <meta
               property="twitter:player"
@@ -55,7 +55,10 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             <meta property="og:title" content={beatmaker.username} />
             <meta property="og:description" content={beatmaker.description} />
             <meta property="og:type" content="website" />
-            <meta property="og:image" content={imageSrc(beatmaker.avatarUrl)} />
+            <meta
+              property="og:image"
+              content={imageUrlMedium(beatmaker.avatarUrl)}
+            />
             <meta
               property="og:url"
               content={`${Config.APP_URL}/dashboard/beatmaker/${beatmaker.id}`}
@@ -63,17 +66,15 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
           </>
         ) : (
           <>
-            <meta name="twitter:card" key="twitter:card" content="summary" />
-            <meta property="og:title" content="Skyhitz" key="og:title" />
+            <meta name="twitter:card" content="summary" />
+            <meta property="og:title" content="Skyhitz" />
             <meta
               property="og:description"
-              key="og:description"
               content="Upload, buy or sell music NFTs on the Stellar Network. Join a music community of beatmakers!"
             />
-            <meta property="og:type" key="og:type" content="website" />
+            <meta property="og:type" content="website" />
             <meta
               property="og:image"
-              key="og:image"
               content="https://res.cloudinary.com/skyhitz/image/upload/c_scale,h_531,q_auto/v1583723774/web/social.png"
             />
             <meta property="og:url" key="og:url" content="https://skyhitz.io" />

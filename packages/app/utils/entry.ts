@@ -2,8 +2,8 @@ import {
   imagesGateway,
   ipfsFallback,
   ipfsProtocol,
-  skyhitzCdn,
   videosGateway,
+  pinataGateway,
 } from "app/constants/constants";
 
 export function isIpfs(url: string) {
@@ -26,18 +26,18 @@ export function imageSrc(imageUrl: string) {
 
 export function imageUrlSmall(imageUrl: string) {
   if (isIpfs(imageUrl))
-    return imageUrl?.replace(
+    return `${pinataGateway}/ipfs/${imageUrl?.replace(
       ipfsProtocol,
-      `${skyhitzCdn}/width=80/${imagesGateway}/`
-    );
+      ""
+    )}?img-width=80&img-height=80`;
   return imageUrl?.split("/upload/").join("/upload/w_80/");
 }
 
 export function imageUrlMedium(imageUrl: string) {
   if (isIpfs(imageUrl))
-    return imageUrl?.replace(
+    return `${pinataGateway}/ipfs/${imageUrl?.replace(
       ipfsProtocol,
-      `${skyhitzCdn}/width=225/${imagesGateway}/`
-    );
+      ""
+    )}?img-width=200&img-height=200`;
   return imageUrl?.split("/upload/").join("/upload/w_500/");
 }
