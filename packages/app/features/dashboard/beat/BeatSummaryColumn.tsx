@@ -11,6 +11,8 @@ import { CollapsableView } from "app/ui/CollapsableView";
 import Like from "app/ui/icons/like";
 import { IconProps } from "app/types";
 import { LikesList } from "app/features/player/components/likesList";
+import { ShareButton } from "app/ui/buttons/ShareButton";
+import { Config } from "app/config";
 
 type Props = {
   entryDetails: EntryDetails;
@@ -19,7 +21,7 @@ type Props = {
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 
 export function BeatSummaryColumn({ entryDetails }: Props) {
-  const { artist, title, description } = entryDetails;
+  const { artist, title, description, id } = entryDetails;
   const { playEntry } = usePlayback();
 
   const entry = entryDetails as Entry;
@@ -37,6 +39,11 @@ export function BeatSummaryColumn({ entryDetails }: Props) {
           <View className="w-0.25 h-6 bg-grey-light mx-3" />
           <LikeButton size={24} entry={entry} />
           <Text className="text-grey-light ml-1">Add to favorites</Text>
+          <View className="w-0.25 h-6 bg-grey-light mx-3" />
+          <ShareButton
+            url={`${Config.APP_URL}/dashboard/beat/${id}`}
+            title="Share this beat!"
+          />
         </View>
       </View>
       <PriceContainer entry={entry} />

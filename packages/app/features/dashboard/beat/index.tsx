@@ -6,7 +6,7 @@ import { ActivityIndicator, Image, View } from "app/design-system";
 import { Offers } from "./BeatOffers";
 import { Activity } from "./BeatActivities";
 import { Details } from "./BeatDetails";
-import { imageSrc } from "app/utils/entry";
+import { imageSrc, imageUrlMedium } from "app/utils/entry";
 import { BeatSummaryColumn } from "./BeatSummaryColumn";
 
 export default function BeatScreen() {
@@ -32,9 +32,8 @@ export default function BeatScreen() {
           <View className="flex-row w-full">
             <View className="flex flex-1 mr-2 items-center justify-between">
               <Image
-                source={{
-                  uri: imageSrc(imageUrl!),
-                }}
+                uri={imageUrlMedium(imageUrl)}
+                fallbackUri={imageSrc(imageUrl)}
                 className="aspect-square max-w-125 max-h-125 w-full"
               />
               <Details code={code} issuer={issuer} />
@@ -49,9 +48,8 @@ export default function BeatScreen() {
       return (
         <>
           <Image
-            source={{
-              uri: imageSrc(imageUrl!),
-            }}
+            uri={imageUrlMedium(imageUrl)}
+            fallbackUri={imageSrc(imageUrl)}
             className="aspect-square max-w-125 max-h-125 w-full mb-3"
           />
           <BeatSummaryColumn entryDetails={entry} />
