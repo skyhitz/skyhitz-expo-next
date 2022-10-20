@@ -2,6 +2,7 @@ import React from "react";
 import BeatmakerScreen from "app/features/dashboard/beatmaker";
 import { GetStaticProps } from "next";
 import { usersIndex } from "app/api/algolia";
+import { isEmpty } from "ramda";
 
 export async function getStaticPaths() {
   return {
@@ -15,6 +16,11 @@ export const getStaticProps: GetStaticProps = async (props) => {
   const res = await usersIndex.search("", {
     filters: `id:${id}`,
   });
+
+  if (isEmpty(res.hits)) {
+    return { props: {} };
+  }
+
   const beatmaker = res.hits[0];
 
   return {
