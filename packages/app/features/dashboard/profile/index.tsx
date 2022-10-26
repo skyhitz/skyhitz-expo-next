@@ -34,7 +34,7 @@ export function ProfileScreen() {
   const { data: userCollectionData } = useUserCollectionQuery({
     variables: { userId: user.id },
   });
-  const { startCheckout } = useSendwyreCheckout({
+  const { startCheckout, loading } = useSendwyreCheckout({
     publicAddress: user.publicKey!,
   });
 
@@ -82,6 +82,8 @@ export function ProfileScreen() {
         text="Buy XLM"
         onPress={startCheckout}
         icon={Dollar}
+        loading={loading}
+        disabled={loading}
         className="mx-auto mt-16"
         size="large"
       />
