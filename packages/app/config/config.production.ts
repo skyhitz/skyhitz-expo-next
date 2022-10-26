@@ -11,4 +11,6 @@ export const ProductionConfig: ConfigInterface = {
   SCHEMA: "skyhitz:///",
   CHAIN_ID: "stellar:pubnet",
   PROJECT_ID: "422a527ddc3ed4c5fff60954fcc8ed83",
+  SENDWYRE_ACCOUNT_ID: "AC_W3TMRL9BALW",
+  SENDWYRE_API: "https://api.sendwyre.com/v3",
 };
