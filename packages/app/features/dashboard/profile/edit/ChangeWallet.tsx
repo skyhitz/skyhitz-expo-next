@@ -22,8 +22,8 @@ export function ChangeWallet() {
   const onSubmit = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
-
-      const result = await authNewSession();
+      // TODO
+      const result = await authNewSession(() => {});
       const { signedXDR } = result as { signedXDR: string };
       const { data } = await changeWallet({ variables: { signedXDR } });
       if (data?.changeWallet) {

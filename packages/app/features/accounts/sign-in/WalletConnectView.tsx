@@ -22,7 +22,8 @@ export function WalletConnectView({ publicKey }: Props) {
     setRetryEnabled(false);
     try {
       const xdr = await buildTransactionForAuth(publicKey);
-      const result = await signXdr(xdr);
+      // TODO
+      const result = await signXdr(xdr, () => {});
       const { signedXDR } = result as { signedXDR: string };
       const { data } = await signIn({ variables: { signedXDR } });
       if (data?.signInWithXDR) {

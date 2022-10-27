@@ -11,7 +11,7 @@ ACCOUNTS=[
 [DOCUMENTATION]
 ORG_NAME="Skyhitz"
 ORG_URL="https://skyhitz.io"
-ORG_LOGO="https://skyhitz.io/img/icon-512.png"
+ORG_LOGO="https://skyhitz.io/icon.png"
 ORG_DESCRIPTION="Music NFT Marketplace on Stellar"
 ORG_TWITTER="Skyhitz"
 ORG_OFFICIAL_EMAIL="support@skyhitz.io"

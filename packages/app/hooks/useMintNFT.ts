@@ -178,7 +178,8 @@ export function useMintNFT(): MintResult {
         setStatus("Sign transaction in your wallet");
         const xdr = entry.createEntry.xdr;
         try {
-          const response = await signAndSubmitXdr(xdr);
+          // TODO
+          const response = await signAndSubmitXdr(xdr, () => {});
           const { status } = response as { status: string };
           if (status === "success") {
             indexNFT(data.getIssuer);

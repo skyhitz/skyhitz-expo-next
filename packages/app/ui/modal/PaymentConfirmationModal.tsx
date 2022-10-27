@@ -50,7 +50,8 @@ export function PaymentConfirmationModal({
         const xdr = data.buyEntry.xdr;
 
         try {
-          const response = await signAndSubmitXdr(xdr);
+          // TODO
+          const response = await signAndSubmitXdr(xdr, () => {});
           setMessage(undefined);
           setLoading(false);
 
