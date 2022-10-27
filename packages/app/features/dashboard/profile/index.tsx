@@ -22,6 +22,7 @@ import {
   useUserLikesQuery,
 } from "app/api/graphql";
 import * as assert from "assert";
+import { useSendwyreCheckout } from "app/hooks/useSendwyreCheckout";
 
 export function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -32,6 +33,9 @@ export function ProfileScreen() {
   const { data: userLikesData } = useUserLikesQuery();
   const { data: userCollectionData } = useUserCollectionQuery({
     variables: { userId: user.id },
+  });
+  const { startCheckout, loading } = useSendwyreCheckout({
+    publicAddress: user.publicKey!,
   });
 
   return (
@@ -74,14 +78,15 @@ export function ProfileScreen() {
         title="Collections"
         onPress={() => push("/dashboard/profile/collection")}
       />
-      {/* Disabled for release */}
-      {/* <Button
+      <Button
         text="Buy XLM"
-        onPress={() => {}}
+        onPress={startCheckout}
         icon={Dollar}
+        loading={loading}
+        disabled={loading}
         className="mx-auto mt-16"
         size="large"
-      /> */}
+      />
       <Button
         text="Mint new NFT"
         onPress={() => {

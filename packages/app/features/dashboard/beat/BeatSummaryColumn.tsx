@@ -13,6 +13,7 @@ import { IconProps } from "app/types";
 import { LikesList } from "app/features/player/components/likesList";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
+import { ComponentAuthGuard } from "app/utils/authGuard";
 
 type Props = {
   entryDetails: EntryDetails;
@@ -37,9 +38,11 @@ export function BeatSummaryColumn({ entryDetails }: Props) {
           </Pressable>
           <Text className="text-grey-light ml-1">Listen</Text>
           <View className="w-0.25 h-6 bg-grey-light mx-3" />
-          <LikeButton size={24} entry={entry} />
-          <Text className="text-grey-light ml-1">Add to favorites</Text>
-          <View className="w-0.25 h-6 bg-grey-light mx-3" />
+          <ComponentAuthGuard>
+            <LikeButton size={24} entry={entry} />
+            <Text className="text-grey-light ml-1">Add to favorites</Text>
+            <View className="w-0.25 h-6 bg-grey-light mx-3" />
+          </ComponentAuthGuard>
           <ShareButton
             url={`${Config.APP_URL}/dashboard/beat/${id}`}
             title="Share this beat!"
