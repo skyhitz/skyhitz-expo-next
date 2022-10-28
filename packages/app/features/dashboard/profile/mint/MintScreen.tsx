@@ -166,7 +166,10 @@ export function MintScreen() {
                           setEquityForSale(value.toFixed());
                         }}
                         onSlidingComplete={(value: number) => {
-                          setFieldValue("equityForSale", value);
+                          setFieldValue(
+                            "equityForSale",
+                            parseInt(value.toFixed(), 10)
+                          );
                           setEquityForSale(value.toFixed());
                         }}
                       />
