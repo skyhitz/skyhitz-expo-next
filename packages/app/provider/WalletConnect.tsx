@@ -28,11 +28,11 @@ interface IContext {
   accounts: string[];
   signXdr: (
     xdr: string,
-    showModal: (uri: string) => void
+    currentSession?: SessionTypes.Struct
   ) => Promise<null | unknown>;
   signAndSubmitXdr: (
     xdr: string,
-    showModal: (uri: string) => void
+    currentSession?: SessionTypes.Struct
   ) => Promise<null | unknown>;
   authNewSession: (showModal: (uri: string) => void) => Promise<unknown>;
 }
@@ -181,17 +181,21 @@ export function ClientContextProvider({
   }, [subscribeToEvents]);
 
   const requestClient = useCallback(
-    async (method: string, xdr: string, showModal: (uri: string) => void) => {
+    async (
+      method: string,
+      xdr: string,
+      currentSession: SessionTypes.Struct
+    ) => {
       if (!client) throw new Error("WalletConnect Client not initialized");
-      const currentSession = session ?? (await connect(showModal));
-      if (!currentSession) throw new Error("There is no active session");
       // check if the publicKey match with the one of the current user
       const publicKey = Object.values(
         currentSession.namespaces
       )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
       if (user?.publicKey && user.publicKey !== publicKey) {
         disconnect();
-        return;
+        throw new Error(
+          "Provided public key does not match with your account public key. Change wallet if you want to continue."
+        );
       }
       const result = await client.request({
         topic: currentSession.topic,
@@ -209,15 +213,17 @@ export function ClientContextProvider({
   );
 
   const signXdr = useCallback(
-    async (xdr: string, showModal: (uri: string) => void) => {
-      return requestClient("stellar_signXDR", xdr, showModal);
+    async (xdr: string, currentSession = session) => {
+      if (!currentSession) throw new Error("There is no active session");
+      return requestClient("stellar_signXDR", xdr, currentSession);
     },
-    [requestClient]
+    [requestClient, session]
   );
 
   const signAndSubmitXdr = useCallback(
-    async (xdr: string, showModal: (uri: string) => void) => {
-      return requestClient("stellar_signAndSubmitXDR", xdr, showModal);
+    async (xdr: string, currentSession = session) => {
+      if (!currentSession) throw new Error("There is no active session");
+      return requestClient("stellar_signAndSubmitXDR", xdr, currentSession);
     },
     [requestClient]
   );
