@@ -84,7 +84,10 @@ export function MintScreen() {
             if (status === "IndexError") {
               retryIndex();
             } else if (imageBlob && videoBlob) {
-              mint(values, imageBlob, videoBlob);
+              mint(values, imageBlob, videoBlob, (newUri) => {
+                setUri(newUri);
+                setModalVisible(true);
+              });
             }
           }}
         >

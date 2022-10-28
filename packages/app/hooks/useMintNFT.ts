@@ -29,7 +29,12 @@ type MintStatus =
   | "IndexError";
 
 type MintResult = {
-  mint: (_formData: MintForm, _artwork: Blob, _video: Blob) => void;
+  mint: (
+    formData: MintForm,
+    artwork: Blob,
+    video: Blob,
+    showModal: (uri: string) => void
+  ) => void;
   retryIndex: () => void;
   progress: number;
   status: MintStatus;
@@ -43,7 +48,7 @@ export function useMintNFT(): MintResult {
   const [issuer, setIssuer] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
   const [indexEntry] = useIndexEntryMutation();
-  const { signAndSubmitXdr } = useWalletConnectClient();
+  const { signAndSubmitXdr, session, connect } = useWalletConnectClient();
   const { cache, query } = useApolloClient();
   const user = useRecoilValue(userAtom);
 
@@ -110,7 +115,12 @@ export function useMintNFT(): MintResult {
   );
 
   const mint = useCallback(
-    async (form: MintForm, artwork: Blob, video: Blob) => {
+    async (
+      form: MintForm,
+      artwork: Blob,
+      video: Blob,
+      showModal: (uri: string) => void
+    ) => {
       setError(undefined);
       setStatus("Uploading files");
 
@@ -187,7 +197,11 @@ export function useMintNFT(): MintResult {
         const xdr = entry.createEntry.xdr;
         try {
           // TODO fix that
-          const response = await signAndSubmitXdr(xdr);
+          let currentSession = session;
+          if (!currentSession) {
+            currentSession = await connect(showModal);
+          }
+          const response = await signAndSubmitXdr(xdr, currentSession);
           const { status } = response as { status: string };
           if (status === "success") {
             indexNFT(data.getIssuer);
