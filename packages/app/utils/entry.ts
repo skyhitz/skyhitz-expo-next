@@ -1,6 +1,6 @@
 import {
   ipfsProtocol,
-  videosGateway,
+  fallbackGateway,
   pinataGateway,
 } from "app/constants/constants";
 
@@ -10,7 +10,7 @@ export function isIpfs(url: string) {
 
 export function videoSrc(videoUrl: string, useFallback = false) {
   if (isIpfs(videoUrl)) {
-    const gateway = useFallback ? videosGateway : pinataGateway;
+    const gateway = useFallback ? fallbackGateway : pinataGateway;
     return `${gateway}/${videoUrl.replace(ipfsProtocol, "")}`;
   }
   return videoUrl;
