@@ -196,7 +196,6 @@ export function useMintNFT(): MintResult {
         setStatus("Sign transaction in your wallet");
         const xdr = entry.createEntry.xdr;
         try {
-          // TODO fix that
           let currentSession = session;
           if (!currentSession) {
             currentSession = await connect(showModal);

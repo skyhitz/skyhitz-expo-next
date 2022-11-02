@@ -225,7 +225,7 @@ export function ClientContextProvider({
       if (!currentSession) throw new Error("There is no active session");
       return requestClient("stellar_signAndSubmitXDR", xdr, currentSession);
     },
-    [requestClient]
+    [requestClient, session]
   );
 
   const authNewSession = useCallback(
