@@ -4,7 +4,7 @@ import { userAtom } from "app/state/user";
 import { UserAvatar } from "app/ui/userAvatar";
 import Cog from "app/ui/icons/cog";
 import { tw } from "app/design-system/tailwind";
-import { CopyWalletPublicKeyButton } from "app/ui/buttons/CopyWalletPublicKey";
+import { CopyWalletPublicKeyButton } from "app/ui/buttons/CopyWalletPublicKeyButton";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import Like from "app/ui/icons/like";
 import StarBorder from "app/ui/icons/star-border";

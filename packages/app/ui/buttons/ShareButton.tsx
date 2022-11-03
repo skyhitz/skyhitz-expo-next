@@ -8,7 +8,7 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 import { View } from "app/design-system/view";
 import XIcon from "app/ui/icons/x";
 import Twitter from "app/ui/icons/twitter";
-import { CopyBeatUrlButton } from "app/ui/buttons/CopyBeatUrl";
+import { CopyBeatUrlButton } from "app/ui/buttons/CopyBeatUrlButton";
 
 type Props = {
   url: string;
