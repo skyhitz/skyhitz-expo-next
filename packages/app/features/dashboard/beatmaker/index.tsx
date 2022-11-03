@@ -3,11 +3,11 @@ import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
 import { UserAvatar } from "app/ui/userAvatar";
 import { useUserCollectionQuery } from "app/api/graphql";
-import { useUserWithId } from "app/api/algolia";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useEffect } from "react";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
+import { useUserWithId } from "app/hooks/algolia/useUserWithId";
 
 export default function BeatmakerScreen() {
   const id = useBeatmakerParam();

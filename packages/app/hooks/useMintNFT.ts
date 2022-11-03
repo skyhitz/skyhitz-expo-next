@@ -3,8 +3,6 @@ import {
   useCreateEntryMutation,
   useIndexEntryMutation,
   UserCollectionDocument,
-  RecentlyAddedDocument,
-  TopChartDocument,
   GetIssuerDocument,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
@@ -16,6 +14,9 @@ import { useApolloClient, ApolloError } from "@apollo/client";
 import { prepend } from "ramda";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import { useSWRConfig } from "swr";
+import { recentlyAddedQueryKey } from "./algolia/useRecentlyAdded";
+import { topChartQueryKey } from "./algolia/useTopChart";
 
 type MintStatus =
   | "Uninitialized"
@@ -45,6 +46,7 @@ export function useMintNFT(): MintResult {
   const [indexEntry] = useIndexEntryMutation();
   const { signAndSubmitXdr } = useWalletConnectClient();
   const { cache, query } = useApolloClient();
+  const { mutate, cache: swrCache } = useSWRConfig();
   const user = useRecoilValue(userAtom);
 
   const indexNFT = useCallback(
@@ -55,32 +57,44 @@ export function useMintNFT(): MintResult {
         const { data: indexedEntry } = await indexEntry({
           variables: { issuer: nftIssuer },
         });
-        cache.updateQuery(
-          {
-            query: RecentlyAddedDocument,
-            variables: { page: 0 },
-            overwrite: true,
-          },
-          (cachedData) => ({
-            recentlyAdded: prepend(
-              indexedEntry?.indexEntry,
-              cachedData?.recentlyAdded ?? []
-            ),
-          })
-        );
-        cache.updateQuery(
-          {
-            query: TopChartDocument,
-            variables: { page: 0 },
-            overwrite: true,
-          },
-          (cachedData) => ({
-            topChart: prepend(
-              indexedEntry?.indexEntry,
-              cachedData?.topChart ?? []
-            ),
-          })
-        );
+        // TODO test that
+        if (swrCache instanceof Map) {
+          for (const key of swrCache.keys()) {
+            if (
+              key.startsWith(recentlyAddedQueryKey) ||
+              key.startsWith(topChartQueryKey)
+            ) {
+              mutate(key);
+            }
+          }
+        }
+
+        // cache.updateQuery(
+        //   {
+        //     query: RecentlyAddedDocument,
+        //     variables: { page: 0 },
+        //     overwrite: true,
+        //   },
+        //   (cachedData) => ({
+        //     recentlyAdded: prepend(
+        //       indexedEntry?.indexEntry,
+        //       cachedData?.recentlyAdded ?? []
+        //     ),
+        //   })
+        // );
+        // cache.updateQuery(
+        //   {
+        //     query: TopChartDocument,
+        //     variables: { page: 0 },
+        //     overwrite: true,
+        //   },
+        //   (cachedData) => ({
+        //     topChart: prepend(
+        //       indexedEntry?.indexEntry,
+        //       cachedData?.topChart ?? []
+        //     ),
+        //   })
+        // );
         cache.updateQuery(
           {
             query: UserCollectionDocument,
