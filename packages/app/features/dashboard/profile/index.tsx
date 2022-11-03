@@ -4,7 +4,7 @@ import { userAtom } from "app/state/user";
 import { UserAvatar } from "app/ui/userAvatar";
 import Cog from "app/ui/icons/cog";
 import { tw } from "app/design-system/tailwind";
-import Wallet from "app/ui/icons/wallet";
+import { CopyWalletPublicKeyButton } from "app/ui/buttons/CopyWalletPublicKey";
 import { SafeAreaView } from "app/design-system/safe-area-view";
 import Like from "app/ui/icons/like";
 import StarBorder from "app/ui/icons/star-border";
@@ -61,7 +61,7 @@ export function ProfileScreen() {
             </Link>
           </View>
           <View className="flex flex-row items-center">
-            <Wallet color={tw.color("white")} size={18} />
+            <CopyWalletPublicKeyButton walletPublicKey={user.publicKey!} />
             <TextEllipsis text={user.publicKey!} containerClassName="mx-2" />
           </View>
         </View>

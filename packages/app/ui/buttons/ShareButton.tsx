@@ -8,7 +8,7 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 import { View } from "app/design-system/view";
 import XIcon from "app/ui/icons/x";
 import Twitter from "app/ui/icons/twitter";
-import { CopyIcon } from "app/ui/icons/copy";
+import { CopyBeatUrlButton } from "app/ui/buttons/CopyBeatUrl";
 
 type Props = {
   url: string;
@@ -54,14 +54,7 @@ export function ShareButton({ url, title }: Props) {
               Copy link or tweet directly.
             </Text>
             <View className="flex-row items-center justify-center mt-5">
-              <Pressable
-                onPress={() => {
-                  navigator.clipboard.writeText(url);
-                }}
-                aria-label="Read more about Skyhitz on twitter"
-              >
-                <CopyIcon size={20} color={tw.color("white")} />
-              </Pressable>
+              <CopyBeatUrlButton beatUrl={url} />
               <Text className="mx-3 text-center text-sm">or</Text>
               <Pressable
                 onPress={() =>
