@@ -11,7 +11,7 @@ import { useCallback, useState } from "react";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useApolloClient, ApolloError } from "@apollo/client";
-import { prepend } from "ramda";
+import { append, prepend, slice } from "ramda";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import { useSWRConfig } from "swr";
@@ -57,44 +57,39 @@ export function useMintNFT(): MintResult {
         const { data: indexedEntry } = await indexEntry({
           variables: { issuer: nftIssuer },
         });
-        // TODO test that
-        if (swrCache instanceof Map) {
-          for (const key of swrCache.keys()) {
-            if (
-              key.startsWith(recentlyAddedQueryKey) ||
-              key.startsWith(topChartQueryKey)
-            ) {
-              mutate(key);
-            }
-          }
+        // updates recently added cache
+        const recentlyAddedPages = swrCache.get(
+          `$inf$${recentlyAddedQueryKey}0`
+        );
+        if (recentlyAddedPages) {
+          const firstPage = prepend(
+            indexedEntry?.indexEntry,
+            recentlyAddedPages[0]
+          );
+          mutate(`${recentlyAddedQueryKey}0`, firstPage, { revalidate: false });
+          mutate(
+            `$inf$${recentlyAddedQueryKey}0`,
+            [firstPage, ...slice(1, Infinity, recentlyAddedPages)],
+            { revalidate: false }
+          );
         }
-
-        // cache.updateQuery(
-        //   {
-        //     query: RecentlyAddedDocument,
-        //     variables: { page: 0 },
-        //     overwrite: true,
-        //   },
-        //   (cachedData) => ({
-        //     recentlyAdded: prepend(
-        //       indexedEntry?.indexEntry,
-        //       cachedData?.recentlyAdded ?? []
-        //     ),
-        //   })
-        // );
-        // cache.updateQuery(
-        //   {
-        //     query: TopChartDocument,
-        //     variables: { page: 0 },
-        //     overwrite: true,
-        //   },
-        //   (cachedData) => ({
-        //     topChart: prepend(
-        //       indexedEntry?.indexEntry,
-        //       cachedData?.topChart ?? []
-        //     ),
-        //   })
-        // );
+        // updates top chart cache
+        const topChartPages = swrCache.get(`$inf$${topChartQueryKey}0`);
+        if (topChartPages) {
+          const size = topChartPages.length;
+          const lastPage = append(
+            indexedEntry?.indexEntry,
+            topChartPages[size - 1]
+          );
+          mutate(`${topChartQueryKey}${size - 1}`, lastPage, {
+            revalidate: false,
+          });
+          mutate(
+            `$inf$${topChartQueryKey}0`,
+            [...slice(0, size - 1, topChartPages), lastPage],
+            { revalidate: false }
+          );
+        }
         cache.updateQuery(
           {
             query: UserCollectionDocument,

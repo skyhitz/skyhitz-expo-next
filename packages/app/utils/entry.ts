@@ -38,6 +38,6 @@ export function imageUrlMedium(imageUrl: string) {
     return `${pinataGateway}/ipfs/${imageUrl?.replace(
       ipfsProtocol,
       ""
-    )}?img-width=200&img-height=200`;
+    )}?img-width=500&img-height=500`;
   return imageUrl?.split("/upload/").join("/upload/w_500/");
 }

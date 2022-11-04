@@ -1,6 +1,6 @@
 import useSWRInfinite from "swr/infinite";
 import { useCallback, useMemo } from "react";
-import { flatten, isEmpty } from "ramda";
+import { flatten } from "ramda";
 
 type ReturnValue<T> = {
   data: T[];
@@ -10,11 +10,13 @@ type ReturnValue<T> = {
 type Props<T> = {
   fetcher: (key: string) => Promise<T[]>;
   commonKey: string;
+  pageSize: number;
 };
 
 export function usePaginatedAlgoliaSearch<T>({
   fetcher,
   commonKey,
+  pageSize,
 }: Props<T>): ReturnValue<T> {
   const getKey = useMemo(
     () => (page: number, previousPageData: T[]) => {
@@ -34,7 +36,7 @@ export function usePaginatedAlgoliaSearch<T>({
     isLoadingInitialData || (size > 0 && data && size > data.length);
 
   const onNextPage = useCallback(() => {
-    if (!isLoadingMore && data && !isEmpty(data[size - 1])) {
+    if (!isLoadingMore && data && data[size - 1]?.length === pageSize) {
       setSize(size + 1);
     }
   }, [isLoadingMore]);

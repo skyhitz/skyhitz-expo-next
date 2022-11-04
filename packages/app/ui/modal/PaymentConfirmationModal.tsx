@@ -13,7 +13,7 @@ import { imageSrc, imageUrlSmall } from "app/utils/entry";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
-import { ApolloError } from "@apollo/client";
+import { useErrorReport } from "app/hooks/useErrorReport";
 
 type Props = {
   visible: boolean;
@@ -32,10 +32,10 @@ export function PaymentConfirmationModal({
   const { data: paymentInfoData } = usePaymentsInfoQuery();
   const [buy] = useBuyEntryMutation();
   const { signAndSubmitXdr } = useWalletConnectClient();
-  const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>();
   const toast = useToast();
+  const reportError = useErrorReport();
 
   const onMutationCompleted = async (data: BuyEntryMutation) => {
     if (data?.buyEntry?.success) {
@@ -61,18 +61,16 @@ export function PaymentConfirmationModal({
               type: "success",
             });
           } else {
-            setError(
-              "Something went wrong during signing and submitting transaction in your wallet."
+            hideModal(false);
+            reportError(
+              Error(
+                "Something went wrong during signing and submitting transaction in your wallet."
+              )
             );
           }
         } catch (ex) {
-          if (typeof ex === "string") {
-            setError(ex);
-          } else {
-            setError(
-              "Something went wrong during signing and submitting transaction in your wallet."
-            );
-          }
+          hideModal(false);
+          reportError(ex);
         }
       }
     }
@@ -119,11 +117,6 @@ export function PaymentConfirmationModal({
             charged 0.01 XLM.
           </Text>
           <Line />
-          {error && (
-            <Text className="w-full text-center text-sm text-[#d9544f] my-4 min-h-5">
-              {error}
-            </Text>
-          )}
           {message && (
             <Text className="w-full text-center text-sm my-4 min-h-5">
               {message}
@@ -145,11 +138,8 @@ export function PaymentConfirmationModal({
                 });
               } catch (ex) {
                 setLoading(false);
-                if (ex instanceof ApolloError) {
-                  setError(ex.message);
-                } else {
-                  setError("Unknown error");
-                }
+                hideModal(false);
+                reportError(ex);
               }
             }}
             disabled={
