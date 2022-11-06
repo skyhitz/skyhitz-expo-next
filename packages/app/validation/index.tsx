@@ -12,8 +12,8 @@ export const usernameSchema = Yup.string()
   .required("Username is required.")
   .min(2, "Username is minimum 2 characters.")
   .matches(
-    /^[a-zA-Z0-9_-]+$/,
-    "Usernames cannot have spaces or special characters"
+    /^[a-z0-9_-]+$/,
+    "Usernames cannot have spaces, special characters or capital letters"
   );
 
 export const displayedNameSchema = Yup.string()
