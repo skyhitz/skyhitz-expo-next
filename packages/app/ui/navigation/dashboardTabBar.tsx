@@ -18,6 +18,10 @@ const LinkStyle: StyleProp<ViewStyle> = {
 };
 
 export default function DashboardTabBar({ column }: { column?: boolean }) {
+  const isActive = (pathname: string): boolean => {
+    return window.location.pathname === pathname;
+  };
+
   const insets = useSafeArea();
   const user = useRecoilValue(userAtom);
   const rootViewStyle = column
@@ -29,17 +33,35 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
       className={`flex bg-blue-dark ${rootViewStyle} pb-[${insets.bottom}px]`}
     >
       <Link viewProps={{ style: LinkStyle }} href="/dashboard/search">
-        <Search size={28} color={tw.color("white")} />
+        <Search
+          size={28}
+          color={
+            isActive("/dashboard/search")
+              ? tw.color("yellow-300")
+              : tw.color("white")
+          }
+        />
       </Link>
       <Link viewProps={{ style: LinkStyle }} href="/dashboard/chart">
         <Image
-          style={tw`w-8 h-8 rounded-full border-2 border-tab`}
+          style={
+            isActive("/dashboard/chart")
+              ? tw`w-8 h-8 rounded-full border-2 border-tab border-yellow-300`
+              : tw`w-8 h-8 rounded-full border-2 border-tab`
+          }
           source={require("app/assets/images/icon.png")}
         />
       </Link>
       {user && (
         <Link viewProps={{ style: LinkStyle }} href="/dashboard/profile">
-          <User size={28} color={tw.color("white")} />
+          <User
+            size={28}
+            color={
+              isActive("/dashboard/profile")
+                ? tw.color("yellow-300")
+                : tw.color("white")
+            }
+          />
         </Link>
       )}
     </View>
