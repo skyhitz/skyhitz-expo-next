@@ -18,11 +18,14 @@ import { useRouter } from "solito/router";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 
 export function MintScreen() {
   const [equityForSale, setEquityForSale] = useState<string>("1");
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [uri, setUri] = useState<string>("");
   const { back } = useRouter();
   const { mint, retryIndex, progress, status, error } = useMintNFT();
   const reportError = useErrorReport();
@@ -71,164 +74,174 @@ export function MintScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={mintFormSchema}
-        validateOnMount={false}
-        onSubmit={(values) => {
-          if (status === "IndexError") {
-            retryIndex();
-          } else if (imageBlob && videoBlob) {
-            mint(values, imageBlob, videoBlob);
-          }
-        }}
-      >
-        {({
-          values,
-          handleChange,
-          setFieldValue,
-          isValid,
-          handleSubmit,
-          errors,
-        }: FormikProps<MintForm>) => (
-          <View>
-            <FormInputWithIcon
-              containerClassNames="border-b border-white"
-              icon={InfoIcon}
-              value={values.artist}
-              onChangeText={handleChange("artist")}
-              placeholder="Artist"
-              error={errors.artist}
-            />
-            <FormInputWithIcon
-              containerClassNames="border-b border-white"
-              icon={InfoIcon}
-              value={values.title}
-              onChangeText={handleChange("title")}
-              placeholder="Title"
-              error={errors.title}
-            />
-            <FormInputWithIcon
-              containerClassNames="border-b border-white"
-              icon={InfoIcon}
-              value={values.description}
-              onChangeText={handleChange("description")}
-              placeholder="Description"
-              error={errors.description}
-            />
-            <View className="flex flex-row py-5 items-center border-b border-white">
-              <InfoIcon size={24} color={tw.color("white")} />
-              <Text className="mx-4 text-sm">Available for Sale:</Text>
-              <Switch
-                onValueChange={(newValue) =>
-                  setFieldValue("availableForSale", newValue)
-                }
-                value={values.availableForSale}
-                trackColor={{
-                  false: tw.color("blue-track"),
-                  true: tw.color("blue-brand"),
-                }}
-                thumbColor={tw.color("white")}
-                //@ts-ignore
-                activeThumbColor={tw.color("white")}
+    <>
+      <ScrollView className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={mintFormSchema}
+          validateOnMount={false}
+          onSubmit={(values) => {
+            if (status === "IndexError") {
+              retryIndex();
+            } else if (imageBlob && videoBlob) {
+              mint(values, imageBlob, videoBlob, (newUri) => {
+                setUri(newUri);
+                setModalVisible(true);
+              });
+            }
+          }}
+        >
+          {({
+            values,
+            handleChange,
+            setFieldValue,
+            isValid,
+            handleSubmit,
+            errors,
+          }: FormikProps<MintForm>) => (
+            <View>
+              <FormInputWithIcon
+                containerClassNames="border-b border-white"
+                icon={InfoIcon}
+                value={values.artist}
+                onChangeText={handleChange("artist")}
+                placeholder="Artist"
+                error={errors.artist}
               />
-            </View>
-            {values.availableForSale && (
-              <>
-                <FormInputWithIcon
-                  containerClassNames="border-b border-white"
-                  icon={DollarIcon}
-                  value={values.price}
-                  onChangeText={(text) =>
-                    setFieldValue("price", text.replace(/[^0-9]/g, ""))
+              <FormInputWithIcon
+                containerClassNames="border-b border-white"
+                icon={InfoIcon}
+                value={values.title}
+                onChangeText={handleChange("title")}
+                placeholder="Title"
+                error={errors.title}
+              />
+              <FormInputWithIcon
+                containerClassNames="border-b border-white"
+                icon={InfoIcon}
+                value={values.description}
+                onChangeText={handleChange("description")}
+                placeholder="Description"
+                error={errors.description}
+              />
+              <View className="flex flex-row py-5 items-center border-b border-white">
+                <InfoIcon size={24} color={tw.color("white")} />
+                <Text className="mx-4 text-sm">Available for Sale:</Text>
+                <Switch
+                  onValueChange={(newValue) =>
+                    setFieldValue("availableForSale", newValue)
                   }
-                  placeholder="Price (XLM)"
-                  keyboardType="numeric"
-                  maxLength={10}
-                  error={errors.price}
+                  value={values.availableForSale}
+                  trackColor={{
+                    false: tw.color("blue-track"),
+                    true: tw.color("blue-brand"),
+                  }}
+                  thumbColor={tw.color("white")}
+                  //@ts-ignore
+                  activeThumbColor={tw.color("white")}
                 />
-                <View className="flex flex-row py-5 items-center border-b border-white">
-                  <PieChartIcon size={24} color={tw.color("white")} />
-                  <Text className="mx-4 text-sm w-40">
-                    Equity for Sale: {equityForSale}%
-                  </Text>
-                  <GestureHandlerRootView style={{ flex: 1 }}>
-                    <SkyhitzSlider
-                      minimumValue={1}
-                      maximumValue={100}
-                      value={values.equityForSale ?? 1}
-                      onValueChange={(value: number) => {
-                        setEquityForSale(value.toFixed());
-                      }}
-                      onSlidingComplete={(value: number) => {
-                        setFieldValue(
-                          "equityForSale",
-                          parseInt(value.toFixed(), 10)
-                        );
-                        setEquityForSale(value.toFixed());
-                      }}
-                    />
-                  </GestureHandlerRootView>
-                </View>
-              </>
-            )}
-            <UploadInputWithIcon
-              containerClassNames="border-b border-white"
-              icon={InfoIcon}
-              label="Artwork"
-              type="image"
-              onUploadFinished={setImageBlob}
-              validateFile={validateArtwork}
-              onClear={() => setImageBlob(null)}
-              success={imageBlob !== null}
-            />
-            <UploadInputWithIcon
-              containerClassNames="border-b border-white"
-              icon={InfoIcon}
-              label="Media File"
-              type="other"
-              onUploadFinished={setVideoBlob}
-              validateFile={validateVideo}
-              onClear={() => setVideoBlob(null)}
-              success={videoBlob !== null}
-            />
-            <View className="flex flex-row py-5 items-center border-b border-white">
-              <Text className="mx-4 text-sm">
-                Only original video music related material will be uploaded. We
-                take copyright law very seriously. Maximum file size allowed:
-                100MB
-              </Text>
-            </View>
-            <View className="flex md:flex-row justify-center items-center mt-5">
-              <Button
-                text={buttonTitle()}
-                size="large"
-                onPress={handleSubmit}
-                className="mb-5 md:mb-0 md:mr-5"
-                disabled={
-                  !isValid ||
-                  not(
-                    any(equals(status), [
-                      "Uninitialized",
-                      "Error",
-                      "IndexError",
-                    ])
-                  ) ||
-                  !videoBlob ||
-                  !imageBlob
-                }
+              </View>
+              {values.availableForSale && (
+                <>
+                  <FormInputWithIcon
+                    containerClassNames="border-b border-white"
+                    icon={DollarIcon}
+                    value={values.price}
+                    onChangeText={(text) =>
+                      setFieldValue("price", text.replace(/[^0-9]/g, ""))
+                    }
+                    placeholder="Price (XLM)"
+                    keyboardType="numeric"
+                    maxLength={10}
+                    error={errors.price}
+                  />
+                  <View className="flex flex-row py-5 items-center border-b border-white">
+                    <PieChartIcon size={24} color={tw.color("white")} />
+                    <Text className="mx-4 text-sm w-40">
+                      Equity for Sale: {equityForSale}%
+                    </Text>
+                    <GestureHandlerRootView style={{ flex: 1 }}>
+                      <SkyhitzSlider
+                        minimumValue={1}
+                        maximumValue={100}
+                        value={values.equityForSale ?? 1}
+                        onValueChange={(value: number) => {
+                          setEquityForSale(value.toFixed());
+                        }}
+                        onSlidingComplete={(value: number) => {
+                          setFieldValue(
+                            "equityForSale",
+                            parseInt(value.toFixed(), 10)
+                          );
+                          setEquityForSale(value.toFixed());
+                        }}
+                      />
+                    </GestureHandlerRootView>
+                  </View>
+                </>
+              )}
+              <UploadInputWithIcon
+                containerClassNames="border-b border-white"
+                icon={InfoIcon}
+                label="Artwork"
+                type="image"
+                onUploadFinished={setImageBlob}
+                validateFile={validateArtwork}
+                onClear={() => setImageBlob(null)}
+                success={imageBlob !== null}
               />
-              <Button
-                text="Cancel"
-                size="large"
-                variant="secondary"
-                onPress={back}
+              <UploadInputWithIcon
+                containerClassNames="border-b border-white"
+                icon={InfoIcon}
+                label="Media File"
+                type="other"
+                onUploadFinished={setVideoBlob}
+                validateFile={validateVideo}
+                onClear={() => setVideoBlob(null)}
+                success={videoBlob !== null}
               />
+              <View className="flex flex-row py-5 items-center border-b border-white">
+                <Text className="mx-4 text-sm">
+                  Only original video music related material will be uploaded.
+                  We take copyright law very seriously. Maximum file size
+                  allowed: 100MB
+                </Text>
+              </View>
+              <View className="flex md:flex-row justify-center items-center mt-5">
+                <Button
+                  text={buttonTitle()}
+                  size="large"
+                  onPress={handleSubmit}
+                  className="mb-5 md:mb-0 md:mr-5"
+                  disabled={
+                    !isValid ||
+                    not(
+                      any(equals(status), [
+                        "Uninitialized",
+                        "Error",
+                        "IndexError",
+                      ])
+                    ) ||
+                    !videoBlob ||
+                    !imageBlob
+                  }
+                />
+                <Button
+                  text="Cancel"
+                  size="large"
+                  variant="secondary"
+                  onPress={back}
+                />
+              </View>
             </View>
-          </View>
-        )}
-      </Formik>
-    </ScrollView>
+          )}
+        </Formik>
+      </ScrollView>
+      <WalletConnectModal
+        visible={modalVisible}
+        close={() => setModalVisible(false)}
+        uri={uri}
+      />
+    </>
   );
 }

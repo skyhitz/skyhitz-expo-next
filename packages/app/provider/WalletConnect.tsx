@@ -12,8 +12,7 @@ import {
   useState,
 } from "react";
 import { getSdkError } from "@walletconnect/utils";
-import { Alert, Platform } from "react-native";
-import * as Clipboard from "expo-clipboard";
+import { Platform } from "react-native";
 import { Config } from "app/config";
 import { buildTransactionForAuth } from "app/utils/stellar";
 import { useRecoilValue } from "recoil";
@@ -22,12 +21,20 @@ import { userAtom } from "app/state/user";
 interface IContext {
   initialized: boolean;
   session: SessionTypes.Struct | undefined;
-  connect: () => Promise<SessionTypes.Struct | undefined>;
+  connect: (
+    showModal: (uri: string) => void
+  ) => Promise<SessionTypes.Struct | undefined>;
   disconnect: () => Promise<void>;
   accounts: string[];
-  signXdr: (_xdr: string) => Promise<null | unknown>;
-  signAndSubmitXdr: (_xdr: string) => Promise<null | unknown>;
-  authNewSession: () => Promise<unknown>;
+  signXdr: (
+    xdr: string,
+    currentSession?: SessionTypes.Struct
+  ) => Promise<null | unknown>;
+  signAndSubmitXdr: (
+    xdr: string,
+    currentSession?: SessionTypes.Struct
+  ) => Promise<null | unknown>;
+  authNewSession: (showModal: (uri: string) => void) => Promise<unknown>;
 }
 
 export const ClientContext = createContext<IContext>({} as IContext);
@@ -57,68 +64,58 @@ export function ClientContextProvider({
     setAccounts(allNamespaceAccounts);
   }, []);
 
-  const connect = useCallback(async () => {
-    if (typeof client === "undefined") {
-      throw new Error("WalletConnect is not initialized");
-    }
+  const connect = useCallback(
+    async (showModal: (uri: string) => void) => {
+      if (typeof client === "undefined") {
+        throw new Error("WalletConnect is not initialized");
+      }
 
-    try {
-      const requiredNamespaces = {
-        stellar: {
-          methods: ["stellar_signAndSubmitXDR", "stellar_signXDR"],
-          chains: [Config.CHAIN_ID],
-          events: [],
-        },
-      };
-
-      const { uri, approval } = await client.connect({
-        pairingTopic: undefined,
-        requiredNamespaces,
-      });
-
-      if (!uri) return;
-      if (Platform.OS === "web") {
-        QRCodeModal.open(
-          uri,
-          () => {
-            console.log("EVENT", "QR Code Modal closed");
+      try {
+        const requiredNamespaces = {
+          stellar: {
+            methods: ["stellar_signAndSubmitXDR", "stellar_signXDR"],
+            chains: [Config.CHAIN_ID],
+            events: [],
           },
-          {
-            desktopLinks: [],
-            mobileLinks: ["lobstr"],
-          }
-        );
-      } else {
-        Alert.alert("WalletConnect link", uri, [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "Copy",
-            onPress: async () => {
-              await Clipboard.setStringAsync(uri);
+        };
+
+        const { uri, approval } = await client.connect({
+          pairingTopic: undefined,
+          requiredNamespaces,
+        });
+
+        if (!uri) return;
+        if (Platform.OS === "web") {
+          QRCodeModal.open(
+            uri,
+            () => {
+              console.log("EVENT", "QR Code Modal closed");
             },
-          },
-        ]);
-        // TODO find out proper deep link
-        // Linking.openURL("https://lobstr.co/uni");
-      }
+            {
+              desktopLinks: [],
+              mobileLinks: ["lobstr"],
+            }
+          );
+        } else {
+          showModal(uri);
+        }
 
-      const session = await approval();
-      await onSessionConnected(session);
-      if (Platform.OS === "web") {
-        QRCodeModal.close();
+        const session = await approval();
+        await onSessionConnected(session);
+        if (Platform.OS === "web") {
+          QRCodeModal.close();
+        }
+        return session;
+      } catch (e) {
+        if (Platform.OS === "web") {
+          QRCodeModal.close();
+        }
+        console.error(e);
+        return undefined;
       }
-      return session;
-    } catch (e) {
-      if (Platform.OS === "web") {
-        QRCodeModal.close();
-      }
-      console.error(e);
-      return undefined;
-    }
-  }, [client, onSessionConnected]);
+    },
+    [client, onSessionConnected]
+  );
 
   const disconnect = useCallback(async () => {
     if (typeof client === "undefined") {
@@ -184,17 +181,21 @@ export function ClientContextProvider({
   }, [subscribeToEvents]);
 
   const requestClient = useCallback(
-    async (method: string, xdr: string) => {
+    async (
+      method: string,
+      xdr: string,
+      currentSession: SessionTypes.Struct
+    ) => {
       if (!client) throw new Error("WalletConnect Client not initialized");
-      const currentSession = session ?? (await connect());
-      if (!currentSession) throw new Error("There is no active session");
       // check if the publicKey match with the one of the current user
       const publicKey = Object.values(
         currentSession.namespaces
       )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
       if (user?.publicKey && user.publicKey !== publicKey) {
         disconnect();
-        return;
+        throw new Error(
+          "Provided public key does not match with your account public key. Change wallet if you want to continue."
+        );
       }
       const result = await client.request({
         topic: currentSession.topic,
@@ -212,44 +213,49 @@ export function ClientContextProvider({
   );
 
   const signXdr = useCallback(
-    async (xdr: string) => {
-      return requestClient("stellar_signXDR", xdr);
+    async (xdr: string, currentSession = session) => {
+      if (!currentSession) throw new Error("There is no active session");
+      return requestClient("stellar_signXDR", xdr, currentSession);
     },
-    [requestClient]
+    [requestClient, session]
   );
 
   const signAndSubmitXdr = useCallback(
-    async (xdr: string) => {
-      return requestClient("stellar_signAndSubmitXDR", xdr);
+    async (xdr: string, currentSession = session) => {
+      if (!currentSession) throw new Error("There is no active session");
+      return requestClient("stellar_signAndSubmitXDR", xdr, currentSession);
     },
-    [requestClient]
+    [requestClient, session]
   );
 
-  const authNewSession = useCallback(async () => {
-    if (!client) throw new Error("Client not initiliazed");
-    const newSession = await connect();
-    if (!newSession) {
-      throw new Error("Couldn't establish wallet connect session");
-    }
-    const publicKey = Object.values(
-      newSession.namespaces
-    )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
-    if (!publicKey) {
-      throw new Error("Invalid public key");
-    }
-    const xdr = await buildTransactionForAuth(publicKey);
-    const result = await client.request({
-      topic: newSession.topic,
-      chainId: Config.CHAIN_ID,
-      request: {
-        method: "stellar_signXDR",
-        params: {
-          xdr,
+  const authNewSession = useCallback(
+    async (showModal: (uri: string) => void) => {
+      if (!client) throw new Error("Client not initiliazed");
+      const newSession = await connect(showModal);
+      if (!newSession) {
+        throw new Error("Couldn't establish wallet connect session");
+      }
+      const publicKey = Object.values(
+        newSession.namespaces
+      )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
+      if (!publicKey) {
+        throw new Error("Invalid public key");
+      }
+      const xdr = await buildTransactionForAuth(publicKey);
+      const result = await client.request({
+        topic: newSession.topic,
+        chainId: Config.CHAIN_ID,
+        request: {
+          method: "stellar_signXDR",
+          params: {
+            xdr,
+          },
         },
-      },
-    });
-    return result;
-  }, [client, connect, buildTransactionForAuth]);
+      });
+      return result;
+    },
+    [client, connect, buildTransactionForAuth]
+  );
 
   useEffect(() => {
     if (!client) {
