@@ -50,10 +50,10 @@ export function ClientContextProvider({
   const [initialized, setInitialized] = useState<boolean>(false);
   const user = useRecoilValue(userAtom);
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setSession(undefined);
     setAccounts([]);
-  };
+  }, [setSession, setAccounts]);
 
   const onSessionConnected = useCallback((session: SessionTypes.Struct) => {
     const allNamespaceAccounts = Object.values(session.namespaces)
@@ -89,7 +89,7 @@ export function ClientContextProvider({
           QRCodeModal.open(
             uri,
             () => {
-              console.log("EVENT", "QR Code Modal closed");
+              // no-op
             },
             {
               desktopLinks: [],
@@ -129,7 +129,7 @@ export function ClientContextProvider({
       reason: getSdkError("USER_DISCONNECTED"),
     });
     reset();
-  }, [client, session]);
+  }, [client, session, reset]);
 
   const subscribeToEvents = useCallback(
     (wcClient: Client) => {
@@ -156,7 +156,7 @@ export function ClientContextProvider({
         reset();
       });
     },
-    [onSessionConnected]
+    [onSessionConnected, reset]
   );
 
   const createClient = useCallback(async () => {
@@ -165,7 +165,7 @@ export function ClientContextProvider({
         name: "Skyhitz",
         description: "Skyhitz",
         url: "https://skyhitz.io",
-        icons: ["https://skyhitz.io/img/icon-512.png"],
+        icons: ["https://skyhitz.io/icon.png"],
       };
 
       const newClient = await Client.init({

@@ -2,15 +2,36 @@ mutation createUserWithEmail(
   $displayName: String!
   $email: String!
   $username: String!
-  $publicKey: String!
+  $signedXDR: String!
 ) {
   createUserWithEmail(
     displayName: $displayName
     email: $email
     username: $username
-    publicKey: $publicKey
+    signedXDR: $signedXDR
   ) {
-    success
     message
+    user {
+      avatarUrl
+      displayName
+      username
+      id
+      jwt
+      publishedAt
+      email
+      description
+      publicKey
+      managed
+      lastPlayedEntry {
+        imageUrl
+        videoUrl
+        description
+        title
+        id
+        artist
+        code
+        issuer
+      }
+    }
   }
 }
