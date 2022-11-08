@@ -8,7 +8,6 @@ type FetchData = {
 type Result = {
   price: number;
   amount: number;
-  invalidate: () => void;
 };
 
 const fetcher = async (url: string) => {
@@ -17,12 +16,12 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-export function useEntryOffer(
-  code?: string | null,
-  issuer?: string | null
-): Result {
-  const { data, mutate } = useSWR(
-    `${Config.HORIZON_URL}/order_book?selling_asset_type=credit_alphanum12&selling_asset_code=${code}&selling_asset_issuer=${issuer}&buying_asset_type=native`,
+export const getEntryOfferUrl = (code: string, issuer: string) =>
+  `${Config.HORIZON_URL}/order_book?selling_asset_type=credit_alphanum12&selling_asset_code=${code}&selling_asset_issuer=${issuer}&buying_asset_type=native`;
+
+export function useEntryOffer(code: string, issuer: string): Result {
+  const { data } = useSWR(
+    getEntryOfferUrl(code, issuer),
     code && issuer ? fetcher : null,
     {
       dedupingInterval: 30000,
@@ -31,8 +30,8 @@ export function useEntryOffer(
 
   if (data && data.asks && data.asks[0]) {
     const ask = data.asks[0];
-    return { ...ask, invalidate: mutate };
+    return { ...ask };
   }
 
-  return { price: 0, amount: 0, invalidate: mutate };
+  return { price: 0, amount: 0 };
 }

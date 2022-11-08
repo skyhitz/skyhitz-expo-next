@@ -3,9 +3,8 @@ import {
   useCreateEntryMutation,
   useIndexEntryMutation,
   UserCollectionDocument,
-  RecentlyAddedDocument,
-  TopChartDocument,
   GetIssuerDocument,
+  Entry,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
 import { MintForm } from "app/types";
@@ -13,9 +12,12 @@ import { useCallback, useState } from "react";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useApolloClient, ApolloError } from "@apollo/client";
-import { prepend } from "ramda";
+import { append, prepend, slice } from "ramda";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import { useSWRConfig } from "swr";
+import { recentlyAddedQueryKey } from "./algolia/useRecentlyAdded";
+import { topChartQueryKey } from "./algolia/useTopChart";
 
 type MintStatus =
   | "Uninitialized"
@@ -50,6 +52,7 @@ export function useMintNFT(): MintResult {
   const [indexEntry] = useIndexEntryMutation();
   const { signAndSubmitXdr, session, connect } = useWalletConnectClient();
   const { cache, query } = useApolloClient();
+  const { mutate, cache: swrCache } = useSWRConfig();
   const user = useRecoilValue(userAtom);
 
   const indexNFT = useCallback(
@@ -60,32 +63,43 @@ export function useMintNFT(): MintResult {
         const { data: indexedEntry } = await indexEntry({
           variables: { issuer: nftIssuer },
         });
-        cache.updateQuery(
-          {
-            query: RecentlyAddedDocument,
-            variables: { page: 0 },
-            overwrite: true,
-          },
-          (cachedData) => ({
-            recentlyAdded: prepend(
-              indexedEntry?.indexEntry,
-              cachedData?.recentlyAdded ?? []
-            ),
-          })
+        // updates recently added cache
+        if (!indexedEntry?.indexEntry)
+          throw Error("Something went wrong during indexing");
+        const recentlyAddedPages: Entry[][] | undefined = swrCache.get(
+          `$inf$${recentlyAddedQueryKey}0`
         );
-        cache.updateQuery(
-          {
-            query: TopChartDocument,
-            variables: { page: 0 },
-            overwrite: true,
-          },
-          (cachedData) => ({
-            topChart: prepend(
-              indexedEntry?.indexEntry,
-              cachedData?.topChart ?? []
-            ),
-          })
+        if (recentlyAddedPages) {
+          const firstPage = prepend(
+            indexedEntry?.indexEntry,
+            recentlyAddedPages[0] ?? []
+          );
+          mutate(`${recentlyAddedQueryKey}0`, firstPage, { revalidate: false });
+          mutate(
+            `$inf$${recentlyAddedQueryKey}0`,
+            [firstPage, ...slice(1, Infinity, recentlyAddedPages)],
+            { revalidate: false }
+          );
+        }
+        // updates top chart cache
+        const topChartPages: Entry[][] | undefined = swrCache.get(
+          `$inf$${topChartQueryKey}0`
         );
+        if (topChartPages) {
+          const size = topChartPages.length;
+          const lastPage = append(
+            indexedEntry?.indexEntry,
+            topChartPages[size - 1] ?? []
+          );
+          mutate(`${topChartQueryKey}${size - 1}`, lastPage, {
+            revalidate: false,
+          });
+          mutate(
+            `$inf$${topChartQueryKey}0`,
+            [...slice(0, size - 1, topChartPages), lastPage],
+            { revalidate: false }
+          );
+        }
         cache.updateQuery(
           {
             query: UserCollectionDocument,
