@@ -4,6 +4,7 @@ import {
   useIndexEntryMutation,
   UserCollectionDocument,
   GetIssuerDocument,
+  Entry,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
 import { MintForm } from "app/types";
@@ -58,13 +59,15 @@ export function useMintNFT(): MintResult {
           variables: { issuer: nftIssuer },
         });
         // updates recently added cache
-        const recentlyAddedPages = swrCache.get(
+        if (!indexedEntry?.indexEntry)
+          throw Error("Something went wrong during indexing");
+        const recentlyAddedPages: Entry[][] | undefined = swrCache.get(
           `$inf$${recentlyAddedQueryKey}0`
         );
         if (recentlyAddedPages) {
           const firstPage = prepend(
             indexedEntry?.indexEntry,
-            recentlyAddedPages[0]
+            recentlyAddedPages[0] ?? []
           );
           mutate(`${recentlyAddedQueryKey}0`, firstPage, { revalidate: false });
           mutate(
@@ -74,12 +77,14 @@ export function useMintNFT(): MintResult {
           );
         }
         // updates top chart cache
-        const topChartPages = swrCache.get(`$inf$${topChartQueryKey}0`);
+        const topChartPages: Entry[][] | undefined = swrCache.get(
+          `$inf$${topChartQueryKey}0`
+        );
         if (topChartPages) {
           const size = topChartPages.length;
           const lastPage = append(
             indexedEntry?.indexEntry,
-            topChartPages[size - 1]
+            topChartPages[size - 1] ?? []
           );
           mutate(`${topChartQueryKey}${size - 1}`, lastPage, {
             revalidate: false,
