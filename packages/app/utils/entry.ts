@@ -1,8 +1,6 @@
 import {
-  imagesGateway,
-  ipfsFallback,
   ipfsProtocol,
-  videosGateway,
+  fallbackGateway,
   pinataGateway,
 } from "app/constants/constants";
 
@@ -12,7 +10,7 @@ export function isIpfs(url: string) {
 
 export function videoSrc(videoUrl: string, useFallback = false) {
   if (isIpfs(videoUrl)) {
-    const gateway = useFallback ? ipfsFallback : videosGateway;
+    const gateway = useFallback ? fallbackGateway : pinataGateway;
     return `${gateway}/${videoUrl.replace(ipfsProtocol, "")}`;
   }
   return videoUrl;
@@ -20,13 +18,13 @@ export function videoSrc(videoUrl: string, useFallback = false) {
 
 export function imageSrc(imageUrl: string) {
   if (isIpfs(imageUrl))
-    return `${imagesGateway}/${imageUrl.replace(ipfsProtocol, "")}`;
+    return `${pinataGateway}/${imageUrl.replace(ipfsProtocol, "")}`;
   return imageUrl;
 }
 
 export function imageUrlSmall(imageUrl: string) {
   if (isIpfs(imageUrl))
-    return `${pinataGateway}/ipfs/${imageUrl?.replace(
+    return `${pinataGateway}/${imageUrl?.replace(
       ipfsProtocol,
       ""
     )}?img-width=80&img-height=80`;
@@ -35,7 +33,7 @@ export function imageUrlSmall(imageUrl: string) {
 
 export function imageUrlMedium(imageUrl: string) {
   if (isIpfs(imageUrl))
-    return `${pinataGateway}/ipfs/${imageUrl?.replace(
+    return `${pinataGateway}/${imageUrl?.replace(
       ipfsProtocol,
       ""
     )}?img-width=500&img-height=500`;

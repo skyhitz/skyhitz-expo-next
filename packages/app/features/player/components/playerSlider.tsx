@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "app/design-system";
 import { usePlayback } from "app/hooks/usePlayback";
-import { any, equals } from "ramda";
+import { any, equals, max } from "ramda";
 import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
 
 export function PlayerSlider() {
@@ -31,7 +31,7 @@ export function PlayerSlider() {
       >
         <SkyhitzSlider
           minimumValue={0}
-          maximumValue={duration}
+          maximumValue={max(duration, 1)}
           value={position}
           onValueChange={setSeekPosition}
           onSlidingStart={startSeeking}
