@@ -41,16 +41,14 @@ export default function DashboardTabBar({
       <Link viewProps={{ style: LinkStyle }} href="/dashboard/search">
         <Search
           size={28}
-          color={
-            isActive("search") ? tw.color("yellow-300") : tw.color("white")
-          }
+          color={isActive("search") ? tw.color("blue") : tw.color("white")}
         />
       </Link>
       <Link viewProps={{ style: LinkStyle }} href="/dashboard/chart">
         <Image
           style={
             isActive("chart")
-              ? tw`w-8 h-8 rounded-full border-2 border-tab border-yellow-300`
+              ? tw`w-8 h-8 rounded-full border-2 border-tab border-blue`
               : tw`w-8 h-8 rounded-full border-2 border-tab`
           }
           source={require("app/assets/images/icon.png")}
@@ -60,9 +58,7 @@ export default function DashboardTabBar({
         <Link viewProps={{ style: LinkStyle }} href="/dashboard/profile">
           <User
             size={28}
-            color={
-              isActive("profile") ? tw.color("yellow-300") : tw.color("white")
-            }
+            color={isActive("profile") ? tw.color("blue") : tw.color("white")}
           />
         </Link>
       )}
