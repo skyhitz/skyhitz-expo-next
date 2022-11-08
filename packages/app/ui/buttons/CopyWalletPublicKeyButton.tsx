@@ -1,7 +1,7 @@
 import { Pressable } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import { Platform, Share } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { CopyIcon } from "app/ui/icons/copy";
 import CheckIcon from "app/ui/icons/check";
 import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
@@ -14,7 +14,7 @@ type Props = {
 function CopyWalletPublicKeyButton({ walletPublicKey }: Props) {
   const [copied, changeCopied] = useState(false);
 
-  const copyPublicKey = async () => {
+  const copyPublicKey = useCallback(async () => {
     try {
       if (Platform.OS === "web") {
         navigator.clipboard.writeText(walletPublicKey);
@@ -35,7 +35,7 @@ function CopyWalletPublicKeyButton({ walletPublicKey }: Props) {
     } catch (error) {
       // no-op
     }
-  };
+  }, [copied, changeCopied, walletPublicKey]);
 
   useMaybeChangeIcon(changeCopied);
 

@@ -1,6 +1,6 @@
 import { Pressable } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { CopyIcon } from "app/ui/icons/copy";
 import CheckIcon from "app/ui/icons/check";
 
@@ -11,10 +11,10 @@ type Props = {
 function CopyBeatUrlButton({ beatUrl }: Props) {
   const [copied, changeCopied] = useState(false);
 
-  const copyBeatUrl = async () => {
+  const copyBeatUrl = useCallback(async () => {
     navigator.clipboard.writeText(beatUrl);
     changeCopied(true);
-  };
+  }, [beatUrl, changeCopied]);
 
   if (!copied) {
     return (
