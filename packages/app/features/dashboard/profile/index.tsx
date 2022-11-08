@@ -9,7 +9,6 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 import Like from "app/ui/icons/like";
 import StarBorder from "app/ui/icons/star-border";
 import { ProfileRow } from "app/features/dashboard/profile/profileRow";
-import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
 import { Link } from "solito/link";
 import Dollar from "app/ui/icons/dollar";
 import Upload from "app/ui/icons/upload";
@@ -60,10 +59,7 @@ export function ProfileScreen() {
               <Cog color={tw.color("white")} size={18} />
             </Link>
           </View>
-          <View className="flex flex-row items-center">
-            <CopyWalletPublicKeyButton walletPublicKey={user.publicKey!} />
-            <TextEllipsis text={user.publicKey!} containerClassName="mx-2" />
-          </View>
+          <CopyWalletPublicKeyButton walletPublicKey={user.publicKey!} />
         </View>
       </View>
       <ProfileRow

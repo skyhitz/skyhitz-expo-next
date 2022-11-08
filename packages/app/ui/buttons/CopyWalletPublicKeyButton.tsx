@@ -2,8 +2,10 @@ import { Pressable } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import { Platform, Share } from "react-native";
 import React, { useState } from "react";
-import Wallet from "app/ui/icons/wallet";
+import { CopyIcon } from "app/ui/icons/copy";
 import CheckIcon from "app/ui/icons/check";
+import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
+import { useMaybeChangeIcon } from "app/hooks/useMaybeChangeIcon";
 
 type Props = {
   walletPublicKey: string;
@@ -35,15 +37,19 @@ function CopyWalletPublicKeyButton({ walletPublicKey }: Props) {
     }
   };
 
-  if (!copied) {
-    return (
-      <Pressable onPress={copyPublicKey}>
-        <Wallet color={tw.color("white")} size={18} />
-      </Pressable>
-    );
-  } else {
-    return <CheckIcon size={18} color={tw.color("lightGreen")} />;
-  }
+  useMaybeChangeIcon(changeCopied);
+
+  return (
+    <Pressable
+      className="flex flex-row items-center"
+      onPress={copyPublicKey}
+      disabled={copied}
+    >
+      {!copied && <CopyIcon color={tw.color("white")} size={18} />}
+      {copied && <CheckIcon color={tw.color("lightGreen")} size={18} />}
+      <TextEllipsis text={walletPublicKey} containerClassName="mx-2" />
+    </Pressable>
+  );
 }
 
 export { CopyWalletPublicKeyButton };
