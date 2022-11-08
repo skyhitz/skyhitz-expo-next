@@ -1,4 +1,5 @@
 import { View } from "app/design-system";
+import { useCallback } from "react";
 import { Image, StyleProp, ViewStyle } from "react-native";
 import { Link } from "solito/link";
 import { tw } from "app/design-system/tailwind";
@@ -24,9 +25,12 @@ export default function DashboardTabBar({
   column?: boolean;
   currentTabName: string;
 }) {
-  const isActive = (tabName: string): boolean => {
-    return currentTabName === tabName;
-  };
+  const isActive = useCallback(
+    (tabName: string): boolean => {
+      return currentTabName === tabName;
+    },
+    [currentTabName]
+  );
 
   const insets = useSafeArea();
   const user = useRecoilValue(userAtom);
