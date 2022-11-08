@@ -24,7 +24,11 @@ import { View } from "app/design-system";
 const fullAnimationDuration = 400;
 const { height } = Dimensions.get("window");
 
-export function MobileTabBarWrapper() {
+export function MobileTabBarWrapper({
+  currentTabName,
+}: {
+  currentTabName: string;
+}) {
   const insets = useSafeArea();
   const { playbackState } = usePlayback();
 
@@ -152,7 +156,7 @@ export function MobileTabBarWrapper() {
           </View>
 
           <Animated.View style={[{ zIndex: 10 }, tabBarStyle]}>
-            <DashboardTabBar />
+            <DashboardTabBar currentTabName={currentTabName} />
           </Animated.View>
         </Animated.View>
       </GestureDetector>

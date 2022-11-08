@@ -17,9 +17,15 @@ const LinkStyle: StyleProp<ViewStyle> = {
   maxHeight: 64,
 };
 
-export default function DashboardTabBar({ column }: { column?: boolean }) {
-  const isActive = (pathname: string): boolean => {
-    return window.location.pathname === pathname;
+export default function DashboardTabBar({
+  column,
+  currentTabName,
+}: {
+  column?: boolean;
+  currentTabName: string;
+}) {
+  const isActive = (tabName: string): boolean => {
+    return currentTabName === tabName;
   };
 
   const insets = useSafeArea();
@@ -36,16 +42,14 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
         <Search
           size={28}
           color={
-            isActive("/dashboard/search")
-              ? tw.color("yellow-300")
-              : tw.color("white")
+            isActive("search") ? tw.color("yellow-300") : tw.color("white")
           }
         />
       </Link>
       <Link viewProps={{ style: LinkStyle }} href="/dashboard/chart">
         <Image
           style={
-            isActive("/dashboard/chart")
+            isActive("chart")
               ? tw`w-8 h-8 rounded-full border-2 border-tab border-yellow-300`
               : tw`w-8 h-8 rounded-full border-2 border-tab`
           }
@@ -57,9 +61,7 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
           <User
             size={28}
             color={
-              isActive("/dashboard/profile")
-                ? tw.color("yellow-300")
-                : tw.color("white")
+              isActive("profile") ? tw.color("yellow-300") : tw.color("white")
             }
           />
         </Link>
