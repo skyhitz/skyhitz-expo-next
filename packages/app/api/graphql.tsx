@@ -28,6 +28,13 @@ export type ActivityPrice = {
   n: Scalars["Int"];
 };
 
+/** This is an ConditionalUser */
+export type ConditionalUser = {
+  __typename?: "ConditionalUser";
+  message: Scalars["String"];
+  user?: Maybe<User>;
+};
+
 /** This is an ConditionalXDR */
 export type ConditionalXdr = {
   __typename?: "ConditionalXDR";
@@ -113,7 +120,7 @@ export type Mutation = {
   cancelSubscription?: Maybe<Scalars["String"]>;
   changeWallet?: Maybe<User>;
   createEntry?: Maybe<ConditionalXdr>;
-  createUserWithEmail?: Maybe<SuccessResponse>;
+  createUserWithEmail?: Maybe<ConditionalUser>;
   indexEntry?: Maybe<Entry>;
   likeEntry?: Maybe<Scalars["Boolean"]>;
   removeEntry?: Maybe<Scalars["Boolean"]>;
@@ -159,7 +166,7 @@ export type MutationCreateEntryArgs = {
 export type MutationCreateUserWithEmailArgs = {
   displayName: Scalars["String"];
   email: Scalars["String"];
-  publicKey: Scalars["String"];
+  signedXDR: Scalars["String"];
   username: Scalars["String"];
 };
 
@@ -383,15 +390,38 @@ export type CreateUserWithEmailMutationVariables = Exact<{
   displayName: Scalars["String"];
   email: Scalars["String"];
   username: Scalars["String"];
-  publicKey: Scalars["String"];
+  signedXDR: Scalars["String"];
 }>;
 
 export type CreateUserWithEmailMutation = {
   __typename?: "Mutation";
   createUserWithEmail?: {
-    __typename?: "SuccessResponse";
-    success?: boolean | null;
-    message?: string | null;
+    __typename?: "ConditionalUser";
+    message: string;
+    user?: {
+      __typename?: "User";
+      avatarUrl?: string | null;
+      displayName?: string | null;
+      username?: string | null;
+      id?: string | null;
+      jwt?: string | null;
+      publishedAt?: string | null;
+      email?: string | null;
+      description?: string | null;
+      publicKey?: string | null;
+      managed?: boolean | null;
+      lastPlayedEntry?: {
+        __typename?: "Entry";
+        imageUrl?: string | null;
+        videoUrl?: string | null;
+        description?: string | null;
+        title?: string | null;
+        id?: string | null;
+        artist?: string | null;
+        code?: string | null;
+        issuer?: string | null;
+      } | null;
+    } | null;
   } | null;
 };
 
@@ -932,16 +962,37 @@ export const CreateUserWithEmailDocument = gql`
     $displayName: String!
     $email: String!
     $username: String!
-    $publicKey: String!
+    $signedXDR: String!
   ) {
     createUserWithEmail(
       displayName: $displayName
       email: $email
       username: $username
-      publicKey: $publicKey
+      signedXDR: $signedXDR
     ) {
-      success
       message
+      user {
+        avatarUrl
+        displayName
+        username
+        id
+        jwt
+        publishedAt
+        email
+        description
+        publicKey
+        managed
+        lastPlayedEntry {
+          imageUrl
+          videoUrl
+          description
+          title
+          id
+          artist
+          code
+          issuer
+        }
+      }
     }
   }
 `;
@@ -966,7 +1017,7 @@ export type CreateUserWithEmailMutationFn = Apollo.MutationFunction<
  *      displayName: // value for 'displayName'
  *      email: // value for 'email'
  *      username: // value for 'username'
- *      publicKey: // value for 'publicKey'
+ *      signedXDR: // value for 'signedXDR'
  *   },
  * });
  */
