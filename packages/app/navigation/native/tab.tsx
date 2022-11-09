@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import {
   createBottomTabNavigator,
-  BottomTabBarProps
+  BottomTabBarProps,
 } from "@react-navigation/bottom-tabs";
 import { ChartScreen } from "app/features/dashboard/chart";
 import { MobileTabBarWrapper } from "app/ui/navigation/mobileTabBarWrapper";
