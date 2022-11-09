@@ -15,7 +15,8 @@ export function DashboardNavigation({
 }: {
   children: React.ReactNode;
 }) {
-  const { route } = useNextRouter();
+  const router = useNextRouter();
+  const route = router?.route || "";
   const currentTabName = route.split("/").at(-1) || "";
 
   useSx();
