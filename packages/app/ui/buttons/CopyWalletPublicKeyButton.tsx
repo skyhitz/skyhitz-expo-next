@@ -5,7 +5,7 @@ import React, { useCallback, useState } from "react";
 import { CopyIcon } from "app/ui/icons/copy";
 import CheckIcon from "app/ui/icons/check";
 import { TextEllipsis } from "app/features/dashboard/profile/textEllipsis";
-import { useMaybeChangeIcon } from "app/hooks/useMaybeChangeIcon";
+import { useNavigationEvent } from "app/hooks/useNavigationEvent";
 
 type Props = {
   walletPublicKey: string;
@@ -37,7 +37,7 @@ function CopyWalletPublicKeyButton({ walletPublicKey }: Props) {
     }
   }, [copied, changeCopied, walletPublicKey]);
 
-  useMaybeChangeIcon(changeCopied);
+  useNavigationEvent("blur", () => changeCopied(false));
 
   return (
     <Pressable
