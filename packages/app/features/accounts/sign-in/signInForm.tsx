@@ -9,7 +9,7 @@ import { signInFormSchema } from "app/validation";
 
 type SignInFormProps = {
   onEmailSend: () => void;
-  onWalletConnected: (_publicKey: string) => void;
+  onWalletConnected: (signedXDR: string) => void;
 };
 
 export function SignInForm({
@@ -35,7 +35,7 @@ export function SignInForm({
 
   return (
     <View className="w-72 md:w-96 items-center">
-      <WalletConnectBtn loading={false} onConnected={onWalletConnected} />
+      <WalletConnectBtn loading={false} onAuth={onWalletConnected} />
       <Separator />
       <Formik
         validateOnMount

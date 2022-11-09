@@ -28,6 +28,13 @@ export type ActivityPrice = {
   n: Scalars["Int"];
 };
 
+/** This is an ConditionalUser */
+export type ConditionalUser = {
+  __typename?: "ConditionalUser";
+  message: Scalars["String"];
+  user?: Maybe<User>;
+};
+
 /** This is an ConditionalXDR */
 export type ConditionalXdr = {
   __typename?: "ConditionalXDR";
@@ -113,7 +120,7 @@ export type Mutation = {
   cancelSubscription?: Maybe<Scalars["String"]>;
   changeWallet?: Maybe<User>;
   createEntry?: Maybe<ConditionalXdr>;
-  createUserWithEmail?: Maybe<SuccessResponse>;
+  createUserWithEmail?: Maybe<ConditionalUser>;
   indexEntry?: Maybe<Entry>;
   likeEntry?: Maybe<Scalars["Boolean"]>;
   removeEntry?: Maybe<Scalars["Boolean"]>;
@@ -159,7 +166,7 @@ export type MutationCreateEntryArgs = {
 export type MutationCreateUserWithEmailArgs = {
   displayName: Scalars["String"];
   email: Scalars["String"];
-  publicKey: Scalars["String"];
+  signedXDR: Scalars["String"];
   username: Scalars["String"];
 };
 
@@ -383,15 +390,38 @@ export type CreateUserWithEmailMutationVariables = Exact<{
   displayName: Scalars["String"];
   email: Scalars["String"];
   username: Scalars["String"];
-  publicKey: Scalars["String"];
+  signedXDR: Scalars["String"];
 }>;
 
 export type CreateUserWithEmailMutation = {
   __typename?: "Mutation";
   createUserWithEmail?: {
-    __typename?: "SuccessResponse";
-    success?: boolean | null;
-    message?: string | null;
+    __typename?: "ConditionalUser";
+    message: string;
+    user?: {
+      __typename?: "User";
+      avatarUrl?: string | null;
+      displayName?: string | null;
+      username?: string | null;
+      id?: string | null;
+      jwt?: string | null;
+      publishedAt?: string | null;
+      email?: string | null;
+      description?: string | null;
+      publicKey?: string | null;
+      managed?: boolean | null;
+      lastPlayedEntry?: {
+        __typename?: "Entry";
+        imageUrl?: string | null;
+        videoUrl?: string | null;
+        description?: string | null;
+        title?: string | null;
+        id?: string | null;
+        artist?: string | null;
+        code?: string | null;
+        issuer?: string | null;
+      } | null;
+    } | null;
   } | null;
 };
 
@@ -670,44 +700,6 @@ export type PaymentsInfoQuery = {
   } | null;
 };
 
-export type RecentlyAddedQueryVariables = Exact<{
-  page?: InputMaybe<Scalars["Int"]>;
-}>;
-
-export type RecentlyAddedQuery = {
-  __typename?: "Query";
-  recentlyAdded?: Array<{
-    __typename?: "Entry";
-    imageUrl?: string | null;
-    videoUrl?: string | null;
-    description?: string | null;
-    title?: string | null;
-    id?: string | null;
-    artist?: string | null;
-    code?: string | null;
-    issuer?: string | null;
-  } | null> | null;
-};
-
-export type TopChartQueryVariables = Exact<{
-  page?: InputMaybe<Scalars["Int"]>;
-}>;
-
-export type TopChartQuery = {
-  __typename?: "Query";
-  topChart?: Array<{
-    __typename?: "Entry";
-    imageUrl?: string | null;
-    videoUrl?: string | null;
-    description?: string | null;
-    title?: string | null;
-    id?: string | null;
-    artist?: string | null;
-    code?: string | null;
-    issuer?: string | null;
-  } | null> | null;
-};
-
 export type UserCollectionQueryVariables = Exact<{
   userId: Scalars["String"];
 }>;
@@ -932,16 +924,37 @@ export const CreateUserWithEmailDocument = gql`
     $displayName: String!
     $email: String!
     $username: String!
-    $publicKey: String!
+    $signedXDR: String!
   ) {
     createUserWithEmail(
       displayName: $displayName
       email: $email
       username: $username
-      publicKey: $publicKey
+      signedXDR: $signedXDR
     ) {
-      success
       message
+      user {
+        avatarUrl
+        displayName
+        username
+        id
+        jwt
+        publishedAt
+        email
+        description
+        publicKey
+        managed
+        lastPlayedEntry {
+          imageUrl
+          videoUrl
+          description
+          title
+          id
+          artist
+          code
+          issuer
+        }
+      }
     }
   }
 `;
@@ -966,7 +979,7 @@ export type CreateUserWithEmailMutationFn = Apollo.MutationFunction<
  *      displayName: // value for 'displayName'
  *      email: // value for 'email'
  *      username: // value for 'username'
- *      publicKey: // value for 'publicKey'
+ *      signedXDR: // value for 'signedXDR'
  *   },
  * });
  */
@@ -1798,131 +1811,6 @@ export type PaymentsInfoLazyQueryHookResult = ReturnType<
 export type PaymentsInfoQueryResult = Apollo.QueryResult<
   PaymentsInfoQuery,
   PaymentsInfoQueryVariables
->;
-export const RecentlyAddedDocument = gql`
-  query recentlyAdded($page: Int) {
-    recentlyAdded(page: $page) {
-      imageUrl
-      videoUrl
-      description
-      title
-      id
-      artist
-      code
-      issuer
-    }
-  }
-`;
-
-/**
- * __useRecentlyAddedQuery__
- *
- * To run a query within a React component, call `useRecentlyAddedQuery` and pass it any options that fit your needs.
- * When your component renders, `useRecentlyAddedQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useRecentlyAddedQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useRecentlyAddedQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    RecentlyAddedQuery,
-    RecentlyAddedQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<RecentlyAddedQuery, RecentlyAddedQueryVariables>(
-    RecentlyAddedDocument,
-    options
-  );
-}
-export function useRecentlyAddedLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    RecentlyAddedQuery,
-    RecentlyAddedQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<RecentlyAddedQuery, RecentlyAddedQueryVariables>(
-    RecentlyAddedDocument,
-    options
-  );
-}
-export type RecentlyAddedQueryHookResult = ReturnType<
-  typeof useRecentlyAddedQuery
->;
-export type RecentlyAddedLazyQueryHookResult = ReturnType<
-  typeof useRecentlyAddedLazyQuery
->;
-export type RecentlyAddedQueryResult = Apollo.QueryResult<
-  RecentlyAddedQuery,
-  RecentlyAddedQueryVariables
->;
-export const TopChartDocument = gql`
-  query topChart($page: Int) {
-    topChart(page: $page) {
-      imageUrl
-      videoUrl
-      description
-      title
-      id
-      artist
-      code
-      issuer
-    }
-  }
-`;
-
-/**
- * __useTopChartQuery__
- *
- * To run a query within a React component, call `useTopChartQuery` and pass it any options that fit your needs.
- * When your component renders, `useTopChartQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useTopChartQuery({
- *   variables: {
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useTopChartQuery(
-  baseOptions?: Apollo.QueryHookOptions<TopChartQuery, TopChartQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<TopChartQuery, TopChartQueryVariables>(
-    TopChartDocument,
-    options
-  );
-}
-export function useTopChartLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    TopChartQuery,
-    TopChartQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<TopChartQuery, TopChartQueryVariables>(
-    TopChartDocument,
-    options
-  );
-}
-export type TopChartQueryHookResult = ReturnType<typeof useTopChartQuery>;
-export type TopChartLazyQueryHookResult = ReturnType<
-  typeof useTopChartLazyQuery
->;
-export type TopChartQueryResult = Apollo.QueryResult<
-  TopChartQuery,
-  TopChartQueryVariables
 >;
 export const UserCollectionDocument = gql`
   query userCollection($userId: String!) {

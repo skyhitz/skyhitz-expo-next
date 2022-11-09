@@ -16,6 +16,13 @@
         {
           "photosPermission": "The app accesses your photos to let you upload beats."
         }
+      ],
+      [
+        "expo-document-picker",
+        {
+          "appleTeamId": "GUHNL23262",
+          "iCloudContainerEnvironment": "Production"
+        }
       ]
     ],
     "ios": {

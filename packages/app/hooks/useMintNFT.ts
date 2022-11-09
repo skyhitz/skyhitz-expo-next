@@ -1,11 +1,10 @@
 import {
   GetIssuerQuery,
   useCreateEntryMutation,
-  useGetIssuerLazyQuery,
   useIndexEntryMutation,
   UserCollectionDocument,
-  RecentlyAddedDocument,
-  TopChartDocument,
+  GetIssuerDocument,
+  Entry,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
 import { MintForm } from "app/types";
@@ -13,9 +12,12 @@ import { useCallback, useState } from "react";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useApolloClient, ApolloError } from "@apollo/client";
-import { prepend } from "ramda";
+import { append, prepend, slice } from "ramda";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import { useSWRConfig } from "swr";
+import { recentlyAddedQueryKey } from "./algolia/useRecentlyAdded";
+import { topChartQueryKey } from "./algolia/useTopChart";
 
 type MintStatus =
   | "Uninitialized"
@@ -29,7 +31,12 @@ type MintStatus =
   | "IndexError";
 
 type MintResult = {
-  mint: (_formData: MintForm, _artwork: Blob, _video: Blob) => void;
+  mint: (
+    formData: MintForm,
+    artwork: Blob,
+    video: Blob,
+    showModal: (uri: string) => void
+  ) => void;
   retryIndex: () => void;
   progress: number;
   status: MintStatus;
@@ -40,14 +47,12 @@ export function useMintNFT(): MintResult {
   const [status, setStatus] = useState<MintStatus>("Uninitialized");
   const { uploadFile, progress } = useUploadFileToNFTStorage();
   const [error, setError] = useState<string | undefined>();
-  const [formValues, setFormValues] = useState<MintForm | undefined>();
-  const [imageCid, setImageCid] = useState<string>("");
-  const [videoCid, setVideoCid] = useState<string>("");
   const [issuer, setIssuer] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
   const [indexEntry] = useIndexEntryMutation();
-  const { signAndSubmitXdr } = useWalletConnectClient();
-  const { cache } = useApolloClient();
+  const { signAndSubmitXdr, session, connect } = useWalletConnectClient();
+  const { cache, query } = useApolloClient();
+  const { mutate, cache: swrCache } = useSWRConfig();
   const user = useRecoilValue(userAtom);
 
   const indexNFT = useCallback(
@@ -58,32 +63,43 @@ export function useMintNFT(): MintResult {
         const { data: indexedEntry } = await indexEntry({
           variables: { issuer: nftIssuer },
         });
-        cache.updateQuery(
-          {
-            query: RecentlyAddedDocument,
-            variables: { page: 0 },
-            overwrite: true,
-          },
-          (cachedData) => ({
-            recentlyAdded: prepend(
-              indexedEntry?.indexEntry,
-              cachedData?.recentlyAdded ?? []
-            ),
-          })
+        // updates recently added cache
+        if (!indexedEntry?.indexEntry)
+          throw Error("Something went wrong during indexing");
+        const recentlyAddedPages: Entry[][] | undefined = swrCache.get(
+          `$inf$${recentlyAddedQueryKey}0`
         );
-        cache.updateQuery(
-          {
-            query: TopChartDocument,
-            variables: { page: 0 },
-            overwrite: true,
-          },
-          (cachedData) => ({
-            topChart: prepend(
-              indexedEntry?.indexEntry,
-              cachedData?.topChart ?? []
-            ),
-          })
+        if (recentlyAddedPages) {
+          const firstPage = prepend(
+            indexedEntry?.indexEntry,
+            recentlyAddedPages[0] ?? []
+          );
+          mutate(`${recentlyAddedQueryKey}0`, firstPage, { revalidate: false });
+          mutate(
+            `$inf$${recentlyAddedQueryKey}0`,
+            [firstPage, ...slice(1, Infinity, recentlyAddedPages)],
+            { revalidate: false }
+          );
+        }
+        // updates top chart cache
+        const topChartPages: Entry[][] | undefined = swrCache.get(
+          `$inf$${topChartQueryKey}0`
         );
+        if (topChartPages) {
+          const size = topChartPages.length;
+          const lastPage = append(
+            indexedEntry?.indexEntry,
+            topChartPages[size - 1] ?? []
+          );
+          mutate(`${topChartQueryKey}${size - 1}`, lastPage, {
+            revalidate: false,
+          });
+          mutate(
+            `$inf$${topChartQueryKey}0`,
+            [...slice(0, size - 1, topChartPages), lastPage],
+            { revalidate: false }
+          );
+        }
         cache.updateQuery(
           {
             query: UserCollectionDocument,
@@ -112,9 +128,25 @@ export function useMintNFT(): MintResult {
     [setStatus, setError, indexEntry, issuer]
   );
 
-  const onIssuerQueryCompleted = useCallback(
-    async (data: GetIssuerQuery) => {
-      if (!formValues) return;
+  const mint = useCallback(
+    async (
+      form: MintForm,
+      artwork: Blob,
+      video: Blob,
+      showModal: (uri: string) => void
+    ) => {
+      setError(undefined);
+      setStatus("Uploading files");
+
+      const imageCidResponse = await uploadFile(artwork);
+      const videoCidResponse = await uploadFile(video);
+
+      setStatus("Uploading metadata");
+      const { data } = await query<GetIssuerQuery>({
+        query: GetIssuerDocument,
+        variables: { cid: videoCidResponse },
+      });
+
       if (!data?.getIssuer) {
         setStatus("Error");
         setError("Couldn't generate issuer");
@@ -127,7 +159,7 @@ export function useMintNFT(): MintResult {
         availableForSale,
         price,
         equityForSale,
-      } = formValues;
+      } = form;
       const name = `${artist} - ${title}`;
       const code = `${title}${artist}`
         .normalize("NFD")
@@ -137,8 +169,8 @@ export function useMintNFT(): MintResult {
         .replace(/[^0-9a-z]/gi, "")
         .slice(0, 12)
         .toUpperCase();
-      const imageUrl = `${ipfsProtocol}${imageCid}`;
-      const videoUrl = `${ipfsProtocol}${videoCid}`;
+      const imageUrl = `${ipfsProtocol}${imageCidResponse}`;
+      const videoUrl = `${ipfsProtocol}${videoCidResponse}`;
 
       setIssuer(data.getIssuer);
 
@@ -163,7 +195,7 @@ export function useMintNFT(): MintResult {
       setStatus("Submitting");
       const { data: entry } = await createEntry({
         variables: {
-          fileCid: videoCid,
+          fileCid: videoCidResponse,
           metaCid: nftCid,
           code,
           forSale: availableForSale,
@@ -178,7 +210,11 @@ export function useMintNFT(): MintResult {
         setStatus("Sign transaction in your wallet");
         const xdr = entry.createEntry.xdr;
         try {
-          const response = await signAndSubmitXdr(xdr);
+          let currentSession = session;
+          if (!currentSession) {
+            currentSession = await connect(showModal);
+          }
+          const response = await signAndSubmitXdr(xdr, currentSession);
           const { status } = response as { status: string };
           if (status === "success") {
             indexNFT(data.getIssuer);
@@ -204,39 +240,7 @@ export function useMintNFT(): MintResult {
         setError(entry?.createEntry?.message ?? "Couldn't submit transaction.");
       }
     },
-    [
-      createEntry,
-      setError,
-      setStatus,
-      uploadFile,
-      formValues,
-      imageCid,
-      videoCid,
-      indexNFT,
-      signAndSubmitXdr,
-    ]
-  );
-
-  const [getIssuer] = useGetIssuerLazyQuery({
-    onCompleted: onIssuerQueryCompleted,
-  });
-
-  const mint = useCallback(
-    async (form: MintForm, artwork: Blob, video: Blob) => {
-      setError(undefined);
-      setFormValues(form);
-      setStatus("Uploading files");
-
-      const imageCidResponse = await uploadFile(artwork);
-      const videoCidResponse = await uploadFile(video);
-
-      setImageCid(imageCidResponse);
-      setVideoCid(videoCidResponse);
-
-      setStatus("Uploading metadata");
-      await getIssuer({ variables: { cid: videoCidResponse } });
-    },
-    [getIssuer, setStatus, uploadFile]
+    [setStatus, uploadFile, setError, indexNFT, signAndSubmitXdr, createEntry]
   );
 
   return {

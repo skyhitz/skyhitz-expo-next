@@ -9,4 +9,6 @@ export interface ConfigInterface {
   SCHEMA: string;
   CHAIN_ID: string;
   PROJECT_ID: string;
+  SENDWYRE_ACCOUNT_ID: string;
+  SENDWYRE_API: string;
 }

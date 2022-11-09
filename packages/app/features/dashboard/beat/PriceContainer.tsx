@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function PriceContainer({ entry }: Props) {
-  const offer = useEntryOffer(entry.code, entry.issuer);
+  const offer = useEntryOffer(entry.code!, entry.issuer!);
   const usd = useUSDPrice(offer.price * offer.amount);
 
   if (!offer.price) {
@@ -32,7 +32,7 @@ export function PriceContainer({ entry }: Props) {
           ${usd.toFixed(2)}
         </Text>
       </View>
-      <BuyNowBtn entry={entry} invalidate={offer.invalidate} />
+      <BuyNowBtn entry={entry} />
     </View>
   );
 }

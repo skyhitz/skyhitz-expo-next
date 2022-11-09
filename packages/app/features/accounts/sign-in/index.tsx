@@ -12,7 +12,7 @@ import { isEmpty, not } from "ramda";
 export function SignIn() {
   const signInParam = useSignInParam();
   const [emailSend, setEmailSend] = useState<boolean>(false);
-  const [publicKey, setPublicKey] = useState<string>("");
+  const [signedXDR, setSignedXDR] = useState<string>("");
 
   return (
     <KeyboardAvoidingView
@@ -25,12 +25,12 @@ export function SignIn() {
         <AuthenticationView signInParam={signInParam} />
       ) : emailSend ? (
         <OpenEmailView />
-      ) : not(isEmpty(publicKey)) ? (
-        <WalletConnectView publicKey={publicKey} />
+      ) : not(isEmpty(signedXDR)) ? (
+        <WalletConnectView signedXDR={signedXDR} />
       ) : (
         <SignInForm
           onEmailSend={() => setEmailSend(true)}
-          onWalletConnected={setPublicKey}
+          onWalletConnected={setSignedXDR}
         />
       )}
     </KeyboardAvoidingView>
