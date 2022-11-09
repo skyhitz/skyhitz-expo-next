@@ -1,50 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WalletConnectIcon from "app/ui/icons/walletconnect-icon";
 import { Button } from "app/design-system";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
-import { Config } from "app/config";
 import { useErrorReport } from "app/hooks/useErrorReport";
+import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 
 type Props = {
-  onConnected: (_publicKey: string) => void;
+  onAuth: (signedXDR: string) => void;
   disabled?: boolean;
   loading?: boolean;
 };
 
-export const WalletConnectBtn = ({ onConnected, disabled, loading }: Props) => {
+export const WalletConnectBtn = ({ onAuth, disabled, loading }: Props) => {
   const [waitingForApproval, setWaitingForApproval] = useState<boolean>(false);
-  const { connect, accounts, initialized } = useWalletConnectClient();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [uri, setUri] = useState<string>("");
+  const { initialized, authNewSession } = useWalletConnectClient();
   const reportError = useErrorReport();
 
-  useEffect(() => {
-    if (accounts.length && waitingForApproval) {
-      const publicKey = accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
-      onConnected(publicKey);
-    }
-  }, [accounts, onConnected, waitingForApproval]);
-
   const onPress = async () => {
-    if (!accounts.length) {
+    try {
       setWaitingForApproval(true);
-      const session = await connect();
+      const result = await authNewSession((newUri) => {
+        setUri(newUri);
+        setModalVisible(true);
+      });
+      const { signedXDR } = result as { signedXDR: string };
       setWaitingForApproval(false);
-      if (!session) {
-        reportError("Connnection was cancelled");
-      }
-    } else {
-      const publicKey = accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
-      onConnected(publicKey);
+      onAuth(signedXDR);
+    } catch (ex) {
+      reportError(ex, "Something went wrong");
+      setWaitingForApproval(false);
     }
   };
 
   return (
-    <Button
-      text={waitingForApproval ? "Waiting for approval..." : "WalletConnect"}
-      onPress={onPress}
-      disabled={!initialized || disabled || waitingForApproval}
-      icon={WalletConnectIcon}
-      size="large"
-      loading={loading}
-    />
+    <>
+      <Button
+        text={waitingForApproval ? "Waiting for approval..." : "WalletConnect"}
+        onPress={onPress}
+        disabled={!initialized || disabled || waitingForApproval}
+        icon={WalletConnectIcon}
+        size="large"
+        loading={loading}
+      />
+      <WalletConnectModal
+        visible={modalVisible}
+        close={() => setModalVisible(false)}
+        uri={uri}
+      />
+    </>
   );
 };

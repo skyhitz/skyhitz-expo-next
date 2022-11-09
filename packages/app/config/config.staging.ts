@@ -11,4 +11,6 @@ export const StagingConfig: ConfigInterface = {
   SCHEMA: "exp://192.168.103.24:19000/--/",
   CHAIN_ID: "stellar:testnet",
   PROJECT_ID: "422a527ddc3ed4c5fff60954fcc8ed83",
+  SENDWYRE_ACCOUNT_ID: "AC_W3TMRL9BALW",
+  SENDWYRE_API: "https://api.testwyre.com/v3",
 };

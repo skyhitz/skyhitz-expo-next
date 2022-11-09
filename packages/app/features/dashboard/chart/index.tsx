@@ -1,23 +1,12 @@
 import { SafeAreaView } from "app/design-system/safe-area-view";
-import { Entry, TopChartQuery, useTopChartQuery } from "app/api/graphql";
 import { FlatList } from "react-native";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { Text } from "app/design-system";
 import { usePlayback } from "app/hooks/usePlayback";
-import { usePagination } from "app/hooks/usePagination";
-import { useCallback } from "react";
+import { useTopChart } from "app/hooks/algolia/useTopChart";
 
 export function ChartScreen() {
-  const getId = useCallback((entry: Entry) => entry.id!, []);
-  const transformResponse = useCallback(
-    (result: TopChartQuery) => result.topChart,
-    []
-  );
-  const { data, onNextPage } = usePagination({
-    queryHook: useTopChartQuery,
-    getId,
-    transformResponse,
-  });
+  const { data, onNextPage } = useTopChart();
   const { playEntry } = usePlayback();
 
   return (

@@ -11,6 +11,7 @@ import { useCreateUserWithEmailMutation } from "app/api/graphql";
 import { signUpFormSchema } from "app/validation";
 import { useRouter } from "solito/router";
 import { isEmpty, not } from "ramda";
+import { useLogIn } from "app/hooks/useLogIn";
 
 type FormFields = {
   username: string;
@@ -19,16 +20,21 @@ type FormFields = {
 };
 
 export function SignUp() {
-  const [publicKey, setPublicKey] = useState<string>("");
+  const [signedXDR, setSignedXDR] = useState<string>("");
   const [createUserWithEmail, { loading, error, data }] =
     useCreateUserWithEmailMutation();
   const { replace } = useRouter();
+  const logIn = useLogIn();
 
   useEffect(() => {
-    if (data?.createUserWithEmail?.success) {
+    // if the user is returned, it means we are already logged in
+    // cause we provided signedXDR
+    if (data?.createUserWithEmail?.user) {
+      logIn(data.createUserWithEmail.user);
+    } else if (data?.createUserWithEmail) {
       replace("/sign-in");
     }
-  }, [data, replace]);
+  }, [data, replace, logIn]);
 
   const handleSignUp = async (formData: FormFields) => {
     if (loading) return;
@@ -37,7 +43,7 @@ export function SignUp() {
         displayName: formData.displayedName,
         username: formData.username,
         email: formData.email,
-        publicKey,
+        signedXDR,
       },
     });
   };
@@ -128,10 +134,10 @@ export function SignUp() {
               </Text>
               <Button
                 text="Join"
-                loading={loading && isEmpty(publicKey)}
-                disabled={!isValid}
+                loading={loading && isEmpty(signedXDR)}
+                disabled={!isValid || loading}
                 onPress={() => {
-                  setPublicKey("");
+                  setSignedXDR("");
                   handleSubmit();
                 }}
                 size="large"
@@ -140,10 +146,10 @@ export function SignUp() {
               <Separator />
 
               <WalletConnectBtn
-                disabled={!isValid}
-                loading={loading && not(isEmpty(publicKey))}
-                onConnected={(publicKey: string) => {
-                  setPublicKey(publicKey);
+                disabled={!isValid || loading}
+                loading={loading && not(isEmpty(signedXDR))}
+                onAuth={(xdr: string) => {
+                  setSignedXDR(xdr);
                   handleSubmit();
                 }}
               />

@@ -1,13 +1,13 @@
 import { ResizeMode, Video } from "expo-av";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Dimensions, Platform, ViewStyle } from "react-native";
 import { useRecoilValue } from "recoil";
-import { imageSrc } from "app/utils/entry";
 import { usePlayback } from "app/hooks/usePlayback";
 import { userAtom } from "app/state/user";
 import { min } from "ramda";
 import { Image, View } from "dripsy";
 import { tw } from "app/design-system/tailwind";
+import { imageUrlMedium, imageUrlSmall } from "app/utils/entry";
 
 type Props = {
   maxHeight?: number;
@@ -77,10 +77,23 @@ export function VideoPlayer({
     playerHeight = 1;
   }
 
+  const posterUri = useMemo(() => {
+    if (entry?.imageUrl) {
+      if (posterSize > 80) {
+        return imageUrlSmall(entry.imageUrl);
+      } else {
+        return imageUrlMedium(entry.imageUrl);
+      }
+    }
+    return undefined;
+  }, [posterSize, entry]);
+
   return (
     <View style={[tw.style("justify-center items-center"), style]}>
       <Image
-        source={{ uri: entry?.imageUrl ? imageSrc(entry.imageUrl) : undefined }}
+        source={{
+          uri: posterUri,
+        }}
         style={[
           {
             width: posterSize,

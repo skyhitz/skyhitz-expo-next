@@ -65,25 +65,26 @@ export const CollapsableView = ({
         className ?? ""
       }`}
     >
-      <View className="flex flex-row items-center p-5 ">
-        {icon && icon(iconStyle)}
-        <Text className="flex-1 mx-2 font-bold">{headerText}</Text>
-        <Pressable
-          onPress={() => {
-            collapsableHeight.value = withSpring(
-              collapsed ? height : 0,
-              springAnimationConfig
-            );
-            setCollapsed(!collapsed);
-          }}
-        >
+      <Pressable
+        onPress={() => {
+          collapsableHeight.value = withSpring(
+            collapsed ? height : 0,
+            springAnimationConfig
+          );
+          setCollapsed(!collapsed);
+        }}
+      >
+        <View className="flex flex-row items-center p-5 ">
+          {icon && icon(iconStyle)}
+          <Text className="flex-1 mx-2 font-bold">{headerText}</Text>
+
           {collapsed ? (
             <ChevronDown {...iconStyle} />
           ) : (
             <ChevronUp {...iconStyle} />
           )}
-        </Pressable>
-      </View>
+        </View>
+      </Pressable>
       <Animated.View
         style={[
           tw.style("border-grey-light overflow-hidden"),
