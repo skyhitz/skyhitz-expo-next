@@ -14,14 +14,12 @@ export function useWindowSize(): Result {
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      console.log(window.innerHeight);
       setWindowHeight(window.innerHeight);
       setMobileView(window.innerWidth < WIDTH_BREAKPOINT);
     });
 
     return () => {
       window.removeEventListener("resize", () => {
-        console.log(window.innerHeight);
         setWindowHeight(window.innerHeight);
       });
     };
