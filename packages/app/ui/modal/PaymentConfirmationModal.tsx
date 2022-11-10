@@ -14,6 +14,8 @@ import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
+import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 
 type Props = {
@@ -122,6 +124,9 @@ export function PaymentConfirmationModal({
             </Text>
             <Text className="my-2 text-sm">Network fee: 0.01 XLM</Text>
             <Line />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <SkyhitzSlider minimumValue={1} maximumValue={100} value={1} />
+            </GestureHandlerRootView>
             <Text className="my-2 text-sm">
               Stellar collects a network fee per transaction. It depends on the
               number of operations in the transaction and the current network
