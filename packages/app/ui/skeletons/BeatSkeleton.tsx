@@ -33,16 +33,5 @@ export function BeatSkeleton() {
     );
   };
 
-  return (
-    <>
-      <EntrySkeleton />
-      <EntrySkeleton />
-      <EntrySkeleton />
-      <EntrySkeleton />
-      <EntrySkeleton />
-      <EntrySkeleton />
-      <EntrySkeleton />
-      <EntrySkeleton />
-    </>
-  );
+  return <>{Array(8).fill(<EntrySkeleton />)}</>;
 }
