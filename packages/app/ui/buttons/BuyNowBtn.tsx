@@ -40,7 +40,7 @@ export function BuyNowBtn({ entry }: Props) {
         visible={modalVisible}
         entry={entry}
         price={price.price}
-        equityForSale={price.amount}
+        initialEquityForSale={price.amount}
         hideModal={(success: boolean) => {
           setModalVisible(false);
           if (success) {

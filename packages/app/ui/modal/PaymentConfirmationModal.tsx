@@ -21,14 +21,14 @@ type Props = {
   visible: boolean;
   hideModal: (success: boolean) => void;
   price: number;
-  equityForSale: number;
+  initialEquityForSale: number;
   entry: Entry;
 };
 export function PaymentConfirmationModal({
   visible,
   hideModal,
   price,
-  equityForSale,
+  initialEquityForSale,
   entry,
 }: Props) {
   const { data: paymentInfoData } = usePaymentsInfoQuery();
@@ -36,6 +36,8 @@ export function PaymentConfirmationModal({
   const { signAndSubmitXdr, session, connect } = useWalletConnectClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>();
+  const [equityForSale, setEquityForSale] =
+    useState<number>(initialEquityForSale);
   const [walletConnectModalVisible, setWalletConnectModalVisible] =
     useState<boolean>(false);
   const [uri, setUri] = useState<string>("");
@@ -133,15 +135,12 @@ export function PaymentConfirmationModal({
               style={{ flexDirection: "row", width: "100%" }}
             >
               <SkyhitzSlider
-                minimumValue={0}
-                maximumValue={100}
-                value={1}
+                minimumValue={1}
+                maximumValue={initialEquityForSale * 100}
+                value={initialEquityForSale * 100}
                 key={entry.id}
-                onSlidingComplete={() => {
-                  console.log("complete");
-                }}
                 onValueChange={(value: number) => {
-                  console.log(value);
+                  setEquityForSale(+(value / 100).toFixed(2));
                 }}
               />
             </GestureHandlerRootView>
