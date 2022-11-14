@@ -2,7 +2,6 @@ import Navbar from "app/ui/navbar";
 import BackgroundImage from "app/ui/backgroundImage";
 import Footer from "app/ui/footer";
 import { Button, View, H1, P } from "app/design-system";
-import { useLink } from "solito/link";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 import { StatusBar } from "react-native";
 import ChevronRight from "app/ui/icons/chevron-right";
@@ -13,12 +12,20 @@ import { userAtom } from "app/state/user";
 export function HomeScreen() {
   const insets = useSafeArea();
   const user = useRecoilValue(userAtom);
-
-  const goToDashboard = useLink({ href: "/dashboard/search" }).onPress;
-  const goToSignUp = useLink({ href: "/sign-up" }).onPress;
-  const goToSignIn = useLink({ href: "/sign-in" }).onPress;
-
   const { push } = useRouter();
+
+  const goToDashboard = () => {
+    push("/dashboard/search");
+  };
+
+  const goToSignUp = () => {
+    push("/sign-up");
+  };
+
+  const goToSignIn = () => {
+    push("/sign-in");
+  };
+
   const goToTryItOut = () => {
     push("/dashboard/chart");
   };
