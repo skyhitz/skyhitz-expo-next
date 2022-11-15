@@ -139,7 +139,7 @@ export function PaymentConfirmationModal({
                 value={initialEquityForSale * 100}
                 key={entry.id}
                 onValueChange={(value: number) => {
-                  setEquityForSale(+(value / 100).toFixed(2));
+                  setEquityForSale(parseFloat((value / 100).toFixed(2)));
                 }}
               />
             </GestureHandlerRootView>
