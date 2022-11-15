@@ -130,7 +130,6 @@ export function PaymentConfirmationModal({
               Equity for sale: {(equityForSale * 100).toFixed()}%
             </Text>
             <Text className="my-2 text-sm">Network fee: 0.01 XLM</Text>
-            <Line />
             <GestureHandlerRootView
               style={{ flexDirection: "row", width: "100%" }}
             >
