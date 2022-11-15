@@ -2,6 +2,7 @@ import { useState } from "react";
 import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
 import { MediaFileInfo } from "app/types";
 import * as DocumentPicker from "expo-document-picker";
+import { SUPPORTED_MIME_TYPES } from "app/validation";
 
 type usePickMediaReturn = {
   pickMedia: () => Promise<void>;
@@ -21,6 +22,7 @@ export default function usePickMedia(
   const [url, setUrl] = useState<string>("");
 
   const pickMedia = async () => {
+    setError(null);
     let result: MediaFileInfo;
     if (type === "image") {
       const file = await launchImageLibraryAsync({
@@ -33,13 +35,13 @@ export default function usePickMedia(
       });
       if (!file || file.cancelled) return;
 
-      result = { image: type === "image", ...file };
+      result = { image: true, ...file };
     } else {
       const file = await DocumentPicker.getDocumentAsync({
-        type: ["video/mp4", "audio/wav", "audio/mp3"],
+        type: SUPPORTED_MIME_TYPES,
       });
       if (!file || file.type === "cancel") return;
-      result = { image: false, ...file };
+      result = { image: false, uri: file.uri, mimeType: file.mimeType ?? "" };
     }
 
     setLoading(true);
