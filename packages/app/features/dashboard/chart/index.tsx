@@ -18,6 +18,7 @@ export function ChartScreen() {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id!}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item, index }) => (
           <BeatListEntry
             entry={item}
