@@ -21,6 +21,7 @@ export function useWindowSize(): Result {
     return () => {
       window.removeEventListener("resize", () => {
         setWindowHeight(window.innerHeight);
+        setMobileView(window.innerWidth < WIDTH_BREAKPOINT);
       });
     };
   }, [setWindowHeight]);
