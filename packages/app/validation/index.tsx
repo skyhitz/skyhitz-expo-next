@@ -75,11 +75,14 @@ export const withdrawFormSchema: (
   });
 };
 
+const ASPECT_RATIO_MIN = 0.99;
+const ASPECT_RATIO_MAX = 1.01;
 const validateImgSquare = (image: MediaFileInfo) => {
   if (!image.image) {
     return "File is not an image!";
   }
-  if (image.height !== image.width) {
+  const aspectRatio = image.width / image.height;
+  if (aspectRatio < ASPECT_RATIO_MIN || aspectRatio > ASPECT_RATIO_MAX) {
     return "Only square images supported!";
   }
   return null;

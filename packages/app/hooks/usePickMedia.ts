@@ -21,6 +21,7 @@ export default function usePickMedia(
   const [url, setUrl] = useState<string>("");
 
   const pickMedia = async () => {
+    setError(null);
     let result: MediaFileInfo;
     if (type === "image") {
       const file = await launchImageLibraryAsync({
