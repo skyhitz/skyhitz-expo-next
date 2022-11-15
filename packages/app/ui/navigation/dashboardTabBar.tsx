@@ -1,4 +1,5 @@
 import { View } from "app/design-system";
+import { useCallback } from "react";
 import { Image, StyleProp, ViewStyle } from "react-native";
 import { Link } from "solito/link";
 import { tw } from "app/design-system/tailwind";
@@ -17,7 +18,20 @@ const LinkStyle: StyleProp<ViewStyle> = {
   maxHeight: 64,
 };
 
-export default function DashboardTabBar({ column }: { column?: boolean }) {
+export default function DashboardTabBar({
+  column,
+  currentTabName,
+}: {
+  column?: boolean;
+  currentTabName: string;
+}) {
+  const isActive = useCallback(
+    (tabName: string): boolean => {
+      return currentTabName === tabName;
+    },
+    [currentTabName]
+  );
+
   const insets = useSafeArea();
   const user = useRecoilValue(userAtom);
   const rootViewStyle = column
@@ -29,17 +43,27 @@ export default function DashboardTabBar({ column }: { column?: boolean }) {
       className={`flex bg-blue-dark ${rootViewStyle} pb-[${insets.bottom}px]`}
     >
       <Link viewProps={{ style: LinkStyle }} href="/dashboard/search">
-        <Search size={28} color={tw.color("white")} />
+        <Search
+          size={28}
+          color={isActive("search") ? tw.color("blue") : tw.color("white")}
+        />
       </Link>
       <Link viewProps={{ style: LinkStyle }} href="/dashboard/chart">
         <Image
-          style={tw`w-8 h-8 rounded-full border-2 border-tab`}
+          style={
+            isActive("chart")
+              ? tw`w-8 h-8 rounded-full border-2 border-tab border-blue`
+              : tw`w-8 h-8 rounded-full border-2 border-tab`
+          }
           source={require("app/assets/images/icon.png")}
         />
       </Link>
       {user && (
         <Link viewProps={{ style: LinkStyle }} href="/dashboard/profile">
-          <User size={28} color={tw.color("white")} />
+          <User
+            size={28}
+            color={isActive("profile") ? tw.color("blue") : tw.color("white")}
+          />
         </Link>
       )}
     </View>
