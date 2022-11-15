@@ -11,7 +11,7 @@ type Props = {
   text: string;
   onPress: () => void;
   size?: "default" | "large";
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "white" | "text";
   icon?: (_props: IconProps) => ReactElement;
   iconProps?: IconProps;
   disabled?: boolean;
@@ -25,6 +25,8 @@ const textStyle = {
   large: "text-base font-bold",
   primary: "text-white",
   secondary: "text-white",
+  white: "text-black",
+  text: "text-sm",
 };
 
 const containerStyle = {
@@ -32,6 +34,8 @@ const containerStyle = {
   large: "px-10 py-3 w-72",
   primary: "bg-blue",
   secondary: "bg-grey",
+  white: "bg-white",
+  text: "flex mx-auto mt-8",
 };
 
 const disabledStyle = "bg-grey-dark";

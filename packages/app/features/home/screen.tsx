@@ -1,16 +1,37 @@
 import Navbar from "app/ui/navbar";
 import BackgroundImage from "app/ui/backgroundImage";
 import Footer from "app/ui/footer";
-import { Pressable, View, H1, P, Text } from "app/design-system";
-import { useLink } from "solito/link";
+import { Button, View, H1, P } from "app/design-system";
 import { useSafeArea } from "app/provider/safe-area/useSafeArea";
 import { StatusBar } from "react-native";
 import ChevronRight from "app/ui/icons/chevron-right";
-import { tw } from "app/design-system/tailwind";
 import { useRouter } from "solito/router";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 export function HomeScreen() {
   const insets = useSafeArea();
+  const user = useRecoilValue(userAtom);
+  const { push } = useRouter();
+
+  const goToDashboard = () => {
+    push("/dashboard/search");
+  };
+
+  const goToSignUp = () => {
+    push("/sign-up");
+  };
+
+  const goToSignIn = () => {
+    push("/sign-in");
+  };
+
+  const goToTryItOut = () => {
+    push("/dashboard/chart");
+  };
+
+  const btnClassName = "btn border-2 border-black mt-2 mx-auto";
+
   return (
     <View
       className={`w-full h-full flex pt-[${insets.top}px] pb-[${insets.bottom}px]`}
@@ -27,53 +48,42 @@ export function HomeScreen() {
           community of beatmakers!
         </P>
         <View className="android:w-60 ios:w-60 mx-auto">
-          <SignUpButton />
-          <LogInButton />
-          <TryOutButton />
+          {!!user && (
+            <Button
+              onPress={goToDashboard}
+              text="Go to dashboard"
+              variant="white"
+              className={btnClassName}
+            />
+          )}
+          {!user && (
+            <Button
+              onPress={goToSignUp}
+              text="Sign up for free"
+              variant="white"
+              className={btnClassName}
+            />
+          )}
+          {!user && (
+            <Button
+              onPress={goToSignIn}
+              text="Sign in"
+              variant="primary"
+              className={btnClassName}
+            />
+          )}
+          {!user && (
+            <Button
+              onPress={goToTryItOut}
+              text="Try it out"
+              variant="text"
+              icon={ChevronRight}
+              className="sm:hidden"
+            />
+          )}
         </View>
       </View>
       <Footer />
     </View>
-  );
-}
-
-function SignUpButton() {
-  const signUpBtnProps = useLink({ href: "/sign-up" });
-  return (
-    <Pressable
-      className="btn bg-white border-2 border-black"
-      {...signUpBtnProps}
-    >
-      <Text className="text-black text-lg font-raleway font-medium leading-none">
-        Sign up for free
-      </Text>
-    </Pressable>
-  );
-}
-
-function LogInButton() {
-  const logInBtnProps = useLink({ href: "/sign-in" });
-  return (
-    <Pressable
-      className="btn w-full mt-2 sm:hidden border-2 border-black"
-      {...logInBtnProps}
-    >
-      <Text className="text-lg text-center font-raleway font-medium leading-none">
-        Sign in
-      </Text>
-    </Pressable>
-  );
-}
-
-function TryOutButton() {
-  const { push } = useRouter();
-  return (
-    <Pressable
-      className="flex flex-row items-center mx-auto mt-8 sm:hidden"
-      onPress={() => push("/dashboard/chart")}
-    >
-      <Text className="text-sm">Try It Out</Text>
-      <ChevronRight color={tw.color("white")} />
-    </Pressable>
   );
 }
