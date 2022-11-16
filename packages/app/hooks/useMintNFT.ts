@@ -18,9 +18,11 @@ import { userAtom } from "app/state/user";
 import { useSWRConfig } from "swr";
 import { recentlyAddedQueryKey } from "./algolia/useRecentlyAdded";
 import { topChartQueryKey } from "./algolia/useTopChart";
+import { useAudibleCheck } from "./useAudibleCheck";
 
 type MintStatus =
   | "Uninitialized"
+  | "Checking for copyrights"
   | "Uploading files"
   | "Uploading metadata"
   | "Submitting"
@@ -54,6 +56,7 @@ export function useMintNFT(): MintResult {
   const { cache, query } = useApolloClient();
   const { mutate, cache: swrCache } = useSWRConfig();
   const user = useRecoilValue(userAtom);
+  const { verify } = useAudibleCheck();
 
   const indexNFT = useCallback(
     async (nftIssuer: string = issuer) => {
@@ -136,6 +139,15 @@ export function useMintNFT(): MintResult {
       showModal: (uri: string) => void
     ) => {
       setError(undefined);
+      setStatus("Checking for copyrights");
+      try {
+        await verify(video);
+      } catch (ex) {
+        setStatus("Error");
+        setError(ex?.message ?? "Couldn't verify if the file is original");
+        return;
+      }
+
       setStatus("Uploading files");
 
       const imageCidResponse = await uploadFile(artwork);

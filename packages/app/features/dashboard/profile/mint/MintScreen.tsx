@@ -39,6 +39,7 @@ export function MintScreen() {
       case "Indexing":
       case "Submitting":
       case "Sign transaction in your wallet":
+      case "Checking for copyrights":
         return status;
       case "IndexError":
         return "Retry Indexing";

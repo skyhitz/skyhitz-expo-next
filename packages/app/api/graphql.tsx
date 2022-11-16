@@ -260,10 +260,9 @@ export type Query = {
   entry?: Maybe<EntryDetails>;
   entryLikes?: Maybe<EntryLikes>;
   entryPrice?: Maybe<EntryPrice>;
+  getAudibleToken?: Maybe<Token>;
   getIssuer?: Maybe<Scalars["String"]>;
   paymentsInfo?: Maybe<PaymentsInfo>;
-  recentlyAdded?: Maybe<Array<Maybe<Entry>>>;
-  topChart?: Maybe<Array<Maybe<Entry>>>;
   userEntries?: Maybe<Array<Entry>>;
   userLikes?: Maybe<Array<Maybe<Entry>>>;
   xlmPrice?: Maybe<Scalars["String"]>;
@@ -290,16 +289,6 @@ export type QueryGetIssuerArgs = {
 };
 
 /** Get users or entries */
-export type QueryRecentlyAddedArgs = {
-  page?: InputMaybe<Scalars["Int"]>;
-};
-
-/** Get users or entries */
-export type QueryTopChartArgs = {
-  page?: InputMaybe<Scalars["Int"]>;
-};
-
-/** Get users or entries */
 export type QueryUserEntriesArgs = {
   userId: Scalars["String"];
 };
@@ -309,6 +298,12 @@ export type SuccessResponse = {
   __typename?: "SuccessResponse";
   message?: Maybe<Scalars["String"]>;
   success?: Maybe<Scalars["Boolean"]>;
+};
+
+/** Object that contains access token */
+export type Token = {
+  __typename?: "Token";
+  token?: Maybe<Scalars["String"]>;
 };
 
 /** This represents a User */
@@ -649,6 +644,13 @@ export type EntryLikesQuery = {
       description?: string | null;
     } | null> | null;
   } | null;
+};
+
+export type AudibleTokenQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AudibleTokenQuery = {
+  __typename?: "Query";
+  getAudibleToken?: { __typename?: "Token"; token?: string | null } | null;
 };
 
 export type GetIssuerQueryVariables = Exact<{
@@ -1627,6 +1629,63 @@ export type EntryLikesLazyQueryHookResult = ReturnType<
 export type EntryLikesQueryResult = Apollo.QueryResult<
   EntryLikesQuery,
   EntryLikesQueryVariables
+>;
+export const AudibleTokenDocument = gql`
+  query audibleToken {
+    getAudibleToken {
+      token
+    }
+  }
+`;
+
+/**
+ * __useAudibleTokenQuery__
+ *
+ * To run a query within a React component, call `useAudibleTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAudibleTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAudibleTokenQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAudibleTokenQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AudibleTokenQuery,
+    AudibleTokenQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AudibleTokenQuery, AudibleTokenQueryVariables>(
+    AudibleTokenDocument,
+    options
+  );
+}
+export function useAudibleTokenLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AudibleTokenQuery,
+    AudibleTokenQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AudibleTokenQuery, AudibleTokenQueryVariables>(
+    AudibleTokenDocument,
+    options
+  );
+}
+export type AudibleTokenQueryHookResult = ReturnType<
+  typeof useAudibleTokenQuery
+>;
+export type AudibleTokenLazyQueryHookResult = ReturnType<
+  typeof useAudibleTokenLazyQuery
+>;
+export type AudibleTokenQueryResult = Apollo.QueryResult<
+  AudibleTokenQuery,
+  AudibleTokenQueryVariables
 >;
 export const GetIssuerDocument = gql`
   query GetIssuer($cid: String!) {
