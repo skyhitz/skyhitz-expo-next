@@ -3,7 +3,7 @@ import { SearchResultList } from "app/features/dashboard/search/search-result-li
 import { entriesIndex } from "app/api/algolia";
 import { Entry } from "app/api/graphql";
 import { BeatListEntry } from "app/ui/beat-list-entry";
-import { useAlgoliaSearch } from "app/hooks/useAlgoliaSearch";
+import { useAlgoliaSearch } from "app/hooks/algolia/useAlgoliaSearch";
 
 export function BeatsSearchResultList({
   searchPhrase,
