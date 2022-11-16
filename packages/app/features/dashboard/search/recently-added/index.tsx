@@ -2,9 +2,14 @@ import { FlatList } from "react-native";
 import { Text } from "app/design-system";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { useRecentlyAdded } from "app/hooks/algolia/useRecentlyAdded";
+import { BeatSkeleton } from "app/ui/skeletons/BeatSkeleton";
 
 export default function RecentlyAddedList() {
-  const { data, onNextPage } = useRecentlyAdded();
+  const { data, onNextPage, loading } = useRecentlyAdded();
+
+  if (loading) {
+    return <BeatSkeleton />;
+  }
 
   return (
     <FlatList
