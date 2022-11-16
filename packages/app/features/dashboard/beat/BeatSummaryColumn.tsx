@@ -1,6 +1,6 @@
 import { tw } from "app/design-system/tailwind";
-import { Entry, EntryDetails } from "app/api/graphql";
-import { Pressable, Text, View } from "app/design-system";
+import { Entry, EntryHolder } from "app/api/graphql";
+import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
 import InfoCircle from "app/ui/icons/info-circle";
 import { PriceContainer } from "./PriceContainer";
 import { Owners } from "./BeatOwners";
@@ -16,20 +16,20 @@ import { Config } from "app/config";
 import { ComponentAuthGuard } from "app/utils/authGuard";
 
 type Props = {
-  entryDetails: EntryDetails;
+  entry: Entry;
+  holders?: EntryHolder[] | null;
 };
 
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 
-export function BeatSummaryColumn({ entryDetails }: Props) {
-  const { artist, title, description, id } = entryDetails;
-  const entry = entryDetails as Entry;
-
+export function BeatSummaryColumn({ entry, holders }: Props) {
   return (
     <View className="flex md:flex-1 md:ml-2 w-full">
       <View>
-        <Text className="text-3xl md:text-5xl font-bold mb-2">{title}</Text>
-        <Text className="md:text-2xl">{artist}</Text>
+        <Text className="text-3xl md:text-5xl font-bold mb-2">
+          {entry.title}
+        </Text>
+        <Text className="md:text-2xl">{entry.artist}</Text>
         <View className="flex-row mt-4 items-center">
           <PlayBeatButton entry={entry} />
           <Text className="text-grey-light ml-1">Listen</Text>
@@ -40,19 +40,21 @@ export function BeatSummaryColumn({ entryDetails }: Props) {
             <View className="w-0.25 h-6 bg-grey-light mx-3" />
           </ComponentAuthGuard>
           <ShareButton
-            url={`${Config.APP_URL}/dashboard/beat/${id}`}
+            url={`${Config.APP_URL}/dashboard/beat/${entry.id}`}
             title="Share this beat!"
           />
         </View>
       </View>
       <PriceContainer entry={entry} />
       <CollapsableView icon={InfoCircle} headerText="Description">
-        <Text className="p-3">{description}</Text>
+        <Text className="p-3">{entry.description}</Text>
       </CollapsableView>
       <CollapsableView icon={FilledLike} headerText="Likes">
         <LikesList classname="px-5 my-5" entry={entry} />
       </CollapsableView>
-      {entryDetails.holders && <Owners holders={entryDetails.holders} />}
+      {/* TODO skeleton */}
+      {!holders && <ActivityIndicator className="mt-5" />}
+      {holders && <Owners holders={holders} />}
     </View>
   );
 }

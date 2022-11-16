@@ -1,4 +1,4 @@
-query entry($id: String!) {
+query entryDetails($id: String!) {
   entry(id: $id) {
     imageUrl
     videoUrl
