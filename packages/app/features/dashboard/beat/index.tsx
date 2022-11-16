@@ -8,7 +8,7 @@ import { Activity } from "./BeatActivities";
 import { Details } from "./BeatDetails";
 import { imageSrc, imageUrlMedium } from "app/utils/entry";
 import { BeatSummaryColumn } from "./BeatSummaryColumn";
-import { useGetEntry } from "../../../hooks/algolia/useGetEntry";
+import { useGetEntry } from "app/hooks/algolia/useGetEntry";
 import * as assert from "assert";
 import { ReactNode } from "react";
 
