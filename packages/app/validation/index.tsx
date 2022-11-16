@@ -75,11 +75,14 @@ export const withdrawFormSchema: (
   });
 };
 
+const ASPECT_RATIO_MIN = 0.99;
+const ASPECT_RATIO_MAX = 1.01;
 const validateImgSquare = (image: MediaFileInfo) => {
   if (!image.image) {
     return "File is not an image!";
   }
-  if (image.height !== image.width) {
+  const aspectRatio = image.width / image.height;
+  if (aspectRatio < ASPECT_RATIO_MIN || aspectRatio > ASPECT_RATIO_MAX) {
     return "Only square images supported!";
   }
   return null;
@@ -119,11 +122,18 @@ export const validateArtwork = (image: MediaFileInfo): string | null => {
   );
 };
 
+export const SUPPORTED_MIME_TYPES = [
+  "video/mp4",
+  "audio/mp4",
+  "audio/wav",
+  "audio/mp3",
+  "audio/mpeg",
+  "audio/vnd.wave",
+  "audio/wave",
+  "audio/x-wav",
+];
 export const validateVideo = (video: MediaFileInfo): string | null => {
-  const isMp4 = video.uri.startsWith("data:video/mp4");
-  const isWav = video.uri.startsWith("data:audio/wav");
-  const isAiff = video.uri.startsWith("data:audio/mpeg");
-  if (!isMp4 && !isWav && !isAiff) {
+  if (video.image || !SUPPORTED_MIME_TYPES.includes(video.mimeType)) {
     return "Supported media formats: .mp4, .wav, .mp3";
   }
   return null;

@@ -73,7 +73,9 @@ export function UploadInputWithIcon({
   };
 
   return (
-    <View className={`flex flex-row py-5 items-center ${containerClassNames}`}>
+    <View
+      className={`flex flex-row py-5 items-center flex-wrap ${containerClassNames}`}
+    >
       {icon(iconProps ?? defaultIconProps)}
       <Text className="mx-4 text-sm w-20">{label}</Text>
       <UploadWidget />
