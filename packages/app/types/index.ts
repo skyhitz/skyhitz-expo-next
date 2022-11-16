@@ -54,7 +54,7 @@ export type MediaFileInfo =
       width: number;
       height: number;
     }
-  | { image: false; uri: string };
+  | { image: false; uri: string; mimeType: string };
 
 export type Maybe<T> = T | null | undefined;
 

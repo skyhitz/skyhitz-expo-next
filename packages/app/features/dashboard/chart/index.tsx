@@ -2,13 +2,11 @@ import { SafeAreaView } from "app/design-system/safe-area-view";
 import { FlatList } from "react-native";
 import { BeatListEntry } from "app/ui/beat-list-entry";
 import { Text } from "app/design-system";
-import { usePlayback } from "app/hooks/usePlayback";
 import { useTopChart } from "app/hooks/algolia/useTopChart";
 import { BeatSkeleton } from "app/ui/skeletons/BeatSkeleton";
 
 export function ChartScreen() {
   const { data, onNextPage, loading } = useTopChart();
-  const { playEntry } = usePlayback();
 
   const Content = () => {
     if (loading) {
@@ -19,12 +17,9 @@ export function ChartScreen() {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id!}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item, index }) => (
-          <BeatListEntry
-            entry={item}
-            spot={index + 1}
-            onPress={() => playEntry(item, data)}
-          />
+          <BeatListEntry entry={item} spot={index + 1} playlist={data} />
         )}
         onEndReached={onNextPage}
       />

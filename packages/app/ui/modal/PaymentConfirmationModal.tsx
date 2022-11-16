@@ -1,5 +1,4 @@
 import { Button, Modal, Pressable, Text, View, Image } from "app/design-system";
-import { SafeAreaView } from "app/design-system/safe-area-view";
 import X from "app/ui/icons/x";
 import { tw } from "app/design-system/tailwind";
 import {
@@ -14,20 +13,22 @@ import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
+import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 
 type Props = {
   visible: boolean;
   hideModal: (success: boolean) => void;
   price: number;
-  equityForSale: number;
+  initialEquityForSale: number;
   entry: Entry;
 };
 export function PaymentConfirmationModal({
   visible,
   hideModal,
   price,
-  equityForSale,
+  initialEquityForSale,
   entry,
 }: Props) {
   const { data: paymentInfoData } = usePaymentsInfoQuery();
@@ -35,6 +36,8 @@ export function PaymentConfirmationModal({
   const { signAndSubmitXdr, session, connect } = useWalletConnectClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>();
+  const [equityForSale, setEquityForSale] =
+    useState<number>(initialEquityForSale);
   const [walletConnectModalVisible, setWalletConnectModalVisible] =
     useState<boolean>(false);
   const [uri, setUri] = useState<string>("");
@@ -90,8 +93,14 @@ export function PaymentConfirmationModal({
   return (
     <>
       <Modal visible={visible} transparent>
-        <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70 px-2">
-          <View className="flex items-center w-full max-w-lg bg-blue-field p-4">
+        <Pressable
+          onPress={() => hideModal(false)}
+          className="flex-1 flex items-center justify-center bg-blue-field/70 w-full p-4"
+        >
+          <Pressable
+            onPress={() => {}}
+            className="flex items-center w-full max-w-lg bg-blue-field p-4"
+          >
             <Pressable
               className="absolute right-2 top-2 "
               onPress={() => hideModal(false)}
@@ -121,7 +130,19 @@ export function PaymentConfirmationModal({
               Equity for sale: {(equityForSale * 100).toFixed()}%
             </Text>
             <Text className="my-2 text-sm">Network fee: 0.01 XLM</Text>
-            <Line />
+            <GestureHandlerRootView
+              style={{ flexDirection: "row", width: "100%" }}
+            >
+              <SkyhitzSlider
+                minimumValue={1}
+                maximumValue={initialEquityForSale * 100}
+                value={initialEquityForSale * 100}
+                key={entry.id}
+                onValueChange={(value: number) => {
+                  setEquityForSale(parseFloat((value / 100).toFixed(2)));
+                }}
+              />
+            </GestureHandlerRootView>
             <Text className="my-2 text-sm">
               Stellar collects a network fee per transaction. It depends on the
               number of operations in the transaction and the current network
@@ -161,8 +182,8 @@ export function PaymentConfirmationModal({
               }
               loading={loading}
             />
-          </View>
-        </SafeAreaView>
+          </Pressable>
+        </Pressable>
       </Modal>
       <WalletConnectModal
         visible={walletConnectModalVisible}
