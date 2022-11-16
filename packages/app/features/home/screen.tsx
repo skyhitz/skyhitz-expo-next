@@ -27,7 +27,7 @@ export function HomeScreen() {
   };
 
   const goToTryItOut = () => {
-    push("/dashboard/chart");
+    push("/dashboard/search");
   };
 
   const btnClassName = "btn border-2 border-black mt-2 mx-auto";
