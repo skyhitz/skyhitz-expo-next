@@ -23,8 +23,6 @@ type Props = {
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 
 export function BeatSummaryColumn({ entry, holders }: Props) {
-  const { playEntry } = usePlayback();
-
   return (
     <View className="flex md:flex-1 md:ml-2 w-full">
       <View>
@@ -33,9 +31,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
         </Text>
         <Text className="md:text-2xl">{entry.artist}</Text>
         <View className="flex-row mt-4 items-center">
-          <Pressable onPress={() => playEntry(entry, [entry])}>
-            <PlayIcon color={tw.color("grey-light")} />
-          </Pressable>
+          <PlayBeatButton entry={entry} />
           <Text className="text-grey-light ml-1">Listen</Text>
           <View className="w-0.25 h-6 bg-grey-light mx-3" />
           <ComponentAuthGuard>
@@ -60,5 +56,14 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
       {!holders && <ActivityIndicator className="mt-5" />}
       {holders && <Owners holders={holders} />}
     </View>
+  );
+}
+
+function PlayBeatButton({ entry }: { entry: Entry }) {
+  const { playEntry } = usePlayback();
+  return (
+    <Pressable onPress={() => playEntry(entry, [entry])}>
+      <PlayIcon color={tw.color("grey-light")} />
+    </Pressable>
   );
 }

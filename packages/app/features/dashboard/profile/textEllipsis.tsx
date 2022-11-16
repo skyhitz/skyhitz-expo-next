@@ -46,7 +46,9 @@ export function TextEllipsis({
     <View
       className={`flex-1 flex-row h-3 ${containerClassName}`}
       onLayout={(e) => {
-        setWrapperWidth(e.nativeEvent.layout.width);
+        if (!wrapperWidth && e.nativeEvent.layout.width) {
+          setWrapperWidth(e.nativeEvent.layout.width);
+        }
       }}
     >
       <Text
