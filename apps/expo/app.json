@@ -6,6 +6,10 @@
     "scheme": "skyhitz",
     "orientation": "portrait",
     "icon": "./icon.png",
+    "splash": {
+      "image": "./splash.png",
+      "backgroundColor": "#1A1B1F"
+    },
     "platforms": [
       "ios",
       "android"
