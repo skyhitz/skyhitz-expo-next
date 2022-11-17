@@ -7,7 +7,7 @@ import {
   Entry,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
-import { MintForm } from "app/types";
+import { MediaFileInfo, MintForm } from "app/types";
 import { useCallback, useState } from "react";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
@@ -35,8 +35,8 @@ type MintStatus =
 type MintResult = {
   mint: (
     formData: MintForm,
-    artwork: Blob,
-    video: Blob,
+    artwork: MediaFileInfo,
+    video: MediaFileInfo,
     showModal: (uri: string) => void
   ) => void;
   retryIndex: () => void;
@@ -47,7 +47,7 @@ type MintResult = {
 
 export function useMintNFT(): MintResult {
   const [status, setStatus] = useState<MintStatus>("Uninitialized");
-  const { uploadFile, progress } = useUploadFileToNFTStorage();
+  const { uploadFile, uploadBlob, progress } = useUploadFileToNFTStorage();
   const [error, setError] = useState<string | undefined>();
   const [issuer, setIssuer] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
@@ -134,8 +134,8 @@ export function useMintNFT(): MintResult {
   const mint = useCallback(
     async (
       form: MintForm,
-      artwork: Blob,
-      video: Blob,
+      artwork: MediaFileInfo,
+      video: MediaFileInfo,
       showModal: (uri: string) => void
     ) => {
       setError(undefined);
@@ -149,7 +149,6 @@ export function useMintNFT(): MintResult {
       }
 
       setStatus("Uploading files");
-
       const imageCidResponse = await uploadFile(artwork);
       const videoCidResponse = await uploadFile(video);
 
@@ -202,7 +201,7 @@ export function useMintNFT(): MintResult {
       const blob = new Blob([JSON.stringify(json)], {
         type: "application/json",
       });
-      const nftCid = await uploadFile(blob);
+      const nftCid = await uploadBlob(blob);
 
       setStatus("Submitting");
       const { data: entry } = await createEntry({

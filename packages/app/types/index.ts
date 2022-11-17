@@ -42,11 +42,6 @@ export type WithdrawForm = {
   amount: number;
 };
 
-export type ChangeAvatarImg = {
-  blob?: Blob;
-  url: string;
-};
-
 export type MediaFileInfo =
   | {
       image: true;

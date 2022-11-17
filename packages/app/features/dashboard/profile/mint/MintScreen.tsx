@@ -2,7 +2,7 @@ import { tw } from "app/design-system/tailwind";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import InfoIcon from "app/ui/icons/info-circle";
 import { Formik, FormikProps } from "formik";
-import { MintForm } from "app/types";
+import { MediaFileInfo, MintForm } from "app/types";
 import { Button, Text, View } from "app/design-system";
 import { Switch } from "react-native";
 import DollarIcon from "app/ui/icons/dollar";
@@ -22,8 +22,8 @@ import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 
 export function MintScreen() {
   const [equityForSale, setEquityForSale] = useState<string>("1");
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
-  const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
+  const [image, setImage] = useState<MediaFileInfo | null>(null);
+  const [video, setVideo] = useState<MediaFileInfo | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [uri, setUri] = useState<string>("");
   const { back } = useRouter();
@@ -84,8 +84,8 @@ export function MintScreen() {
           onSubmit={(values) => {
             if (status === "IndexError") {
               retryIndex();
-            } else if (imageBlob && videoBlob) {
-              mint(values, imageBlob, videoBlob, (newUri) => {
+            } else if (image && video) {
+              mint(values, image, video, (newUri) => {
                 setUri(newUri);
                 setModalVisible(true);
               });
@@ -186,20 +186,20 @@ export function MintScreen() {
                 icon={InfoIcon}
                 label="Artwork"
                 type="image"
-                onUploadFinished={setImageBlob}
+                onUploadFinished={setImage}
                 validateFile={validateArtwork}
-                onClear={() => setImageBlob(null)}
-                success={imageBlob !== null}
+                onClear={() => setImage(null)}
+                success={image !== null}
               />
               <UploadInputWithIcon
                 containerClassNames="border-b border-white"
                 icon={InfoIcon}
                 label="Media File"
                 type="other"
-                onUploadFinished={setVideoBlob}
+                onUploadFinished={setVideo}
                 validateFile={validateVideo}
-                onClear={() => setVideoBlob(null)}
-                success={videoBlob !== null}
+                onClear={() => setVideo(null)}
+                success={video !== null}
               />
               <View className="flex flex-row py-5 items-center border-b border-white">
                 <Text className="mx-4 text-sm">
@@ -223,8 +223,8 @@ export function MintScreen() {
                         "IndexError",
                       ])
                     ) ||
-                    !videoBlob ||
-                    !imageBlob
+                    !image ||
+                    !video
                   }
                 />
                 <Button

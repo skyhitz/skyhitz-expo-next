@@ -2,54 +2,57 @@ import { useApolloClient } from "@apollo/client";
 import { AudibleTokenDocument, AudibleTokenQuery } from "app/api/graphql";
 import { useCallback } from "react";
 import * as Crypto from "expo-crypto";
+import { MediaFileInfo } from "app/types";
+import { Platform } from "react-native";
 
 type Return = {
-  verify: (beatToCheck: Blob) => Promise<boolean>;
+  verify: (beatToCheck: MediaFileInfo) => Promise<boolean>;
 };
 
 export function useAudibleCheck(): Return {
   const { query } = useApolloClient();
 
-  const verify = useCallback(async (beatToCheck: Blob) => {
+  const verify = useCallback(async (beatToCheck: MediaFileInfo) => {
     return new Promise<boolean>(async (resolve, reject) => {
+      if (beatToCheck.image) {
+        reject(Error("Provided file is an image!"));
+        return;
+      }
       // requests access token
       const { data } = await query<AudibleTokenQuery>({
         query: AudibleTokenDocument,
         fetchPolicy: "network-only",
       });
       if (!data.getAudibleToken?.token) {
-        reject( Error("Could not obtain access token"));
+        reject(Error("Could not obtain access token"));
         return;
       }
 
-      // generates unique id for video file
-      const generateHash = () =>
-        new Promise<string>(async (resolve, reject) => {
-          const fileReader = new FileReader();
-          fileReader.readAsArrayBuffer(beatToCheck);
-          fileReader.onloadend = async function () {
-            if (fileReader.result === null) {
-              reject(Error("Couldn't convert file to base64"));
-            } else {
-              let videoString = fileReader.result;
-              if (typeof videoString !== "string") {
-                videoString = new TextDecoder().decode(videoString);
-              }
-              const digest = await Crypto.digestStringAsync(
-                Crypto.CryptoDigestAlgorithm.SHA256,
-                videoString
-              );
-              resolve(digest);
-            }
-          };
-        });
-
       try {
-        const id = await generateHash();
+        const id = await Crypto.digestStringAsync(
+          Crypto.CryptoDigestAlgorithm.SHA256,
+          beatToCheck.uri
+        );
         // compose and sends request to audible service
         const body = new FormData();
-        body.append("beat", beatToCheck);
+        if (Platform.OS === "web") {
+          const response = await fetch(beatToCheck.uri);
+          const file = await response.blob();
+          body.append("beat", file);
+        } else {
+          body.append(
+            "beat",
+            JSON.parse(
+              JSON.stringify({
+                uri: beatToCheck.uri,
+                type: beatToCheck.mimeType,
+                name: id,
+              })
+            )
+          );
+        }
         body.append("id", id);
+
         const request = new XMLHttpRequest();
         // TODO change URL
         request.open("POST", "http://142.93.241.220/identify");
@@ -60,6 +63,7 @@ export function useAudibleCheck(): Return {
 
         request.onreadystatechange = () => {
           if (request.readyState === 4) {
+            console.log(request.status, request.responseText);
             const { message } = JSON.parse(request.responseText);
             if (request.status !== 200) {
               reject(

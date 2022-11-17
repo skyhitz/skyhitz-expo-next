@@ -8,21 +8,21 @@ type usePickMediaReturn = {
   pickMedia: () => Promise<void>;
   loading: boolean;
   error: string | null;
-  data: Blob | null;
-  url: string;
+  media: MediaFileInfo | null;
 };
 
 export default function usePickMedia(
   type: "other" | "image",
-  validateFile: (_file: MediaFileInfo) => string | null
+  validateFile: (file: MediaFileInfo) => string | null
 ): usePickMediaReturn {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
-  const [data, setData] = useState<Blob | null>(null);
-  const [url, setUrl] = useState<string>("");
+  const [media, setMedia] = useState<MediaFileInfo | null>(null);
 
   const pickMedia = async () => {
     setError(null);
+    setMedia(null);
+    setLoading(true);
     let result: MediaFileInfo;
     if (type === "image") {
       const file = await launchImageLibraryAsync({
@@ -44,19 +44,15 @@ export default function usePickMedia(
       result = { image: false, uri: file.uri, mimeType: file.mimeType ?? "" };
     }
 
-    setLoading(true);
     const error = validateFile(result);
     if (error) {
       setError(error);
       setLoading(false);
       return;
     }
-    const response = await fetch(result.uri);
-    const file = await response.blob();
-    setData(file);
-    setUrl(result.uri);
+    setMedia(result);
     setLoading(false);
   };
 
-  return { pickMedia, loading, error, data, url };
+  return { pickMedia, loading, error, media };
 }

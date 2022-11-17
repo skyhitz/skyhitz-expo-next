@@ -4,13 +4,13 @@ import React, { useEffect } from "react";
 import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
 import usePickMedia from "app/hooks/usePickMedia";
 import { validateProfilePicture } from "app/validation";
-import { ChangeAvatarImg } from "app/types";
+import { MediaFileInfo } from "app/types";
 import { useToast } from "react-native-toast-notifications";
 
 type ChangeUserAvatarProps = {
-  avatarImg: ChangeAvatarImg;
+  avatarImg: string;
   displayName?: string | null;
-  onChange: (_avatar: ChangeAvatarImg) => void;
+  onChange: (avatar: MediaFileInfo) => void;
   disable?: boolean;
 };
 
@@ -22,19 +22,16 @@ export function ChangeUserAvatar({
 }: ChangeUserAvatarProps) {
   const toast = useToast();
   useMediaLibraryPermission();
-  const { pickMedia, loading, error, data, url } = usePickMedia(
+  const { pickMedia, loading, error, media } = usePickMedia(
     "image",
     validateProfilePicture
   );
 
   useEffect(() => {
-    if (data && url) {
-      onChange({
-        blob: data,
-        url,
-      });
+    if (media) {
+      onChange(media);
     }
-  }, [data, url, onChange]);
+  }, [media, onChange]);
 
   useEffect(() => {
     if (error) {
@@ -48,7 +45,7 @@ export function ChangeUserAvatar({
         <ActivityIndicator size="large" />
       ) : (
         <UserAvatar
-          avatarUrl={avatarImg.url}
+          avatarUrl={avatarImg}
           displayName={displayName}
           size="large"
         />
