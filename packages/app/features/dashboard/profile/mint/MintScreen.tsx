@@ -9,7 +9,7 @@ import DollarIcon from "app/ui/icons/dollar";
 import PieChartIcon from "app/ui/icons/pie";
 import { UploadInputWithIcon } from "app/ui/inputs/UploadInputWithIcon";
 import { mintFormSchema, validateArtwork, validateVideo } from "app/validation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useMintNFT } from "app/hooks/useMintNFT";
 import { any, equals, not } from "ramda";
@@ -19,6 +19,7 @@ import { useErrorReport } from "app/hooks/useErrorReport";
 import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
+import { MintLoadingIndicator } from "./MintLoadingIndicator";
 
 export function MintScreen() {
   const [equityForSale, setEquityForSale] = useState<string>("1");
@@ -27,26 +28,29 @@ export function MintScreen() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [uri, setUri] = useState<string>("");
   const { back } = useRouter();
-  const { mint, retryIndex, progress, status, error } = useMintNFT();
+  const { mint, retryIndex, status, error } = useMintNFT();
   const reportError = useErrorReport();
   useMediaLibraryPermission();
 
-  const buttonTitle = () => {
+  const currentStep = useMemo(() => {
     switch (status) {
+      case "Checking for copyrights":
+        return 1;
       case "Uploading files":
+        return 2;
       case "Uploading metadata":
-        return `${status} ${progress}%`;
-      case "Indexing":
+        return 3;
       case "Submitting":
       case "Sign transaction in your wallet":
-      case "Checking for copyrights":
-        return status;
-      case "IndexError":
-        return "Retry Indexing";
+        return 4;
+      case "Indexing":
+        return 5;
+      case "Success":
+        return 6;
       default:
-        return "Mint";
+        return 0;
     }
-  };
+  }, [status]);
 
   useEffect(() => {
     if (error) {
@@ -62,17 +66,6 @@ export function MintScreen() {
     price: "",
     equityForSale: 1,
   };
-
-  if (status === "Success") {
-    return (
-      <View className="flex-1 bg-blue-dark p-5 w-full items-center">
-        <Text className="text-lightGreen text-lg mb-5">
-          New NFT Minted Successfully!
-        </Text>
-        <Button text="Back" size="large" variant="secondary" onPress={back} />
-      </View>
-    );
-  }
 
   return (
     <>
@@ -201,39 +194,60 @@ export function MintScreen() {
                 onClear={() => setVideo(null)}
                 success={video !== null}
               />
-              <View className="flex flex-row py-5 items-center border-b border-white">
+              <View className="flex flex-row py-5 items-center border-b border-white mb-5">
                 <Text className="mx-4 text-sm">
                   Only original video music related material will be uploaded.
                   We take copyright law very seriously. Maximum file size
                   allowed: 100MB
                 </Text>
               </View>
-              <View className="flex md:flex-row justify-center items-center mt-5">
-                <Button
-                  text={buttonTitle()}
-                  size="large"
-                  onPress={handleSubmit}
-                  className="mb-5 md:mb-0 md:mr-5"
-                  disabled={
-                    !isValid ||
-                    not(
-                      any(equals(status), [
-                        "Uninitialized",
-                        "Error",
-                        "IndexError",
-                      ])
-                    ) ||
-                    !image ||
-                    !video
+              {!["Uninitialized", "IndexError", "Error"].includes(status) && (
+                <MintLoadingIndicator
+                  label={
+                    status === "Success"
+                      ? " New NFT Minted Successfully!"
+                      : status
                   }
+                  currentStep={currentStep}
+                  totalSteps={6}
                 />
+              )}
+              {status === "Success" && (
                 <Button
-                  text="Cancel"
+                  text="Back"
                   size="large"
                   variant="secondary"
                   onPress={back}
                 />
-              </View>
+              )}
+              {status !== "Success" && (
+                <View className="flex md:flex-row justify-center items-center mt-5">
+                  <Button
+                    text={status === "IndexError" ? "Retry Indexing" : "Mint"}
+                    size="large"
+                    onPress={handleSubmit}
+                    className="mb-5 md:mb-0 md:mr-5"
+                    disabled={
+                      !isValid ||
+                      not(
+                        any(equals(status), [
+                          "Uninitialized",
+                          "Error",
+                          "IndexError",
+                        ])
+                      ) ||
+                      !image ||
+                      !video
+                    }
+                  />
+                  <Button
+                    text="Cancel"
+                    size="large"
+                    variant="secondary"
+                    onPress={back}
+                  />
+                </View>
+              )}
             </View>
           )}
         </Formik>
