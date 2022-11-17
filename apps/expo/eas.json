@@ -28,12 +28,6 @@
       },
       "production": {
         "releaseChannel": "production",
-        "android": {
-          "autoIncrement": "versionCode"
-        },
-        "ios": {
-          "autoIncrement": "version"
-        },
         "env": {
             "NEXT_PUBLIC_EXPO_SKYHITZ_ENV": "production"
         }

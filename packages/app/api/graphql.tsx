@@ -260,10 +260,9 @@ export type Query = {
   entry?: Maybe<EntryDetails>;
   entryLikes?: Maybe<EntryLikes>;
   entryPrice?: Maybe<EntryPrice>;
+  getAudibleToken?: Maybe<Token>;
   getIssuer?: Maybe<Scalars["String"]>;
   paymentsInfo?: Maybe<PaymentsInfo>;
-  recentlyAdded?: Maybe<Array<Maybe<Entry>>>;
-  topChart?: Maybe<Array<Maybe<Entry>>>;
   userEntries?: Maybe<Array<Entry>>;
   userLikes?: Maybe<Array<Maybe<Entry>>>;
   xlmPrice?: Maybe<Scalars["String"]>;
@@ -290,16 +289,6 @@ export type QueryGetIssuerArgs = {
 };
 
 /** Get users or entries */
-export type QueryRecentlyAddedArgs = {
-  page?: InputMaybe<Scalars["Int"]>;
-};
-
-/** Get users or entries */
-export type QueryTopChartArgs = {
-  page?: InputMaybe<Scalars["Int"]>;
-};
-
-/** Get users or entries */
 export type QueryUserEntriesArgs = {
   userId: Scalars["String"];
 };
@@ -309,6 +298,12 @@ export type SuccessResponse = {
   __typename?: "SuccessResponse";
   message?: Maybe<Scalars["String"]>;
   success?: Maybe<Scalars["Boolean"]>;
+};
+
+/** Object that contains access token */
+export type Token = {
+  __typename?: "Token";
+  token?: Maybe<Scalars["String"]>;
 };
 
 /** This represents a User */
@@ -582,11 +577,11 @@ export type WithdrawToExternalWalletMutation = {
   } | null;
 };
 
-export type EntryQueryVariables = Exact<{
+export type EntryDetailsQueryVariables = Exact<{
   id: Scalars["String"];
 }>;
 
-export type EntryQuery = {
+export type EntryDetailsQuery = {
   __typename?: "Query";
   entry?: {
     __typename?: "EntryDetails";
@@ -1477,8 +1472,8 @@ export type WithdrawToExternalWalletMutationOptions =
     WithdrawToExternalWalletMutation,
     WithdrawToExternalWalletMutationVariables
   >;
-export const EntryDocument = gql`
-  query entry($id: String!) {
+export const EntryDetailsDocument = gql`
+  query entryDetails($id: String!) {
     entry(id: $id) {
       imageUrl
       videoUrl
@@ -1527,44 +1522,54 @@ export const EntryDocument = gql`
 `;
 
 /**
- * __useEntryQuery__
+ * __useEntryDetailsQuery__
  *
- * To run a query within a React component, call `useEntryQuery` and pass it any options that fit your needs.
- * When your component renders, `useEntryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useEntryDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEntryDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useEntryQuery({
+ * const { data, loading, error } = useEntryDetailsQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useEntryQuery(
-  baseOptions: Apollo.QueryHookOptions<EntryQuery, EntryQueryVariables>
+export function useEntryDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    EntryDetailsQuery,
+    EntryDetailsQueryVariables
+  >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<EntryQuery, EntryQueryVariables>(
-    EntryDocument,
+  return Apollo.useQuery<EntryDetailsQuery, EntryDetailsQueryVariables>(
+    EntryDetailsDocument,
     options
   );
 }
-export function useEntryLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<EntryQuery, EntryQueryVariables>
+export function useEntryDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    EntryDetailsQuery,
+    EntryDetailsQueryVariables
+  >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<EntryQuery, EntryQueryVariables>(
-    EntryDocument,
+  return Apollo.useLazyQuery<EntryDetailsQuery, EntryDetailsQueryVariables>(
+    EntryDetailsDocument,
     options
   );
 }
-export type EntryQueryHookResult = ReturnType<typeof useEntryQuery>;
-export type EntryLazyQueryHookResult = ReturnType<typeof useEntryLazyQuery>;
-export type EntryQueryResult = Apollo.QueryResult<
-  EntryQuery,
-  EntryQueryVariables
+export type EntryDetailsQueryHookResult = ReturnType<
+  typeof useEntryDetailsQuery
+>;
+export type EntryDetailsLazyQueryHookResult = ReturnType<
+  typeof useEntryDetailsLazyQuery
+>;
+export type EntryDetailsQueryResult = Apollo.QueryResult<
+  EntryDetailsQuery,
+  EntryDetailsQueryVariables
 >;
 export const EntryLikesDocument = gql`
   query entryLikes($id: String!) {

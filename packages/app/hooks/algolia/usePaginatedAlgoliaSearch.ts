@@ -5,6 +5,7 @@ import { flatten } from "ramda";
 type ReturnValue<T> = {
   data: T[];
   onNextPage: () => void;
+  loading: boolean;
 };
 
 type Props<T> = {
@@ -51,5 +52,6 @@ export function usePaginatedAlgoliaSearch<T>({
   return {
     data: flattenData,
     onNextPage,
+    loading: isLoadingInitialData,
   };
 }

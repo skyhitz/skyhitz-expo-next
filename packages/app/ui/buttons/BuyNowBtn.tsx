@@ -10,6 +10,7 @@ import { prepend } from "ramda";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import { useSWRConfig } from "swr";
+import { Platform } from "react-native";
 
 type Props = {
   entry: Entry;
@@ -22,7 +23,7 @@ export function BuyNowBtn({ entry }: Props) {
   const user = useRecoilValue(userAtom);
   const { mutate } = useSWRConfig();
 
-  if (!price) {
+  if (!price || Platform.OS === "ios") {
     return null;
   }
 
@@ -40,7 +41,7 @@ export function BuyNowBtn({ entry }: Props) {
         visible={modalVisible}
         entry={entry}
         price={price.price}
-        equityForSale={price.amount}
+        initialEquityForSale={price.amount}
         hideModal={(success: boolean) => {
           setModalVisible(false);
           if (success) {

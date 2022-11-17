@@ -3,7 +3,7 @@ import { SearchResultList } from "app/features/dashboard/search/search-result-li
 import { usersIndex } from "app/api/algolia";
 import { User } from "app/api/graphql";
 import { MakerListEntry } from "app/ui/maker-list-entry";
-import { useAlgoliaSearch } from "app/hooks/useAlgoliaSearch";
+import { useAlgoliaSearch } from "app/hooks/algolia/useAlgoliaSearch";
 
 export function BeatmakersSearchResultList({
   searchPhrase,
