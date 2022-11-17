@@ -7,7 +7,7 @@ import {
   Entry,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
-import { MediaFileInfo, MintForm } from "app/types";
+import { ErrorType, MediaFileInfo, MintForm } from "app/types";
 import { useCallback, useState } from "react";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
@@ -143,8 +143,13 @@ export function useMintNFT(): MintResult {
       try {
         await verify(video);
       } catch (ex) {
+        let message = "Couldn't verify if the file is original";
+        const err = ex as ErrorType;
+        if (err.message) {
+          message = err.message;
+        }
         setStatus("Error");
-        setError(ex?.message ?? "Couldn't verify if the file is original");
+        setError(message);
         return;
       }
 
