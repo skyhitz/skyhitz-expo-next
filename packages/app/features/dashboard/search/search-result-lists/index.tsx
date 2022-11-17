@@ -39,6 +39,7 @@ export function SearchResultList<T>({
       ListEmptyComponent={
         <EmptyListIndicator visible={!loading} text={emptyListText} />
       }
+      showsVerticalScrollIndicator={false}
     />
   );
 }

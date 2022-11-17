@@ -8,6 +8,7 @@ import { ReactElement } from "react";
 import { useRouter } from "solito/router";
 import { tw } from "app/design-system/tailwind";
 import { imageSrc, imageUrlSmall } from "app/utils/entry";
+import { usePlayback } from "app/hooks/usePlayback";
 
 export type PressableState = Readonly<{
   hovered?: boolean;
@@ -16,15 +17,17 @@ export type PressableState = Readonly<{
 export function BeatListEntry({
   entry,
   spot,
-  onPress,
+  playlist,
 }: {
   entry: Entry;
   spot?: number;
-  onPress: () => void;
+  playlist: Entry[];
 }) {
   const { push } = useRouter();
+  const { playEntry } = usePlayback();
+
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={() => playEntry(entry, playlist)}>
       {({ hovered }: PressableState): ReactElement => {
         return (
           <View className="w-full flex items-center flex-row py-2">
