@@ -4,6 +4,7 @@ import X from "app/ui/icons/x";
 import { tw } from "app/design-system/tailwind";
 import {
   Entry,
+  EntryDocument,
   usePaymentsInfoQuery,
   useBuyEntryMutation,
   BuyEntryMutation,
@@ -15,6 +16,7 @@ import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
+import refetchQueries from "@apollo/client";
 
 type Props = {
   visible: boolean;
@@ -49,6 +51,10 @@ export function PaymentConfirmationModal({
         toast.show("You have successfully bought an NFT", {
           type: "success",
         });
+
+        refetchQueries({
+          include: [{ query: EntryDocument, variables: { id: entry.id } }],
+        });
       } else if (data.buyEntry.xdr) {
         setMessage("Sign and submit transaction in your wallet");
         const xdr = data.buyEntry.xdr;
@@ -70,6 +76,9 @@ export function PaymentConfirmationModal({
             hideModal(true);
             toast.show("You have successfully bought an NFT", {
               type: "success",
+            });
+            refetchQueries({
+              include: [{ query: EntryDocument, variables: { id: entry.id } }],
             });
           } else {
             hideModal(false);
