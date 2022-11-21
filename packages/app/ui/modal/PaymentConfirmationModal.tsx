@@ -20,13 +20,14 @@ import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 import { ApolloClient } from "@apollo/client";
 
 type Props = {
-  client: ApolloClient<object>,
+  client: ApolloClient<object>;
   visible: boolean;
   hideModal: (success: boolean) => void;
   price: number;
   initialEquityForSale: number;
   entry: Entry;
 };
+
 export function PaymentConfirmationModal({
   client,
   visible,
@@ -56,9 +57,12 @@ export function PaymentConfirmationModal({
         toast.show("You have successfully bought an NFT", {
           type: "success",
         });
-
         client.refetchQueries({
           include: [EntryDetailsDocument],
+          onQueryUpdated: async (observableQuery) => {
+            await new Promise((res) => setTimeout(res, 3000));
+            observableQuery.refetch();
+          },
         });
       } else if (data.buyEntry.xdr) {
         setMessage("Sign and submit transaction in your wallet");
@@ -84,6 +88,10 @@ export function PaymentConfirmationModal({
             });
             client.refetchQueries({
               include: [EntryDetailsDocument],
+              onQueryUpdated: async (observableQuery) => {
+                await new Promise((res) => setTimeout(res, 3000));
+                observableQuery.refetch();
+              },
             });
           } else {
             hideModal(false);
