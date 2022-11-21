@@ -3,13 +3,16 @@ import { ActivityIndicator as DripsyActivityIndicator } from "dripsy";
 
 import { tw as tailwind } from "app/design-system/tailwind";
 
-type TextProps = { tw?: string } & ComponentProps<
+type TextProps = { className?: string } & ComponentProps<
   typeof DripsyActivityIndicator
 >;
 
-function ActivityIndicator({ tw, sx, ...props }: TextProps) {
+function ActivityIndicator({ className, sx, ...props }: TextProps) {
   return (
-    <DripsyActivityIndicator sx={{ ...sx, ...tailwind.style(tw) }} {...props} />
+    <DripsyActivityIndicator
+      sx={{ ...sx, ...tailwind.style(className) }}
+      {...props}
+    />
   );
 }
 

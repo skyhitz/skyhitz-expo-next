@@ -1,7 +1,6 @@
 import { ActivityIndicator, Text, View } from "app/design-system";
 import { FlatList } from "react-native";
 import { BeatListEntry } from "app/ui/beat-list-entry";
-import { usePlayback } from "app/hooks/usePlayback";
 import { Entry } from "app/api/graphql";
 
 type Props = {
@@ -15,15 +14,13 @@ export default function ProfileBeatsList({
   loading,
   emptyStateText,
 }: Props) {
-  const { playEntry } = usePlayback();
-
   return (
     <View className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto">
       <FlatList
         keyExtractor={(item) => item.id!}
         data={beats}
         renderItem={({ item }) => (
-          <BeatListEntry entry={item} onPress={() => playEntry(item, beats)} />
+          <BeatListEntry entry={item} playlist={beats} />
         )}
         ListEmptyComponent={
           <ListEmptyComponent
