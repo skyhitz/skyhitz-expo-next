@@ -5,7 +5,7 @@ import { ComponentAuthGuard } from "app/utils/authGuard";
 import { useEntryOffer, getEntryOfferUrl } from "app/hooks/useEntryOffer";
 import { useState } from "react";
 import { PaymentConfirmationModal } from "app/ui/modal/PaymentConfirmationModal";
-import { useApolloClient } from "@apollo/client";
+import { ApolloConsumer, useApolloClient } from "@apollo/client";
 import { prepend } from "ramda";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
@@ -37,29 +37,34 @@ export function BuyNowBtn({ entry }: Props) {
         }}
         useTouchable
       />
-      <PaymentConfirmationModal
-        visible={modalVisible}
-        entry={entry}
-        price={price.price}
-        initialEquityForSale={price.amount}
-        hideModal={(success: boolean) => {
-          setModalVisible(false);
-          if (success) {
-            mutate(getEntryOfferUrl(entry.code!, entry.issuer!));
+      <ApolloConsumer>
+        {(client) => (
+          <PaymentConfirmationModal
+            client={client}
+            visible={modalVisible}
+            entry={entry}
+            price={price.price}
+            initialEquityForSale={price.amount}
+            hideModal={(success: boolean) => {
+              setModalVisible(false);
+              if (success) {
+                mutate(getEntryOfferUrl(entry.code!, entry.issuer!));
 
-            cache.updateQuery(
-              {
-                query: UserCollectionDocument,
-                variables: { userId: user?.id },
-                overwrite: true,
-              },
-              (cachedData) => ({
-                userEntries: prepend(entry, cachedData?.userEntries ?? []),
-              })
-            );
-          }
-        }}
-      />
+                cache.updateQuery(
+                  {
+                    query: UserCollectionDocument,
+                    variables: { userId: user?.id },
+                    overwrite: true,
+                  },
+                  (cachedData) => ({
+                    userEntries: prepend(entry, cachedData?.userEntries ?? []),
+                  })
+                );
+              }
+            }}
+          />
+        )}
+      </ApolloConsumer>
     </ComponentAuthGuard>
   );
 }

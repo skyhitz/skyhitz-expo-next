@@ -3,7 +3,7 @@ import X from "app/ui/icons/x";
 import { tw } from "app/design-system/tailwind";
 import {
   Entry,
-  EntryDocument,
+  EntryDetailsDocument,
   usePaymentsInfoQuery,
   useBuyEntryMutation,
   BuyEntryMutation,
@@ -17,9 +17,10 @@ import { useErrorReport } from "app/hooks/useErrorReport";
 import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
-import refetchQueries from "@apollo/client";
+import { ApolloClient } from "@apollo/client";
 
 type Props = {
+  client: ApolloClient<object>,
   visible: boolean;
   hideModal: (success: boolean) => void;
   price: number;
@@ -27,6 +28,7 @@ type Props = {
   entry: Entry;
 };
 export function PaymentConfirmationModal({
+  client,
   visible,
   hideModal,
   price,
@@ -55,8 +57,8 @@ export function PaymentConfirmationModal({
           type: "success",
         });
 
-        refetchQueries({
-          include: [{ query: EntryDocument, variables: { id: entry.id } }],
+        client.refetchQueries({
+          include: [EntryDetailsDocument],
         });
       } else if (data.buyEntry.xdr) {
         setMessage("Sign and submit transaction in your wallet");
@@ -80,8 +82,8 @@ export function PaymentConfirmationModal({
             toast.show("You have successfully bought an NFT", {
               type: "success",
             });
-            refetchQueries({
-              include: [{ query: EntryDocument, variables: { id: entry.id } }],
+            client.refetchQueries({
+              include: [EntryDetailsDocument],
             });
           } else {
             hideModal(false);
