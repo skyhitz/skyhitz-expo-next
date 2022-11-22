@@ -60,8 +60,9 @@ export function PaymentConfirmationModal({
         client.refetchQueries({
           include: [EntryDetailsDocument],
           onQueryUpdated: async (observableQuery) => {
+            // It takes time for Stellar to process transaction, thus refetch has to be delayed
             await new Promise((res) => setTimeout(res, 3000));
-            observableQuery.refetch();
+            observableQuery.refetch({ id: entry.id });
           },
         });
       } else if (data.buyEntry.xdr) {
@@ -90,7 +91,7 @@ export function PaymentConfirmationModal({
               include: [EntryDetailsDocument],
               onQueryUpdated: async (observableQuery) => {
                 await new Promise((res) => setTimeout(res, 3000));
-                observableQuery.refetch();
+                observableQuery.refetch({ id: entry.id });
               },
             });
           } else {
