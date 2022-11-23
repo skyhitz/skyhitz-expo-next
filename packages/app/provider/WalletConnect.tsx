@@ -17,6 +17,7 @@ import { Config } from "app/config";
 import { buildTransactionForAuth } from "app/utils/stellar";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import * as assert from "assert";
 
 interface IContext {
   initialized: boolean;
@@ -34,7 +35,10 @@ interface IContext {
     xdr: string,
     currentSession?: SessionTypes.Struct
   ) => Promise<null | unknown>;
-  authNewSession: (showModal: (uri: string) => void) => Promise<unknown>;
+  authNewSession: (
+    showModal: (uri: string) => void,
+    restore?: boolean
+  ) => Promise<unknown>;
 }
 
 export const ClientContext = createContext<IContext>({} as IContext);
@@ -159,6 +163,18 @@ export function ClientContextProvider({
     [onSessionConnected, reset]
   );
 
+  const tryRestoreSession = useCallback(async (newClient: Client) => {
+    // populates (the last) existing session to state
+    if (newClient.session.length) {
+      const lastKeyIndex = newClient.session.keys.length - 1;
+      const restoredSession = newClient.session.get(
+        newClient.session.keys[lastKeyIndex]!
+      );
+      await onSessionConnected(restoredSession);
+      return restoredSession;
+    }
+  }, []);
+
   const createClient = useCallback(async () => {
     try {
       const metadata = {
@@ -173,6 +189,7 @@ export function ClientContextProvider({
         metadata,
       });
       setClient(newClient);
+      await tryRestoreSession(newClient);
       await subscribeToEvents(newClient);
       setInitialized(true);
     } catch (err) {
@@ -229,21 +246,28 @@ export function ClientContextProvider({
   );
 
   const authNewSession = useCallback(
-    async (showModal: (uri: string) => void) => {
+    async (showModal: (uri: string) => void, restore = false) => {
       if (!client) throw new Error("Client not initiliazed");
-      const newSession = await connect(showModal);
-      if (!newSession) {
-        throw new Error("Couldn't establish wallet connect session");
+      let sessionToAuth = session;
+      if (!restore || !session) {
+        const newSession = await connect(showModal);
+        if (!newSession) {
+          throw new Error("Couldn't establish wallet connect session");
+        }
+        sessionToAuth = newSession;
       }
+
+      assert.ok(sessionToAuth);
+
       const publicKey = Object.values(
-        newSession.namespaces
+        sessionToAuth.namespaces
       )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
       if (!publicKey) {
         throw new Error("Invalid public key");
       }
       const xdr = await buildTransactionForAuth(publicKey);
       const result = await client.request({
-        topic: newSession.topic,
+        topic: sessionToAuth.topic,
         chainId: Config.CHAIN_ID,
         request: {
           method: "stellar_signXDR",
@@ -254,7 +278,7 @@ export function ClientContextProvider({
       });
       return result;
     },
-    [client, connect, buildTransactionForAuth]
+    [client, session, connect, buildTransactionForAuth]
   );
 
   useEffect(() => {
