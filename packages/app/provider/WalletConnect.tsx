@@ -163,17 +163,20 @@ export function ClientContextProvider({
     [onSessionConnected, reset]
   );
 
-  const tryRestoreSession = useCallback(async (newClient: Client) => {
-    // populates (the last) existing session to state
-    if (newClient.session.length) {
-      const lastKeyIndex = newClient.session.keys.length - 1;
-      const restoredSession = newClient.session.get(
-        newClient.session.keys[lastKeyIndex]!
-      );
-      await onSessionConnected(restoredSession);
-      return restoredSession;
-    }
-  }, []);
+  const tryRestoreSession = useCallback(
+    async (newClient: Client) => {
+      // populates (the last) existing session to state
+      if (newClient.session.length) {
+        const lastKeyIndex = newClient.session.keys.length - 1;
+        const restoredSession = newClient.session.get(
+          newClient.session.keys[lastKeyIndex]!
+        );
+        await onSessionConnected(restoredSession);
+        return restoredSession;
+      }
+    },
+    [onSessionConnected]
+  );
 
   const createClient = useCallback(async () => {
     try {
