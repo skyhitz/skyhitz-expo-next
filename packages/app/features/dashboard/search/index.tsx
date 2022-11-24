@@ -15,7 +15,7 @@ export function SearchScreen() {
   return (
     <SafeAreaView
       edges={["top"]}
-      className="w-full max-w-6xl mx-auto flex-1 flex p-4 pb-0 bg-blue-dark"
+      className="w-full max-w-8xl flex-1 flex p-4 pb-0 bg-blue-dark"
     >
       <SearchInputField
         value={searchPhrase}
