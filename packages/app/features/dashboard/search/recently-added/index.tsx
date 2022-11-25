@@ -25,5 +25,5 @@ export default function RecentlyAddedList() {
 }
 
 function ListHeader() {
-  return <Text className="pb-4">Recently Added</Text>;
+  return <Text className="pb-4 mt-0.5">Recently Added</Text>;
 }

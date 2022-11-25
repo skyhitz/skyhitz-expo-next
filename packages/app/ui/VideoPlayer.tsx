@@ -79,7 +79,7 @@ export function VideoPlayer({
 
   const posterUri = useMemo(() => {
     if (entry?.imageUrl) {
-      if (posterSize > 80) {
+      if (posterSize <= 80) {
         return imageUrlSmall(entry.imageUrl);
       } else {
         return imageUrlMedium(entry.imageUrl);
