@@ -1,8 +1,8 @@
 import * as Yup from "yup";
 import { object, SchemaOf, string } from "yup";
 import {
-  CreateOfferForm,
   EditProfileForm,
+  ManageAssetForm,
   MediaFileInfo,
   MintForm,
   SignInForm,
@@ -64,11 +64,12 @@ export const mintFormSchema: SchemaOf<MintForm> = object().shape({
     .max(100, "Equity should be within range 0 - 100"),
 });
 
-export const createOfferSchema: SchemaOf<CreateOfferForm> = object().shape({
+export const manageAssetSchema: SchemaOf<ManageAssetForm> = object().shape({
   price: Yup.string(),
   equityForSale: Yup.number()
     .min(1, "Equity should be within range 0 - 100")
     .max(100, "Equity should be within range 0 - 100"),
+  availableForSale: Yup.boolean(),
 });
 
 export const withdrawFormSchema: (

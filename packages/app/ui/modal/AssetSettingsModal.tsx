@@ -6,12 +6,14 @@ import PieChartIcon from "app/ui/icons/pie";
 import { tw } from "app/design-system/tailwind";
 import { Formik, FormikProps } from "formik";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
-import { createOfferSchema } from "app/validation";
-import { CreateOfferForm } from "app/types";
+import { manageAssetSchema } from "app/validation";
+import { ManageAssetForm } from "app/types";
 import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { imageSrc, imageUrlSmall } from "app/utils/entry";
 import { useState } from "react";
+import InfoIcon from "app/ui/icons/info-circle";
+import { Switch } from "react-native";
 
 type Props = {
   visible: boolean;
@@ -19,12 +21,13 @@ type Props = {
   hideModal: (success: boolean) => void;
 };
 
-export function OfferSettingsModal({ visible, hideModal, entry }: Props) {
+export function AssetSettingsModal({ visible, hideModal, entry }: Props) {
   const [equityForSale, setEquityForSale] = useState<string>("1");
 
-  const initialValues: CreateOfferForm = {
+  const initialValues: ManageAssetForm = {
     price: "",
     equityForSale: 1,
+    availableForSale: false,
   };
 
   return (
@@ -44,7 +47,7 @@ export function OfferSettingsModal({ visible, hideModal, entry }: Props) {
             >
               <X color={tw.color("white")} />
             </Pressable>
-            <Text className="text-lg font-bold">Create an offer</Text>
+            <Text className="text-lg font-bold">Manage an asset</Text>
             <View className="flex-row my-4 items-center">
               <Image
                 className="w-10 h-10"
@@ -57,7 +60,7 @@ export function OfferSettingsModal({ visible, hideModal, entry }: Props) {
             </View>
             <Formik
               initialValues={initialValues}
-              validationSchema={createOfferSchema}
+              validationSchema={manageAssetSchema}
               validateOnMount={false}
               onSubmit={(_) => {}}
             >
@@ -67,8 +70,25 @@ export function OfferSettingsModal({ visible, hideModal, entry }: Props) {
                 isValid,
                 handleSubmit,
                 errors,
-              }: FormikProps<CreateOfferForm>) => (
+              }: FormikProps<ManageAssetForm>) => (
                 <View>
+                  <View className="flex flex-row py-5 items-center border-b border-white">
+                    <InfoIcon size={24} color={tw.color("white")} />
+                    <Text className="mx-4 text-sm">Available for Sale:</Text>
+                    <Switch
+                      onValueChange={(newValue) =>
+                        setFieldValue("availableForSale", newValue)
+                      }
+                      value={values.availableForSale}
+                      trackColor={{
+                        false: tw.color("blue-track"),
+                        true: tw.color("blue-brand"),
+                      }}
+                      thumbColor={tw.color("white")}
+                      //@ts-ignore
+                      activeThumbColor={tw.color("white")}
+                    />
+                  </View>
                   <FormInputWithIcon
                     containerClassNames="flex flex-row py-5 items-center border-b border-white"
                     icon={DollarIcon}
@@ -107,7 +127,7 @@ export function OfferSettingsModal({ visible, hideModal, entry }: Props) {
                   </View>
                   <View className="mt-5">
                     <Button
-                      text="Confirm"
+                      text="Save"
                       size="large"
                       onPress={handleSubmit}
                       className="mb-5 md:mb-0 md:mr-5"
