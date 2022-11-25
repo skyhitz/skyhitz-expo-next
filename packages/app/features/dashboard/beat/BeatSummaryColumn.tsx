@@ -14,6 +14,7 @@ import { LikesList } from "app/features/player/components/likesList";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
 import { ComponentAuthGuard } from "app/utils/authGuard";
+import { CreateOfferBtn } from "app/ui/buttons/CreateOfferBtn";
 
 type Props = {
   entry: Entry;
@@ -45,6 +46,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
           />
         </View>
       </View>
+      <CreateOfferBtn entry={entry} />
       <PriceContainer entry={entry} />
       <CollapsableView icon={InfoCircle} headerText="Description">
         <Text className="p-3">{entry.description}</Text>

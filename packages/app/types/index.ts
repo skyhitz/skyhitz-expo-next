@@ -37,6 +37,11 @@ export type MintForm = {
   equityForSale?: number;
 };
 
+export type CreateOfferForm = {
+  price?: string;
+  equityForSale?: number;
+};
+
 export type WithdrawForm = {
   address: string;
   amount: number;
