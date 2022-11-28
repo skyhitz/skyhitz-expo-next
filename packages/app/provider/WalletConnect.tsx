@@ -172,7 +172,6 @@ export function ClientContextProvider({
           newClient.session.keys[lastKeyIndex]!
         );
         await onSessionConnected(restoredSession);
-        return restoredSession;
       }
     },
     [onSessionConnected]
