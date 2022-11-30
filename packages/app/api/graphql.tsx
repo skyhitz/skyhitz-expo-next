@@ -646,6 +646,13 @@ export type EntryLikesQuery = {
   } | null;
 };
 
+export type AudibleTokenQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AudibleTokenQuery = {
+  __typename?: "Query";
+  getAudibleToken?: { __typename?: "Token"; token?: string | null } | null;
+};
+
 export type GetIssuerQueryVariables = Exact<{
   cid: Scalars["String"];
 }>;
@@ -1632,6 +1639,63 @@ export type EntryLikesLazyQueryHookResult = ReturnType<
 export type EntryLikesQueryResult = Apollo.QueryResult<
   EntryLikesQuery,
   EntryLikesQueryVariables
+>;
+export const AudibleTokenDocument = gql`
+  query audibleToken {
+    getAudibleToken {
+      token
+    }
+  }
+`;
+
+/**
+ * __useAudibleTokenQuery__
+ *
+ * To run a query within a React component, call `useAudibleTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAudibleTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAudibleTokenQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAudibleTokenQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AudibleTokenQuery,
+    AudibleTokenQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AudibleTokenQuery, AudibleTokenQueryVariables>(
+    AudibleTokenDocument,
+    options
+  );
+}
+export function useAudibleTokenLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AudibleTokenQuery,
+    AudibleTokenQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AudibleTokenQuery, AudibleTokenQueryVariables>(
+    AudibleTokenDocument,
+    options
+  );
+}
+export type AudibleTokenQueryHookResult = ReturnType<
+  typeof useAudibleTokenQuery
+>;
+export type AudibleTokenLazyQueryHookResult = ReturnType<
+  typeof useAudibleTokenLazyQuery
+>;
+export type AudibleTokenQueryResult = Apollo.QueryResult<
+  AudibleTokenQuery,
+  AudibleTokenQueryVariables
 >;
 export const GetIssuerDocument = gql`
   query GetIssuer($cid: String!) {

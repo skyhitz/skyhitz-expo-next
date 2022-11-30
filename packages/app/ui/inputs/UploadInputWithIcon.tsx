@@ -12,12 +12,12 @@ import usePickMedia from "app/hooks/usePickMedia";
 type Props = {
   type: "other" | "image";
   label: string;
-  onUploadFinished: (_blob: Blob) => void;
+  onUploadFinished: (media: MediaFileInfo) => void;
   onClear: () => void;
-  icon: (_props: IconProps) => ReactElement;
+  icon: (props: IconProps) => ReactElement;
   iconProps?: IconProps;
   containerClassNames?: string;
-  validateFile: (_file: MediaFileInfo) => string | null;
+  validateFile: (file: MediaFileInfo) => string | null;
   success: boolean;
 };
 
@@ -37,13 +37,13 @@ export function UploadInputWithIcon({
   onClear,
   success,
 }: TextProps & Props) {
-  const { pickMedia, loading, error, data } = usePickMedia(type, validateFile);
+  const { pickMedia, loading, error, media } = usePickMedia(type, validateFile);
 
   useEffect(() => {
-    if (data) {
-      onUploadFinished(data);
+    if (media) {
+      onUploadFinished(media);
     }
-  }, [data, onUploadFinished]);
+  }, [media, onUploadFinished]);
 
   const UploadWidget = () => {
     if (loading) {

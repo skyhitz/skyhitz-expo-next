@@ -7,7 +7,7 @@ import {
   Entry,
 } from "app/api/graphql";
 import { ipfsProtocol } from "app/constants/constants";
-import { MintForm } from "app/types";
+import { ErrorType, MediaFileInfo, MintForm } from "app/types";
 import { useCallback, useState } from "react";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
@@ -18,9 +18,11 @@ import { userAtom } from "app/state/user";
 import { useSWRConfig } from "swr";
 import { recentlyAddedQueryKey } from "./algolia/useRecentlyAdded";
 import { topChartQueryKey } from "./algolia/useTopChart";
+import { useAudibleCheck } from "./useAudibleCheck";
 
 type MintStatus =
   | "Uninitialized"
+  | "Checking for copyrights"
   | "Uploading files"
   | "Uploading metadata"
   | "Submitting"
@@ -33,8 +35,8 @@ type MintStatus =
 type MintResult = {
   mint: (
     formData: MintForm,
-    artwork: Blob,
-    video: Blob,
+    artwork: MediaFileInfo,
+    video: MediaFileInfo,
     showModal: (uri: string) => void
   ) => void;
   retryIndex: () => void;
@@ -45,7 +47,7 @@ type MintResult = {
 
 export function useMintNFT(): MintResult {
   const [status, setStatus] = useState<MintStatus>("Uninitialized");
-  const { uploadFile, progress } = useUploadFileToNFTStorage();
+  const { uploadFile, uploadBlob, progress } = useUploadFileToNFTStorage();
   const [error, setError] = useState<string | undefined>();
   const [issuer, setIssuer] = useState<string>("");
   const [createEntry] = useCreateEntryMutation();
@@ -54,6 +56,7 @@ export function useMintNFT(): MintResult {
   const { cache, query } = useApolloClient();
   const { mutate, cache: swrCache } = useSWRConfig();
   const user = useRecoilValue(userAtom);
+  const { verify } = useAudibleCheck();
 
   const indexNFT = useCallback(
     async (nftIssuer: string = issuer) => {
@@ -131,13 +134,26 @@ export function useMintNFT(): MintResult {
   const mint = useCallback(
     async (
       form: MintForm,
-      artwork: Blob,
-      video: Blob,
+      artwork: MediaFileInfo,
+      video: MediaFileInfo,
       showModal: (uri: string) => void
     ) => {
       setError(undefined);
-      setStatus("Uploading files");
+      setStatus("Checking for copyrights");
+      try {
+        await verify(video);
+      } catch (ex) {
+        let message = "Couldn't verify if the file is original";
+        const err = ex as ErrorType;
+        if (err.message) {
+          message = err.message;
+        }
+        setStatus("Error");
+        setError(message);
+        return;
+      }
 
+      setStatus("Uploading files");
       const imageCidResponse = await uploadFile(artwork);
       const videoCidResponse = await uploadFile(video);
 
@@ -190,7 +206,7 @@ export function useMintNFT(): MintResult {
       const blob = new Blob([JSON.stringify(json)], {
         type: "application/json",
       });
-      const nftCid = await uploadFile(blob);
+      const nftCid = await uploadBlob(blob);
 
       setStatus("Submitting");
       const { data: entry } = await createEntry({

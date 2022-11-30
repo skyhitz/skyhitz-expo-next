@@ -6619,6 +6619,11 @@ expo-constants@~13.2.0:
     "@expo/config" "~7.0.0"
     uuid "^3.3.2"
 
+expo-crypto@~10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/expo-crypto/-/expo-crypto-10.2.0.tgz#86d16e7e93b62af37d9ded3d344744e94d6ab4e4"
+  integrity sha512-YVFp+DJXBtt4t6oZXepnzb+xwpKzFbXn3B9Oma1Tfh6J0rIlm/I20UW/5apdvEdbj44fxJ5DsiZeyADI3bcZkQ==
+
 expo-dev-client@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-1.0.1.tgz#88edb3a60b5a758c0cc57b0326bdcb1ad1573e5a"

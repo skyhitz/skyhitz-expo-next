@@ -16,7 +16,7 @@ import { userAtom } from "app/state/user";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useRouter } from "solito/router";
-import { ChangeAvatarImg, EditProfileForm } from "app/types";
+import { EditProfileForm, MediaFileInfo } from "app/types";
 import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
@@ -27,9 +27,10 @@ import { ChangeWallet } from "./ChangeWallet";
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
   assert.ok(user, "Unauthorized access on EditProfileScreen");
-  const [avatar, setAvatar] = useState<ChangeAvatarImg>({
-    url: user.avatarUrl ?? "",
-  });
+  const [avatar, setAvatar] = useState<string>(user.avatarUrl ?? "");
+  const [changedAvatar, setChangedAvatar] = useState<MediaFileInfo | null>(
+    null
+  );
   const [updateUser, { data, loading }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();
   const { back } = useRouter();
@@ -40,8 +41,8 @@ export default function EditProfileScreen() {
 
     let avatarUrl = "";
     try {
-      if (avatar.blob) {
-        const cid = await uploadFile(avatar.blob);
+      if (changedAvatar) {
+        const cid = await uploadFile(changedAvatar);
         avatarUrl = `${ipfsProtocol}${cid}`;
       }
       await updateUser({
@@ -92,7 +93,10 @@ export default function EditProfileScreen() {
             <ChangeUserAvatar
               avatarImg={avatar}
               displayName={user!.displayName}
-              onChange={setAvatar}
+              onChange={(file) => {
+                setAvatar(file.uri);
+                setChangedAvatar(file);
+              }}
               disable={loading}
             />
             <FormInputWithIcon
@@ -142,7 +146,7 @@ export default function EditProfileScreen() {
               size="large"
               onPress={handleSubmit}
               className="mb-5 md:mb-0 md:mr-5"
-              disabled={!isValid}
+              disabled={!isValid || loading}
               loading={loading || !!progress}
             />
             <Button
