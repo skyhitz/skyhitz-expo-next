@@ -361,6 +361,24 @@ export type ChangeWalletMutation = {
   } | null;
 };
 
+export type UpdatePricingMutationVariables = Exact<{
+  id: Scalars["String"];
+  price: Scalars["Int"];
+  forSale: Scalars["Boolean"];
+  equityForSale: Scalars["Int"];
+}>;
+
+export type UpdatePricingMutation = {
+  __typename?: "Mutation";
+  updatePricing?: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success?: boolean | null;
+    submitted?: boolean | null;
+    message?: string | null;
+  } | null;
+};
+
 export type CreateEntryMutationVariables = Exact<{
   fileCid: Scalars["String"];
   metaCid: Scalars["String"];
@@ -841,6 +859,75 @@ export type ChangeWalletMutationResult =
 export type ChangeWalletMutationOptions = Apollo.BaseMutationOptions<
   ChangeWalletMutation,
   ChangeWalletMutationVariables
+>;
+
+export const UpdatePricingDocument = gql`
+  mutation UpdatePricing(
+    $id: String!
+    $price: Int!
+    $forSale: Boolean!
+    equityForSale: Int!
+  ) {
+    updatePricing(
+      id: $id
+      price: $price
+      forSale: $forSale
+      equityForSale: $equityForSale
+    ) {
+      xdr
+      success 
+      submitted
+      message
+    }
+  }
+`;
+
+export type UpdatePricingMutationFn = Apollo.MutationFunction<
+  UpdatePricingMutation,
+  UpdatePricingMutationVariables
+>;
+
+/**
+ * __useUpdatePricingMutation__
+ *
+ * To run a mutation, you first call `useUpdatePricingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePricingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePricingMutation, { data, loading, error }] = useUpdatePricingMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      price: // value for 'price'
+ *      forSale: // value for 'forSale'
+ *      equityForSale: // value for 'equityForSale'
+ *   },
+ * });
+ */
+export function useUpdatePricingMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdatePricingMutation,
+    UpdatePricingMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdatePricingMutation,
+    UpdatePricingMutationVariables
+  >(UpdatePricingDocument, options);
+}
+
+export type UpdatePricingMutationHookResult = ReturnType<
+  typeof useUpdatePricingMutation
+>;
+export type UpdatePricingMutationResult =
+  Apollo.MutationResult<UpdatePricingMutation>;
+export type UpdatePricingMutationOptions = Apollo.BaseMutationOptions<
+  UpdatePricingMutation,
+  UpdatePricingMutationVariables
 >;
 export const CreateEntryDocument = gql`
   mutation CreateEntry(
