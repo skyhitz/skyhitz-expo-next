@@ -866,7 +866,7 @@ export const UpdatePricingDocument = gql`
     $id: String!
     $price: Int!
     $forSale: Boolean!
-    equityForSale: Int!
+    $equityForSale: Int!
   ) {
     updatePricing(
       id: $id
@@ -875,7 +875,7 @@ export const UpdatePricingDocument = gql`
       equityForSale: $equityForSale
     ) {
       xdr
-      success 
+      success
       submitted
       message
     }
