@@ -365,7 +365,7 @@ export type UpdatePricingMutationVariables = Exact<{
   id: Scalars["String"];
   price: Scalars["Int"];
   forSale: Scalars["Boolean"];
-  equityForSale: Scalars["Int"];
+  equityForSale: Scalars["Float"];
 }>;
 
 export type UpdatePricingMutation = {
@@ -866,7 +866,7 @@ export const UpdatePricingDocument = gql`
     $id: String!
     $price: Int!
     $forSale: Boolean!
-    $equityForSale: Int!
+    $equityForSale: Float!
   ) {
     updatePricing(
       id: $id

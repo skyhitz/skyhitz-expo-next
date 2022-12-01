@@ -1,4 +1,8 @@
-import { Entry } from "app/api/graphql";
+import {
+  Entry,
+  UpdatePricingMutation,
+  useUpdatePricingMutation,
+} from "app/api/graphql";
 import { Button, Modal, Pressable, View, Text, Image } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import { CreateOfferForm } from "app/types";
@@ -13,6 +17,10 @@ import React, { useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { FormInputWithIcon } from "../inputs/FormInputWithIcon";
 import { SkyhitzSlider } from "../SkyhitzSlider";
+import { useToast } from "react-native-toast-notifications";
+import { useErrorReport } from "app/hooks/useErrorReport";
+import { useWalletConnectClient } from "app/provider/WalletConnect";
+import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 
 type Props = {
   entry: Entry;
@@ -29,6 +37,61 @@ export function CreateOfferBtn({ entry }: Props) {
 
   const CreateOfferModal = ({ visible, hideModal, entry }: ModalProps) => {
     const [equityForSale, setEquityForSale] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [message, setMessage] = useState<string | undefined>();
+    const [updatePricing] = useUpdatePricingMutation();
+    const toast = useToast();
+    const reportError = useErrorReport();
+    const { signAndSubmitXdr, session, connect } = useWalletConnectClient();
+    const [uri, setUri] = useState<string>("");
+    const [walletConnectModalVisible, setWalletConnectModalVisible] =
+      useState<boolean>(false);
+
+    const onMutationCompleted = async (data: UpdatePricingMutation) => {
+      if (data?.updatePricing?.success) {
+        if (data.updatePricing.submitted) {
+          setLoading(false);
+          hideModal();
+          toast.show("You have successfully bought an NFT", {
+            type: "success",
+          });
+        } else if (data.updatePricing.xdr) {
+          setMessage("Sign and submit transaction in your wallet");
+          const xdr = data.updatePricing.xdr;
+
+          try {
+            let currentSession = session;
+            if (!currentSession) {
+              currentSession = await connect((newUri) => {
+                setUri(newUri);
+                setWalletConnectModalVisible(true);
+              });
+            }
+            const response = await signAndSubmitXdr(xdr, currentSession);
+            setMessage(undefined);
+            setLoading(false);
+
+            const { status } = response as { status: string };
+            if (status === "success") {
+              hideModal();
+              toast.show("You have successfully bought an NFT", {
+                type: "success",
+              });
+            } else {
+              hideModal();
+              reportError(
+                Error(
+                  "Something went wrong during signing and submitting transaction in your wallet."
+                )
+              );
+            }
+          } catch (ex) {
+            hideModal();
+            reportError(ex);
+          }
+        }
+      }
+    };
 
     const initialValues: CreateOfferForm = {
       price: "",
@@ -72,7 +135,24 @@ export function CreateOfferBtn({ entry }: Props) {
                 initialValues={initialValues}
                 validationSchema={createOfferSchema}
                 validateOnMount={false}
-                onSubmit={(_) => {}}
+                onSubmit={async (values) => {
+                  setLoading(true);
+                  try {
+                    await updatePricing({
+                      variables: {
+                        id: entry.id!,
+                        equityForSale: (values.equityForSale ?? 0) / 100,
+                        price: parseInt(values.price ?? "0", 10) || 0,
+                        forSale: true,
+                      },
+                      onCompleted: onMutationCompleted,
+                    });
+                  } catch (ex) {
+                    setLoading(false);
+                    hideModal();
+                    reportError(ex);
+                  }
+                }}
               >
                 {({
                   values,
@@ -122,13 +202,19 @@ export function CreateOfferBtn({ entry }: Props) {
                         />
                       </GestureHandlerRootView>
                     </View>
+                    {message && (
+                      <Text className="w-full text-center text-sm my-4 min-h-5">
+                        {message}
+                      </Text>
+                    )}
                     <View className="mt-5">
                       <Button
-                        text="Save"
+                        text="Confirm"
                         size="large"
                         onPress={handleSubmit}
                         className="mb-5 md:mb-0 md:mr-5"
-                        disabled={!isValid}
+                        disabled={!isValid || loading}
+                        loading={loading}
                       />
                     </View>
                   </View>
@@ -137,6 +223,11 @@ export function CreateOfferBtn({ entry }: Props) {
             </Pressable>
           </Pressable>
         </Modal>
+        <WalletConnectModal
+          visible={walletConnectModalVisible}
+          close={() => setWalletConnectModalVisible(false)}
+          uri={uri}
+        />
       </>
     );
   };
