@@ -37,10 +37,9 @@ export type MintForm = {
   equityForSale?: number;
 };
 
-export type ManageAssetForm = {
+export type CreateOfferForm = {
   price?: string;
   equityForSale?: number;
-  availableForSale?: boolean;
 };
 
 export type WithdrawForm = {
