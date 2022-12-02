@@ -119,6 +119,7 @@ export type Mutation = {
   buyEntry?: Maybe<ConditionalXdr>;
   cancelSubscription?: Maybe<Scalars["String"]>;
   changeWallet?: Maybe<User>;
+  createBuyOffer?: Maybe<ConditionalXdr>;
   createEntry?: Maybe<ConditionalXdr>;
   createUserWithEmail?: Maybe<ConditionalUser>;
   indexEntry?: Maybe<Entry>;
@@ -150,6 +151,13 @@ export type MutationBuyEntryArgs = {
 /** Create users or entries */
 export type MutationChangeWalletArgs = {
   signedXDR: Scalars["String"];
+};
+
+/** Create users or entries */
+export type MutationCreateBuyOfferArgs = {
+  equityToBuy: Scalars["Float"];
+  id: Scalars["String"];
+  price: Scalars["Int"];
 };
 
 /** Create users or entries */
@@ -358,6 +366,22 @@ export type ChangeWalletMutation = {
     description?: string | null;
     publicKey?: string | null;
     managed?: boolean | null;
+  } | null;
+};
+
+export type CreateBuyOfferMutationVariables = Exact<{
+  id: Scalars["String"];
+  price: Scalars["Int"];
+  equityToBuy: Scalars["Float"];
+}>;
+
+export type CreateBuyOfferMutation = {
+  __typename?: "Mutation";
+  createBuyOffer?: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success?: boolean | null;
+    submitted?: boolean | null;
   } | null;
 };
 
@@ -841,6 +865,60 @@ export type ChangeWalletMutationResult =
 export type ChangeWalletMutationOptions = Apollo.BaseMutationOptions<
   ChangeWalletMutation,
   ChangeWalletMutationVariables
+>;
+export const CreateBuyOfferDocument = gql`
+  mutation CreateBuyOffer($id: String!, $price: Int!, $equityToBuy: Float!) {
+    createBuyOffer(id: $id, price: $price, equityToBuy: $equityToBuy) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type CreateBuyOfferMutationFn = Apollo.MutationFunction<
+  CreateBuyOfferMutation,
+  CreateBuyOfferMutationVariables
+>;
+
+/**
+ * __useCreateBuyOfferMutation__
+ *
+ * To run a mutation, you first call `useCreateBuyOfferMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBuyOfferMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBuyOfferMutation, { data, loading, error }] = useCreateBuyOfferMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      price: // value for 'price'
+ *      equityToBuy: // value for 'equityToBuy'
+ *   },
+ * });
+ */
+export function useCreateBuyOfferMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateBuyOfferMutation,
+    CreateBuyOfferMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateBuyOfferMutation,
+    CreateBuyOfferMutationVariables
+  >(CreateBuyOfferDocument, options);
+}
+export type CreateBuyOfferMutationHookResult = ReturnType<
+  typeof useCreateBuyOfferMutation
+>;
+export type CreateBuyOfferMutationResult =
+  Apollo.MutationResult<CreateBuyOfferMutation>;
+export type CreateBuyOfferMutationOptions = Apollo.BaseMutationOptions<
+  CreateBuyOfferMutation,
+  CreateBuyOfferMutationVariables
 >;
 export const CreateEntryDocument = gql`
   mutation CreateEntry(
