@@ -3,9 +3,9 @@ import X from "app/ui/icons/x";
 import { tw } from "app/design-system/tailwind";
 import {
   Entry,
-  usePaymentsInfoQuery,
   useBuyEntryMutation,
   BuyEntryMutation,
+  useUserCreditsQuery,
 } from "app/api/graphql";
 import { Line } from "app/ui/orSeparator";
 import { imageSrc, imageUrlSmall } from "app/utils/entry";
@@ -31,7 +31,7 @@ export function PaymentConfirmationModal({
   initialEquityForSale,
   entry,
 }: Props) {
-  const { data: paymentInfoData } = usePaymentsInfoQuery();
+  const { data: credits } = useUserCreditsQuery();
   const [buy] = useBuyEntryMutation();
   const { signAndSubmitXdr, session, connect } = useWalletConnectClient();
   const [loading, setLoading] = useState<boolean>(false);
@@ -120,8 +120,7 @@ export function PaymentConfirmationModal({
             </View>
             <Line />
             <Text className="my-2 text-sm">
-              Current Balance:{" "}
-              {paymentInfoData?.paymentsInfo?.credits?.toFixed(2) ?? "0.00"} XLM
+              Current Balance: {credits?.userCredits?.toFixed(2) ?? "0.00"} XLM
             </Text>
             <Text className="my-2 text-sm">
               Price: {(price * equityForSale).toFixed(2)} XLM
@@ -177,8 +176,7 @@ export function PaymentConfirmationModal({
                 }
               }}
               disabled={
-                price * equityForSale >=
-                  (paymentInfoData?.paymentsInfo?.credits ?? 0) || loading
+                price * equityForSale >= (credits?.userCredits ?? 0) || loading
               }
               loading={loading}
             />

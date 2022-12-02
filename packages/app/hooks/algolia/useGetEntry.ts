@@ -22,7 +22,7 @@ export function useGetEntry({ id, skip }: Props): Result {
       });
 
       if (!isEmpty(res.hits)) {
-        const first = res.hits[0] as Entry;
+        const first = res.hits[0] as unknown as Entry;
         setEntry(first);
       }
     };

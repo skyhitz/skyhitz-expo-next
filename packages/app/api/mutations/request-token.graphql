@@ -1,3 +1,3 @@
-mutation requestToken($usernameOrEmail: String!, $publicKey: String!) {
-  requestToken(usernameOrEmail: $usernameOrEmail, publicKey: $publicKey)
+mutation requestToken($usernameOrEmail: String!) {
+  requestToken(usernameOrEmail: $usernameOrEmail)
 }
