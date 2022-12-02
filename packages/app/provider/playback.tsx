@@ -166,7 +166,7 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (user) {
-          setLastPlayedEntry({ variables: { entryId: entry.id! } });
+          setLastPlayedEntry({ variables: { entryId: entry.id } });
         }
       }
     },

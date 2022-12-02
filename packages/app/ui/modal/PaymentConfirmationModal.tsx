@@ -111,8 +111,8 @@ export function PaymentConfirmationModal({
             <View className="flex-row my-4 items-center">
               <Image
                 className="w-10 h-10"
-                uri={entry.imageUrl ? imageUrlSmall(entry.imageUrl) : ""}
-                fallbackUri={entry.imageUrl ? imageSrc(entry.imageUrl) : ""}
+                uri={imageUrlSmall(entry.imageUrl)}
+                fallbackUri={imageSrc(entry.imageUrl)}
               />
               <Text className="ml-2">
                 {entry.title}-{entry.artist}
@@ -163,7 +163,7 @@ export function PaymentConfirmationModal({
                 try {
                   await buy({
                     variables: {
-                      id: entry.id!,
+                      id: entry.id,
                       amount: equityForSale,
                       price,
                     },

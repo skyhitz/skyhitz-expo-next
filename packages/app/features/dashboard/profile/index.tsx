@@ -60,7 +60,7 @@ export function ProfileScreen() {
               <Cog color={tw.color("white")} size={18} />
             </Link>
           </View>
-          <CopyWalletPublicKeyButton walletPublicKey={user.publicKey!} />
+          <CopyWalletPublicKeyButton walletPublicKey={user.publicKey} />
         </View>
       </View>
       <ProfileRow
@@ -100,7 +100,7 @@ export function ProfileScreen() {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         availableBalance={credits?.userCredits ?? 0}
-        publicKey={user.publicKey ?? ""}
+        publicKey={user.publicKey}
       />
     </SafeAreaView>
   );

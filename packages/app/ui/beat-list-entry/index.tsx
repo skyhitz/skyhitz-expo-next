@@ -33,8 +33,8 @@ export function BeatListEntry({
           <View className="w-full flex items-center flex-row py-2">
             <Image
               className="w-10 h-10"
-              uri={entry.imageUrl ? imageUrlSmall(entry.imageUrl) : ""}
-              fallbackUri={entry.imageUrl ? imageSrc(entry.imageUrl) : ""}
+              uri={imageUrlSmall(entry.imageUrl)}
+              fallbackUri={imageSrc(entry.imageUrl)}
             />
             {spot && (
               <Text className="text-2xl leading-none text-center ml-2 w-11">
