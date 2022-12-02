@@ -55,7 +55,6 @@ export function CreateOfferBtn({ entry, holders }: Props) {
   );
 
   const maxEquityForSale = (currentUserBalance / totalBalance) * 100;
-
   const CreateOfferModal = ({
     visible,
     hideModal,
@@ -258,12 +257,13 @@ export function CreateOfferBtn({ entry, holders }: Props) {
     );
   };
 
+  console.log(maxEquityForSale);
   if (!maxEquityForSale) return null;
 
   return (
     <ComponentAuthGuard>
       <Button
-        text="Create an offer"
+        text="Create/Modify an offer"
         className="flex-row-reverse mt-3 mr-1"
         onPress={() => {
           setModalVisible(true);
