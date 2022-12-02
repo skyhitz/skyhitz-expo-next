@@ -1,6 +1,0 @@
-query PaymentsInfo {
-  paymentsInfo {
-    subscribed
-    credits
-  }
-}

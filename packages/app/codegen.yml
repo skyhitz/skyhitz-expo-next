@@ -1,5 +1,5 @@
 overwrite: true
-schema: "https://spi.skyhitz.io/api/graphql"
+schema: "http://localhost:4000/api/graphql"
 documents: "api"
 generates:
   api/graphql.tsx:

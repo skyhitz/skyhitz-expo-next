@@ -35,22 +35,19 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
             <meta property="og:type" content="website" />
             <meta
               property="twitter:image"
-              content={`${imageUrlMedium(entry.imageUrl!)}`}
+              content={`${imageUrlMedium(entry.imageUrl)}`}
             />
             <meta
               property="og:image"
-              content={`${imageUrlMedium(entry.imageUrl!)}`}
+              content={`${imageUrlMedium(entry.imageUrl)}`}
             />
             <meta
               property="twitter:player"
-              content={`${videoSrc(entry.videoUrl!)}`}
+              content={`${videoSrc(entry.videoUrl)}`}
             />
             <meta property="twitter:player:width" content="480" />
             <meta property="twitter:player:height" content="480" />
-            <meta
-              property="og:video"
-              content={`${videoSrc(entry.videoUrl!)}`}
-            />
+            <meta property="og:video" content={`${videoSrc(entry.videoUrl)}`} />
             <meta property="og:video:type" content="video/mp4." />
             <meta property="og:video:width" content="480" />
             <meta property="og:video:height" content="480" />

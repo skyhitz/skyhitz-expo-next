@@ -10,7 +10,7 @@ import { Line } from "app/ui/orSeparator";
 import KeyboardAvoidingView from "app/design-system/keyboardAvoidingView";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import {
-  usePaymentsInfoQuery,
+  useUserCreditsQuery,
   useWithdrawToExternalWalletMutation,
 } from "app/api/graphql";
 import { WithdrawForm } from "app/types";
@@ -20,7 +20,7 @@ import { convertToString } from "app/utils/float";
 
 export function WithdrawCredits() {
   const [modalVisible, setModalVisible] = useState(false);
-  const { data: paymentInfoData } = usePaymentsInfoQuery();
+  const { data: credits } = useUserCreditsQuery();
   const [withdraw, { data, loading, error }] =
     useWithdrawToExternalWalletMutation();
   const toast = useToast();
@@ -31,7 +31,7 @@ export function WithdrawCredits() {
   };
 
   useEffect(() => {
-    if (data?.withdrawToExternalWallet?.success) {
+    if (data?.withdrawToExternalWallet) {
       setModalVisible(false);
       toast.show("Amount successfully transfered to your external wallet", {
         type: "success",
@@ -72,15 +72,14 @@ export function WithdrawCredits() {
               <View className="w-72 flex items-center">
                 <Text className="text-lg font-bold">Withdraw credits</Text>
                 <Text className="w-full mt-16">
-                  Current Balance:{" "}
-                  {convertToString(paymentInfoData?.paymentsInfo?.credits ?? 0)}
+                  Current Balance: {convertToString(credits?.userCredits ?? 0)}
                   XLM
                 </Text>
                 <Formik
                   initialValues={initialValues}
                   onSubmit={onSubmit}
                   validationSchema={withdrawFormSchema(
-                    paymentInfoData?.paymentsInfo?.credits ?? 1
+                    credits?.userCredits ?? 1
                   )}
                   validateOnMount
                 >

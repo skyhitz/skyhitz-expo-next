@@ -17,7 +17,7 @@ type Props = {
 };
 
 export function BuyNowBtn({ entry }: Props) {
-  const price = useEntryOffer(entry.code!, entry.issuer!);
+  const price = useEntryOffer(entry.code, entry.issuer);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const { cache } = useApolloClient();
   const user = useRecoilValue(userAtom);
@@ -45,7 +45,7 @@ export function BuyNowBtn({ entry }: Props) {
         hideModal={(success: boolean) => {
           setModalVisible(false);
           if (success) {
-            mutate(getEntryOfferUrl(entry.code!, entry.issuer!));
+            mutate(getEntryOfferUrl(entry.code, entry.issuer));
 
             cache.updateQuery(
               {

@@ -1,6 +1,6 @@
 import { Button, Text, View } from "app/design-system";
 import React, { useCallback, useState } from "react";
-import { useChangeWalletMutation, usePaymentsInfoQuery } from "app/api/graphql";
+import { useChangeWalletMutation, useUserCreditsQuery } from "app/api/graphql";
 import { useToast } from "react-native-toast-notifications";
 import { useRecoilState } from "recoil";
 import { userAtom } from "app/state/user";
@@ -13,7 +13,7 @@ import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 
 export function ChangeWallet() {
   const [user, setUser] = useRecoilState(userAtom);
-  const { data: paymentInfoData } = usePaymentsInfoQuery();
+  const { data: credits } = useUserCreditsQuery();
   const [changeWallet] = useChangeWalletMutation();
   const { authNewSession } = useWalletConnectClient();
   const reportError = useErrorReport();
@@ -60,15 +60,11 @@ export function ChangeWallet() {
         {user?.managed && (
           <>
             <Text className="text-sm my-2">
-              Current balance:{" "}
-              {convertToString(paymentInfoData?.paymentsInfo?.credits ?? 0)}XLM
+              Current balance: {convertToString(credits?.userCredits ?? 0)}XLM
             </Text>
             <Text className="text-sm leading-none my-2">
               Withdrawal fee:{" "}
-              {convertToString(
-                (paymentInfoData?.paymentsInfo?.credits ?? 0) * 0.06
-              )}{" "}
-              XLM
+              {convertToString((credits?.userCredits ?? 0) * 0.06)} XLM
             </Text>
             <Text className="text-xs text-grey leading-none mt-2">
               We collect a transaction fee that equals 6% of the current account
