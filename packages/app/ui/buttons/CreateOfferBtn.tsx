@@ -1,5 +1,6 @@
 import {
   Entry,
+  EntryHolder,
   UpdatePricingMutation,
   useUpdatePricingMutation,
 } from "app/api/graphql";
@@ -21,21 +22,46 @@ import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
+import { compose, map, prop, sum, filter } from "ramda";
 
 type Props = {
   entry: Entry;
+  holders?: EntryHolder[] | null;
 };
 
 type ModalProps = {
   visible: boolean;
   entry: Entry;
+  maxEquityForSale: number;
   hideModal: () => void;
 };
 
-export function CreateOfferBtn({ entry }: Props) {
+export function CreateOfferBtn({ entry, holders }: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const CreateOfferModal = ({ visible, hideModal, entry }: ModalProps) => {
+  const user = useRecoilValue(userAtom);
+
+  const totalBalance = holders
+    ? sum(map(compose(parseInt, prop("balance")), holders))
+    : 1;
+
+  const currentUserHolder = holders
+    ? filter((holder) => holder.account === user?.publicKey, holders)
+    : [];
+  const currentUserBalance = sum(
+    map(compose(parseInt, prop("balance")), currentUserHolder)
+  );
+
+  const maxEquityForSale = (currentUserBalance / totalBalance) * 100;
+
+  const CreateOfferModal = ({
+    visible,
+    hideModal,
+    entry,
+    maxEquityForSale,
+  }: ModalProps) => {
     const [equityForSale, setEquityForSale] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
     const [message, setMessage] = useState<string | undefined>();
@@ -182,7 +208,7 @@ export function CreateOfferBtn({ entry }: Props) {
                       <GestureHandlerRootView style={{ flex: 1 }}>
                         <SkyhitzSlider
                           minimumValue={1}
-                          maximumValue={100}
+                          maximumValue={maxEquityForSale}
                           value={values.equityForSale ?? 1}
                           onValueChange={(value: number) => {
                             setEquityForSale(
@@ -232,6 +258,8 @@ export function CreateOfferBtn({ entry }: Props) {
     );
   };
 
+  if (!maxEquityForSale) return null;
+
   return (
     <ComponentAuthGuard>
       <Button
@@ -245,6 +273,7 @@ export function CreateOfferBtn({ entry }: Props) {
       <CreateOfferModal
         visible={modalVisible}
         entry={entry}
+        maxEquityForSale={maxEquityForSale}
         hideModal={() => {
           setModalVisible(false);
         }}

@@ -48,7 +48,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
         </View>
       </View>
       <View className="flex-row">
-        <CreateOfferBtn entry={entry} />
+        <CreateOfferBtn entry={entry} holders={holders} />
         <CancelOfferBtn entry={entry} />
       </View>
       <PriceContainer entry={entry} />
