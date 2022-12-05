@@ -77,7 +77,7 @@ export function CreateOfferBtn({ entry, holders }: Props) {
         if (data.updatePricing.submitted) {
           setLoading(false);
           hideModal();
-          toast.show("You have successfully bought an NFT", {
+          toast.show("You have successfully created an offer", {
             type: "success",
           });
         } else if (data.updatePricing.xdr) {
@@ -99,7 +99,7 @@ export function CreateOfferBtn({ entry, holders }: Props) {
             const { status } = response as { status: string };
             if (status === "success") {
               hideModal();
-              toast.show("You have successfully bought an NFT", {
+              toast.show("You have successfully created an offer", {
                 type: "success",
               });
             } else {

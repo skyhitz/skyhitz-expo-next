@@ -1,5 +1,6 @@
 import {
   Entry,
+  EntryHolder,
   UpdatePricingMutation,
   useUpdatePricingMutation,
 } from "app/api/graphql";
@@ -12,9 +13,12 @@ import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 type Props = {
   entry: Entry;
+  holders?: EntryHolder[] | null;
 };
 
 type ModalProps = {
@@ -23,8 +27,14 @@ type ModalProps = {
   hideModal: () => void;
 };
 
-export function CancelOfferBtn({ entry }: Props) {
+export function CancelOfferBtn({ entry, holders }: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const user = useRecoilValue(userAtom);
+
+  const currentUserIsOwner =
+    (holders?.filter((holder) => holder.account === user?.publicKey) || [])
+      .length > 0;
 
   const CancelConfirmationModal = ({
     visible,
@@ -46,7 +56,7 @@ export function CancelOfferBtn({ entry }: Props) {
         if (data.updatePricing.submitted) {
           setLoading(false);
           hideModal();
-          toast.show("You have successfully bought an NFT", {
+          toast.show("You have successfully cancelled an offer", {
             type: "success",
           });
         } else if (data.updatePricing.xdr) {
@@ -68,7 +78,7 @@ export function CancelOfferBtn({ entry }: Props) {
             const { status } = response as { status: string };
             if (status === "success") {
               hideModal();
-              toast.show("You have successfully bought an NFT", {
+              toast.show("You have cancelled an offer", {
                 type: "success",
               });
             } else {
@@ -84,6 +94,9 @@ export function CancelOfferBtn({ entry }: Props) {
             reportError(ex);
           }
         }
+      } else {
+        hideModal();
+        reportError(Error("You don't have any offers."));
       }
     };
 
@@ -138,6 +151,9 @@ export function CancelOfferBtn({ entry }: Props) {
       </>
     );
   };
+
+  if (!currentUserIsOwner) return null;
+
   return (
     <ComponentAuthGuard>
       <Button
