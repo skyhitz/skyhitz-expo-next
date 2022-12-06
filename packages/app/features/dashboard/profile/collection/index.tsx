@@ -9,7 +9,6 @@ import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 export default function CollectionScreen() {
   const user = useRecoilValue(userAtom);
   assert.ok(user);
-  assert.ok(user.id);
   const { data, loading } = useUserCollectionQuery({
     variables: {
       userId: user.id,

@@ -22,7 +22,7 @@ export function LikesList({
 }: Props) {
   const { data, loading } = useEntryLikesQuery({
     variables: {
-      id: entry.id!,
+      id: entry.id,
     },
   });
 

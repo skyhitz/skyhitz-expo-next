@@ -16,8 +16,8 @@ import { useRouter } from "solito/router";
 import { useState } from "react";
 import { LowBalanceModal } from "./LowBalanceModal";
 import {
-  usePaymentsInfoQuery,
   useUserCollectionQuery,
+  useUserCreditsQuery,
   useUserLikesQuery,
 } from "app/api/graphql";
 import * as assert from "assert";
@@ -27,7 +27,7 @@ export function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const user = useRecoilValue(userAtom);
   assert.ok(user?.id);
-  const { data: paymentInfoData } = usePaymentsInfoQuery();
+  const { data: credits } = useUserCreditsQuery();
   const { push } = useRouter();
   const { data: userLikesData } = useUserLikesQuery();
   const { data: userCollectionData } = useUserCollectionQuery({
@@ -54,13 +54,13 @@ export function ProfileScreen() {
             <Text className="font-bold mr-2.5">{user.displayName}</Text>
             <Dollar size={22} color={tw.color("white")} />
             <Text className="font-bold ml-1 mr-2.5">
-              {paymentInfoData?.paymentsInfo?.credits?.toFixed(2) ?? ""}
+              {credits?.userCredits.toFixed(2) ?? ""}
             </Text>
             <Link href="/dashboard/profile/edit">
               <Cog color={tw.color("white")} size={18} />
             </Link>
           </View>
-          <CopyWalletPublicKeyButton walletPublicKey={user.publicKey!} />
+          <CopyWalletPublicKeyButton walletPublicKey={user.publicKey} />
         </View>
       </View>
       <ProfileRow
@@ -92,15 +92,15 @@ export function ProfileScreen() {
         icon={Upload}
         className="mx-auto mt-16"
         size="large"
-        disabled={(paymentInfoData?.paymentsInfo?.credits ?? 0) < 2}
+        disabled={(credits?.userCredits ?? 0) < 2}
         onDisabledPress={() => setModalVisible(true)}
       />
 
       <LowBalanceModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        availableBalance={paymentInfoData?.paymentsInfo?.credits ?? 0}
-        publicKey={user.publicKey ?? ""}
+        availableBalance={credits?.userCredits ?? 0}
+        publicKey={user.publicKey}
       />
     </SafeAreaView>
   );

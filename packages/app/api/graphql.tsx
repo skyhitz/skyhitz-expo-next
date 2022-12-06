@@ -21,43 +21,43 @@ export type Scalars = {
   Float: number;
 };
 
-/** This is an ActivityPrice */
+export type AccountCredits = {
+  __typename?: "AccountCredits";
+  credits: Scalars["Float"];
+};
+
 export type ActivityPrice = {
   __typename?: "ActivityPrice";
   d: Scalars["Int"];
   n: Scalars["Int"];
 };
 
-/** This is an ConditionalUser */
 export type ConditionalUser = {
   __typename?: "ConditionalUser";
   message: Scalars["String"];
   user?: Maybe<User>;
 };
 
-/** This is an ConditionalXDR */
 export type ConditionalXdr = {
   __typename?: "ConditionalXDR";
   message?: Maybe<Scalars["String"]>;
-  submitted?: Maybe<Scalars["Boolean"]>;
-  success?: Maybe<Scalars["Boolean"]>;
+  submitted: Scalars["Boolean"];
+  success: Scalars["Boolean"];
   xdr?: Maybe<Scalars["String"]>;
 };
 
-/** This is an Entry */
 export type Entry = {
   __typename?: "Entry";
-  artist?: Maybe<Scalars["String"]>;
-  code?: Maybe<Scalars["String"]>;
+  artist: Scalars["String"];
+  code: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["String"]>;
-  imageUrl?: Maybe<Scalars["String"]>;
-  issuer?: Maybe<Scalars["String"]>;
-  title?: Maybe<Scalars["String"]>;
-  videoUrl?: Maybe<Scalars["String"]>;
+  id: Scalars["String"];
+  imageUrl: Scalars["String"];
+  issuer: Scalars["String"];
+  title: Scalars["String"];
+  videoUrl: Scalars["String"];
 };
 
-/** This is an EntryActivity */
 export type EntryActivity = {
   __typename?: "EntryActivity";
   accounts?: Maybe<Array<Maybe<Scalars["String"]>>>;
@@ -73,7 +73,6 @@ export type EntryActivity = {
   type: Scalars["Int"];
 };
 
-/** This is an EntryDetails */
 export type EntryDetails = {
   __typename?: "EntryDetails";
   artist: Scalars["String"];
@@ -89,70 +88,52 @@ export type EntryDetails = {
   videoUrl: Scalars["String"];
 };
 
-/** This is an EntryHolder */
 export type EntryHolder = {
   __typename?: "EntryHolder";
   account: Scalars["String"];
   balance: Scalars["String"];
 };
 
-/** Entry Likes */
 export type EntryLikes = {
   __typename?: "EntryLikes";
-  /** Count of entry likes */
-  count?: Maybe<Scalars["Int"]>;
-  /** List of users that liked the entry */
+  count: Scalars["Int"];
   users?: Maybe<Array<Maybe<PublicUser>>>;
 };
 
-/** This is an Entry Price */
 export type EntryPrice = {
   __typename?: "EntryPrice";
-  amount?: Maybe<Scalars["String"]>;
-  price?: Maybe<Scalars["String"]>;
+  amount: Scalars["String"];
+  price: Scalars["String"];
 };
 
-/** Create users or entries */
 export type Mutation = {
   __typename?: "Mutation";
-  buyCredits?: Maybe<Scalars["String"]>;
-  buyEntry?: Maybe<ConditionalXdr>;
-  cancelSubscription?: Maybe<Scalars["String"]>;
-  changeWallet?: Maybe<User>;
-  createEntry?: Maybe<ConditionalXdr>;
-  createUserWithEmail?: Maybe<ConditionalUser>;
-  indexEntry?: Maybe<Entry>;
-  likeEntry?: Maybe<Scalars["Boolean"]>;
-  removeEntry?: Maybe<Scalars["Boolean"]>;
-  requestToken?: Maybe<Scalars["Boolean"]>;
-  setLastPlayedEntry?: Maybe<SuccessResponse>;
-  signInWithToken?: Maybe<User>;
-  signInWithXDR?: Maybe<User>;
-  subscribeUser?: Maybe<Scalars["String"]>;
-  updatePricing?: Maybe<ConditionalXdr>;
-  updateUser?: Maybe<User>;
-  withdrawToExternalWallet?: Maybe<SuccessResponse>;
+  buyEntry: ConditionalXdr;
+  changeWallet: User;
+  createEntry: ConditionalXdr;
+  createUserWithEmail: ConditionalUser;
+  indexEntry: Entry;
+  likeEntry: Scalars["Boolean"];
+  removeEntry: Scalars["Boolean"];
+  requestToken: Scalars["Boolean"];
+  setLastPlayedEntry: Scalars["Boolean"];
+  signInWithToken: User;
+  signInWithXDR: User;
+  updatePricing: ConditionalXdr;
+  updateUser: User;
+  withdrawToExternalWallet: Scalars["Boolean"];
 };
 
-/** Create users or entries */
-export type MutationBuyCreditsArgs = {
-  amount: Scalars["Float"];
-  cardToken: Scalars["String"];
-};
-
-/** Create users or entries */
 export type MutationBuyEntryArgs = {
   amount: Scalars["Float"];
   id: Scalars["String"];
   price: Scalars["Float"];
 };
 
-/** Create users or entries */
 export type MutationChangeWalletArgs = {
   signedXDR: Scalars["String"];
 };
 
-/** Create users or entries */
 export type MutationCreateEntryArgs = {
   code: Scalars["String"];
   equityForSale: Scalars["Float"];
@@ -162,58 +143,43 @@ export type MutationCreateEntryArgs = {
   price: Scalars["Int"];
 };
 
-/** Create users or entries */
 export type MutationCreateUserWithEmailArgs = {
   displayName: Scalars["String"];
   email: Scalars["String"];
-  signedXDR: Scalars["String"];
+  signedXDR?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
 };
 
-/** Create users or entries */
 export type MutationIndexEntryArgs = {
   issuer: Scalars["String"];
 };
 
-/** Create users or entries */
 export type MutationLikeEntryArgs = {
   id: Scalars["String"];
   like: Scalars["Boolean"];
 };
 
-/** Create users or entries */
 export type MutationRemoveEntryArgs = {
   id: Scalars["String"];
 };
 
-/** Create users or entries */
 export type MutationRequestTokenArgs = {
-  publicKey: Scalars["String"];
   usernameOrEmail: Scalars["String"];
 };
 
-/** Create users or entries */
 export type MutationSetLastPlayedEntryArgs = {
   entryId: Scalars["String"];
 };
 
-/** Create users or entries */
 export type MutationSignInWithTokenArgs = {
   token: Scalars["String"];
   uid: Scalars["String"];
 };
 
-/** Create users or entries */
 export type MutationSignInWithXdrArgs = {
   signedXDR: Scalars["String"];
 };
 
-/** Create users or entries */
-export type MutationSubscribeUserArgs = {
-  cardToken?: InputMaybe<Scalars["String"]>;
-};
-
-/** Create users or entries */
 export type MutationUpdatePricingArgs = {
   equityForSale: Scalars["Int"];
   forSale: Scalars["Boolean"];
@@ -221,7 +187,6 @@ export type MutationUpdatePricingArgs = {
   price: Scalars["Int"];
 };
 
-/** Create users or entries */
 export type MutationUpdateUserArgs = {
   avatarUrl?: InputMaybe<Scalars["String"]>;
   description?: InputMaybe<Scalars["String"]>;
@@ -230,96 +195,72 @@ export type MutationUpdateUserArgs = {
   username?: InputMaybe<Scalars["String"]>;
 };
 
-/** Create users or entries */
 export type MutationWithdrawToExternalWalletArgs = {
   address: Scalars["String"];
   amount: Scalars["Int"];
 };
 
-/** Payments */
-export type PaymentsInfo = {
-  __typename?: "PaymentsInfo";
-  credits?: Maybe<Scalars["Float"]>;
-  subscribed?: Maybe<Scalars["Boolean"]>;
-};
-
-/** This represents a User */
 export type PublicUser = {
   __typename?: "PublicUser";
-  avatarUrl?: Maybe<Scalars["String"]>;
+  avatarUrl: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["String"]>;
-  username?: Maybe<Scalars["String"]>;
+  id: Scalars["String"];
+  username: Scalars["String"];
 };
 
-/** Get users or entries */
 export type Query = {
   __typename?: "Query";
-  authenticatedUser?: Maybe<User>;
-  entry?: Maybe<EntryDetails>;
-  entryLikes?: Maybe<EntryLikes>;
-  entryPrice?: Maybe<EntryPrice>;
-  getAudibleToken?: Maybe<Token>;
-  getIssuer?: Maybe<Scalars["String"]>;
-  paymentsInfo?: Maybe<PaymentsInfo>;
-  userEntries?: Maybe<Array<Entry>>;
-  userLikes?: Maybe<Array<Maybe<Entry>>>;
-  xlmPrice?: Maybe<Scalars["String"]>;
+  authenticatedUser: User;
+  entry: EntryDetails;
+  entryLikes: EntryLikes;
+  entryPrice: EntryPrice;
+  getAudibleToken: Token;
+  getIssuer: Scalars["String"];
+  userCredits: Scalars["Float"];
+  userEntries: Array<Entry>;
+  userLikes: Array<Entry>;
+  xlmPrice: Scalars["String"];
 };
 
-/** Get users or entries */
 export type QueryEntryArgs = {
   id: Scalars["String"];
 };
 
-/** Get users or entries */
 export type QueryEntryLikesArgs = {
   id: Scalars["String"];
 };
 
-/** Get users or entries */
 export type QueryEntryPriceArgs = {
-  id?: InputMaybe<Scalars["String"]>;
+  id: Scalars["String"];
 };
 
-/** Get users or entries */
 export type QueryGetIssuerArgs = {
   cid: Scalars["String"];
 };
 
-/** Get users or entries */
 export type QueryUserEntriesArgs = {
   userId: Scalars["String"];
 };
 
-/** This is a SuccessResponse */
-export type SuccessResponse = {
-  __typename?: "SuccessResponse";
-  message?: Maybe<Scalars["String"]>;
-  success?: Maybe<Scalars["Boolean"]>;
-};
-
-/** Object that contains access token */
 export type Token = {
   __typename?: "Token";
-  token?: Maybe<Scalars["String"]>;
+  token: Scalars["String"];
 };
 
-/** This represents a User */
 export type User = {
   __typename?: "User";
-  avatarUrl?: Maybe<Scalars["String"]>;
+  avatarUrl: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
-  email?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["String"]>;
+  email: Scalars["String"];
+  id: Scalars["String"];
   jwt?: Maybe<Scalars["String"]>;
   lastPlayedEntry?: Maybe<Entry>;
-  managed?: Maybe<Scalars["Boolean"]>;
-  publicKey?: Maybe<Scalars["String"]>;
+  managed: Scalars["Boolean"];
+  publicKey: Scalars["String"];
   publishedAt?: Maybe<Scalars["String"]>;
-  username?: Maybe<Scalars["String"]>;
+  username: Scalars["String"];
   version?: Maybe<Scalars["Int"]>;
 };
 
@@ -331,12 +272,12 @@ export type BuyEntryMutationVariables = Exact<{
 
 export type BuyEntryMutation = {
   __typename?: "Mutation";
-  buyEntry?: {
+  buyEntry: {
     __typename?: "ConditionalXDR";
     xdr?: string | null;
-    success?: boolean | null;
-    submitted?: boolean | null;
-  } | null;
+    success: boolean;
+    submitted: boolean;
+  };
 };
 
 export type ChangeWalletMutationVariables = Exact<{
@@ -345,20 +286,20 @@ export type ChangeWalletMutationVariables = Exact<{
 
 export type ChangeWalletMutation = {
   __typename?: "Mutation";
-  changeWallet?: {
+  changeWallet: {
     __typename?: "User";
-    avatarUrl?: string | null;
+    avatarUrl: string;
     displayName?: string | null;
-    email?: string | null;
-    username?: string | null;
-    id?: string | null;
+    email: string;
+    username: string;
+    id: string;
     publishedAt?: string | null;
     version?: number | null;
     jwt?: string | null;
     description?: string | null;
-    publicKey?: string | null;
-    managed?: boolean | null;
-  } | null;
+    publicKey: string;
+    managed: boolean;
+  };
 };
 
 export type UpdatePricingMutationVariables = Exact<{
@@ -390,13 +331,13 @@ export type CreateEntryMutationVariables = Exact<{
 
 export type CreateEntryMutation = {
   __typename?: "Mutation";
-  createEntry?: {
+  createEntry: {
     __typename?: "ConditionalXDR";
     xdr?: string | null;
-    success?: boolean | null;
-    submitted?: boolean | null;
+    success: boolean;
+    submitted: boolean;
     message?: string | null;
-  } | null;
+  };
 };
 
 export type CreateUserWithEmailMutationVariables = Exact<{
@@ -408,34 +349,34 @@ export type CreateUserWithEmailMutationVariables = Exact<{
 
 export type CreateUserWithEmailMutation = {
   __typename?: "Mutation";
-  createUserWithEmail?: {
+  createUserWithEmail: {
     __typename?: "ConditionalUser";
     message: string;
     user?: {
       __typename?: "User";
-      avatarUrl?: string | null;
+      avatarUrl: string;
       displayName?: string | null;
-      username?: string | null;
-      id?: string | null;
+      username: string;
+      id: string;
       jwt?: string | null;
       publishedAt?: string | null;
-      email?: string | null;
+      email: string;
       description?: string | null;
-      publicKey?: string | null;
-      managed?: boolean | null;
+      publicKey: string;
+      managed: boolean;
       lastPlayedEntry?: {
         __typename?: "Entry";
-        imageUrl?: string | null;
-        videoUrl?: string | null;
+        imageUrl: string;
+        videoUrl: string;
         description?: string | null;
-        title?: string | null;
-        id?: string | null;
-        artist?: string | null;
-        code?: string | null;
-        issuer?: string | null;
+        title: string;
+        id: string;
+        artist: string;
+        code: string;
+        issuer: string;
       } | null;
     } | null;
-  } | null;
+  };
 };
 
 export type IndexEntryMutationVariables = Exact<{
@@ -444,17 +385,17 @@ export type IndexEntryMutationVariables = Exact<{
 
 export type IndexEntryMutation = {
   __typename?: "Mutation";
-  indexEntry?: {
+  indexEntry: {
     __typename?: "Entry";
-    imageUrl?: string | null;
-    videoUrl?: string | null;
+    imageUrl: string;
+    videoUrl: string;
     description?: string | null;
-    title?: string | null;
-    id?: string | null;
-    artist?: string | null;
-    code?: string | null;
-    issuer?: string | null;
-  } | null;
+    title: string;
+    id: string;
+    artist: string;
+    code: string;
+    issuer: string;
+  };
 };
 
 export type LikeEntryMutationVariables = Exact<{
@@ -462,19 +403,15 @@ export type LikeEntryMutationVariables = Exact<{
   like: Scalars["Boolean"];
 }>;
 
-export type LikeEntryMutation = {
-  __typename?: "Mutation";
-  likeEntry?: boolean | null;
-};
+export type LikeEntryMutation = { __typename?: "Mutation"; likeEntry: boolean };
 
 export type RequestTokenMutationVariables = Exact<{
   usernameOrEmail: Scalars["String"];
-  publicKey: Scalars["String"];
 }>;
 
 export type RequestTokenMutation = {
   __typename?: "Mutation";
-  requestToken?: boolean | null;
+  requestToken: boolean;
 };
 
 export type SetLastPlayedEntryMutationVariables = Exact<{
@@ -483,11 +420,7 @@ export type SetLastPlayedEntryMutationVariables = Exact<{
 
 export type SetLastPlayedEntryMutation = {
   __typename?: "Mutation";
-  setLastPlayedEntry?: {
-    __typename?: "SuccessResponse";
-    success?: boolean | null;
-    message?: string | null;
-  } | null;
+  setLastPlayedEntry: boolean;
 };
 
 export type SignInWithTokenMutationVariables = Exact<{
@@ -497,30 +430,30 @@ export type SignInWithTokenMutationVariables = Exact<{
 
 export type SignInWithTokenMutation = {
   __typename?: "Mutation";
-  signInWithToken?: {
+  signInWithToken: {
     __typename?: "User";
-    avatarUrl?: string | null;
+    avatarUrl: string;
     displayName?: string | null;
-    username?: string | null;
-    id?: string | null;
+    username: string;
+    id: string;
     jwt?: string | null;
     publishedAt?: string | null;
-    email?: string | null;
+    email: string;
     description?: string | null;
-    publicKey?: string | null;
-    managed?: boolean | null;
+    publicKey: string;
+    managed: boolean;
     lastPlayedEntry?: {
       __typename?: "Entry";
-      imageUrl?: string | null;
-      videoUrl?: string | null;
+      imageUrl: string;
+      videoUrl: string;
       description?: string | null;
-      title?: string | null;
-      id?: string | null;
-      artist?: string | null;
-      code?: string | null;
-      issuer?: string | null;
+      title: string;
+      id: string;
+      artist: string;
+      code: string;
+      issuer: string;
     } | null;
-  } | null;
+  };
 };
 
 export type SignInWithXdrMutationVariables = Exact<{
@@ -529,30 +462,30 @@ export type SignInWithXdrMutationVariables = Exact<{
 
 export type SignInWithXdrMutation = {
   __typename?: "Mutation";
-  signInWithXDR?: {
+  signInWithXDR: {
     __typename?: "User";
-    avatarUrl?: string | null;
+    avatarUrl: string;
     displayName?: string | null;
-    username?: string | null;
-    id?: string | null;
+    username: string;
+    id: string;
     jwt?: string | null;
     publishedAt?: string | null;
-    email?: string | null;
+    email: string;
     description?: string | null;
-    publicKey?: string | null;
-    managed?: boolean | null;
+    publicKey: string;
+    managed: boolean;
     lastPlayedEntry?: {
       __typename?: "Entry";
-      imageUrl?: string | null;
-      videoUrl?: string | null;
+      imageUrl: string;
+      videoUrl: string;
       description?: string | null;
-      title?: string | null;
-      id?: string | null;
-      artist?: string | null;
-      code?: string | null;
-      issuer?: string | null;
+      title: string;
+      id: string;
+      artist: string;
+      code: string;
+      issuer: string;
     } | null;
-  } | null;
+  };
 };
 
 export type UpdateUserMutationVariables = Exact<{
@@ -565,20 +498,20 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = {
   __typename?: "Mutation";
-  updateUser?: {
+  updateUser: {
     __typename?: "User";
-    avatarUrl?: string | null;
+    avatarUrl: string;
     displayName?: string | null;
-    email?: string | null;
-    username?: string | null;
-    id?: string | null;
+    email: string;
+    username: string;
+    id: string;
     publishedAt?: string | null;
     version?: number | null;
     jwt?: string | null;
     description?: string | null;
-    publicKey?: string | null;
-    managed?: boolean | null;
-  } | null;
+    publicKey: string;
+    managed: boolean;
+  };
 };
 
 export type WithdrawToExternalWalletMutationVariables = Exact<{
@@ -588,11 +521,7 @@ export type WithdrawToExternalWalletMutationVariables = Exact<{
 
 export type WithdrawToExternalWalletMutation = {
   __typename?: "Mutation";
-  withdrawToExternalWallet?: {
-    __typename?: "SuccessResponse";
-    success?: boolean | null;
-    message?: string | null;
-  } | null;
+  withdrawToExternalWallet: boolean;
 };
 
 export type EntryDetailsQueryVariables = Exact<{
@@ -601,7 +530,7 @@ export type EntryDetailsQueryVariables = Exact<{
 
 export type EntryDetailsQuery = {
   __typename?: "Query";
-  entry?: {
+  entry: {
     __typename?: "EntryDetails";
     imageUrl: string;
     videoUrl: string;
@@ -642,7 +571,7 @@ export type EntryDetailsQuery = {
       sourceAmount?: string | null;
       price?: { __typename?: "ActivityPrice"; n: number; d: number } | null;
     }> | null;
-  } | null;
+  };
 };
 
 export type EntryLikesQueryVariables = Exact<{
@@ -651,67 +580,57 @@ export type EntryLikesQueryVariables = Exact<{
 
 export type EntryLikesQuery = {
   __typename?: "Query";
-  entryLikes?: {
+  entryLikes: {
     __typename?: "EntryLikes";
     users?: Array<{
       __typename?: "PublicUser";
-      avatarUrl?: string | null;
+      avatarUrl: string;
       displayName?: string | null;
-      username?: string | null;
-      id?: string | null;
+      username: string;
+      id: string;
       description?: string | null;
     } | null> | null;
-  } | null;
+  };
 };
 
 export type GetIssuerQueryVariables = Exact<{
   cid: Scalars["String"];
 }>;
 
-export type GetIssuerQuery = {
-  __typename?: "Query";
-  getIssuer?: string | null;
-};
+export type GetIssuerQuery = { __typename?: "Query"; getIssuer: string };
 
 export type AuthenticatedUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type AuthenticatedUserQuery = {
   __typename?: "Query";
-  authenticatedUser?: {
+  authenticatedUser: {
     __typename?: "User";
-    avatarUrl?: string | null;
+    avatarUrl: string;
     displayName?: string | null;
-    email?: string | null;
-    username?: string | null;
-    id?: string | null;
+    email: string;
+    username: string;
+    id: string;
     description?: string | null;
     jwt?: string | null;
-    publicKey?: string | null;
-    managed?: boolean | null;
+    publicKey: string;
+    managed: boolean;
     lastPlayedEntry?: {
       __typename?: "Entry";
-      imageUrl?: string | null;
-      videoUrl?: string | null;
+      imageUrl: string;
+      videoUrl: string;
       description?: string | null;
-      title?: string | null;
-      id?: string | null;
-      artist?: string | null;
-      code?: string | null;
-      issuer?: string | null;
+      title: string;
+      id: string;
+      artist: string;
+      code: string;
+      issuer: string;
     } | null;
-  } | null;
+  };
 };
 
-export type PaymentsInfoQueryVariables = Exact<{ [key: string]: never }>;
+export type UserCreditsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type PaymentsInfoQuery = {
-  __typename?: "Query";
-  paymentsInfo?: {
-    __typename?: "PaymentsInfo";
-    subscribed?: boolean | null;
-    credits?: number | null;
-  } | null;
-};
+export type UserCreditsQuery = { __typename?: "Query"; userCredits: number };
 
 export type UserCollectionQueryVariables = Exact<{
   userId: Scalars["String"];
@@ -719,34 +638,34 @@ export type UserCollectionQueryVariables = Exact<{
 
 export type UserCollectionQuery = {
   __typename?: "Query";
-  userEntries?: Array<{
+  userEntries: Array<{
     __typename?: "Entry";
-    imageUrl?: string | null;
-    videoUrl?: string | null;
+    imageUrl: string;
+    videoUrl: string;
     description?: string | null;
-    title?: string | null;
-    id?: string | null;
-    artist?: string | null;
-    code?: string | null;
-    issuer?: string | null;
-  }> | null;
+    title: string;
+    id: string;
+    artist: string;
+    code: string;
+    issuer: string;
+  }>;
 };
 
 export type UserLikesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type UserLikesQuery = {
   __typename?: "Query";
-  userLikes?: Array<{
+  userLikes: Array<{
     __typename?: "Entry";
-    imageUrl?: string | null;
-    videoUrl?: string | null;
+    imageUrl: string;
+    videoUrl: string;
     description?: string | null;
-    title?: string | null;
-    id?: string | null;
-    artist?: string | null;
-    code?: string | null;
-    issuer?: string | null;
-  } | null> | null;
+    title: string;
+    id: string;
+    artist: string;
+    code: string;
+    issuer: string;
+  }>;
 };
 
 export const BuyEntryDocument = gql`
@@ -1192,8 +1111,8 @@ export type LikeEntryMutationOptions = Apollo.BaseMutationOptions<
   LikeEntryMutationVariables
 >;
 export const RequestTokenDocument = gql`
-  mutation requestToken($usernameOrEmail: String!, $publicKey: String!) {
-    requestToken(usernameOrEmail: $usernameOrEmail, publicKey: $publicKey)
+  mutation requestToken($usernameOrEmail: String!) {
+    requestToken(usernameOrEmail: $usernameOrEmail)
   }
 `;
 export type RequestTokenMutationFn = Apollo.MutationFunction<
@@ -1215,7 +1134,6 @@ export type RequestTokenMutationFn = Apollo.MutationFunction<
  * const [requestTokenMutation, { data, loading, error }] = useRequestTokenMutation({
  *   variables: {
  *      usernameOrEmail: // value for 'usernameOrEmail'
- *      publicKey: // value for 'publicKey'
  *   },
  * });
  */
@@ -1242,10 +1160,7 @@ export type RequestTokenMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const SetLastPlayedEntryDocument = gql`
   mutation setLastPlayedEntry($entryId: String!) {
-    setLastPlayedEntry(entryId: $entryId) {
-      success
-      message
-    }
+    setLastPlayedEntry(entryId: $entryId)
   }
 `;
 export type SetLastPlayedEntryMutationFn = Apollo.MutationFunction<
@@ -1508,10 +1423,7 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const WithdrawToExternalWalletDocument = gql`
   mutation withdrawToExternalWallet($address: String!, $amount: Int!) {
-    withdrawToExternalWallet(address: $address, amount: $amount) {
-      success
-      message
-    }
+    withdrawToExternalWallet(address: $address, amount: $amount)
   }
 `;
 export type WithdrawToExternalWalletMutationFn = Apollo.MutationFunction<
@@ -1846,63 +1758,58 @@ export type AuthenticatedUserQueryResult = Apollo.QueryResult<
   AuthenticatedUserQuery,
   AuthenticatedUserQueryVariables
 >;
-export const PaymentsInfoDocument = gql`
-  query PaymentsInfo {
-    paymentsInfo {
-      subscribed
-      credits
-    }
+export const UserCreditsDocument = gql`
+  query UserCredits {
+    userCredits
   }
 `;
 
 /**
- * __usePaymentsInfoQuery__
+ * __useUserCreditsQuery__
  *
- * To run a query within a React component, call `usePaymentsInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `usePaymentsInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useUserCreditsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserCreditsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePaymentsInfoQuery({
+ * const { data, loading, error } = useUserCreditsQuery({
  *   variables: {
  *   },
  * });
  */
-export function usePaymentsInfoQuery(
+export function useUserCreditsQuery(
   baseOptions?: Apollo.QueryHookOptions<
-    PaymentsInfoQuery,
-    PaymentsInfoQueryVariables
+    UserCreditsQuery,
+    UserCreditsQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<PaymentsInfoQuery, PaymentsInfoQueryVariables>(
-    PaymentsInfoDocument,
+  return Apollo.useQuery<UserCreditsQuery, UserCreditsQueryVariables>(
+    UserCreditsDocument,
     options
   );
 }
-export function usePaymentsInfoLazyQuery(
+export function useUserCreditsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    PaymentsInfoQuery,
-    PaymentsInfoQueryVariables
+    UserCreditsQuery,
+    UserCreditsQueryVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<PaymentsInfoQuery, PaymentsInfoQueryVariables>(
-    PaymentsInfoDocument,
+  return Apollo.useLazyQuery<UserCreditsQuery, UserCreditsQueryVariables>(
+    UserCreditsDocument,
     options
   );
 }
-export type PaymentsInfoQueryHookResult = ReturnType<
-  typeof usePaymentsInfoQuery
+export type UserCreditsQueryHookResult = ReturnType<typeof useUserCreditsQuery>;
+export type UserCreditsLazyQueryHookResult = ReturnType<
+  typeof useUserCreditsLazyQuery
 >;
-export type PaymentsInfoLazyQueryHookResult = ReturnType<
-  typeof usePaymentsInfoLazyQuery
->;
-export type PaymentsInfoQueryResult = Apollo.QueryResult<
-  PaymentsInfoQuery,
-  PaymentsInfoQueryVariables
+export type UserCreditsQueryResult = Apollo.QueryResult<
+  UserCreditsQuery,
+  UserCreditsQueryVariables
 >;
 export const UserCollectionDocument = gql`
   query userCollection($userId: String!) {

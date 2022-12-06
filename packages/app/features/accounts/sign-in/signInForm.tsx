@@ -24,7 +24,6 @@ export function SignInForm({
     await requestToken({
       variables: {
         usernameOrEmail: formData.usernameOrEmail,
-        publicKey: "",
       },
     });
   };

@@ -30,7 +30,6 @@ function LikeButton({ size, className, entry }: Props) {
   );
 
   const update = async () => {
-    if (!entry.id) return;
     active ? removeLikeFromCache(entry) : addLikeToCache(entry);
     try {
       await likeEntry({ variables: { id: entry.id, like: !active } });
