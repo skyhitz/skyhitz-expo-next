@@ -24,7 +24,6 @@ export function SignInForm({
     await requestToken({
       variables: {
         usernameOrEmail: formData.usernameOrEmail,
-        publicKey: "",
       },
     });
   };
@@ -58,7 +57,7 @@ export function SignInForm({
               onChangeText={handleChange("usernameOrEmail")}
               onBlur={handleBlur("usernameOrEmail")}
               className="mt-4"
-              placeholder="Email address"
+              placeholder="Username or Email"
               showFeedback={touched.usernameOrEmail}
               valid={!errors.usernameOrEmail}
               blurOnSubmit={false}
@@ -67,11 +66,13 @@ export function SignInForm({
               autoCapitalize="none"
               keyboardType="email-address"
             />
-            <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
-              {(touched.usernameOrEmail && errors.usernameOrEmail) ||
-                error?.message ||
-                " "}
-            </Text>
+            <View className="flex-row  mt-4">
+              <Text className="w-full text-center text-sm text-red min-h-5">
+                {(touched.usernameOrEmail && errors.usernameOrEmail) ||
+                  error?.message}
+              </Text>
+            </View>
+
             <Button
               onPress={handleSubmit}
               loading={loading}

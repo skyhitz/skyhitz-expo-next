@@ -16,8 +16,8 @@ import { useRouter } from "solito/router";
 import { useState } from "react";
 import { LowBalanceModal } from "./LowBalanceModal";
 import {
-  usePaymentsInfoQuery,
   useUserCollectionQuery,
+  useUserCreditsQuery,
   useUserLikesQuery,
 } from "app/api/graphql";
 import * as assert from "assert";
@@ -27,7 +27,7 @@ export function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const user = useRecoilValue(userAtom);
   assert.ok(user?.id);
-  const { data: paymentInfoData } = usePaymentsInfoQuery();
+  const { data: credits } = useUserCreditsQuery();
   const { push } = useRouter();
   const { data: userLikesData } = useUserLikesQuery();
   const { data: userCollectionData } = useUserCollectionQuery({
@@ -50,17 +50,22 @@ export function ProfileScreen() {
           size="large"
         />
         <View className="ml-8 flex-1">
-          <View className="flex flex-row items-center mb-2.5">
+          <View className="flex flex-row items-center">
             <Text className="font-bold mr-2.5">{user.displayName}</Text>
-            <Dollar size={22} color={tw.color("white")} />
-            <Text className="font-bold ml-1 mr-2.5">
-              {paymentInfoData?.paymentsInfo?.credits?.toFixed(2) ?? ""}
-            </Text>
             <Link href="/dashboard/profile/edit">
               <Cog color={tw.color("white")} size={18} />
             </Link>
           </View>
-          <CopyWalletPublicKeyButton walletPublicKey={user.publicKey!} />
+          {credits?.userCredits && (
+            <View className="flex-row items-center my-2">
+              <Dollar size={22} color={tw.color("white")} />
+              <Text className="font-bold ml-1 mr-2.5">
+                {credits.userCredits.toFixed(2)}
+              </Text>
+            </View>
+          )}
+
+          <CopyWalletPublicKeyButton walletPublicKey={user.publicKey} />
         </View>
       </View>
       <ProfileRow
@@ -92,15 +97,15 @@ export function ProfileScreen() {
         icon={Upload}
         className="mx-auto mt-16"
         size="large"
-        disabled={(paymentInfoData?.paymentsInfo?.credits ?? 0) < 2}
+        disabled={(credits?.userCredits ?? 0) < 2}
         onDisabledPress={() => setModalVisible(true)}
       />
 
       <LowBalanceModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        availableBalance={paymentInfoData?.paymentsInfo?.credits ?? 0}
-        publicKey={user.publicKey ?? ""}
+        availableBalance={credits?.userCredits ?? 0}
+        publicKey={user.publicKey}
       />
     </SafeAreaView>
   );

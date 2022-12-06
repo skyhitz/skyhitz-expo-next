@@ -28,7 +28,7 @@ export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
   assert.ok(user, "Unauthorized access on EditProfileScreen");
   const [avatar, setAvatar] = useState<ChangeAvatarImg>({
-    url: user.avatarUrl ?? "",
+    url: user.avatarUrl,
   });
   const [updateUser, { data, loading }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();

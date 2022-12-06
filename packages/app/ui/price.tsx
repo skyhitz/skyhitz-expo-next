@@ -14,7 +14,7 @@ type PriceProps = {
 };
 
 export default function Price({ className, entry, hovered }: PriceProps) {
-  const offer = useEntryOffer(entry.code!, entry.issuer!);
+  const offer = useEntryOffer(entry.code, entry.issuer);
   const user = useRecoilValue(userAtom);
 
   if (!offer.price) {

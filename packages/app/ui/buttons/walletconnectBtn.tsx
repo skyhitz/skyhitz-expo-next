@@ -24,7 +24,7 @@ export const WalletConnectBtn = ({ onAuth, disabled, loading }: Props) => {
       const result = await authNewSession((newUri) => {
         setUri(newUri);
         setModalVisible(true);
-      });
+      }, true);
       const { signedXDR } = result as { signedXDR: string };
       setWaitingForApproval(false);
       onAuth(signedXDR);

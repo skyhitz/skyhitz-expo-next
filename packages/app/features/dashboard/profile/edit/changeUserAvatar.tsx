@@ -1,5 +1,5 @@
 import { UserAvatar } from "app/ui/userAvatar";
-import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
+import { ActivityIndicator, Button, View } from "app/design-system";
 import React, { useEffect } from "react";
 import useMediaLibraryPermission from "app/hooks/useMediaLibraryPermission";
 import usePickMedia from "app/hooks/usePickMedia";
@@ -21,7 +21,7 @@ export function ChangeUserAvatar({
   disable,
 }: ChangeUserAvatarProps) {
   const toast = useToast();
-  useMediaLibraryPermission();
+  const { permissionGranted } = useMediaLibraryPermission();
   const { pickMedia, loading, error, data, url } = usePickMedia(
     "image",
     validateProfilePicture
@@ -53,9 +53,13 @@ export function ChangeUserAvatar({
           size="large"
         />
       )}
-      <Pressable disabled={disable} onPress={pickMedia}>
-        <Text className="mt-2 font-light text-sm">Change Profile Photo</Text>
-      </Pressable>
+      <Button
+        disabled={disable || !permissionGranted}
+        onPress={pickMedia}
+        text="Change Profile Photo"
+        variant="text"
+        className="m-0"
+      />
     </View>
   );
 }
