@@ -125,13 +125,14 @@ export function SignUp() {
                 autoCapitalize="none"
                 keyboardType="email-address"
               />
-              <Text className="w-full text-center text-sm text-[#d9544f] mt-4 min-h-5">
-                {(touched.username && errors.username) ||
-                  (touched.displayedName && errors.displayedName) ||
-                  (touched.email && errors.email) ||
-                  error?.message ||
-                  " "}
-              </Text>
+              <View className="flex-row mt-4">
+                <Text className="w-full text-center text-sm text-red  min-h-5">
+                  {(touched.username && errors.username) ||
+                    (touched.displayedName && errors.displayedName) ||
+                    (touched.email && errors.email) ||
+                    error?.message}
+                </Text>
+              </View>
               <Button
                 text="Join"
                 loading={loading && isEmpty(signedXDR)}

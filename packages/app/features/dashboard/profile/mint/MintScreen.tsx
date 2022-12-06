@@ -29,7 +29,7 @@ export function MintScreen() {
   const { back } = useRouter();
   const { mint, retryIndex, progress, status, error } = useMintNFT();
   const reportError = useErrorReport();
-  useMediaLibraryPermission();
+  useMediaLibraryPermission({ showAlert: true });
 
   const buttonTitle = () => {
     switch (status) {

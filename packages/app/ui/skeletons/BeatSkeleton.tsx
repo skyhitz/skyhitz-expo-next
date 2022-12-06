@@ -33,5 +33,13 @@ export function BeatSkeleton() {
     );
   };
 
-  return <>{Array(8).fill(<EntrySkeleton />)}</>;
+  return (
+    <>
+      {Array(8)
+        .fill(true)
+        .map((_, i) => (
+          <EntrySkeleton key={i} />
+        ))}
+    </>
+  );
 }

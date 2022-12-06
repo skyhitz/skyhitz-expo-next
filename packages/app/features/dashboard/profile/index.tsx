@@ -50,16 +50,21 @@ export function ProfileScreen() {
           size="large"
         />
         <View className="ml-8 flex-1">
-          <View className="flex flex-row items-center mb-2.5">
+          <View className="flex flex-row items-center">
             <Text className="font-bold mr-2.5">{user.displayName}</Text>
-            <Dollar size={22} color={tw.color("white")} />
-            <Text className="font-bold ml-1 mr-2.5">
-              {credits?.userCredits.toFixed(2) ?? ""}
-            </Text>
             <Link href="/dashboard/profile/edit">
               <Cog color={tw.color("white")} size={18} />
             </Link>
           </View>
+          {credits?.userCredits && (
+            <View className="flex-row items-center my-2">
+              <Dollar size={22} color={tw.color("white")} />
+              <Text className="font-bold ml-1 mr-2.5">
+                {credits.userCredits.toFixed(2)}
+              </Text>
+            </View>
+          )}
+
           <CopyWalletPublicKeyButton walletPublicKey={user.publicKey} />
         </View>
       </View>
