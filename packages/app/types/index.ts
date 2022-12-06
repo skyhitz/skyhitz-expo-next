@@ -59,3 +59,19 @@ export type MediaFileInfo =
 export type Maybe<T> = T | null | undefined;
 
 export type EditProfileForm = Omit<UpdateUserMutationVariables, "avatarUrl">;
+
+export type Offer = {
+  id: number;
+  seller: string;
+  selling:
+    | {
+        asset_type: "native";
+      }
+    | {
+        asset_type: "credit_alphanum12" | "credit_alphanum4";
+        asset_code: string;
+        asset_issuer: string;
+      };
+  amount: string;
+  price: string;
+};

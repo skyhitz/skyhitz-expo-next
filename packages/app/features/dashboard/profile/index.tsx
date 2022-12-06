@@ -21,6 +21,7 @@ import {
   useUserLikesQuery,
 } from "app/api/graphql";
 import * as assert from "assert";
+import { useUserBuyOffer } from "app/hooks/useUserBuyOffer";
 // import { useSendwyreCheckout } from "app/hooks/useSendwyreCheckout";
 
 export function ProfileScreen() {
@@ -33,6 +34,7 @@ export function ProfileScreen() {
   const { data: userCollectionData } = useUserCollectionQuery({
     variables: { userId: user.id },
   });
+  useUserBuyOffer(user.publicKey);
   // TODO uncomment when production ready
   // const { startCheckout, loading } = useSendwyreCheckout({
   //   publicAddress: user.publicKey!,
