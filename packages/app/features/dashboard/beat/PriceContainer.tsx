@@ -14,7 +14,7 @@ type Props = {
 };
 
 export function PriceContainer({ entry }: Props) {
-  const offer = useEntryOffer(entry.code!, entry.issuer!);
+  const offer = useEntryOffer(entry.code, entry.issuer);
   const usd = useUSDPrice(offer.price * offer.amount);
   const [proposedPrice, setProposedPrice] = useState("");
   const [createOffer, { data, loading }] = useCreateBuyOfferMutation();

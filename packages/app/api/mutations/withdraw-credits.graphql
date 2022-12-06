@@ -1,6 +1,3 @@
 mutation withdrawToExternalWallet($address: String!, $amount: Int!) {
-  withdrawToExternalWallet(address: $address, amount: $amount) {
-    success
-    message
-  }
+  withdrawToExternalWallet(address: $address, amount: $amount)
 }

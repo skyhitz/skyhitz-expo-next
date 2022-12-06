@@ -48,7 +48,7 @@ function addLike(
   user: null | PublicUser,
   entry: Entry
 ) {
-  if (!user || !entry.id) return;
+  if (!user) return;
 
   cache.updateQuery(
     { query: UserLikesDocument, overwrite: true },
