@@ -103,7 +103,9 @@ export type EntryPrice = {
 export type Mutation = {
   __typename?: 'Mutation';
   buyEntry: ConditionalXdr;
+  cancelBid: ConditionalXdr;
   changeWallet: User;
+  createBid: ConditionalXdr;
   createEntry: ConditionalXdr;
   createUserWithEmail: ConditionalUser;
   indexEntry: Entry;
@@ -126,8 +128,20 @@ export type MutationBuyEntryArgs = {
 };
 
 
+export type MutationCancelBidArgs = {
+  id?: InputMaybe<Scalars['String']>;
+};
+
+
 export type MutationChangeWalletArgs = {
   signedXDR: Scalars['String'];
+};
+
+
+export type MutationCreateBidArgs = {
+  equityToBuy: Scalars['Float'];
+  id: Scalars['String'];
+  price: Scalars['Int'];
 };
 
 
