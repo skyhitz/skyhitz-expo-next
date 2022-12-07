@@ -3,19 +3,13 @@ import {
   UpdatePricingMutation,
   useUpdatePricingMutation,
 } from "app/api/graphql";
-import { Button, Modal, Pressable, View, Text, Image } from "app/design-system";
+import { Modal, Pressable, View, Text, Image, Button } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
-import { CreateOfferForm } from "app/types";
 import X from "app/ui/icons/x";
-import DollarIcon from "app/ui/icons/dollar";
 import PieChartIcon from "app/ui/icons/pie";
 import { imageUrlSmall, imageSrc } from "app/utils/entry";
-import { createOfferSchema } from "app/validation";
-import { Formik, FormikProps } from "formik";
 import { useState, useCallback } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
-import { SkyhitzSlider } from "app/ui/SkyhitzSlider";
 import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
@@ -25,12 +19,13 @@ import { getEntryOfferUrl } from "app/hooks/useEntryOffer";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import { sellOffersUrl } from "app/hooks/useUserOffers";
+import Dollar from "app/ui/icons/dollar";
 
 type Props = {
   visible: boolean;
   entry: Entry;
   offerId: string;
-  maxEquityForSale: number;
+  maxEquityForSale: string;
   hideModal: () => void;
 };
 
@@ -41,7 +36,8 @@ export const CreateOfferModal = ({
   offerId,
   maxEquityForSale,
 }: Props) => {
-  const [equityForSale, setEquityForSale] = useState<number>(1);
+  const [equityForSale, setEquityForSale] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>();
   const [updatePricing] = useUpdatePricingMutation();
@@ -121,17 +117,33 @@ export const CreateOfferModal = ({
     ]
   );
 
-  const initialValues: CreateOfferForm = {
-    price: "",
-    equityForSale: 1,
-  };
+  const handleSubmit = useCallback(async () => {
+    setLoading(true);
+    try {
+      await updatePricing({
+        variables: {
+          id: entry.id!,
+          equityForSale: parseInt(equityForSale, 10) / 100,
+          price: parseInt(price, 10),
+          forSale: true,
+          offerID: offerId,
+        },
+        onCompleted: onMutationCompleted,
+      });
+    } catch (ex) {
+      setLoading(false);
+      hideModal();
+      reportError(ex);
+    }
+  }, [equityForSale, price, setLoading, hideModal, reportError]);
+
   return (
     <>
       <Modal visible={visible} transparent>
         <Pressable
           onPress={() => {
             hideModal();
-            setEquityForSale(1);
+            setEquityForSale("");
           }}
           className="flex-1 flex items-center justify-center bg-blue-field/70 w-full p-4"
         >
@@ -143,7 +155,7 @@ export const CreateOfferModal = ({
               className="absolute right-2 top-2 "
               onPress={() => {
                 hideModal();
-                setEquityForSale(1);
+                setEquityForSale("");
               }}
             >
               <X color={tw.color("white")} />
@@ -159,96 +171,50 @@ export const CreateOfferModal = ({
                 {entry.title}-{entry.artist}
               </Text>
             </View>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={createOfferSchema}
-              validateOnMount={false}
-              onSubmit={async (values) => {
-                setLoading(true);
-                try {
-                  await updatePricing({
-                    variables: {
-                      id: entry.id!,
-                      equityForSale: (values.equityForSale ?? 0) / 100,
-                      price: parseInt(values.price ?? "0", 10) || 0,
-                      forSale: true,
-                      offerID: offerId,
-                    },
-                    onCompleted: onMutationCompleted,
-                  });
-                } catch (ex) {
-                  setLoading(false);
-                  hideModal();
-                  reportError(ex);
-                }
-              }}
-            >
-              {({
-                values,
-                setFieldValue,
-                isValid,
-                handleSubmit,
-                errors,
-              }: FormikProps<CreateOfferForm>) => (
-                <View>
-                  <FormInputWithIcon
-                    containerClassNames="flex flex-row py-5 items-center border-b border-white"
-                    icon={DollarIcon}
-                    value={values.price}
-                    onChangeText={(text) =>
-                      setFieldValue("price", text.replace(/[^0-9]/g, ""))
+            <View className="flex md:flex-row items-center mb-3">
+              <FormInputWithIcon
+                containerClassNames="border border-white rounded p-5 md:mr-2 mb-2 md:mb-0"
+                icon={Dollar}
+                value={price}
+                onChangeText={(text) => {
+                  if (text === "") {
+                    setPrice("");
+                  } else {
+                    const num = parseInt(text.replace(/[^0-9]/g, ""), 10);
+                    setPrice(num.toString());
+                  }
+                }}
+                placeholder="Price (XLM)"
+                keyboardType="numeric"
+                maxLength={10}
+              />
+              <FormInputWithIcon
+                containerClassNames="border border-white rounded p-5 md:ml-2"
+                icon={PieChartIcon}
+                value={equityForSale}
+                onChangeText={(text) => {
+                  if (text === "") {
+                    setEquityForSale("");
+                  } else {
+                    const num = parseInt(text.replace(/[^0-9]/g, ""), 10);
+                    if (num <= parseInt(maxEquityForSale, 10) && num >= 1) {
+                      setEquityForSale(num.toString());
                     }
-                    placeholder="Price (XLM)"
-                    keyboardType="numeric"
-                    maxLength={10}
-                    error={errors.price}
-                  />
-                  <View className="flex flex-row py-5 items-center border-b border-white">
-                    <PieChartIcon size={24} color={tw.color("white")} />
-                    <Text className="mx-4 text-sm w-40">
-                      Equity for Sale: {equityForSale}%
-                    </Text>
-                    <GestureHandlerRootView style={{ flex: 1 }}>
-                      <SkyhitzSlider
-                        minimumValue={1}
-                        maximumValue={maxEquityForSale}
-                        value={values.equityForSale ?? 1}
-                        onValueChange={(value: number) => {
-                          setEquityForSale(
-                            Math.max(parseInt(value.toFixed(), 10), 1)
-                          );
-                        }}
-                        onSlidingComplete={(value: number) => {
-                          setFieldValue(
-                            "equityForSale",
-                            Math.max(parseInt(value.toFixed(), 10), 1)
-                          );
-                          setEquityForSale(
-                            Math.max(parseInt(value.toFixed(), 10), 1)
-                          );
-                        }}
-                        key={entry.id}
-                      />
-                    </GestureHandlerRootView>
-                  </View>
-                  {message && (
-                    <Text className="w-full text-center text-sm my-4 min-h-5">
-                      {message}
-                    </Text>
-                  )}
-                  <View className="mt-5">
-                    <Button
-                      text="Confirm"
-                      size="large"
-                      onPress={handleSubmit}
-                      className="mb-5 md:mb-0 md:mr-5"
-                      disabled={!isValid || loading}
-                      loading={loading}
-                    />
-                  </View>
-                </View>
-              )}
-            </Formik>
+                  }
+                }}
+                placeholder={`Equity To Buy (1-${maxEquityForSale})%`}
+                keyboardType="numeric"
+                maxLength={10}
+              />
+            </View>
+            <Button
+              text="Confirm"
+              size="large"
+              onPress={handleSubmit}
+              className="mb-5 md:mb-0 md:mr-5"
+              disabled={price === "" || equityForSale === "" || loading}
+              loading={loading}
+            />
           </Pressable>
         </Pressable>
       </Modal>

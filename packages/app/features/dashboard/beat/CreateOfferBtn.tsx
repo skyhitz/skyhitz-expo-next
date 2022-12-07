@@ -32,7 +32,10 @@ export function CreateOfferBtn({ offerId, entry, holders }: Props) {
     return sum(map(compose(parseInt, prop("balance")), currentUserHolder));
   }, [currentUserHolder]);
 
-  const maxEquityForSale = (currentUserBalance / totalBalance) * 100;
+  const maxEquityForSale = (
+    (currentUserBalance / totalBalance) *
+    100
+  ).toString();
   const modalText = offerId === "0" ? "Create an offer" : "Modify an offer";
 
   return (
