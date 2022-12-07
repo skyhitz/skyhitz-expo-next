@@ -56,6 +56,9 @@ export function CreateBuyOfferContainer({ entry }: Props) {
           throw Error("Error during signing transaction in your wallet");
         }
       }
+      setLoading(false);
+      setProposedPrice("");
+      setEquityToBuy("");
       toast.show("You have successfully created a buy offer", {
         type: "success",
       });
@@ -63,18 +66,29 @@ export function CreateBuyOfferContainer({ entry }: Props) {
       setLoading(false);
       reportError(ex);
     }
-  }, []);
+  }, [
+    proposedPrice,
+    equityToBuy,
+    setLoading,
+    session,
+    connect,
+    signAndSubmitXdr,
+    setUri,
+    setWalletConnectModalVisible,
+    toast,
+    reportError,
+  ]);
 
   return (
     <>
       <ComponentAuthGuard>
-        <View className="border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent flex p-4">
+        <View className="border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent flex p-4 items-center md:items-start">
           <Text className="mb-3 text-sm text-grey-light">
             Create an offer for this asset
           </Text>
-          <View className="flex flex-row items-center mb-3">
+          <View className="flex md:flex-row items-center mb-3">
             <FormInputWithIcon
-              containerClassNames="border border-white rounded p-5 mr-2"
+              containerClassNames="border border-white rounded p-5 md:mr-2 mb-2 md:mb-0"
               icon={Dollar}
               value={proposedPrice}
               onChangeText={(text) => {
@@ -90,7 +104,7 @@ export function CreateBuyOfferContainer({ entry }: Props) {
               maxLength={10}
             />
             <FormInputWithIcon
-              containerClassNames="border border-white rounded p-5 ml-2"
+              containerClassNames="border border-white rounded p-5 md:ml-2"
               icon={PieChartIcon}
               value={equityToBuy}
               onChangeText={(text) => {
@@ -103,7 +117,7 @@ export function CreateBuyOfferContainer({ entry }: Props) {
                   }
                 }
               }}
-              placeholder="Equity To Buy (1-100)"
+              placeholder="Equity To Buy (1-100)%"
               keyboardType="numeric"
               maxLength={10}
             />

@@ -1,4 +1,4 @@
-import { UpdateUserMutationVariables } from "app/api/graphql";
+import { Entry, UpdateUserMutationVariables } from "app/api/graphql";
 
 export type PlaybackState =
   | "LOADING"
@@ -72,6 +72,19 @@ export type Offer = {
         asset_code: string;
         asset_issuer: string;
       };
+  buying:
+    | {
+        asset_type: "native";
+      }
+    | {
+        asset_type: "credit_alphanum12" | "credit_alphanum4";
+        asset_code: string;
+        asset_issuer: string;
+      };
+  // The amount of selling that the account making this offer is willing to sell.
   amount: string;
+  // How many units of buying it takes to get 1 unit of selling. A number representing the decimal form of price_r.
   price: string;
 };
+
+export type EnrichedEntry = Entry & { offer: Offer };

@@ -12,6 +12,7 @@ const ProfileStack = createNativeStackNavigator<{
   edit: undefined;
   likes: undefined;
   collection: undefined;
+  bids: undefined;
 }>();
 
 export function ProfileNavigation() {
@@ -75,6 +76,21 @@ export function ProfileNavigation() {
         component={CollectionScreen}
         options={{
           title: "Collection",
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: tw.color("blue-dark"),
+          },
+          headerTintColor: tw.color("white"),
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <ProfileStack.Screen
+        name="bids"
+        component={CollectionScreen}
+        options={{
+          title: "Bids",
           headerBackTitleVisible: false,
           headerStyle: {
             backgroundColor: tw.color("blue-dark"),

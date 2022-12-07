@@ -21,7 +21,7 @@ import {
   useUserLikesQuery,
 } from "app/api/graphql";
 import * as assert from "assert";
-import { useUserBuyOffer } from "app/hooks/useUserBuyOffer";
+import { useUserBids } from "app/hooks/useUserBids";
 // import { useSendwyreCheckout } from "app/hooks/useSendwyreCheckout";
 
 export function ProfileScreen() {
@@ -34,7 +34,7 @@ export function ProfileScreen() {
   const { data: userCollectionData } = useUserCollectionQuery({
     variables: { userId: user.id },
   });
-  useUserBuyOffer(user.publicKey);
+  const { bids } = useUserBids(user.publicKey);
   // TODO uncomment when production ready
   // const { startCheckout, loading } = useSendwyreCheckout({
   //   publicAddress: user.publicKey!,
@@ -76,6 +76,12 @@ export function ProfileScreen() {
         trailingNumber={userCollectionData?.userEntries?.length}
         title="Collections"
         onPress={() => push("/dashboard/profile/collection")}
+      />
+      <ProfileRow
+        icon={<StarBorder size={24} color={tw.color("blue")} />}
+        trailingNumber={bids.length}
+        title="Your bids"
+        onPress={() => push("/dashboard/profile/bids")}
       />
       {/* <Button
         text="Buy XLM"

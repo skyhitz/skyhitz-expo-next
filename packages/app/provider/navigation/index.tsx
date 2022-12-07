@@ -50,6 +50,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
                       edit: "edit",
                       likes: "likes",
                       collection: "collection",
+                      bids: "bids",
                     },
                   },
                 },
