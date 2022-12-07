@@ -762,6 +762,57 @@ export type BuyEntryMutationOptions = Apollo.BaseMutationOptions<
   BuyEntryMutation,
   BuyEntryMutationVariables
 >;
+export const CancelBidDocument = gql`
+  mutation CancelBid($id: String!) {
+    cancelBid(id: $id) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type CancelBidMutationFn = Apollo.MutationFunction<
+  CancelBidMutation,
+  CancelBidMutationVariables
+>;
+
+/**
+ * __useCancelBidMutation__
+ *
+ * To run a mutation, you first call `useCancelBidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelBidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelBidMutation, { data, loading, error }] = useCancelBidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCancelBidMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CancelBidMutation,
+    CancelBidMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CancelBidMutation, CancelBidMutationVariables>(
+    CancelBidDocument,
+    options
+  );
+}
+export type CancelBidMutationHookResult = ReturnType<
+  typeof useCancelBidMutation
+>;
+export type CancelBidMutationResult = Apollo.MutationResult<CancelBidMutation>;
+export type CancelBidMutationOptions = Apollo.BaseMutationOptions<
+  CancelBidMutation,
+  CancelBidMutationVariables
+>;
 export const ChangeWalletDocument = gql`
   mutation changeWallet($signedXDR: String!) {
     changeWallet(signedXDR: $signedXDR) {
@@ -821,6 +872,59 @@ export type ChangeWalletMutationResult =
 export type ChangeWalletMutationOptions = Apollo.BaseMutationOptions<
   ChangeWalletMutation,
   ChangeWalletMutationVariables
+>;
+export const CreateBidDocument = gql`
+  mutation CreateBid($id: String!, $price: Int!, $equityToBuy: Float!) {
+    createBid(id: $id, price: $price, equityToBuy: $equityToBuy) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type CreateBidMutationFn = Apollo.MutationFunction<
+  CreateBidMutation,
+  CreateBidMutationVariables
+>;
+
+/**
+ * __useCreateBidMutation__
+ *
+ * To run a mutation, you first call `useCreateBidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBidMutation, { data, loading, error }] = useCreateBidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      price: // value for 'price'
+ *      equityToBuy: // value for 'equityToBuy'
+ *   },
+ * });
+ */
+export function useCreateBidMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateBidMutation,
+    CreateBidMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateBidMutation, CreateBidMutationVariables>(
+    CreateBidDocument,
+    options
+  );
+}
+export type CreateBidMutationHookResult = ReturnType<
+  typeof useCreateBidMutation
+>;
+export type CreateBidMutationResult = Apollo.MutationResult<CreateBidMutation>;
+export type CreateBidMutationOptions = Apollo.BaseMutationOptions<
+  CreateBidMutation,
+  CreateBidMutationVariables
 >;
 export const CreateEntryDocument = gql`
   mutation CreateEntry(
