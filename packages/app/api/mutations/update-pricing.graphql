@@ -1,0 +1,7 @@
+mutation UpdatePricing($id: String!, $price: Int!, $forSale: Boolean!, $equityForSale: Float!) {
+    updatePricing(id: $id, price: $price, forSale: $forSale, equityForSale: $equityForSale) {
+        xdr
+        success
+        submitted
+    }
+}
