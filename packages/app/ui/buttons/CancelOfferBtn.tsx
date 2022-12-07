@@ -132,6 +132,11 @@ export function CancelOfferBtn({ offerId, entry }: Props) {
               <Text className="text-lg font-bold">
                 Confirm to cancel the offer.
               </Text>
+              {message && (
+                <Text className="w-full text-center text-sm my-4 min-h-5">
+                  {message}
+                </Text>
+              )}
               <Button
                 className="mt-4"
                 text="Confirm"

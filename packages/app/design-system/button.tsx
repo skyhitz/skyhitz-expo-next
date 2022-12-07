@@ -38,7 +38,14 @@ const containerStyle = {
   text: "flex mx-auto mt-8",
 };
 
-const disabledStyle = "bg-grey-dark";
+const disabledStyle = {
+  default: "bg-grey-dark",
+  large: "bg-grey-dark",
+  primary: "bg-grey-dark",
+  secondary: "bg-grey-dark",
+  white: "bg-grey-dark",
+  text: "text-grey",
+};
 
 const Button = ({
   loading = false,
@@ -66,7 +73,7 @@ const Button = ({
     <PressableComponent
       className={`flex-row items-center justify-center rounded-full ${
         containerStyle[size]
-      } ${disabled ? disabledStyle : containerStyle[variant]} ${
+      } ${disabled ? disabledStyle[variant] : containerStyle[variant]} ${
         className ?? ""
       }`}
       onPress={() => {

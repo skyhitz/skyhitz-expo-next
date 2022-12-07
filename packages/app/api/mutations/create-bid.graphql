@@ -1,0 +1,7 @@
+mutation CreateBid($id: String!, $price: Int!, $equityToBuy: Float!) {
+  createBid(id: $id, price: $price, equityToBuy: $equityToBuy) {
+    xdr
+    success
+    submitted
+  }
+}
