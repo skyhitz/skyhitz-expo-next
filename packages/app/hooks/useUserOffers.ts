@@ -1,10 +1,10 @@
 import { Config } from "app/config";
 import useSWR from "swr";
-import { OfferRecord } from "app/types";
+import { Offer } from "app/types";
 
 type FetchedOffer = {
   _embedded: {
-    records: OfferRecord[];
+    records: Offer[];
   };
 };
 
@@ -33,14 +33,12 @@ export function useUserOffers(
   asset_issuer: string,
   asset_code: string,
   sellOffers: boolean = true
-): { offers: OfferRecord[] } {
+): { offers: Offer[] } {
   const url = sellOffers
     ? sellOffersUrl(seller, asset_issuer, asset_code)
     : buyOffersUrl(seller, asset_issuer, asset_code);
 
-  const { data } = useSWR(url, seller ? fetcher : null, {
-    dedupingInterval: 30000,
-  });
+  const { data } = useSWR(url, seller ? fetcher : null);
 
   if (data && data._embedded && data._embedded.records) {
     return { offers: data._embedded.records };
