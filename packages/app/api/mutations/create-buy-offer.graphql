@@ -1,7 +1,0 @@
-mutation CreateBuyOffer($id: String!, $price: Int!, $equityToBuy: Float!) {
-  createBuyOffer(id: $id, price: $price, equityToBuy: $equityToBuy) {
-    xdr
-    success
-    submitted
-  }
-}

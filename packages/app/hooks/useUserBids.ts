@@ -8,6 +8,7 @@ import { Entry } from "app/api/graphql";
 type Result = {
   bids: EnrichedEntry[];
   loading: boolean;
+  refetch: () => void;
 };
 
 type FetchData = {
@@ -24,7 +25,7 @@ const getUrl = (publicKey: string) =>
   `${Config.HORIZON_URL}/offers?selling_asset_type=native&seller=${publicKey}`;
 
 export function useUserBids(publicKey: string): Result {
-  const { data } = useSWR(getUrl(publicKey), fetcher);
+  const { data, mutate } = useSWR(getUrl(publicKey), fetcher);
   const [entriesOffer, setEntriesOffer] = useState<EnrichedEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -66,5 +67,5 @@ export function useUserBids(publicKey: string): Result {
     }
   }, [data]);
 
-  return { bids: entriesOffer, loading };
+  return { bids: entriesOffer, loading, refetch: mutate };
 }

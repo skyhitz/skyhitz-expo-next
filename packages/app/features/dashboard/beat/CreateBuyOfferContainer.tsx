@@ -1,4 +1,4 @@
-import { Entry, useCreateBuyOfferMutation } from "app/api/graphql";
+import { Entry, useCreateBidMutation } from "app/api/graphql";
 import { Button, Text, View } from "app/design-system";
 import Dollar from "app/ui/icons/dollar";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
@@ -16,7 +16,7 @@ type Props = {
 
 export function CreateBuyOfferContainer({ entry }: Props) {
   const [proposedPrice, setProposedPrice] = useState("");
-  const [createOffer] = useCreateBuyOfferMutation();
+  const [createOffer] = useCreateBidMutation();
   const [equityToBuy, setEquityToBuy] = useState("");
   const reportError = useErrorReport();
   const toast = useToast();
@@ -36,11 +36,11 @@ export function CreateBuyOfferContainer({ entry }: Props) {
           equityToBuy: parseFloat(equityToBuy) / 100,
         },
       });
-      if (!data?.createBuyOffer.success) {
+      if (!data?.createBid.success) {
         throw Error("Error during transaction creation.");
       }
-      if (!data?.createBuyOffer.submitted) {
-        const xdr = data.createBuyOffer.xdr!;
+      if (!data?.createBid.submitted) {
+        const xdr = data.createBid.xdr!;
 
         let currentSession = session;
         if (!currentSession) {

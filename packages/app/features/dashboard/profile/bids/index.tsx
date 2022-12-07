@@ -9,7 +9,7 @@ import { BidListEntry } from "./BidListEntry";
 export default function BidsScreen() {
   const user = useRecoilValue(userAtom);
   assert.ok(user);
-  const { bids, loading } = useUserBids(user.publicKey);
+  const { bids, loading, refetch } = useUserBids(user.publicKey);
 
   return (
     <View className="flex-1 w-full">
@@ -20,7 +20,9 @@ export default function BidsScreen() {
         <FlatList
           keyExtractor={(item) => item.id!}
           data={bids}
-          renderItem={({ item }) => <BidListEntry entry={item} />}
+          renderItem={({ item }) => (
+            <BidListEntry entry={item} refetchBids={refetch} />
+          )}
           ListEmptyComponent={
             <View className="flex-1 flex items-center justify-center mt-8">
               {loading ? (
