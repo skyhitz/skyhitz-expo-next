@@ -9,13 +9,12 @@ import PlayIcon from "app/ui/icons/play";
 import LikeButton from "app/ui/buttons/likeButton";
 import { CollapsableView } from "app/ui/CollapsableView";
 import Like from "app/ui/icons/like";
-import { IconProps } from "app/types";
+import { IconProps, OfferRecord } from "app/types";
 import { LikesList } from "app/features/player/components/likesList";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
 import { ComponentAuthGuard } from "app/utils/authGuard";
-import { CreateOfferBtn } from "app/ui/buttons/CreateOfferBtn";
-import { CancelOfferBtn } from "app/ui/buttons/CancelOfferBtn";
+import { OwnerOffers } from "./OwnerOffers";
 
 type Props = {
   entry: Entry;
@@ -47,10 +46,6 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
           />
         </View>
       </View>
-      <View className="flex-row">
-        <CreateOfferBtn entry={entry} holders={holders} />
-        <CancelOfferBtn entry={entry} />
-      </View>
       <PriceContainer entry={entry} />
       <CollapsableView icon={InfoCircle} headerText="Description">
         <Text className="p-3">{entry.description}</Text>
@@ -60,6 +55,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
       </CollapsableView>
       {/* TODO skeleton */}
       {!holders && <ActivityIndicator className="mt-5" />}
+      <OwnerOffers entry={entry} holders={holders} />
       {holders && <Owners holders={holders} />}
     </View>
   );

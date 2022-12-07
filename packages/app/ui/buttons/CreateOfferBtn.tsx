@@ -25,8 +25,12 @@ import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import { compose, map, prop, sum, filter } from "ramda";
+import { sellOffersUrl } from "app/hooks/useUserOffers";
+import { useSWRConfig } from "swr";
+import { getEntryOfferUrl } from "app/hooks/useEntryOffer";
 
 type Props = {
+  offerId: string;
   entry: Entry;
   holders?: EntryHolder[] | null;
 };
@@ -34,11 +38,12 @@ type Props = {
 type ModalProps = {
   visible: boolean;
   entry: Entry;
+  offerId: string;
   maxEquityForSale: number;
   hideModal: () => void;
 };
 
-export function CreateOfferBtn({ entry, holders }: Props) {
+export function CreateOfferBtn({ offerId, entry, holders }: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const user = useRecoilValue(userAtom);
@@ -55,10 +60,20 @@ export function CreateOfferBtn({ entry, holders }: Props) {
   );
 
   const maxEquityForSale = (currentUserBalance / totalBalance) * 100;
+  const modalText = offerId === "0" ? "Create an offer" : "Modify an offer";
+
+  const { mutate } = useSWRConfig();
+
+  const revalidateOffers = () => {
+    mutate(getEntryOfferUrl(entry.code, entry.issuer));
+    mutate(sellOffersUrl(user?.publicKey, entry.issuer, entry.code));
+  };
+
   const CreateOfferModal = ({
     visible,
     hideModal,
     entry,
+    offerId,
     maxEquityForSale,
   }: ModalProps) => {
     const [equityForSale, setEquityForSale] = useState<number>(1);
@@ -80,6 +95,7 @@ export function CreateOfferBtn({ entry, holders }: Props) {
           toast.show("You have successfully created an offer", {
             type: "success",
           });
+          revalidateOffers();
         } else if (data.updatePricing.xdr) {
           setMessage("Sign and submit transaction in your wallet");
           const xdr = data.updatePricing.xdr;
@@ -102,6 +118,7 @@ export function CreateOfferBtn({ entry, holders }: Props) {
               toast.show("You have successfully created an offer", {
                 type: "success",
               });
+              revalidateOffers();
             } else {
               hideModal();
               reportError(
@@ -145,7 +162,7 @@ export function CreateOfferBtn({ entry, holders }: Props) {
               >
                 <X color={tw.color("white")} />
               </Pressable>
-              <Text className="text-lg font-bold">Create an offer</Text>
+              <Text className="text-lg font-bold">{modalText}</Text>
               <View className="flex-row my-4 items-center">
                 <Image
                   className="w-10 h-10"
@@ -169,6 +186,7 @@ export function CreateOfferBtn({ entry, holders }: Props) {
                         equityForSale: (values.equityForSale ?? 0) / 100,
                         price: parseInt(values.price ?? "0", 10) || 0,
                         forSale: true,
+                        offerID: offerId,
                       },
                       onCompleted: onMutationCompleted,
                     });
@@ -257,13 +275,10 @@ export function CreateOfferBtn({ entry, holders }: Props) {
     );
   };
 
-  console.log(maxEquityForSale);
-  if (!maxEquityForSale) return null;
-
   return (
     <ComponentAuthGuard>
       <Button
-        text="Create/Modify an offer"
+        text={modalText}
         className="flex-row-reverse mt-3 mr-1"
         onPress={() => {
           setModalVisible(true);
@@ -273,6 +288,7 @@ export function CreateOfferBtn({ entry, holders }: Props) {
       <CreateOfferModal
         visible={modalVisible}
         entry={entry}
+        offerId={offerId}
         maxEquityForSale={maxEquityForSale}
         hideModal={() => {
           setModalVisible(false);

@@ -9,6 +9,23 @@ export type PlaybackState =
   | "IDLE"
   | "ERROR";
 
+export type OfferRecord = {
+  id: string;
+  seller: string;
+  selling: {
+    asset_type: string;
+    asset_code: string;
+    asset_issuer: string;
+  };
+  buying: {
+    asset_type: string;
+    asset_code: string;
+    asset_issuer: string;
+  };
+  amount: string;
+  price: string;
+};
+
 export type SignUpForm = {
   username: string;
   displayName: string;

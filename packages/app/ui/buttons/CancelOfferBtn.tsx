@@ -1,6 +1,5 @@
 import {
   Entry,
-  EntryHolder,
   UpdatePricingMutation,
   useUpdatePricingMutation,
 } from "app/api/graphql";
@@ -13,33 +12,32 @@ import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
+import { sellOffersUrl } from "app/hooks/useUserOffers";
+import { useSWRConfig } from "swr";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import { getEntryOfferUrl } from "app/hooks/useEntryOffer";
 
 type Props = {
   entry: Entry;
-  holders?: EntryHolder[] | null;
+  offerId: string;
 };
 
 type ModalProps = {
   visible: boolean;
   entry: Entry;
+  offerId: string;
   hideModal: () => void;
 };
 
-export function CancelOfferBtn({ entry, holders }: Props) {
+export function CancelOfferBtn({ offerId, entry }: Props) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  const user = useRecoilValue(userAtom);
-
-  const currentUserIsOwner =
-    (holders?.filter((holder) => holder.account === user?.publicKey) || [])
-      .length > 0;
 
   const CancelConfirmationModal = ({
     visible,
     hideModal,
     entry,
+    offerId,
   }: ModalProps) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [message, setMessage] = useState<string | undefined>();
@@ -51,6 +49,14 @@ export function CancelOfferBtn({ entry, holders }: Props) {
     const [walletConnectModalVisible, setWalletConnectModalVisible] =
       useState<boolean>(false);
 
+    const user = useRecoilValue(userAtom);
+    const { mutate } = useSWRConfig();
+
+    const revalidateOffers = () => {
+      mutate(getEntryOfferUrl(entry.code, entry.issuer));
+      mutate(sellOffersUrl(user?.publicKey, entry.issuer, entry.code));
+    };
+
     const onMutationCompleted = async (data: UpdatePricingMutation) => {
       if (data?.updatePricing?.success) {
         if (data.updatePricing.submitted) {
@@ -59,6 +65,7 @@ export function CancelOfferBtn({ entry, holders }: Props) {
           toast.show("You have successfully cancelled an offer", {
             type: "success",
           });
+          revalidateOffers();
         } else if (data.updatePricing.xdr) {
           setMessage("Sign and submit transaction in your wallet");
           const xdr = data.updatePricing.xdr;
@@ -81,6 +88,7 @@ export function CancelOfferBtn({ entry, holders }: Props) {
               toast.show("You have cancelled an offer", {
                 type: "success",
               });
+              revalidateOffers();
             } else {
               hideModal();
               reportError(
@@ -135,10 +143,13 @@ export function CancelOfferBtn({ entry, holders }: Props) {
                       equityForSale: 0,
                       price: 0,
                       forSale: false,
+                      offerID: offerId,
                     },
                     onCompleted: onMutationCompleted,
                   });
                 }}
+                disabled={loading}
+                loading={loading}
               />
             </Pressable>
           </Pressable>
@@ -151,8 +162,6 @@ export function CancelOfferBtn({ entry, holders }: Props) {
       </>
     );
   };
-
-  if (!currentUserIsOwner) return null;
 
   return (
     <ComponentAuthGuard>
@@ -167,6 +176,7 @@ export function CancelOfferBtn({ entry, holders }: Props) {
       <CancelConfirmationModal
         visible={modalVisible}
         entry={entry}
+        offerId={offerId}
         hideModal={() => {
           setModalVisible(false);
         }}
