@@ -9,6 +9,10 @@ import { ComponentAuthGuard } from "app/utils/authGuard";
 import { useToast } from "react-native-toast-notifications";
 import { useWalletConnectClient } from "app/provider/WalletConnect";
 import { WalletConnectModal } from "app/ui/modal/WalletConnectModal";
+import { useSWRConfig } from "swr";
+import { getUserBidsUrl } from "app/hooks/useUserBids";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
 
 type Props = {
   entry: Entry;
@@ -25,6 +29,8 @@ export function CreateBuyOfferContainer({ entry }: Props) {
   const [walletConnectModalVisible, setWalletConnectModalVisible] =
     useState<boolean>(false);
   const [uri, setUri] = useState<string>("");
+  const { mutate } = useSWRConfig();
+  const user = useRecoilValue(userAtom);
 
   const onSubmit = useCallback(async () => {
     try {
@@ -62,6 +68,7 @@ export function CreateBuyOfferContainer({ entry }: Props) {
       toast.show("You have successfully created a buy offer", {
         type: "success",
       });
+      mutate(getUserBidsUrl(user!.publicKey));
     } catch (ex) {
       setLoading(false);
       reportError(ex);

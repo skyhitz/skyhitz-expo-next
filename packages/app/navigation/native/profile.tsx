@@ -5,6 +5,7 @@ import { tw } from "app/design-system/tailwind";
 import EditProfileScreen from "app/features/dashboard/profile/edit";
 import LikesScreen from "app/features/dashboard/profile/likes";
 import CollectionScreen from "app/features/dashboard/profile/collection";
+import { BidsScreen } from "app/features/dashboard/profile/bids/index";
 
 const ProfileStack = createNativeStackNavigator<{
   "user-details": undefined;
@@ -88,7 +89,7 @@ export function ProfileNavigation() {
       />
       <ProfileStack.Screen
         name="bids"
-        component={CollectionScreen}
+        component={BidsScreen}
         options={{
           title: "Bids",
           headerBackTitleVisible: false,

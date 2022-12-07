@@ -6,7 +6,7 @@ import { useUserBids } from "app/hooks/useUserBids";
 import { FlatList } from "react-native";
 import { BidListEntry } from "./BidListEntry";
 
-export default function BidsScreen() {
+export function BidsScreen() {
   const user = useRecoilValue(userAtom);
   assert.ok(user);
   const { bids, loading, refetch } = useUserBids(user.publicKey);
@@ -16,7 +16,7 @@ export default function BidsScreen() {
       <Text className="text-lg font-bold hidden web:flex mx-auto mb-4">
         Your bids
       </Text>
-      <View className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto">
+      <View className="flex-1 bg-blue-dark w-full max-w-6xl mx-auto">
         <FlatList
           keyExtractor={(item) => item.id!}
           data={bids}

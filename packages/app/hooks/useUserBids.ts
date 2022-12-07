@@ -21,11 +21,11 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-const getUrl = (publicKey: string) =>
+export const getUserBidsUrl = (publicKey: string) =>
   `${Config.HORIZON_URL}/offers?selling_asset_type=native&seller=${publicKey}`;
 
 export function useUserBids(publicKey: string): Result {
-  const { data, mutate } = useSWR(getUrl(publicKey), fetcher);
+  const { data, mutate } = useSWR(getUserBidsUrl(publicKey), fetcher);
   const [entriesOffer, setEntriesOffer] = useState<EnrichedEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
