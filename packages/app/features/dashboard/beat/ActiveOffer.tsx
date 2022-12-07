@@ -3,6 +3,7 @@ import { OfferRecord } from "app/types";
 import { CancelOfferBtn } from "app/ui/buttons/CancelOfferBtn";
 import { Entry, EntryHolder } from "app/api/graphql";
 import { CreateOfferBtn } from "app/ui/buttons/CreateOfferBtn";
+import { LinkWithLabel } from "app/ui/links/LinkWithLabel";
 
 type ActiveOfferProps = {
   entry: Entry;
@@ -26,7 +27,7 @@ export function ActiveOffer({
 
   return (
     <View className={`md:flex-row py-3 px-5 md:items-center ${bgColor}`}>
-      <Text className="my-1 md:my-0 text-sm">Offer ID: {id}</Text>
+      <LinkWithLabel type="offer" id={id} />
 
       <View className="md:flex-1 my-2 md:mx-2 md:my-0">
         <View className="md:flex-col">
