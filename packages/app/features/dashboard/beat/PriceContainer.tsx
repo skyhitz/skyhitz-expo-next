@@ -5,6 +5,7 @@ import { BuyNowBtn } from "app/ui/buttons/BuyNowBtn";
 import Dollar from "app/ui/icons/dollar";
 import { tw } from "app/design-system/tailwind";
 import useUSDPrice from "app/hooks/useUSDPrice";
+import { CreateBuyOfferContainer } from "./CreateBuyOfferContainer";
 
 type Props = {
   entry: Entry;
@@ -15,7 +16,7 @@ export function PriceContainer({ entry }: Props) {
   const usd = useUSDPrice(offer.price * offer.amount);
 
   if (!offer.price) {
-    return null;
+    return <CreateBuyOfferContainer entry={entry} />;
   }
 
   return (

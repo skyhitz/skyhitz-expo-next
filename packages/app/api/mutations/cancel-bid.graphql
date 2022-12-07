@@ -1,0 +1,7 @@
+mutation CancelBid($id: String!) {
+  cancelBid(id: $id) {
+    xdr
+    success
+    submitted
+  }
+}

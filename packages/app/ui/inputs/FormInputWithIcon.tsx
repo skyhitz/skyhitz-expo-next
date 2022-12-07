@@ -27,7 +27,7 @@ export function FormInputWithIcon({
 }: TextProps & Props) {
   return (
     <View className={`flex py-5 ${containerClassNames}`}>
-      <View className={`flex flex-row items-center `}>
+      <View className="flex flex-row items-center w-full">
         {icon(iconProps ?? defaultIconProps)}
         <TextInput
           style={[tw.style("ml-4 text-white grow"), style]}
