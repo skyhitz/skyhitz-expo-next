@@ -9,7 +9,7 @@ import PlayIcon from "app/ui/icons/play";
 import LikeButton from "app/ui/buttons/likeButton";
 import { CollapsableView } from "app/ui/CollapsableView";
 import Like from "app/ui/icons/like";
-import { IconProps, OfferRecord } from "app/types";
+import { IconProps } from "app/types";
 import { LikesList } from "app/features/player/components/likesList";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
