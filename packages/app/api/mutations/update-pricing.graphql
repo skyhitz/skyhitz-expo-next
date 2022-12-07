@@ -1,7 +1,19 @@
-mutation UpdatePricing($id: String!, $price: Int!, $forSale: Boolean!, $equityForSale: Float!, $offerID: String!) {
-    updatePricing(id: $id, price: $price, forSale: $forSale, equityForSale: $equityForSale, offerID: $offerID) {
-        xdr
-        success
-        submitted
-    }
+mutation UpdatePricing(
+  $id: String!
+  $price: Int!
+  $forSale: Boolean!
+  $equityForSale: Float!
+  $offerID: String!
+) {
+  updatePricing(
+    id: $id
+    price: $price
+    forSale: $forSale
+    equityForSale: $equityForSale
+    offerID: $offerID
+  ) {
+    xdr
+    success
+    submitted
+  }
 }
