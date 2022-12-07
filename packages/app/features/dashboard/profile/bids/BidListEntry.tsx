@@ -109,7 +109,7 @@ export function BidListEntry({ entry, refetchBids }: Props) {
             </Text>
           </View>
 
-          <View className="flex flex-row items-center mt-2 md:mt-0">
+          <View className="flex flex-row items-center my-2 md:mt-0">
             <Button
               text="Cancel"
               onPress={onCancel}
