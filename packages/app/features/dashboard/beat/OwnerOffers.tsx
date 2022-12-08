@@ -7,6 +7,8 @@ import { CreateOfferBtn } from "app/features/dashboard/beat/CreateOfferBtn";
 import { useUserOffers } from "app/hooks/useUserOffers";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
+import { useMemo } from "react";
+import { filter } from "ramda";
 
 type OwnerOffersProps = {
   entry: Entry;
@@ -16,6 +18,14 @@ type OwnerOffersProps = {
 export function OwnerOffers({ entry, holders }: OwnerOffersProps) {
   const user = useRecoilValue(userAtom);
   const { offers } = useUserOffers(user?.publicKey, entry.issuer, entry.code);
+
+  const isOwner = useMemo(() => {
+    const arrayWithOwner = holders
+      ? filter((holder) => holder.account === user?.publicKey, holders)
+      : [];
+
+    return arrayWithOwner.length > 0;
+  }, [holders, user]);
 
   const Offers = () => {
     return (
@@ -49,6 +59,8 @@ export function OwnerOffers({ entry, holders }: OwnerOffersProps) {
       </CollapsableView>
     );
   };
+
+  if (!isOwner) return null;
 
   return <>{offers && offers.length > 0 ? <Offers /> : <CreateOfferRow />}</>;
 }
