@@ -6,6 +6,7 @@ import { PriceContainer } from "./PriceContainer";
 import { Owners } from "./BeatOwners";
 import { usePlayback } from "app/hooks/usePlayback";
 import PlayIcon from "app/ui/icons/play";
+import PauseIcon from "app/ui/icons/pause";
 import LikeButton from "app/ui/buttons/likeButton";
 import { CollapsableView } from "app/ui/CollapsableView";
 import Like from "app/ui/icons/like";
@@ -31,7 +32,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
         </Text>
         <Text className="md:text-2xl">{entry.artist}</Text>
         <View className="flex-row mt-4 items-center">
-          <PlayBeatButton entry={entry} />
+          <PlayBeatButton currentEntry={entry} />
           <Text className="text-grey-light ml-1">Listen</Text>
           <View className="w-0.25 h-6 bg-grey-light mx-3" />
           <ComponentAuthGuard>
@@ -59,10 +60,27 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
   );
 }
 
-function PlayBeatButton({ entry }: { entry: Entry }) {
-  const { playEntry } = usePlayback();
+function PlayBeatButton({ currentEntry }: { currentEntry: Entry }) {
+  const { playEntry, playPause, entry, playbackState } = usePlayback();
+
+  if (entry?.id === currentEntry.id) {
+    if (playbackState === "LOADING" || playbackState === "FALLBACK") {
+      return <ActivityIndicator />;
+    }
+
+    return (
+      <Pressable onPress={playPause}>
+        {playbackState === "PLAYING" ? (
+          <PauseIcon color={tw.color("white")} size={22} />
+        ) : (
+          <PlayIcon color={tw.color("white")} size={22} />
+        )}
+      </Pressable>
+    );
+  }
+
   return (
-    <Pressable onPress={() => playEntry(entry, [entry])}>
+    <Pressable onPress={() => playEntry(currentEntry, [currentEntry])}>
       <PlayIcon color={tw.color("grey-light")} />
     </Pressable>
   );
