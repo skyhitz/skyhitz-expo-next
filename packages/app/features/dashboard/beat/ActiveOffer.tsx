@@ -31,7 +31,9 @@ export function ActiveOffer({
 
       <View className="md:flex-1 my-2 md:mx-2 md:my-0">
         <View className="md:flex-col">
-          <Text className="my-1 md:my-0 text-sm">Amount: {numericAmount}</Text>
+          <Text className="my-1 md:my-0 text-sm">
+            Amount: {(100 * numericAmount).toFixed(0)}%
+          </Text>
           <Text className="my-1 md:my-0 text-sm">
             Price: {Math.round(numericAmount * numericPrice)} XLM
           </Text>
