@@ -19,7 +19,7 @@ export function OwnerOffers({ entry, holders }: OwnerOffersProps) {
 
   const Offers = () => {
     return (
-      <CollapsableView headerText="Your active offers" icon={ArrowsUpDownIcon}>
+      <CollapsableView headerText="Offers" icon={ArrowsUpDownIcon}>
         <View>
           {offers.map((offer, index) => (
             <ActiveOffer
@@ -37,7 +37,7 @@ export function OwnerOffers({ entry, holders }: OwnerOffersProps) {
 
   const CreateOfferRow = () => {
     return (
-      <CollapsableView headerText="Your active offers" icon={ArrowsUpDownIcon}>
+      <CollapsableView headerText="Offers" icon={ArrowsUpDownIcon}>
         <View>
           <View className="md:flex-row py-3 px-5 md:items-center bg-blue-transparent justify-between">
             <Text className="my-1 md:my-0 text-sm">

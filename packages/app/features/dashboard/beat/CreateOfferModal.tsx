@@ -1,8 +1,4 @@
-import {
-  Entry,
-  UpdatePricingMutation,
-  useUpdatePricingMutation,
-} from "app/api/graphql";
+import { Entry, useUpdatePricingMutation } from "app/api/graphql";
 import { Modal, Pressable, View, Text, Image, Button } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
 import X from "app/ui/icons/x";
@@ -58,8 +54,19 @@ export const CreateOfferModal = ({
 
   const modalText = offerId === "0" ? "Create an offer" : "Modify an offer";
 
-  const onMutationCompleted = useCallback(
-    async (data: UpdatePricingMutation) => {
+  const handleSubmit = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data } = await updatePricing({
+        variables: {
+          id: entry.id!,
+          equityForSale: parseInt(equityForSale, 10) / 100,
+          price: parseInt(price, 10),
+          forSale: true,
+          offerID: offerId,
+        },
+      });
+
       if (data?.updatePricing?.success) {
         if (data.updatePricing.submitted) {
           setLoading(false);
@@ -105,37 +112,22 @@ export const CreateOfferModal = ({
           }
         }
       }
-    },
-    [
-      hideModal,
-      setLoading,
-      revalidateOffers,
-      setUri,
-      setWalletConnectModalVisible,
-      setMessage,
-      reportError,
-    ]
-  );
-
-  const handleSubmit = useCallback(async () => {
-    setLoading(true);
-    try {
-      await updatePricing({
-        variables: {
-          id: entry.id!,
-          equityForSale: parseInt(equityForSale, 10) / 100,
-          price: parseInt(price, 10),
-          forSale: true,
-          offerID: offerId,
-        },
-        onCompleted: onMutationCompleted,
-      });
     } catch (ex) {
       setLoading(false);
       hideModal();
       reportError(ex);
     }
-  }, [equityForSale, price, setLoading, hideModal, reportError]);
+  }, [
+    hideModal,
+    setLoading,
+    revalidateOffers,
+    setUri,
+    setWalletConnectModalVisible,
+    setMessage,
+    reportError,
+    equityForSale,
+    price,
+  ]);
 
   return (
     <>
@@ -143,7 +135,6 @@ export const CreateOfferModal = ({
         <Pressable
           onPress={() => {
             hideModal();
-            setEquityForSale("");
           }}
           className="flex-1 flex items-center justify-center bg-blue-field/70 w-full p-4"
         >
@@ -155,7 +146,6 @@ export const CreateOfferModal = ({
               className="absolute right-2 top-2 "
               onPress={() => {
                 hideModal();
-                setEquityForSale("");
               }}
             >
               <X color={tw.color("white")} />
@@ -207,6 +197,11 @@ export const CreateOfferModal = ({
                 maxLength={10}
               />
             </View>
+            {message && (
+              <Text className="w-full text-center text-sm my-4 min-h-5">
+                {message}
+              </Text>
+            )}
             <Button
               text="Confirm"
               size="large"

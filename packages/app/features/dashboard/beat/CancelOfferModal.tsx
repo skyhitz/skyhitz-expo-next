@@ -1,11 +1,7 @@
-import {
-  Entry,
-  UpdatePricingMutation,
-  useUpdatePricingMutation,
-} from "app/api/graphql";
+import { Entry, useUpdatePricingMutation } from "app/api/graphql";
 import { Button, Modal, Pressable, Text } from "app/design-system";
 import { tw } from "app/design-system/tailwind";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import X from "app/ui/icons/x";
 import { useToast } from "react-native-toast-notifications";
 import { useErrorReport } from "app/hooks/useErrorReport";
@@ -48,7 +44,18 @@ export const CancelConfirmationModal = ({
     mutate(sellOffersUrl(user?.publicKey, entry.issuer, entry.code));
   };
 
-  const onMutationCompleted = async (data: UpdatePricingMutation) => {
+  const handelSubmit = useCallback(async () => {
+    setLoading(true);
+    const { data } = await updatePricing({
+      variables: {
+        id: entry.id!,
+        equityForSale: 0,
+        price: 0,
+        forSale: false,
+        offerID: offerId,
+      },
+    });
+
     if (data?.updatePricing?.success) {
       if (data.updatePricing.submitted) {
         setLoading(false);
@@ -97,27 +104,28 @@ export const CancelConfirmationModal = ({
       hideModal();
       reportError(Error("You don't have any offers."));
     }
-  };
+  }, [
+    hideModal,
+    setLoading,
+    revalidateOffers,
+    setUri,
+    setWalletConnectModalVisible,
+    setMessage,
+    reportError,
+  ]);
 
   return (
     <>
       <Modal visible={visible} transparent>
         <Pressable
-          onPress={() => {
-            hideModal();
-          }}
+          onPress={hideModal}
           className="flex-1 flex items-center justify-center bg-blue-field/70 w-full p-4"
         >
           <Pressable
             onPress={() => {}}
             className="flex items-center w-full max-w-lg bg-blue-field p-4"
           >
-            <Pressable
-              className="absolute right-2 top-2 "
-              onPress={() => {
-                hideModal();
-              }}
-            >
+            <Pressable className="absolute right-2 top-2 " onPress={hideModal}>
               <X color={tw.color("white")} />
             </Pressable>
             <Text className="text-lg font-bold">
@@ -131,19 +139,7 @@ export const CancelConfirmationModal = ({
             <Button
               className="mt-4"
               text="Confirm"
-              onPress={async () => {
-                setLoading(true);
-                await updatePricing({
-                  variables: {
-                    id: entry.id!,
-                    equityForSale: 0,
-                    price: 0,
-                    forSale: false,
-                    offerID: offerId,
-                  },
-                  onCompleted: onMutationCompleted,
-                });
-              }}
+              onPress={handelSubmit}
               disabled={loading}
               loading={loading}
             />
