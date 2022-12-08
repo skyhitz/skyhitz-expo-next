@@ -69,7 +69,7 @@ export function HomeScreen() {
               onPress={goToSignIn}
               text="Sign in"
               variant="primary"
-              className={btnClassName}
+              className={`${btnClassName} sm:hidden`}
             />
           )}
           {!user && (
