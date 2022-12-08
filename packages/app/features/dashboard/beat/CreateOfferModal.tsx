@@ -55,8 +55,8 @@ export const CreateOfferModal = ({
   const modalText = offerId === "0" ? "Create an offer" : "Modify an offer";
 
   const handleSubmit = useCallback(async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const { data } = await updatePricing({
         variables: {
           id: entry.id!,
@@ -79,36 +79,31 @@ export const CreateOfferModal = ({
           setMessage("Sign and submit transaction in your wallet");
           const xdr = data.updatePricing.xdr;
 
-          try {
-            let currentSession = session;
-            if (!currentSession) {
-              currentSession = await connect((newUri) => {
-                setUri(newUri);
-                setWalletConnectModalVisible(true);
-              });
-            }
-            const response = await signAndSubmitXdr(xdr, currentSession);
-            setMessage(undefined);
-            setLoading(false);
+          let currentSession = session;
+          if (!currentSession) {
+            currentSession = await connect((newUri) => {
+              setUri(newUri);
+              setWalletConnectModalVisible(true);
+            });
+          }
+          const response = await signAndSubmitXdr(xdr, currentSession);
+          setMessage(undefined);
+          setLoading(false);
 
-            const { status } = response as { status: string };
-            if (status === "success") {
-              hideModal();
-              toast.show("You have successfully created an offer", {
-                type: "success",
-              });
-              revalidateOffers();
-            } else {
-              hideModal();
-              reportError(
-                Error(
-                  "Something went wrong during signing and submitting transaction in your wallet."
-                )
-              );
-            }
-          } catch (ex) {
+          const { status } = response as { status: string };
+          if (status === "success") {
             hideModal();
-            reportError(ex);
+            toast.show("You have successfully created an offer", {
+              type: "success",
+            });
+            revalidateOffers();
+          } else {
+            hideModal();
+            reportError(
+              Error(
+                "Something went wrong during signing and submitting transaction in your wallet."
+              )
+            );
           }
         }
       }
@@ -133,21 +128,14 @@ export const CreateOfferModal = ({
     <>
       <Modal visible={visible} transparent>
         <Pressable
-          onPress={() => {
-            hideModal();
-          }}
+          onPress={hideModal}
           className="flex-1 flex items-center justify-center bg-blue-field/70 w-full p-4"
         >
           <Pressable
             onPress={() => {}}
             className="flex items-center w-full max-w-lg bg-blue-field p-4"
           >
-            <Pressable
-              className="absolute right-2 top-2 "
-              onPress={() => {
-                hideModal();
-              }}
-            >
+            <Pressable className="absolute right-2 top-2 " onPress={hideModal}>
               <X color={tw.color("white")} />
             </Pressable>
             <Text className="text-lg font-bold">{modalText}</Text>

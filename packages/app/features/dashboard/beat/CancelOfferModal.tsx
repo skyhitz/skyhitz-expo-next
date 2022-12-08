@@ -45,30 +45,30 @@ export const CancelConfirmationModal = ({
   };
 
   const handelSubmit = useCallback(async () => {
-    setLoading(true);
-    const { data } = await updatePricing({
-      variables: {
-        id: entry.id!,
-        equityForSale: 0,
-        price: 0,
-        forSale: false,
-        offerID: offerId,
-      },
-    });
+    try {
+      setLoading(true);
+      const { data } = await updatePricing({
+        variables: {
+          id: entry.id!,
+          equityForSale: 0,
+          price: 0,
+          forSale: false,
+          offerID: offerId,
+        },
+      });
 
-    if (data?.updatePricing?.success) {
-      if (data.updatePricing.submitted) {
-        setLoading(false);
-        hideModal();
-        toast.show("You have successfully cancelled an offer", {
-          type: "success",
-        });
-        revalidateOffers();
-      } else if (data.updatePricing.xdr) {
-        setMessage("Sign and submit transaction in your wallet");
-        const xdr = data.updatePricing.xdr;
+      if (data?.updatePricing?.success) {
+        if (data.updatePricing.submitted) {
+          setLoading(false);
+          hideModal();
+          toast.show("You have successfully cancelled an offer", {
+            type: "success",
+          });
+          revalidateOffers();
+        } else if (data.updatePricing.xdr) {
+          setMessage("Sign and submit transaction in your wallet");
+          const xdr = data.updatePricing.xdr;
 
-        try {
           let currentSession = session;
           if (!currentSession) {
             currentSession = await connect((newUri) => {
@@ -95,14 +95,14 @@ export const CancelConfirmationModal = ({
               )
             );
           }
-        } catch (ex) {
-          hideModal();
-          reportError(ex);
         }
+      } else {
+        hideModal();
+        reportError(Error("You don't have any offers."));
       }
-    } else {
+    } catch (ex) {
       hideModal();
-      reportError(Error("You don't have any offers."));
+      reportError(ex);
     }
   }, [
     hideModal,
