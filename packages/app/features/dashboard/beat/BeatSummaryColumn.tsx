@@ -15,6 +15,7 @@ import { LikesList } from "app/features/player/components/likesList";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
 import { ComponentAuthGuard } from "app/utils/authGuard";
+import { OwnerOffers } from "./OwnerOffers";
 
 type Props = {
   entry: Entry;
@@ -55,6 +56,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
       </CollapsableView>
       {/* TODO skeleton */}
       {!holders && <ActivityIndicator className="mt-5" />}
+      <OwnerOffers entry={entry} holders={holders} />
       {holders && <Owners holders={holders} />}
     </View>
   );

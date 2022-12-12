@@ -193,9 +193,10 @@ export type MutationSignInWithXdrArgs = {
 };
 
 export type MutationUpdatePricingArgs = {
-  equityForSale: Scalars["Int"];
+  equityForSale: Scalars["Float"];
   forSale: Scalars["Boolean"];
   id: Scalars["String"];
+  offerID: Scalars["String"];
   price: Scalars["Int"];
 };
 
@@ -509,6 +510,24 @@ export type SignInWithXdrMutation = {
       code: string;
       issuer: string;
     } | null;
+  };
+};
+
+export type UpdatePricingMutationVariables = Exact<{
+  id: Scalars["String"];
+  price: Scalars["Int"];
+  forSale: Scalars["Boolean"];
+  equityForSale: Scalars["Float"];
+  offerID: Scalars["String"];
+}>;
+
+export type UpdatePricingMutation = {
+  __typename?: "Mutation";
+  updatePricing: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success: boolean;
+    submitted: boolean;
   };
 };
 
@@ -1403,6 +1422,74 @@ export type SignInWithXdrMutationResult =
 export type SignInWithXdrMutationOptions = Apollo.BaseMutationOptions<
   SignInWithXdrMutation,
   SignInWithXdrMutationVariables
+>;
+export const UpdatePricingDocument = gql`
+  mutation UpdatePricing(
+    $id: String!
+    $price: Int!
+    $forSale: Boolean!
+    $equityForSale: Float!
+    $offerID: String!
+  ) {
+    updatePricing(
+      id: $id
+      price: $price
+      forSale: $forSale
+      equityForSale: $equityForSale
+      offerID: $offerID
+    ) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type UpdatePricingMutationFn = Apollo.MutationFunction<
+  UpdatePricingMutation,
+  UpdatePricingMutationVariables
+>;
+
+/**
+ * __useUpdatePricingMutation__
+ *
+ * To run a mutation, you first call `useUpdatePricingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePricingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePricingMutation, { data, loading, error }] = useUpdatePricingMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      price: // value for 'price'
+ *      forSale: // value for 'forSale'
+ *      equityForSale: // value for 'equityForSale'
+ *      offerID: // value for 'offerID'
+ *   },
+ * });
+ */
+export function useUpdatePricingMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdatePricingMutation,
+    UpdatePricingMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdatePricingMutation,
+    UpdatePricingMutationVariables
+  >(UpdatePricingDocument, options);
+}
+export type UpdatePricingMutationHookResult = ReturnType<
+  typeof useUpdatePricingMutation
+>;
+export type UpdatePricingMutationResult =
+  Apollo.MutationResult<UpdatePricingMutation>;
+export type UpdatePricingMutationOptions = Apollo.BaseMutationOptions<
+  UpdatePricingMutation,
+  UpdatePricingMutationVariables
 >;
 export const UpdateUserDocument = gql`
   mutation updateUser(
