@@ -29,6 +29,8 @@ export const editProfileFormSchema: SchemaOf<EditProfileForm> = object().shape({
   description: string(),
   username: usernameSchema,
   email: emailSchema,
+  twitter: string(),
+  instagram: string(),
 });
 
 export const signInFormSchema: SchemaOf<SignInForm> = Yup.object().shape({
