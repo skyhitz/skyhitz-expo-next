@@ -28,6 +28,8 @@ import { ipfsProtocol } from "app/constants/constants";
 import { useToast } from "react-native-toast-notifications";
 import { ChangeWallet } from "./ChangeWallet";
 import { ChangeUserBackground } from "./changeUserBackground";
+import Twitter from "app/ui/icons/twitter";
+import Instagram from "app/ui/icons/instagram";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -36,7 +38,7 @@ export default function EditProfileScreen() {
     url: user.avatarUrl,
   });
   const [background, setBackground] = useState<ChangeBackgroundImg>({
-    url: user.backgroundUrl,
+    url: user.backgroundUrl ?? "",
   });
   const [updateUser, { data, loading }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();
@@ -46,14 +48,20 @@ export default function EditProfileScreen() {
   const handleUpdateUser = async (form: EditProfileForm) => {
     if (loading) return;
 
-    let avatarUrl = "";
+    let avatarUrl = user.avatarUrl;
+    let backgroundUrl = user.backgroundUrl ?? "";
+
     try {
       if (avatar.blob) {
         const cid = await uploadFile(avatar.blob);
         avatarUrl = `${ipfsProtocol}${cid}`;
       }
+      if (background.blob) {
+        const cid = await uploadFile(background.blob);
+        backgroundUrl = `${ipfsProtocol}${cid}`;
+      }
       await updateUser({
-        variables: { ...form, avatarUrl },
+        variables: { ...form, avatarUrl, backgroundUrl },
       });
     } catch (e: any) {
       console.error(e);
@@ -74,6 +82,8 @@ export default function EditProfileScreen() {
     description: user.description,
     username: user.username,
     email: user.email,
+    twitter: user.twitter,
+    instagram: user.instagram,
   };
 
   return (
@@ -98,7 +108,11 @@ export default function EditProfileScreen() {
           </View>
           <View className="px-4">
             <View className="flex justify-between">
-              <ChangeUserBackground onChange={setBackground} />
+              <ChangeUserBackground
+                onChange={setBackground}
+                backgroundImg={background}
+                disable={loading}
+              />
               <ChangeUserAvatar
                 avatarImg={avatar}
                 displayName={user!.displayName}
@@ -127,6 +141,20 @@ export default function EditProfileScreen() {
               placeholder="Username"
               onChangeText={handleChange("username")}
               icon={PersonOutline}
+            />
+            <Line />
+            <FormInputWithIcon
+              value={values.twitter ?? ""}
+              placeholder="Twitter username"
+              onChangeText={handleChange("twitter")}
+              icon={Twitter}
+            />
+            <Line />
+            <FormInputWithIcon
+              value={values.instagram ?? ""}
+              placeholder="Instagram username"
+              onChangeText={handleChange("instagram")}
+              icon={Instagram}
             />
             <Text className="font-bold text-sm pt-8 pb-2">
               Private information
