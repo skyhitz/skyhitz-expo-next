@@ -14,7 +14,7 @@ type Props = {
 
 export function AssetBids({ entry, holders }: Props) {
   const user = useRecoilValue(userAtom);
-  const { data } = useAssetBidsQuery({
+  const { data, refetch } = useAssetBidsQuery({
     variables: { assetCode: entry.code, assetIssuer: entry.issuer },
   });
 
@@ -25,15 +25,19 @@ export function AssetBids({ entry, holders }: Props) {
     return isOwner;
   }, [holders, user]);
 
-  console.log(isOwner, data);
-
   if (!isOwner || !data || data?.bids.length === 0) return null;
 
   return (
     <CollapsableView headerText="Active Bids" icon={ArrowsUpDownIcon}>
       <View>
         {data.bids.map((offer, index) => (
-          <ActiveBid key={offer.id} entry={entry} index={index} offer={offer} />
+          <ActiveBid
+            key={offer.id}
+            entry={entry}
+            index={index}
+            offer={offer}
+            refetch={refetch}
+          />
         ))}
       </View>
     </CollapsableView>

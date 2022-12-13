@@ -65,7 +65,7 @@ export function CreateBid({ entry }: Props) {
       setLoading(false);
       setProposedPrice("");
       setEquityToBuy("");
-      toast.show("You have successfully created a buy offer", {
+      toast.show("You have successfully created a bid", {
         type: "success",
       });
       mutate(getUserBidsUrl(user!.publicKey));

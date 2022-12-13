@@ -389,6 +389,13 @@ export type CreateUserWithEmailMutationVariables = Exact<{
 
 export type CreateUserWithEmailMutation = { __typename?: 'Mutation', createUserWithEmail: { __typename?: 'ConditionalUser', message: string, user?: { __typename?: 'User', avatarUrl: string, displayName?: string | null, username: string, id: string, jwt?: string | null, publishedAt?: string | null, email: string, description?: string | null, publicKey: string, managed: boolean, lastPlayedEntry?: { __typename?: 'Entry', imageUrl: string, videoUrl: string, description?: string | null, title: string, id: string, artist: string, code: string, issuer: string } | null } | null } };
 
+export type HideBidMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type HideBidMutation = { __typename?: 'Mutation', hideBid: boolean };
+
 export type IndexEntryMutationVariables = Exact<{
   issuer: Scalars['String'];
 }>;
@@ -813,6 +820,37 @@ export function useCreateUserWithEmailMutation(baseOptions?: Apollo.MutationHook
 export type CreateUserWithEmailMutationHookResult = ReturnType<typeof useCreateUserWithEmailMutation>;
 export type CreateUserWithEmailMutationResult = Apollo.MutationResult<CreateUserWithEmailMutation>;
 export type CreateUserWithEmailMutationOptions = Apollo.BaseMutationOptions<CreateUserWithEmailMutation, CreateUserWithEmailMutationVariables>;
+export const HideBidDocument = gql`
+    mutation HideBid($id: String!) {
+  hideBid(id: $id)
+}
+    `;
+export type HideBidMutationFn = Apollo.MutationFunction<HideBidMutation, HideBidMutationVariables>;
+
+/**
+ * __useHideBidMutation__
+ *
+ * To run a mutation, you first call `useHideBidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useHideBidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [hideBidMutation, { data, loading, error }] = useHideBidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useHideBidMutation(baseOptions?: Apollo.MutationHookOptions<HideBidMutation, HideBidMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<HideBidMutation, HideBidMutationVariables>(HideBidDocument, options);
+      }
+export type HideBidMutationHookResult = ReturnType<typeof useHideBidMutation>;
+export type HideBidMutationResult = Apollo.MutationResult<HideBidMutation>;
+export type HideBidMutationOptions = Apollo.BaseMutationOptions<HideBidMutation, HideBidMutationVariables>;
 export const IndexEntryDocument = gql`
     mutation IndexEntry($issuer: String!) {
   indexEntry(issuer: $issuer) {
