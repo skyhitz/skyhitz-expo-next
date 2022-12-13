@@ -18,7 +18,7 @@ type Props = {
   entry: Entry;
 };
 
-export function CreateBuyOfferContainer({ entry }: Props) {
+export function CreateBid({ entry }: Props) {
   const [proposedPrice, setProposedPrice] = useState("");
   const [createOffer] = useCreateBidMutation();
   const [equityToBuy, setEquityToBuy] = useState("");
@@ -91,7 +91,7 @@ export function CreateBuyOfferContainer({ entry }: Props) {
       <ComponentAuthGuard>
         <View className="border-[0.5px] mt-4 border-grey-light rounded-lg bg-blue-transparent flex p-4 items-center md:items-start">
           <Text className="mb-3 text-sm text-grey-light">
-            Create an offer for this asset
+            Create a bid for this asset
           </Text>
           <View className="flex md:flex-row items-center mb-3">
             <FormInputWithIcon

@@ -10,6 +10,7 @@ import { BeatSummaryColumn } from "./BeatSummaryColumn";
 import { useGetEntry } from "app/hooks/algolia/useGetEntry";
 import * as assert from "assert";
 import { ReactNode } from "react";
+import { Owners } from "./BeatOwners";
 
 type Props = {
   entry?: Entry;
@@ -43,13 +44,16 @@ export default function BeatScreen(props: Props) {
       return (
         <>
           <View className="flex-row w-full">
-            <View className="flex flex-1 mr-2 items-center justify-between">
+            <View className="flex flex-1 mr-2 items-center">
               <Image
                 uri={imageUrlMedium(imageUrl)}
                 fallbackUri={imageSrc(imageUrl)}
                 className="aspect-square max-w-125 max-h-125 w-full"
               />
               <Details code={code} issuer={issuer} />
+              {/* TODO skeleton */}
+              {!details?.holders && <ActivityIndicator className="mt-5" />}
+              {details?.holders && <Owners holders={details?.holders} />}
             </View>
             <BeatSummaryColumn entry={entry} holders={details?.holders} />
           </View>
@@ -69,6 +73,8 @@ export default function BeatScreen(props: Props) {
           <BeatSummaryColumn entry={entry} holders={details?.holders} />
           <Details code={code} issuer={issuer} />
           {/* TODO skeleton */}
+          {!details?.holders && <ActivityIndicator className="mt-5" />}
+          {details?.holders && <Owners holders={details?.holders} />}
           {!details && <ActivityIndicator className="mt-5 mx-auto" />}
           {details?.history && <Activity activities={details.history} />}
         </>

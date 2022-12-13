@@ -1,8 +1,8 @@
 import { Text, View } from "app/design-system";
 import { Offer } from "app/types";
-import { CancelOfferBtn } from "app/features/dashboard/beat/CancelOfferBtn";
+import { CancelOfferBtn } from "app/features/dashboard/beat/offers/CancelOfferBtn";
 import { Entry, EntryHolder } from "app/api/graphql";
-import { CreateOfferBtn } from "app/features/dashboard/beat/CreateOfferBtn";
+import { CreateOfferBtn } from "app/features/dashboard/beat/offers/CreateOfferBtn";
 import { LinkWithLabel } from "app/ui/links/LinkWithLabel";
 
 type ActiveOfferProps = {
@@ -30,14 +30,10 @@ export function ActiveOffer({
       <LinkWithLabel type="offer" id={id.toString()} />
 
       <View className="md:flex-1 my-2 md:mx-2 md:my-0">
-        <View className="md:flex-col">
-          <Text className="my-1 md:my-0 text-sm">
-            Amount: {(100 * numericAmount).toFixed(0)}%
-          </Text>
-          <Text className="my-1 md:my-0 text-sm">
-            Price: {Math.round(numericAmount * numericPrice)} XLM
-          </Text>
-        </View>
+        <Text className="ml-1 text-sm">
+          {(100 * numericAmount).toFixed()}% of the asset for{" "}
+          {Math.round(numericAmount * numericPrice)}XLM
+        </Text>
       </View>
       <CreateOfferBtn entry={entry} holders={holders} offerId={id.toString()} />
       <CancelOfferBtn entry={entry} offerId={id.toString()} />

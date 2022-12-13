@@ -36,7 +36,7 @@ export function CreateOfferBtn({ offerId, entry, holders }: Props) {
     (currentUserBalance / totalBalance) *
     100
   ).toString();
-  const modalText = offerId === "0" ? "Create an offer" : "Modify an offer";
+  const modalText = offerId === "0" ? "Create" : "Modify";
 
   return (
     <ComponentAuthGuard>
@@ -47,6 +47,7 @@ export function CreateOfferBtn({ offerId, entry, holders }: Props) {
           setModalVisible(true);
         }}
         useTouchable
+        size="small"
       />
       <CreateOfferModal
         visible={modalVisible}
