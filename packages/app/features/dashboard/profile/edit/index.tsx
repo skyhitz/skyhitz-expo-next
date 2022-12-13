@@ -16,19 +16,27 @@ import { userAtom } from "app/state/user";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useRouter } from "solito/router";
-import { ChangeAvatarImg, EditProfileForm } from "app/types";
+import {
+  ChangeAvatarImg,
+  ChangeBackgroundImg,
+  EditProfileForm,
+} from "app/types";
 import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
 import { useToast } from "react-native-toast-notifications";
 import { ChangeWallet } from "./ChangeWallet";
+import { ChangeUserBackground } from "./changeUserBackground";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
   assert.ok(user, "Unauthorized access on EditProfileScreen");
   const [avatar, setAvatar] = useState<ChangeAvatarImg>({
     url: user.avatarUrl,
+  });
+  const [background, setBackground] = useState<ChangeBackgroundImg>({
+    url: user.backgroundUrl,
   });
   const [updateUser, { data, loading }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();
@@ -89,12 +97,15 @@ export default function EditProfileScreen() {
             <Text className="mx-auto text-sm">Upload a profile picture</Text>
           </View>
           <View className="px-4">
-            <ChangeUserAvatar
-              avatarImg={avatar}
-              displayName={user!.displayName}
-              onChange={setAvatar}
-              disable={loading}
-            />
+            <View className="flex justify-between">
+              <ChangeUserBackground onChange={setBackground} />
+              <ChangeUserAvatar
+                avatarImg={avatar}
+                displayName={user!.displayName}
+                onChange={setAvatar}
+                disable={loading}
+              />
+            </View>
             <FormInputWithIcon
               value={values.displayName ?? ""}
               placeholder="Display Name"

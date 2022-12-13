@@ -193,14 +193,16 @@ export type MutationSignInWithXdrArgs = {
 };
 
 export type MutationUpdatePricingArgs = {
-  equityForSale: Scalars["Int"];
+  equityForSale: Scalars["Float"];
   forSale: Scalars["Boolean"];
   id: Scalars["String"];
+  offerID: Scalars["String"];
   price: Scalars["Int"];
 };
 
 export type MutationUpdateUserArgs = {
   avatarUrl?: InputMaybe<Scalars["String"]>;
+  backgroundUrl?: InputMaybe<Scalars["String"]>;
   description?: InputMaybe<Scalars["String"]>;
   displayName?: InputMaybe<Scalars["String"]>;
   email?: InputMaybe<Scalars["String"]>;
@@ -263,6 +265,7 @@ export type Token = {
 export type User = {
   __typename?: "User";
   avatarUrl: Scalars["String"];
+  backgroundUrl: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
   email: Scalars["String"];
@@ -514,6 +517,7 @@ export type SignInWithXdrMutation = {
 
 export type UpdateUserMutationVariables = Exact<{
   avatarUrl?: InputMaybe<Scalars["String"]>;
+  backgroundUrl?: InputMaybe<Scalars["String"]>;
   displayName?: InputMaybe<Scalars["String"]>;
   description?: InputMaybe<Scalars["String"]>;
   username?: InputMaybe<Scalars["String"]>;
@@ -525,6 +529,7 @@ export type UpdateUserMutation = {
   updateUser: {
     __typename?: "User";
     avatarUrl: string;
+    backgroundUrl: string;
     displayName?: string | null;
     email: string;
     username: string;
@@ -1407,6 +1412,7 @@ export type SignInWithXdrMutationOptions = Apollo.BaseMutationOptions<
 export const UpdateUserDocument = gql`
   mutation updateUser(
     $avatarUrl: String
+    $backgroundUrl: String
     $displayName: String
     $description: String
     $username: String
@@ -1414,12 +1420,14 @@ export const UpdateUserDocument = gql`
   ) {
     updateUser(
       avatarUrl: $avatarUrl
+      backgroundUrl: $backgroundUrl
       displayName: $displayName
       description: $description
       username: $username
       email: $email
     ) {
       avatarUrl
+      backgroundUrl
       displayName
       email
       username
@@ -1452,6 +1460,7 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<
  * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
  *   variables: {
  *      avatarUrl: // value for 'avatarUrl'
+ *      backgroundUrl: // value for 'backgroundUrl'
  *      displayName: // value for 'displayName'
  *      description: // value for 'description'
  *      username: // value for 'username'

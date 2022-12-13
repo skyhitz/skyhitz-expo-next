@@ -1,5 +1,6 @@
 mutation updateUser(
   $avatarUrl: String
+  $backgroundUrl: String
   $displayName: String
   $description: String
   $username: String
@@ -7,12 +8,14 @@ mutation updateUser(
 ) {
   updateUser(
     avatarUrl: $avatarUrl
+    backgroundUrl: $backgroundUrl
     displayName: $displayName
     description: $description
     username: $username
     email: $email
   ) {
     avatarUrl
+    backgroundUrl
     displayName
     email
     username

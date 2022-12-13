@@ -114,6 +114,15 @@ export const validateProfilePicture = (image: MediaFileInfo): string | null => {
   );
 };
 
+export const validateBackgroundImage = (
+  image: MediaFileInfo
+): string | null => {
+  return (
+    //TO DO: Add validation rules for image size/ratio etc.
+    validateImgFormatOneOf(image, ["png", "jpg", "jpeg"])
+  );
+};
+
 export const validateArtwork = (image: MediaFileInfo): string | null => {
   return (
     validateImgSquare(image) ??

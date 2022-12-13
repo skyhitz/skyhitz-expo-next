@@ -47,6 +47,11 @@ export type ChangeAvatarImg = {
   url: string;
 };
 
+export type ChangeBackgroundImg = {
+  blob?: Blob;
+  url: string;
+};
+
 export type MediaFileInfo =
   | {
       image: true;
