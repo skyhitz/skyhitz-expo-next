@@ -2,26 +2,7 @@ import { CollapsableView } from "app/ui/CollapsableView";
 import { Text, View } from "app/design-system";
 import { EntryActivity } from "app/api/graphql";
 import { ArrowsUpDownIcon } from "app/ui/icons/arrows-up-down";
-import { StellarExpertLink } from "app/ui/links/StellarExpertLink";
-
-type LinkWithLabelProps = {
-  type: "account" | "asset" | "tx";
-  id: string;
-  className?: string;
-};
-
-function LinkWithLabel({ type, id, className = "w-20" }: LinkWithLabelProps) {
-  const label =
-    type === "tx"
-      ? "Transaction"
-      : type.charAt(0).toUpperCase() + type.slice(1);
-  return (
-    <View className="flex-row md:ml-1 items-center">
-      <Text className="text-grey text-sm">{label}: </Text>
-      <StellarExpertLink id={id} path={type} className={className} />
-    </View>
-  );
-}
+import { LinkWithLabel } from "app/ui/links/LinkWithLabel";
 
 export function BeatActivity({
   activity,

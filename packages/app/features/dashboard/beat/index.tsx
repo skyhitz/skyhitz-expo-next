@@ -3,7 +3,6 @@ import { tw } from "app/design-system/tailwind";
 import { Entry, useEntryDetailsQuery } from "app/api/graphql";
 import { ScrollView } from "app/design-system/ScrollView";
 import { ActivityIndicator, Image, View } from "app/design-system";
-import { Offers } from "./BeatOffers";
 import { Activity } from "./BeatActivities";
 import { Details } from "./BeatDetails";
 import { imageSrc, imageUrlMedium } from "app/utils/entry";
@@ -56,7 +55,6 @@ export default function BeatScreen(props: Props) {
           </View>
           {/* TODO skeleton */}
           {!details && <ActivityIndicator className="mt-5 mx-auto" />}
-          {details?.offers && <Offers offers={details.offers} />}
           {details?.history && <Activity activities={details.history} />}
         </>
       );
@@ -72,7 +70,6 @@ export default function BeatScreen(props: Props) {
           <Details code={code} issuer={issuer} />
           {/* TODO skeleton */}
           {!details && <ActivityIndicator className="mt-5 mx-auto" />}
-          {details?.offers && <Offers offers={details.offers} />}
           {details?.history && <Activity activities={details.history} />}
         </>
       );
