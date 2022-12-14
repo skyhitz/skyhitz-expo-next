@@ -8,6 +8,7 @@ import { Config } from "app/config";
 import { useUserWithId } from "app/hooks/algolia/useUserWithId";
 import { ProfileHeader } from "app/features/dashboard/profile/ProfileHeader";
 import { tw } from "app/design-system/tailwind";
+import { ScrollView } from "app/design-system/ScrollView";
 
 export default function BeatmakerScreen() {
   const id = useBeatmakerParam();
@@ -61,7 +62,19 @@ export default function BeatmakerScreen() {
       >
         {user!.data?.displayName!}
       </Text>
-      <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg">
+      {user!.data?.description && (
+        <>
+          <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 text-lg font-bold">
+            Bio
+          </Text>
+          <ScrollView className="h-1/10">
+            <Text className="w-full max-w-6xl mx-auto pl-4 mt-3 text-lg">
+              {user!.data?.description}
+            </Text>
+          </ScrollView>
+        </>
+      )}
+      <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg font-bold">
         Beatmaker collection
       </Text>
       <ProfileBeatsList
