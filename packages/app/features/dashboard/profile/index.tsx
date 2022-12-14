@@ -1,7 +1,7 @@
 import { Button, Text, View } from "app/design-system";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
-import { UserAvatar } from "app/ui/userAvatar";
+import { ProfileHeader } from "app/features/dashboard/profile/ProfileHeader";
 import Cog from "app/ui/icons/cog";
 import { tw } from "app/design-system/tailwind";
 import { CopyWalletPublicKeyButton } from "app/ui/buttons/CopyWalletPublicKeyButton";
@@ -22,6 +22,7 @@ import {
 } from "app/api/graphql";
 import * as assert from "assert";
 import { useUserBids } from "app/hooks/useUserBids";
+import { Config } from "app/config";
 // import { useSendwyreCheckout } from "app/hooks/useSendwyreCheckout";
 
 export function ProfileScreen() {
@@ -41,32 +42,35 @@ export function ProfileScreen() {
   // });
 
   return (
-    <SafeAreaView
-      edges={["top"]}
-      className="flex-1 bg-blue-dark px-5 w-full max-w-6xl mx-auto"
-    >
-      <View className="flex flex-row items-center py-4 ">
-        <UserAvatar
-          avatarUrl={user.avatarUrl}
-          displayName={user.displayName}
-          size="large"
+    <SafeAreaView edges={["top"]} className="flex-1 bg-blue-dark w-full">
+      <View className="flex flex-row items-center">
+        <ProfileHeader
+          avatar={user.avatarUrl}
+          background={user.backgroundUrl!}
+          displayName={user!.displayName!}
+          twitter={user!.twitter!}
+          instagram={user.instagram!}
+          profileUrl={`${Config.APP_URL}/dashboard/beatmaker/${user.id}`}
         />
-        <View className="ml-8 flex-1">
-          <View className="flex flex-row items-center">
-            <Text className="font-bold mr-2.5">{user.displayName}</Text>
-            <Link href="/dashboard/profile/edit">
-              <Cog color={tw.color("white")} size={18} />
-            </Link>
-          </View>
-          {credits?.userCredits && (
+      </View>
+      <View className="flex flex-col ml-2 mt-1">
+        <View className="flex flex-row">
+          <Text className="font-bold mr-2.5">{user.displayName}</Text>
+          <Link href="/dashboard/profile/edit">
+            <Cog color={tw.color("white")} size={18} />
+          </Link>
+        </View>
+        {!!credits?.userCredits && (
+          <View className="flex-1">
             <View className="flex-row items-center my-2">
               <Dollar size={22} color={tw.color("white")} />
               <Text className="font-bold ml-1 mr-2.5">
                 {credits.userCredits.toFixed(2)}
               </Text>
             </View>
-          )}
-
+          </View>
+        )}
+        <View className="-ml-1.5 mt-2">
           <CopyWalletPublicKeyButton walletPublicKey={user.publicKey} />
         </View>
       </View>
@@ -103,7 +107,7 @@ export function ProfileScreen() {
           push("/dashboard/profile/mint");
         }}
         icon={Upload}
-        className="mx-auto mt-16"
+        className="mx-auto mt-5"
         size="large"
         disabled={(credits?.userCredits ?? 0) < 2}
         onDisabledPress={() => setModalVisible(true)}

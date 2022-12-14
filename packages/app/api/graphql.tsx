@@ -219,10 +219,13 @@ export type MutationWithdrawToExternalWalletArgs = {
 export type PublicUser = {
   __typename?: "PublicUser";
   avatarUrl: Scalars["String"];
+  backgroundUrl?: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
   id: Scalars["String"];
   username: Scalars["String"];
+  twitter?: Scalars["String"];
+  instagram?: Scalars["String"];
 };
 
 export type Query = {
