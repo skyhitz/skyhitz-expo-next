@@ -16,11 +16,11 @@ type Props = {
 
 export function ChangeImages({ onAvatarChange, onBackgroundChange }: Props) {
   return (
-    <View className="flex-row">
+    <View className="flex md:flex-row">
       <ChangeImageButton
         text="Change Profile Photo"
         onChange={onAvatarChange}
-        classNames="mr-2"
+        classNames="mb-2 md:mb-0 md:mr-2"
         validator={validateProfilePicture}
       />
       <ChangeImageButton
@@ -73,7 +73,7 @@ function ChangeImageButton({
       text={text}
       // TODO change size to small?
       variant="primary"
-      className={`p-2 w-50 ${classNames}`}
+      className={`p-2 h-10 w-50 ${classNames}`}
     />
   );
 }
