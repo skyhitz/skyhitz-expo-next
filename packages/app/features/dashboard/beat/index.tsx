@@ -32,6 +32,7 @@ export default function BeatScreen(props: Props) {
     variables: { id: id! },
     skip: !id,
   });
+
   const x = useSharedValue(-0.2);
 
   useEffect(() => {
