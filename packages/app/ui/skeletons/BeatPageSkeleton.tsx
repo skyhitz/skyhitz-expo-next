@@ -9,10 +9,6 @@ import {
 } from "react-native-reanimated";
 import { useEffect, useState } from "react";
 
-const desktop = {};
-
-const mobile = {};
-
 export default function BeatPageSkeleton() {
   const [width, setWidth] = useState<number | undefined>();
   const x = useSharedValue(-GRADIENT_WIDTH);
@@ -33,54 +29,54 @@ export default function BeatPageSkeleton() {
     if (tw.prefixMatch("md")) {
       return (
         <>
-          <View className="flex-row w-full">
-            <View className="flex flex-1 mr-2 items-center justify-between">
+          <View className="flex-row">
+            <View className="flex flex-1 mr-8">
               {/* Image */}
-              <View className="w-full h-20 items-end" onLayout={onLayout}>
+              <View className="w-full items-end" onLayout={onLayout}>
                 <SkeletonContainer
-                  className="aspect-square max-w-125 max-h-125 w-full"
+                  className="aspect-square w-120 mr-10"
                   sharedValue={x}
                 />
               </View>
               {/* Details  */}
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
+              <View className="w-full" onLayout={onLayout}>
                 <SkeletonContainer
-                  className="h-25 mt-4 w-full"
+                  className="h-40 mt-4 w-145"
                   sharedValue={x}
                 />
               </View>
             </View>
-            {/* Beat summary column*/}
-            <View className="flex md:flex-1 md:ml-2 w-full">
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
+            {/* Beat summary column */}
+            <View className="flex md:flex-1 md:ml-5">
+              {/* Description */}
+              <View className="w-full" onLayout={onLayout}>
                 <SkeletonContainer
-                  className="h-25 mt-4 w-full"
+                  className="h-25 mt-20 w-full"
                   sharedValue={x}
                 />
               </View>
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
+              {/* Likes */}
+              <View className="w-full" onLayout={onLayout}>
                 <SkeletonContainer
-                  className="h-25 mt-4 w-full"
+                  className="h-35 mt-4  w-145" //??
                   sharedValue={x}
                 />
               </View>
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
+              {/* Owners */}
+              <View className="w-full" onLayout={onLayout}>
                 <SkeletonContainer
-                  className="h-25 mt-4 w-full"
-                  sharedValue={x}
-                />
-              </View>
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
-                <SkeletonContainer
-                  className="h-25 mt-4 w-full"
+                  className="h-40 mt-4 w-full"
                   sharedValue={x}
                 />
               </View>
             </View>
           </View>
           {/*Activity*/}
-          <View className="w-full h-5 p-20" onLayout={onLayout}>
-            <SkeletonContainer className="h-25 mt-4 w-full" sharedValue={x} />
+          <View className="w-full" onLayout={onLayout}>
+            <SkeletonContainer
+              className="h-25 mt-4 max-w-max"
+              sharedValue={x}
+            />
           </View>
         </>
       );
