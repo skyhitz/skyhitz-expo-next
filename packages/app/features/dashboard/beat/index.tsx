@@ -11,7 +11,7 @@ import { BeatSummaryColumn } from "./BeatSummaryColumn";
 import { useGetEntry } from "app/hooks/algolia/useGetEntry";
 import * as assert from "assert";
 import { ReactNode } from "react";
-import { BeatSkeleton } from "app/ui/skeletons/BeatSkeleton";
+import BeatPageSkeleton from "app/ui/skeletons/BeatPageSkeleton";
 
 type Props = {
   entry?: Entry;
@@ -30,30 +30,27 @@ export default function BeatScreen(props: Props) {
   const entry = props.entry ?? getEntryResult.entry;
   const details = data?.entry;
 
+  if (!entry) {
+    return <BeatPageSkeleton />;
+  }
+
   const Content = () => {
     if (tw.prefixMatch("md")) {
       return (
         <>
           <View className="flex-row w-full">
             <View className="flex flex-1 mr-2 items-center justify-between">
-              {!entry && <BeatSkeleton style="image" />}
-              {entry && (
-                <Image
-                  uri={imageUrlMedium(entry.imageUrl)}
-                  fallbackUri={imageSrc(entry.imageUrl)}
-                  className="aspect-square max-w-125 max-h-125 w-full"
-                />
-              )}
-              {!entry && (
-                <BeatSkeleton style="collapsable" secondContainer="w-145" />
-              )}
-              {entry && <Details code={entry.code} issuer={entry.issuer} />}
+              <Image
+                uri={imageUrlMedium(entry.imageUrl)}
+                fallbackUri={imageSrc(entry.imageUrl)}
+                className="aspect-square max-w-125 max-h-125 w-full"
+              />
+
+              <Details code={entry.code} issuer={entry.issuer} />
             </View>
             <BeatSummaryColumn entry={entry} holders={details?.holders} />
           </View>
-          {!details && <BeatSkeleton style="collapsable" />}
           {details?.offers && <Offers offers={details.offers} />}
-          {!details && <BeatSkeleton style="collapsable" />}
           {details?.history && <Activity activities={details.history} />}
         </>
       );
@@ -61,20 +58,15 @@ export default function BeatScreen(props: Props) {
       return (
         <>
           <View className="flex flex-col w-full">
-            {!entry && <BeatSkeleton style="imageMobile" />}
-            {entry && (
-              <Image
-                uri={imageUrlMedium(entry.imageUrl)}
-                fallbackUri={imageSrc(entry.imageUrl)}
-                className="aspect-square max-w-125 max-h-125 w-full mb-3"
-              />
-            )}
+            <Image
+              uri={imageUrlMedium(entry.imageUrl)}
+              fallbackUri={imageSrc(entry.imageUrl)}
+              className="aspect-square max-w-125 max-h-125 w-full mb-3"
+            />
+
             <BeatSummaryColumn entry={entry} holders={details?.holders} />
-            {!entry && <BeatSkeleton style="collapsableMobile" />}
-            {entry && <Details code={entry.code} issuer={entry.issuer} />}
-            {!details && <BeatSkeleton style="collapsableMobile" />}
+            <Details code={entry.code} issuer={entry.issuer} />
             {details?.offers && <Offers offers={details.offers} />}
-            {!details && <BeatSkeleton style="collapsableMobile" />}
             {details?.history && <Activity activities={details.history} />}
           </View>
         </>

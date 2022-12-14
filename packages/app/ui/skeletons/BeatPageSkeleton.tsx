@@ -1,106 +1,54 @@
 import { tw } from "app/design-system/tailwind";
 import { View } from "app/design-system";
 import { ScrollView } from "app/design-system/ScrollView";
-import { SkeletonContainer, GRADIENT_WIDTH } from "./SkeletonContainer";
+import { SkeletonContainer } from "./SkeletonContainer";
 import {
   useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { useEffect, useState } from "react";
-
-const desktop = {};
-
-const mobile = {};
+import { useEffect } from "react";
 
 export default function BeatPageSkeleton() {
-  const [width, setWidth] = useState<number | undefined>();
-  const x = useSharedValue(-GRADIENT_WIDTH);
+  const x = useSharedValue(-0.2);
 
   useEffect(() => {
-    if (width) {
-      x.value = withRepeat(withTiming(width, { duration: 1000 }), -1);
-    }
-  }, [width]);
-
-  const onLayout = (event: any) => {
-    if (!width && event.nativeEvent.layout.width) {
-      setWidth(event.nativeEvent.layout.width);
-    }
-  };
+    x.value = withRepeat(withTiming(1.2, { duration: 1000 }), -1);
+  }, []);
 
   const Content = () => {
     if (tw.prefixMatch("md")) {
       return (
         <>
           <View className="flex-row w-full">
-            <View className="flex flex-1 mr-2 items-center justify-between">
-              {/* Image */}
-              <View className="w-full h-20 items-end" onLayout={onLayout}>
-                <SkeletonContainer
-                  className="aspect-square max-w-125 max-h-125 w-full"
-                  sharedValue={x}
-                />
-              </View>
-              {/* Details  */}
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
-                <SkeletonContainer
-                  className="h-25 mt-4 w-full"
-                  sharedValue={x}
-                />
-              </View>
+            <View className="flex flex-1 mr-2 items-center">
+              <SkeletonContainer
+                className="aspect-square max-w-125 max-h-125 w-full"
+                sharedValue={x}
+              />
             </View>
-            {/* Beat summary column*/}
             <View className="flex md:flex-1 md:ml-2 w-full">
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
-                <SkeletonContainer
-                  className="h-25 mt-4 w-full"
-                  sharedValue={x}
-                />
-              </View>
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
-                <SkeletonContainer
-                  className="h-25 mt-4 w-full"
-                  sharedValue={x}
-                />
-              </View>
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
-                <SkeletonContainer
-                  className="h-25 mt-4 w-full"
-                  sharedValue={x}
-                />
-              </View>
-              <View className="w-full h-5 p-20" onLayout={onLayout}>
-                <SkeletonContainer
-                  className="h-25 mt-4 w-full"
-                  sharedValue={x}
-                />
-              </View>
+              <SkeletonContainer className="h-25 mt-5 w-full" sharedValue={x} />
+              <SkeletonContainer className="h-25 mt-5 w-full" sharedValue={x} />
+              <SkeletonContainer className="h-25 mt-5 w-full" sharedValue={x} />
+              <SkeletonContainer className="h-25 mt-5 w-full" sharedValue={x} />
             </View>
           </View>
-          {/*Activity*/}
-          <View className="w-full h-5 p-20" onLayout={onLayout}>
-            <SkeletonContainer className="h-25 mt-4 w-full" sharedValue={x} />
-          </View>
+          <SkeletonContainer className="h-25 mt-4 w-full" sharedValue={x} />
         </>
       );
     } else {
       return (
         <>
-          <View className="flex flex-col w-full">
-            <SkeletonContainer sharedValue={x} />
-            <View className="flex md:flex-1 md:ml-2 w-full">
-              <SkeletonContainer sharedValue={x} />
-              <SkeletonContainer sharedValue={x} />
-
-              <SkeletonContainer sharedValue={x} />
-              <SkeletonContainer sharedValue={x} />
-            </View>
-            <SkeletonContainer sharedValue={x} />
-
-            <SkeletonContainer sharedValue={x} />
-
-            <SkeletonContainer sharedValue={x} />
+          <View className="flex  w-full">
+            <SkeletonContainer
+              className="aspect-square max-w-125 max-h-125 w-full"
+              sharedValue={x}
+            />
+            <SkeletonContainer className="h-15 mt-5 w-full" sharedValue={x} />
+            <SkeletonContainer className="h-15 mt-5 w-full" sharedValue={x} />
+            <SkeletonContainer className="h-15 mt-5 w-full" sharedValue={x} />
+            <SkeletonContainer className="h-15 mt-5 w-full" sharedValue={x} />
           </View>
         </>
       );

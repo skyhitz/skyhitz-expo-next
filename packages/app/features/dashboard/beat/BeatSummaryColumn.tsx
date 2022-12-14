@@ -15,18 +15,13 @@ import { LikesList } from "app/features/player/components/likesList";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
 import { ComponentAuthGuard } from "app/utils/authGuard";
-import { BeatSkeleton } from "app/ui/skeletons/BeatSkeleton";
 
 type Props = {
-  entry: Entry | undefined;
+  entry: Entry;
   holders?: EntryHolder[] | null;
 };
 
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
-
-const skeletonStyle = tw.prefixMatch("md")
-  ? "collapsable"
-  : "collapsableMobile";
 
 export function BeatSummaryColumn({ entry, holders }: Props) {
   return (
@@ -53,21 +48,16 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
           </View>
         </View>
       )}
-      {!entry && <BeatSkeleton style={skeletonStyle} />}
-      {entry && <PriceContainer entry={entry} />}
-      {!entry && <BeatSkeleton style={skeletonStyle} />}
-      {entry && (
-        <CollapsableView icon={InfoCircle} headerText="Description">
-          <Text className="p-3">{entry.description}</Text>
-        </CollapsableView>
-      )}
-      {!entry && <BeatSkeleton style={skeletonStyle} />}
-      {entry && (
-        <CollapsableView icon={FilledLike} headerText="Likes">
-          <LikesList classname="px-5 my-5" entry={entry} />
-        </CollapsableView>
-      )}
-      {!holders && <BeatSkeleton style={skeletonStyle} />}
+      <PriceContainer entry={entry} />
+
+      <CollapsableView icon={InfoCircle} headerText="Description">
+        <Text className="p-3">{entry.description}</Text>
+      </CollapsableView>
+
+      <CollapsableView icon={FilledLike} headerText="Likes">
+        <LikesList classname="px-5 my-5" entry={entry} />
+      </CollapsableView>
+
       {holders && <Owners holders={holders} />}
     </View>
   );
