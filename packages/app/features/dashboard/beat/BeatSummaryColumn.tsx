@@ -16,6 +16,9 @@ import { Config } from "app/config";
 import { ComponentAuthGuard } from "app/utils/authGuard";
 import { OwnerOffers } from "./offers/OwnerOffers";
 import { AssetBids } from "./bids/AssetBids";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
+import { useMemo } from "react";
 
 type Props = {
   entry: Entry;
@@ -25,6 +28,11 @@ type Props = {
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 
 export function BeatSummaryColumn({ entry, holders }: Props) {
+  const user = useRecoilValue(userAtom);
+  const isOnlyOwner = useMemo(
+    () => holders?.length === 1 && holders[0] === user?.publicKey,
+    [user, holders]
+  );
   return (
     <View className="flex md:flex-1 md:ml-2 w-full">
       <View>
@@ -47,7 +55,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
           />
         </View>
       </View>
-      <PriceContainer entry={entry} />
+      {!isOnlyOwner && <PriceContainer entry={entry} />}
       <OwnerOffers entry={entry} holders={holders} />
       <AssetBids entry={entry} holders={holders} />
       <CollapsableView icon={InfoCircle} headerText="Description">

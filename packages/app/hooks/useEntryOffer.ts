@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { Config } from "app/config";
 
 type FetchData = {
-  asks: { price: number; amount: number }[];
+  asks: { price: string; amount: string }[];
 };
 
 type Result = {
@@ -30,7 +30,7 @@ export function useEntryOffer(code: string, issuer: string): Result {
 
   if (data && data.asks && data.asks[0]) {
     const ask = data.asks[0];
-    return { ...ask };
+    return { price: parseFloat(ask.price), amount: parseFloat(ask.amount) };
   }
 
   return { price: 0, amount: 0 };

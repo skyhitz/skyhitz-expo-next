@@ -27,20 +27,5 @@ query entryDetails($id: String!) {
       }
       sourceAmount
     }
-    offers {
-      id
-      type
-      ts
-      accounts
-      assets
-      tx
-      offer
-      amount
-      price {
-        n
-        d
-      }
-      sourceAmount
-    }
   }
 }

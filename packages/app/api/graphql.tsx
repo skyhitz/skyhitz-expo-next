@@ -84,7 +84,6 @@ export type EntryDetails = {
   id: Scalars['String'];
   imageUrl: Scalars['String'];
   issuer: Scalars['String'];
-  offers?: Maybe<Array<EntryActivity>>;
   title: Scalars['String'];
   videoUrl: Scalars['String'];
 };
@@ -483,7 +482,7 @@ export type EntryDetailsQueryVariables = Exact<{
 }>;
 
 
-export type EntryDetailsQuery = { __typename?: 'Query', entry: { __typename?: 'EntryDetails', imageUrl: string, videoUrl: string, description?: string | null, title: string, id: string, artist: string, code: string, issuer: string, holders?: Array<{ __typename?: 'EntryHolder', account: string, balance: string }> | null, history?: Array<{ __typename?: 'EntryActivity', id: string, type: number, ts: number, accounts?: Array<string | null> | null, assets?: Array<string | null> | null, tx: string, offer?: string | null, amount?: string | null, sourceAmount?: string | null, price?: { __typename?: 'ActivityPrice', n: number, d: number } | null }> | null, offers?: Array<{ __typename?: 'EntryActivity', id: string, type: number, ts: number, accounts?: Array<string | null> | null, assets?: Array<string | null> | null, tx: string, offer?: string | null, amount?: string | null, sourceAmount?: string | null, price?: { __typename?: 'ActivityPrice', n: number, d: number } | null }> | null } };
+export type EntryDetailsQuery = { __typename?: 'Query', entry: { __typename?: 'EntryDetails', imageUrl: string, videoUrl: string, description?: string | null, title: string, id: string, artist: string, code: string, issuer: string, holders?: Array<{ __typename?: 'EntryHolder', account: string, balance: string }> | null, history?: Array<{ __typename?: 'EntryActivity', id: string, type: number, ts: number, accounts?: Array<string | null> | null, assets?: Array<string | null> | null, tx: string, offer?: string | null, amount?: string | null, sourceAmount?: string | null, price?: { __typename?: 'ActivityPrice', n: number, d: number } | null }> | null } };
 
 export type EntryLikesQueryVariables = Exact<{
   id: Scalars['String'];
@@ -1285,21 +1284,6 @@ export const EntryDetailsDocument = gql`
       balance
     }
     history {
-      id
-      type
-      ts
-      accounts
-      assets
-      tx
-      offer
-      amount
-      price {
-        n
-        d
-      }
-      sourceAmount
-    }
-    offers {
       id
       type
       ts
