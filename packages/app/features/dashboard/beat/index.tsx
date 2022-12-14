@@ -2,15 +2,22 @@ import { useBeatParam } from "app/hooks/param/useBeatParam";
 import { tw } from "app/design-system/tailwind";
 import { Entry, useEntryDetailsQuery } from "app/api/graphql";
 import { ScrollView } from "app/design-system/ScrollView";
-import { ActivityIndicator, Image, View } from "app/design-system";
+import { Image, View } from "app/design-system";
 import { Activity } from "./BeatActivities";
 import { Details } from "./BeatDetails";
 import { imageSrc, imageUrlMedium } from "app/utils/entry";
 import { BeatSummaryColumn } from "./BeatSummaryColumn";
 import { useGetEntry } from "app/hooks/algolia/useGetEntry";
 import * as assert from "assert";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import BeatPageSkeleton from "app/ui/skeletons/BeatPageSkeleton";
+import { Owners } from "./BeatOwners";
+import {
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
+import { SkeletonContainer } from "app/ui/skeletons/SkeletonContainer";
 
 type Props = {
   entry?: Entry;
@@ -25,6 +32,11 @@ export default function BeatScreen(props: Props) {
     variables: { id: id! },
     skip: !id,
   });
+  const x = useSharedValue(-0.2);
+
+  useEffect(() => {
+    x.value = withRepeat(withTiming(1.2, { duration: 1000 }), -1);
+  }, []);
 
   const entry = props.entry ?? getEntryResult.entry;
   const details = data?.entry;
@@ -46,11 +58,16 @@ export default function BeatScreen(props: Props) {
               />
 
               <Details code={entry.code} issuer={entry.issuer} />
+              {details?.holders && <Owners holders={details.holders} />}
             </View>
             <BeatSummaryColumn entry={entry} holders={details?.holders} />
           </View>
-          {/* TODO skeleton */}
-          {!details && <ActivityIndicator className="mt-5 mx-auto" />}
+          {!details && (
+            <SkeletonContainer
+              sharedValue={x}
+              className="mt-5 rounded-lg h-50 w-full"
+            />
+          )}
           {details?.history && <Activity activities={details.history} />}
         </>
       );
@@ -64,8 +81,14 @@ export default function BeatScreen(props: Props) {
           />
           <BeatSummaryColumn entry={entry} holders={details?.holders} />
           <Details code={entry.code} issuer={entry.issuer} />
-          {/* TODO skeleton */}
-          {!details && <ActivityIndicator className="mt-5 mx-auto" />}
+          {!details && (
+            <SkeletonContainer
+              sharedValue={x}
+              className="mt-5 rounded-lg h-20 w-full"
+            />
+          )}
+          {details?.holders && <Owners holders={details.holders} />}
+
           {details?.history && <Activity activities={details.history} />}
         </>
       );
