@@ -30,7 +30,7 @@ const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 export function BeatSummaryColumn({ entry, holders }: Props) {
   const user = useRecoilValue(userAtom);
   const isOnlyOwner = useMemo(
-    () => holders?.length === 1 && holders[0] === user?.publicKey,
+    () => holders?.length === 1 && holders[0]?.account === user?.publicKey,
     [user, holders]
   );
   return (
