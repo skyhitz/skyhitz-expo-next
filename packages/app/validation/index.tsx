@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import { object, SchemaOf, string } from "yup";
 import {
+  CreateOfferForm,
   EditProfileForm,
   MediaFileInfo,
   MintForm,
@@ -57,6 +58,13 @@ export const mintFormSchema: SchemaOf<MintForm> = object().shape({
     .min(2, "Description should contain at least 2 characters")
     .max(100, "Description should not contain more than 100 characters"),
   availableForSale: Yup.boolean().required(),
+  price: Yup.string(),
+  equityForSale: Yup.number()
+    .min(1, "Equity should be within range 0 - 100")
+    .max(100, "Equity should be within range 0 - 100"),
+});
+
+export const createOfferSchema: SchemaOf<CreateOfferForm> = object().shape({
   price: Yup.string(),
   equityForSale: Yup.number()
     .min(1, "Equity should be within range 0 - 100")

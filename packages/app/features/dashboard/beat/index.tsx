@@ -2,8 +2,7 @@ import { useBeatParam } from "app/hooks/param/useBeatParam";
 import { tw } from "app/design-system/tailwind";
 import { Entry, useEntryDetailsQuery } from "app/api/graphql";
 import { ScrollView } from "app/design-system/ScrollView";
-import { Image, View } from "app/design-system";
-import { Offers } from "./BeatOffers";
+import { ActivityIndicator, Image, View } from "app/design-system";
 import { Activity } from "./BeatActivities";
 import { Details } from "./BeatDetails";
 import { imageSrc, imageUrlMedium } from "app/utils/entry";
@@ -50,25 +49,24 @@ export default function BeatScreen(props: Props) {
             </View>
             <BeatSummaryColumn entry={entry} holders={details?.holders} />
           </View>
-          {details?.offers && <Offers offers={details.offers} />}
+          {/* TODO skeleton */}
+          {!details && <ActivityIndicator className="mt-5 mx-auto" />}
           {details?.history && <Activity activities={details.history} />}
         </>
       );
     } else {
       return (
         <>
-          <View className="flex flex-col w-full">
-            <Image
-              uri={imageUrlMedium(entry.imageUrl)}
-              fallbackUri={imageSrc(entry.imageUrl)}
-              className="aspect-square max-w-125 max-h-125 w-full mb-3"
-            />
-
-            <BeatSummaryColumn entry={entry} holders={details?.holders} />
-            <Details code={entry.code} issuer={entry.issuer} />
-            {details?.offers && <Offers offers={details.offers} />}
-            {details?.history && <Activity activities={details.history} />}
-          </View>
+          <Image
+            uri={imageUrlMedium(entry.imageUrl)}
+            fallbackUri={imageSrc(entry.imageUrl)}
+            className="aspect-square max-w-125 max-h-125 w-full mb-3"
+          />
+          <BeatSummaryColumn entry={entry} holders={details?.holders} />
+          <Details code={entry.code} issuer={entry.issuer} />
+          {/* TODO skeleton */}
+          {!details && <ActivityIndicator className="mt-5 mx-auto" />}
+          {details?.history && <Activity activities={details.history} />}
         </>
       );
     }
