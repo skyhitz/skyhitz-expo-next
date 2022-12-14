@@ -3,7 +3,6 @@ import { Entry, EntryHolder } from "app/api/graphql";
 import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
 import InfoCircle from "app/ui/icons/info-circle";
 import { PriceContainer } from "./PriceContainer";
-import { Owners } from "./BeatOwners";
 import { usePlayback } from "app/hooks/usePlayback";
 import PlayIcon from "app/ui/icons/play";
 import PauseIcon from "app/ui/icons/pause";
@@ -48,16 +47,15 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
         </View>
       </View>
       <PriceContainer entry={entry} />
+
       <CollapsableView icon={InfoCircle} headerText="Description">
         <Text className="p-3">{entry.description}</Text>
       </CollapsableView>
+
       <CollapsableView icon={FilledLike} headerText="Likes">
         <LikesList classname="px-5 my-5" entry={entry} />
       </CollapsableView>
-      {/* TODO skeleton */}
-      {!holders && <ActivityIndicator className="mt-5" />}
       <OwnerOffers entry={entry} holders={holders} />
-      {holders && <Owners holders={holders} />}
     </View>
   );
 }
