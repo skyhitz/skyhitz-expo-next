@@ -61,6 +61,7 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
       <CollapsableView icon={InfoCircle} headerText="Description">
         <Text className="p-3">{entry.description}</Text>
       </CollapsableView>
+
       <CollapsableView icon={FilledLike} headerText="Likes">
         <LikesList classname="px-5 my-5" entry={entry} />
       </CollapsableView>
