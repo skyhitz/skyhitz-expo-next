@@ -26,28 +26,26 @@ const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 export function BeatSummaryColumn({ entry, holders }: Props) {
   return (
     <View className="flex md:flex-1 md:ml-2 w-full">
-      {entry && (
-        <View>
-          <Text className="text-3xl md:text-5xl font-bold mb-2">
-            {entry.title}
-          </Text>
-          <Text className="md:text-2xl">{entry.artist}</Text>
-          <View className="flex-row mt-4 items-center">
-            <PlayBeatButton currentEntry={entry} />
-            <Text className="text-grey-light ml-1">Listen</Text>
+      <View>
+        <Text className="text-3xl md:text-5xl font-bold mb-2">
+          {entry.title}
+        </Text>
+        <Text className="md:text-2xl">{entry.artist}</Text>
+        <View className="flex-row mt-4 items-center">
+          <PlayBeatButton currentEntry={entry} />
+          <Text className="text-grey-light ml-1">Listen</Text>
+          <View className="w-0.25 h-6 bg-grey-light mx-3" />
+          <ComponentAuthGuard>
+            <LikeButton size={24} entry={entry} />
+            <Text className="text-grey-light ml-1">Add to favorites</Text>
             <View className="w-0.25 h-6 bg-grey-light mx-3" />
-            <ComponentAuthGuard>
-              <LikeButton size={24} entry={entry} />
-              <Text className="text-grey-light ml-1">Add to favorites</Text>
-              <View className="w-0.25 h-6 bg-grey-light mx-3" />
-            </ComponentAuthGuard>
-            <ShareButton
-              url={`${Config.APP_URL}/dashboard/beat/${entry.id}`}
-              title="Share this beat!"
-            />
-          </View>
+          </ComponentAuthGuard>
+          <ShareButton
+            url={`${Config.APP_URL}/dashboard/beat/${entry.id}`}
+            title="Share this beat!"
+          />
         </View>
-      )}
+      </View>
       <PriceContainer entry={entry} />
 
       <CollapsableView icon={InfoCircle} headerText="Description">
