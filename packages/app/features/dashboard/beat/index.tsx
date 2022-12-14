@@ -32,6 +32,7 @@ export default function BeatScreen(props: Props) {
     variables: { id: id! },
     skip: !id,
   });
+
   const x = useSharedValue(-0.2);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function BeatScreen(props: Props) {
       return (
         <>
           <View className="flex-row w-full">
-            <View className="flex flex-1 mr-2 items-center justify-between">
+            <View className="flex flex-1 mr-2 items-center">
               <Image
                 uri={imageUrlMedium(entry.imageUrl)}
                 fallbackUri={imageSrc(entry.imageUrl)}

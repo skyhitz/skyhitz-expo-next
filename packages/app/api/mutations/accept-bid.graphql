@@ -1,0 +1,7 @@
+mutation AcceptBid($id: String!) {
+  acceptBid(id: $id) {
+    xdr
+    success
+    submitted
+  }
+}

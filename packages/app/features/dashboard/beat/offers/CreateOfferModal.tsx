@@ -180,7 +180,7 @@ export const CreateOfferModal = ({
                     }
                   }
                 }}
-                placeholder={`Equity To Buy (1-${maxEquityForSale})%`}
+                placeholder={`Equity To Sell (1-${maxEquityForSale})%`}
                 keyboardType="numeric"
                 maxLength={10}
               />
