@@ -182,7 +182,7 @@ export function ClientContextProvider({
         )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
         // disconnect in case the session is wrong
         if (publicKey !== user?.publicKey) {
-          newClient.disconnect({
+          await newClient.disconnect({
             topic: restoredSession.topic,
             reason: getSdkError("USER_DISCONNECTED"),
           });
