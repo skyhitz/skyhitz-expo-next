@@ -6,6 +6,7 @@ import Dollar from "app/ui/icons/dollar";
 import { tw } from "app/design-system/tailwind";
 import useUSDPrice from "app/hooks/useUSDPrice";
 import { CreateBid } from "./bids/CreateBid";
+import { Platform } from "react-native";
 
 type Props = {
   entry: Entry;
@@ -16,6 +17,7 @@ export function PriceContainer({ entry }: Props) {
   const usd = useUSDPrice(offer.price * offer.amount);
 
   if (!offer.price) {
+    if (Platform.OS === "ios") return null;
     return <CreateBid entry={entry} />;
   }
 

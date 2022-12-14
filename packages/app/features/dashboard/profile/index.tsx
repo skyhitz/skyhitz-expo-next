@@ -23,6 +23,7 @@ import {
 import * as assert from "assert";
 import { useUserBids } from "app/hooks/useUserBids";
 // import { useSendwyreCheckout } from "app/hooks/useSendwyreCheckout";
+import { Platform } from "react-native";
 
 export function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -97,17 +98,19 @@ export function ProfileScreen() {
         className="mx-auto mt-16"
         size="large"
       /> */}
-      <Button
-        text="Mint new NFT"
-        onPress={() => {
-          push("/dashboard/profile/mint");
-        }}
-        icon={Upload}
-        className="mx-auto mt-16"
-        size="large"
-        disabled={(credits?.userCredits ?? 0) < 2}
-        onDisabledPress={() => setModalVisible(true)}
-      />
+      {Platform.OS !== "ios" && (
+        <Button
+          text="Mint new NFT"
+          onPress={() => {
+            push("/dashboard/profile/mint");
+          }}
+          icon={Upload}
+          className="mx-auto mt-16"
+          size="large"
+          disabled={(credits?.userCredits ?? 0) < 2}
+          onDisabledPress={() => setModalVisible(true)}
+        />
+      )}
 
       <LowBalanceModal
         visible={modalVisible}
