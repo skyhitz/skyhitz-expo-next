@@ -47,12 +47,7 @@ export type WithdrawForm = {
   amount: number;
 };
 
-export type ChangeAvatarImg = {
-  blob?: Blob;
-  url: string;
-};
-
-export type ChangeBackgroundImg = {
+export type ChangeImage = {
   blob?: Blob;
   url: string;
 };

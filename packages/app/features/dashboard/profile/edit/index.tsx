@@ -10,34 +10,30 @@ import { useUpdateUserMutation } from "app/api/graphql";
 import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/dashboard/profile/edit/logOutBtn";
 import { values as vals } from "ramda";
-import { ChangeUserAvatar } from "app/features/dashboard/profile/edit/changeUserAvatar";
 import { WithdrawCredits } from "app/features/dashboard/profile/edit/WithdrawCredits";
 import { userAtom } from "app/state/user";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useRouter } from "solito/router";
-import {
-  ChangeAvatarImg,
-  ChangeBackgroundImg,
-  EditProfileForm,
-} from "app/types";
+import { ChangeImage, EditProfileForm } from "app/types";
 import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
 import { useToast } from "react-native-toast-notifications";
 import { ChangeWallet } from "./ChangeWallet";
-import { ChangeUserBackground } from "./changeUserBackground";
 import Twitter from "app/ui/icons/twitter";
 import Instagram from "app/ui/icons/instagram";
+import { ProfileHeader } from "../ProfileHeader";
+import { ChangeImages } from "./ChangeImages";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
   assert.ok(user, "Unauthorized access on EditProfileScreen");
-  const [avatar, setAvatar] = useState<ChangeAvatarImg>({
+  const [avatar, setAvatar] = useState<ChangeImage>({
     url: user.avatarUrl,
   });
-  const [background, setBackground] = useState<ChangeBackgroundImg>({
+  const [background, setBackground] = useState<ChangeImage>({
     url: user.backgroundUrl ?? "",
   });
   const [updateUser, { data, loading }] = useUpdateUserMutation();
@@ -101,25 +97,18 @@ export default function EditProfileScreen() {
         errors,
       }: FormikProps<EditProfileForm>) => (
         <ScrollView className="bg-blue-dark flex-1">
-          <View
-            className={`w-full bg-red p-4 ${user.avatarUrl ? "hidden" : ""}`}
-          >
-            <Text className="mx-auto text-sm">Upload a profile picture</Text>
-          </View>
-          <View className="px-4">
-            <View className="flex justify-between">
-              <ChangeUserBackground
-                onChange={setBackground}
-                backgroundImg={background}
-                disable={loading}
-              />
-              <ChangeUserAvatar
-                avatarImg={avatar}
-                displayName={user!.displayName}
-                onChange={setAvatar}
-                disable={loading}
-              />
-            </View>
+          <ProfileHeader
+            avatar={avatar.url}
+            background={background.url}
+            displayName={user!.displayName!}
+          />
+
+          <View className="px-4 mt-5">
+            <ChangeImages
+              onAvatarChange={setAvatar}
+              onBackgroundChange={setBackground}
+            />
+
             <FormInputWithIcon
               value={values.displayName ?? ""}
               placeholder="Display Name"
