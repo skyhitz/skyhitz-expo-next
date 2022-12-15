@@ -53,7 +53,7 @@ export function ProfileScreen() {
           profileUrl={`${Config.APP_URL}/dashboard/beatmaker/${user.id}`}
         />
       </View>
-      <View className="flex flex-col ml-2 mt-1">
+      <View className="flex flex-col ml-2 mt-3">
         <View className="flex flex-row">
           <Text className="font-bold mr-2.5">{user.displayName}</Text>
           <Link href="/dashboard/profile/edit">
