@@ -23,6 +23,7 @@ import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
 import { useToast } from "react-native-toast-notifications";
 import { ChangeWallet } from "./ChangeWallet";
+import { Platform } from "react-native";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -128,7 +129,7 @@ export default function EditProfileScreen() {
               editable={!loading}
             />
             <Line />
-            {user.managed && <WithdrawCredits />}
+            {user.managed && Platform.OS !== "ios" && <WithdrawCredits />}
             <ChangeWallet />
           </View>
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
