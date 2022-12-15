@@ -12,9 +12,14 @@ import { useToast } from "react-native-toast-notifications";
 type Props = {
   onAvatarChange: (newAvatar: ChangeImage) => void;
   onBackgroundChange: (newBackground: ChangeImage) => void;
+  activeSubmission: boolean;
 };
 
-export function ChangeImages({ onAvatarChange, onBackgroundChange }: Props) {
+export function ChangeImages({
+  onAvatarChange,
+  onBackgroundChange,
+  activeSubmission,
+}: Props) {
   return (
     <View className="flex md:flex-row">
       <ChangeImageButton
@@ -22,11 +27,13 @@ export function ChangeImages({ onAvatarChange, onBackgroundChange }: Props) {
         onChange={onAvatarChange}
         classNames="mb-2 md:mb-0 md:mr-2"
         validator={validateProfilePicture}
+        activeSubmission={activeSubmission}
       />
       <ChangeImageButton
         text="Change Background Photo"
         onChange={onBackgroundChange}
         validator={validateBackgroundImage}
+        activeSubmission={activeSubmission}
       />
     </View>
   );
@@ -37,11 +44,13 @@ function ChangeImageButton({
   onChange,
   classNames,
   validator,
+  activeSubmission,
 }: {
   text: string;
   onChange: (newImage: ChangeImage) => void;
   classNames?: string;
   validator: (file: MediaFileInfo) => string | null;
+  activeSubmission: boolean;
 }) {
   const toast = useToast();
   const { permissionGranted } = useMediaLibraryPermission();
@@ -67,11 +76,10 @@ function ChangeImageButton({
 
   return (
     <Button
-      disabled={!permissionGranted || loading}
+      disabled={!permissionGranted || loading || activeSubmission}
       loading={loading}
       onPress={pickMedia}
       text={text}
-      // TODO change size to small?
       variant="primary"
       className={`p-2 h-10 w-50 ${classNames}`}
     />

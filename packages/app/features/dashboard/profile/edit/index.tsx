@@ -9,7 +9,6 @@ import { useRecoilState } from "recoil";
 import { useUpdateUserMutation } from "app/api/graphql";
 import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/dashboard/profile/edit/logOutBtn";
-import { values as vals } from "ramda";
 import { WithdrawCredits } from "app/features/dashboard/profile/edit/WithdrawCredits";
 import { userAtom } from "app/state/user";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
@@ -107,6 +106,7 @@ export default function EditProfileScreen() {
             <ChangeImages
               onAvatarChange={setAvatar}
               onBackgroundChange={setBackground}
+              activeSubmission={loading}
             />
 
             <FormInputWithIcon
@@ -115,6 +115,7 @@ export default function EditProfileScreen() {
               onChangeText={handleChange("displayName")}
               icon={AccountBox}
               editable={!loading}
+              error={errors.displayName}
             />
             <Line />
             <FormInputWithIcon
@@ -123,6 +124,7 @@ export default function EditProfileScreen() {
               onChangeText={handleChange("description")}
               icon={InfoCircle}
               editable={!loading}
+              error={errors.description}
             />
             <Line />
             <FormInputWithIcon
@@ -130,6 +132,7 @@ export default function EditProfileScreen() {
               placeholder="Username"
               onChangeText={handleChange("username")}
               icon={PersonOutline}
+              error={errors.username}
             />
             <Line />
             <FormInputWithIcon
@@ -137,6 +140,7 @@ export default function EditProfileScreen() {
               placeholder="Twitter username"
               onChangeText={handleChange("twitter")}
               icon={Twitter}
+              error={errors.twitter}
             />
             <Line />
             <FormInputWithIcon
@@ -144,6 +148,7 @@ export default function EditProfileScreen() {
               placeholder="Instagram username"
               onChangeText={handleChange("instagram")}
               icon={Instagram}
+              error={errors.instagram}
             />
             <Text className="font-bold text-sm pt-8 pb-2">
               Private information
@@ -154,6 +159,7 @@ export default function EditProfileScreen() {
               onChangeText={handleChange("email")}
               icon={MailOutline}
               editable={!loading}
+              error={errors.email}
             />
             <Line />
             {user.managed && <WithdrawCredits />}
@@ -161,9 +167,6 @@ export default function EditProfileScreen() {
           </View>
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />
-          <Text className="text-red text-sm py-5 mx-4">
-            {vals(errors).join("\n")}
-          </Text>
           <View className="flex md:flex-row justify-center items-center mb-5">
             <Button
               text="Done"

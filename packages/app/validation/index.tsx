@@ -27,11 +27,18 @@ export const emailSchema = Yup.string()
 
 export const editProfileFormSchema: SchemaOf<EditProfileForm> = object().shape({
   displayName: displayedNameSchema,
-  description: string(),
+  description: string().max(
+    280,
+    "Description can contain up to 280 characters"
+  ),
   username: usernameSchema,
   email: emailSchema,
-  twitter: string(),
-  instagram: string(),
+  twitter: string()
+    .min(4, "Twitter username cannot be shorter than 4 characters")
+    .max(15, "Twitter username cannot be longer than 15 characters"),
+  instagram: string()
+    .min(1, "Instagram username cannot be shorter than 1 character")
+    .max(30, "Instagram username cannot be longer than 30 characters"),
 });
 
 export const signInFormSchema: SchemaOf<SignInForm> = Yup.object().shape({
@@ -98,6 +105,22 @@ const validateImgSquare = (image: MediaFileInfo) => {
   return null;
 };
 
+const BACKGROUND_ASPECT_RATIO_MIN = 2;
+const BACKGROUND_ASPECT_RATIO_MAX = 3;
+const validateBackgroundRatio = (background: MediaFileInfo) => {
+  if (!background.image) {
+    return "File is not an image!";
+  }
+  const aspectRatio = background.width / background.height;
+  if (
+    aspectRatio < BACKGROUND_ASPECT_RATIO_MIN ||
+    aspectRatio > BACKGROUND_ASPECT_RATIO_MAX
+  ) {
+    return `Only aspect ratios from ${BACKGROUND_ASPECT_RATIO_MIN}:1 to ${BACKGROUND_ASPECT_RATIO_MAX}:1 are supported`;
+  }
+  return null;
+};
+
 const validateImgFormatOneOf = (image: MediaFileInfo, formats = ["png"]) => {
   for (const format of formats) {
     if (image.uri.startsWith(`data:image/${format}`)) return null;
@@ -125,11 +148,11 @@ export const validateProfilePicture = (image: MediaFileInfo): string | null => {
 };
 
 export const validateBackgroundImage = (
-  image: MediaFileInfo
+  background: MediaFileInfo
 ): string | null => {
   return (
-    //TO DO: Add validation rules for image size/ratio etc.
-    validateImgFormatOneOf(image, ["png", "jpg", "jpeg"])
+    validateBackgroundRatio(background) ??
+    validateImgFormatOneOf(background, ["png", "jpg", "jpeg"])
   );
 };
 
