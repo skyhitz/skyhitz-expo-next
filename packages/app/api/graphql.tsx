@@ -218,9 +218,12 @@ export type MutationUpdatePricingArgs = {
 
 export type MutationUpdateUserArgs = {
   avatarUrl?: InputMaybe<Scalars["String"]>;
+  backgroundUrl?: InputMaybe<Scalars["String"]>;
   description?: InputMaybe<Scalars["String"]>;
   displayName?: InputMaybe<Scalars["String"]>;
   email?: InputMaybe<Scalars["String"]>;
+  instagram?: InputMaybe<Scalars["String"]>;
+  twitter?: InputMaybe<Scalars["String"]>;
   username?: InputMaybe<Scalars["String"]>;
 };
 
@@ -242,10 +245,13 @@ export type Offer = {
 export type PublicUser = {
   __typename?: "PublicUser";
   avatarUrl: Scalars["String"];
+  backgroundUrl?: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
   id: Scalars["String"];
   username: Scalars["String"];
+  twitter?: Scalars["String"];
+  instagram?: Scalars["String"];
 };
 
 export type Query = {
@@ -296,15 +302,18 @@ export type Token = {
 export type User = {
   __typename?: "User";
   avatarUrl: Scalars["String"];
+  backgroundUrl?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
   email: Scalars["String"];
   id: Scalars["String"];
+  instagram?: Maybe<Scalars["String"]>;
   jwt?: Maybe<Scalars["String"]>;
   lastPlayedEntry?: Maybe<Entry>;
   managed: Scalars["Boolean"];
   publicKey: Scalars["String"];
   publishedAt?: Maybe<Scalars["String"]>;
+  twitter?: Maybe<Scalars["String"]>;
   username: Scalars["String"];
   version?: Maybe<Scalars["Int"]>;
 };
@@ -585,10 +594,13 @@ export type UpdatePricingMutation = {
 
 export type UpdateUserMutationVariables = Exact<{
   avatarUrl?: InputMaybe<Scalars["String"]>;
+  backgroundUrl?: InputMaybe<Scalars["String"]>;
   displayName?: InputMaybe<Scalars["String"]>;
   description?: InputMaybe<Scalars["String"]>;
   username?: InputMaybe<Scalars["String"]>;
   email?: InputMaybe<Scalars["String"]>;
+  twitter?: InputMaybe<Scalars["String"]>;
+  instagram?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type UpdateUserMutation = {
@@ -596,6 +608,7 @@ export type UpdateUserMutation = {
   updateUser: {
     __typename?: "User";
     avatarUrl: string;
+    backgroundUrl?: string | null;
     displayName?: string | null;
     email: string;
     username: string;
@@ -606,6 +619,8 @@ export type UpdateUserMutation = {
     description?: string | null;
     publicKey: string;
     managed: boolean;
+    twitter?: string | null;
+    instagram?: string | null;
   };
 };
 
@@ -716,6 +731,7 @@ export type AuthenticatedUserQuery = {
   authenticatedUser: {
     __typename?: "User";
     avatarUrl: string;
+    backgroundUrl?: string | null;
     displayName?: string | null;
     email: string;
     username: string;
@@ -724,6 +740,8 @@ export type AuthenticatedUserQuery = {
     jwt?: string | null;
     publicKey: string;
     managed: boolean;
+    twitter?: string | null;
+    instagram?: string | null;
     lastPlayedEntry?: {
       __typename?: "Entry";
       imageUrl: string;
@@ -1657,19 +1675,26 @@ export type UpdatePricingMutationOptions = Apollo.BaseMutationOptions<
 export const UpdateUserDocument = gql`
   mutation updateUser(
     $avatarUrl: String
+    $backgroundUrl: String
     $displayName: String
     $description: String
     $username: String
     $email: String
+    $twitter: String
+    $instagram: String
   ) {
     updateUser(
       avatarUrl: $avatarUrl
+      backgroundUrl: $backgroundUrl
       displayName: $displayName
       description: $description
       username: $username
       email: $email
+      twitter: $twitter
+      instagram: $instagram
     ) {
       avatarUrl
+      backgroundUrl
       displayName
       email
       username
@@ -1680,6 +1705,8 @@ export const UpdateUserDocument = gql`
       description
       publicKey
       managed
+      twitter
+      instagram
     }
   }
 `;
@@ -1702,10 +1729,13 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<
  * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
  *   variables: {
  *      avatarUrl: // value for 'avatarUrl'
+ *      backgroundUrl: // value for 'backgroundUrl'
  *      displayName: // value for 'displayName'
  *      description: // value for 'description'
  *      username: // value for 'username'
  *      email: // value for 'email'
+ *      twitter: // value for 'twitter'
+ *      instagram: // value for 'instagram'
  *   },
  * });
  */
@@ -2048,6 +2078,7 @@ export const AuthenticatedUserDocument = gql`
   query authenticatedUser {
     authenticatedUser {
       avatarUrl
+      backgroundUrl
       displayName
       email
       username
@@ -2066,6 +2097,8 @@ export const AuthenticatedUserDocument = gql`
         code
         issuer
       }
+      twitter
+      instagram
     }
   }
 `;

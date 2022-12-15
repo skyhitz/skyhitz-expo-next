@@ -1,14 +1,14 @@
 import { ActivityIndicator, Text, View } from "app/design-system";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
 import { useBeatmakerParam } from "app/hooks/param/useBeatmakerParam";
-import { UserAvatar } from "app/ui/userAvatar";
 import { useUserCollectionQuery } from "app/api/graphql";
 import { useErrorReport } from "app/hooks/useErrorReport";
 import { useEffect } from "react";
-import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
 import { useUserWithId } from "app/hooks/algolia/useUserWithId";
 import { CollectionSkeleton } from "app/ui/skeletons/CollectionSkeleton";
+import { ProfileHeader } from "app/features/dashboard/profile/ProfileHeader";
+import { tw } from "app/design-system/tailwind";
 
 export default function BeatmakerScreen() {
   const id = useBeatmakerParam();
@@ -37,28 +37,42 @@ export default function BeatmakerScreen() {
   return (
     <View className="flex-1 w-full bg-blue-dark">
       <Text className="text-lg ml-8 font-bold hidden web:flex">Beatmaker</Text>
-      <View className="w-full bg-beatmakerAvatarBackground flex flex-row items-center py-4 px-8 web:mt-4">
+      <View className="w-full flex flex-row items-center web:mt-4">
         {user.isValidating ? (
           <ActivityIndicator size="large" />
         ) : (
           <>
-            <UserAvatar
-              size="large"
-              avatarUrl={user.data?.avatarUrl}
-              displayName={user.data?.displayName}
-            />
-            <Text className="ml-4 font-bold text-lg">
-              {user.data?.displayName}
-            </Text>
-            <View className="w-0.25 h-6 bg-grey-light mx-3" />
-            <ShareButton
-              url={`${Config.APP_URL}/dashboard/beatmaker/${id}`}
-              title="Share beatmaker!"
+            <ProfileHeader
+              avatar={user.data?.avatarUrl!}
+              background={user.data?.backgroundUrl!}
+              displayName={user!.data?.displayName!}
+              twitter={user!.data?.twitter!}
+              instagram={user!.data?.instagram!}
+              profileUrl={`${Config.APP_URL}/dashboard/beatmaker/${id}`}
             />
           </>
         )}
       </View>
-      <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg">
+      <Text
+        className={
+          tw.prefixMatch("md")
+            ? "text-lg ml-20 mt-1 font-bold hidden web:flex"
+            : "ml-4 mt-1 font-bold text-lg"
+        }
+      >
+        {user!.data?.displayName!}
+      </Text>
+      {user!.data?.description && (
+        <>
+          <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 text-lg font-bold">
+            Bio
+          </Text>
+          <Text className="w-full max-w-6xl mx-auto pl-4 mt-3 text-lg">
+            {user!.data?.description}
+          </Text>
+        </>
+      )}
+      <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg font-bold">
         Beatmaker collection
       </Text>
       {collection.loading && <CollectionSkeleton duplicates={3} />}
