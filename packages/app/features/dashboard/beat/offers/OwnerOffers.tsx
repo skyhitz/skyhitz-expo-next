@@ -3,7 +3,7 @@ import { View, Text } from "app/design-system";
 import { ArrowsUpDownIcon } from "app/ui/icons/arrows-up-down";
 import { ActiveOffer } from "./ActiveOffer";
 import { Entry, EntryHolder } from "app/api/graphql";
-import { CreateOfferBtn } from "app/features/dashboard/beat/CreateOfferBtn";
+import { CreateOfferBtn } from "app/features/dashboard/beat/offers/CreateOfferBtn";
 import { useUserOffers } from "app/hooks/useUserOffers";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";

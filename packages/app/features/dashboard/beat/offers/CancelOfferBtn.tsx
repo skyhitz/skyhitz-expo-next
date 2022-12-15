@@ -15,12 +15,14 @@ export function CancelOfferBtn({ offerId, entry }: Props) {
   return (
     <ComponentAuthGuard>
       <Button
-        text="Cancel an offer"
+        text="Cancel"
         className="flex-row-reverse mt-3 mr-1"
         onPress={() => {
           setModalVisible(true);
         }}
         useTouchable
+        size="small"
+        variant="secondary"
       />
       <CancelConfirmationModal
         visible={modalVisible}

@@ -10,7 +10,7 @@ type Props = {
   loading?: boolean;
   text: string;
   onPress: () => void;
-  size?: "default" | "large";
+  size?: "default" | "large" | "small";
   variant?: "primary" | "secondary" | "white" | "text";
   icon?: (_props: IconProps) => ReactElement;
   iconProps?: IconProps;
@@ -22,6 +22,7 @@ type Props = {
 
 const textStyle = {
   default: "text-sm",
+  small: "text-xs",
   large: "text-base font-bold",
   primary: "text-white",
   secondary: "text-white",
@@ -31,6 +32,7 @@ const textStyle = {
 
 const containerStyle = {
   default: "px-5 py-3 w-40",
+  small: "px-2 py-2 w-20",
   large: "px-10 py-3 w-72",
   primary: "bg-blue",
   secondary: "bg-grey",

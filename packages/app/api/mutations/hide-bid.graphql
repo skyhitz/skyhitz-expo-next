@@ -1,0 +1,3 @@
+mutation HideBid($id: String!) {
+  hideBid(id: $id)
+}

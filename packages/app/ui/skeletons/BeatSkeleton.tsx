@@ -1,6 +1,6 @@
 import { View } from "app/design-system";
-import { useEffect, useState } from "react";
-import { GRADIENT_WIDTH, SkeletonContainer } from "./SkeletonContainer";
+import { useEffect } from "react";
+import { SkeletonContainer } from "./SkeletonContainer";
 import {
   useSharedValue,
   withRepeat,
@@ -8,31 +8,20 @@ import {
 } from "react-native-reanimated";
 
 export function BeatSkeleton() {
-  const [width, setWidth] = useState<number | undefined>();
-  const x = useSharedValue(-GRADIENT_WIDTH);
+  const x = useSharedValue(-0.2);
 
   useEffect(() => {
-    if (width) {
-      x.value = withRepeat(withTiming(width, { duration: 1000 }), -1);
-    }
-  }, [width]);
+    x.value = withRepeat(withTiming(1.2, { duration: 1000 }), -1);
+  }, []);
 
   const EntrySkeleton = () => {
     return (
-      <View
-        className="flex-row w-full h-20 m-2 items-start"
-        onLayout={(event) => {
-          if (!width && event.nativeEvent.layout.width) {
-            setWidth(event.nativeEvent.layout.width);
-          }
-        }}
-      >
+      <View className="flex-row w-full h-20 m-2 items-start">
         <SkeletonContainer className="w-15 h-15" sharedValue={x} />
         <SkeletonContainer className="h-5 flex-1 mx-5" sharedValue={x} />
       </View>
     );
   };
-
   return (
     <>
       {Array(8)

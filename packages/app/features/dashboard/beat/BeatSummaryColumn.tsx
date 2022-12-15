@@ -3,7 +3,6 @@ import { Entry, EntryHolder } from "app/api/graphql";
 import { ActivityIndicator, Pressable, Text, View } from "app/design-system";
 import InfoCircle from "app/ui/icons/info-circle";
 import { PriceContainer } from "./PriceContainer";
-import { Owners } from "./BeatOwners";
 import { usePlayback } from "app/hooks/usePlayback";
 import PlayIcon from "app/ui/icons/play";
 import PauseIcon from "app/ui/icons/pause";
@@ -15,7 +14,12 @@ import { LikesList } from "app/features/player/components/likesList";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
 import { ComponentAuthGuard } from "app/utils/authGuard";
-import { OwnerOffers } from "./OwnerOffers";
+import { OwnerOffers } from "./offers/OwnerOffers";
+import { AssetBids } from "./bids/AssetBids";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "app/state/user";
+import { useMemo } from "react";
+import { Platform } from "react-native";
 
 type Props = {
   entry: Entry;
@@ -25,6 +29,11 @@ type Props = {
 const FilledLike = (iconProps: IconProps) => Like({ ...iconProps, fill: true });
 
 export function BeatSummaryColumn({ entry, holders }: Props) {
+  const user = useRecoilValue(userAtom);
+  const isOnlyOwner = useMemo(
+    () => holders?.length === 1 && holders[0]?.account === user?.publicKey,
+    [user, holders]
+  );
   return (
     <View className="flex md:flex-1 md:ml-2 w-full">
       <View>
@@ -47,17 +56,15 @@ export function BeatSummaryColumn({ entry, holders }: Props) {
           />
         </View>
       </View>
-      <PriceContainer entry={entry} />
+      {!isOnlyOwner && <PriceContainer entry={entry} />}
+      {Platform.OS !== "ios" && <OwnerOffers entry={entry} holders={holders} />}
+      {Platform.OS !== "ios" && <AssetBids entry={entry} holders={holders} />}
       <CollapsableView icon={InfoCircle} headerText="Description">
         <Text className="p-3">{entry.description}</Text>
       </CollapsableView>
       <CollapsableView icon={FilledLike} headerText="Likes">
         <LikesList classname="px-5 my-5" entry={entry} />
       </CollapsableView>
-      {/* TODO skeleton */}
-      {!holders && <ActivityIndicator className="mt-5" />}
-      <OwnerOffers entry={entry} holders={holders} />
-      {holders && <Owners holders={holders} />}
     </View>
   );
 }

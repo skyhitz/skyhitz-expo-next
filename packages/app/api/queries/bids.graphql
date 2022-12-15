@@ -1,0 +1,18 @@
+query AssetBids($assetCode: String!, $assetIssuer: String!) {
+  bids(assetCode: $assetCode, assetIssuer: $assetIssuer) {
+    id
+    seller
+    selling {
+      asset_type
+      asset_code
+      asset_issuer
+    }
+    buying {
+      asset_type
+      asset_code
+      asset_issuer
+    }
+    amount
+    price
+  }
+}
