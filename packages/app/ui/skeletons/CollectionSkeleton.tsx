@@ -6,6 +6,7 @@ import {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { FlatList } from "react-native";
 
 type CollectionSkeletonProps = {
   duplicates: number;
@@ -28,11 +29,14 @@ export function CollectionSkeleton({ duplicates }: CollectionSkeletonProps) {
   };
   return (
     <>
-      {Array(duplicates)
-        .fill(true)
-        .map((_, i) => (
-          <EntrySkeleton key={i} />
-        ))}
+      <FlatList
+        data={Array(duplicates)
+          .fill(0)
+          .map((_, i) => {
+            return { key: i };
+          })}
+        renderItem={() => <EntrySkeleton />}
+      />
     </>
   );
 }
