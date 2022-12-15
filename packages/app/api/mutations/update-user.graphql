@@ -1,18 +1,25 @@
 mutation updateUser(
   $avatarUrl: String
+  $backgroundUrl: String
   $displayName: String
   $description: String
   $username: String
   $email: String
+  $twitter: String
+  $instagram: String
 ) {
   updateUser(
     avatarUrl: $avatarUrl
+    backgroundUrl: $backgroundUrl
     displayName: $displayName
     description: $description
     username: $username
     email: $email
+    twitter: $twitter
+    instagram: $instagram
   ) {
     avatarUrl
+    backgroundUrl
     displayName
     email
     username
@@ -23,5 +30,7 @@ mutation updateUser(
     description
     publicKey
     managed
+    twitter
+    instagram
   }
 }

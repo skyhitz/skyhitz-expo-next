@@ -20,12 +20,18 @@ const classNames = {
     border: "",
     textSize: "text-xs",
   },
+
+  xlarge: {
+    size: "h-30 w-30",
+    border: "border border-white",
+    textSize: "text-2xl",
+  },
 };
 
 export type UserAvatarProps = {
   avatarUrl?: string | null;
   displayName?: string | null;
-  size?: "default" | "large" | "small";
+  size?: "default" | "large" | "small" | "xlarge";
 };
 
 export function UserAvatar({

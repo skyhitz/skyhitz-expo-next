@@ -9,27 +9,32 @@ import { useRecoilState } from "recoil";
 import { useUpdateUserMutation } from "app/api/graphql";
 import { Formik, FormikProps } from "formik";
 import { LogOutBtn } from "app/features/dashboard/profile/edit/logOutBtn";
-import { values as vals } from "ramda";
-import { ChangeUserAvatar } from "app/features/dashboard/profile/edit/changeUserAvatar";
 import { WithdrawCredits } from "app/features/dashboard/profile/edit/WithdrawCredits";
 import { userAtom } from "app/state/user";
 import { FormInputWithIcon } from "app/ui/inputs/FormInputWithIcon";
 import { ScrollView } from "app/design-system/ScrollView";
 import { useRouter } from "solito/router";
-import { ChangeAvatarImg, EditProfileForm } from "app/types";
+import { ChangeImage, EditProfileForm } from "app/types";
 import * as assert from "assert";
 import { editProfileFormSchema } from "app/validation";
 import useUploadFileToNFTStorage from "app/hooks/useUploadFileToNFTStorage";
 import { ipfsProtocol } from "app/constants/constants";
 import { useToast } from "react-native-toast-notifications";
 import { ChangeWallet } from "./ChangeWallet";
+import Twitter from "app/ui/icons/twitter";
+import Instagram from "app/ui/icons/instagram";
+import { ProfileHeader } from "../ProfileHeader";
+import { ChangeImages } from "./ChangeImages";
 import { Platform } from "react-native";
 
 export default function EditProfileScreen() {
   const [user, setUser] = useRecoilState(userAtom);
   assert.ok(user, "Unauthorized access on EditProfileScreen");
-  const [avatar, setAvatar] = useState<ChangeAvatarImg>({
+  const [avatar, setAvatar] = useState<ChangeImage>({
     url: user.avatarUrl,
+  });
+  const [background, setBackground] = useState<ChangeImage>({
+    url: user.backgroundUrl ?? "",
   });
   const [updateUser, { data, loading }] = useUpdateUserMutation();
   const { uploadFile, progress } = useUploadFileToNFTStorage();
@@ -39,14 +44,20 @@ export default function EditProfileScreen() {
   const handleUpdateUser = async (form: EditProfileForm) => {
     if (loading) return;
 
-    let avatarUrl = "";
+    let avatarUrl = user.avatarUrl;
+    let backgroundUrl = user.backgroundUrl ?? "";
+
     try {
       if (avatar.blob) {
         const cid = await uploadFile(avatar.blob);
         avatarUrl = `${ipfsProtocol}${cid}`;
       }
+      if (background.blob) {
+        const cid = await uploadFile(background.blob);
+        backgroundUrl = `${ipfsProtocol}${cid}`;
+      }
       await updateUser({
-        variables: { ...form, avatarUrl },
+        variables: { ...form, avatarUrl, backgroundUrl },
       });
     } catch (e: any) {
       console.error(e);
@@ -67,6 +78,8 @@ export default function EditProfileScreen() {
     description: user.description,
     username: user.username,
     email: user.email,
+    twitter: user.twitter,
+    instagram: user.instagram,
   };
 
   return (
@@ -84,24 +97,26 @@ export default function EditProfileScreen() {
         errors,
       }: FormikProps<EditProfileForm>) => (
         <ScrollView className="bg-blue-dark flex-1">
-          <View
-            className={`w-full bg-red p-4 ${user.avatarUrl ? "hidden" : ""}`}
-          >
-            <Text className="mx-auto text-sm">Upload a profile picture</Text>
-          </View>
-          <View className="px-4">
-            <ChangeUserAvatar
-              avatarImg={avatar}
-              displayName={user!.displayName}
-              onChange={setAvatar}
-              disable={loading}
+          <ProfileHeader
+            avatar={avatar.url}
+            background={background.url}
+            displayName={user!.displayName!}
+          />
+
+          <View className="px-4 mt-5">
+            <ChangeImages
+              onAvatarChange={setAvatar}
+              onBackgroundChange={setBackground}
+              activeSubmission={loading}
             />
+
             <FormInputWithIcon
               value={values.displayName ?? ""}
               placeholder="Display Name"
               onChangeText={handleChange("displayName")}
               icon={AccountBox}
               editable={!loading}
+              error={errors.displayName}
             />
             <Line />
             <FormInputWithIcon
@@ -110,6 +125,7 @@ export default function EditProfileScreen() {
               onChangeText={handleChange("description")}
               icon={InfoCircle}
               editable={!loading}
+              error={errors.description}
             />
             <Line />
             <FormInputWithIcon
@@ -117,6 +133,23 @@ export default function EditProfileScreen() {
               placeholder="Username"
               onChangeText={handleChange("username")}
               icon={PersonOutline}
+              error={errors.username}
+            />
+            <Line />
+            <FormInputWithIcon
+              value={values.twitter ?? ""}
+              placeholder="Twitter username"
+              onChangeText={handleChange("twitter")}
+              icon={Twitter}
+              error={errors.twitter}
+            />
+            <Line />
+            <FormInputWithIcon
+              value={values.instagram ?? ""}
+              placeholder="Instagram username"
+              onChangeText={handleChange("instagram")}
+              icon={Instagram}
+              error={errors.instagram}
             />
             <Text className="font-bold text-sm pt-8 pb-2">
               Private information
@@ -127,6 +160,7 @@ export default function EditProfileScreen() {
               onChangeText={handleChange("email")}
               icon={MailOutline}
               editable={!loading}
+              error={errors.email}
             />
             <Line />
             {user.managed && Platform.OS !== "ios" && <WithdrawCredits />}
@@ -134,9 +168,6 @@ export default function EditProfileScreen() {
           </View>
           <Text className="px-4 font-bold text-sm pt-8 pb-2">More</Text>
           <LogOutBtn />
-          <Text className="text-red text-sm py-5 mx-4">
-            {vals(errors).join("\n")}
-          </Text>
           <View className="flex md:flex-row justify-center items-center mb-5">
             <Button
               text="Done"
