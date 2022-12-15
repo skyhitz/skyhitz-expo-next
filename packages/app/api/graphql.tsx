@@ -32,6 +32,13 @@ export type ActivityPrice = {
   n: Scalars["Int"];
 };
 
+export type Asset = {
+  __typename?: "Asset";
+  asset_code?: Maybe<Scalars["String"]>;
+  asset_issuer?: Maybe<Scalars["String"]>;
+  asset_type: Scalars["String"];
+};
+
 export type ConditionalUser = {
   __typename?: "ConditionalUser";
   message: Scalars["String"];
@@ -83,7 +90,6 @@ export type EntryDetails = {
   id: Scalars["String"];
   imageUrl: Scalars["String"];
   issuer: Scalars["String"];
-  offers?: Maybe<Array<EntryActivity>>;
   title: Scalars["String"];
   videoUrl: Scalars["String"];
 };
@@ -108,10 +114,14 @@ export type EntryPrice = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  acceptBid: ConditionalXdr;
   buyEntry: ConditionalXdr;
+  cancelBid: ConditionalXdr;
   changeWallet: User;
+  createBid: ConditionalXdr;
   createEntry: ConditionalXdr;
   createUserWithEmail: ConditionalUser;
+  hideBid: Scalars["Boolean"];
   indexEntry: Entry;
   likeEntry: Scalars["Boolean"];
   removeEntry: Scalars["Boolean"];
@@ -124,14 +134,28 @@ export type Mutation = {
   withdrawToExternalWallet: Scalars["Boolean"];
 };
 
+export type MutationAcceptBidArgs = {
+  id: Scalars["String"];
+};
+
 export type MutationBuyEntryArgs = {
   amount: Scalars["Float"];
   id: Scalars["String"];
   price: Scalars["Float"];
 };
 
+export type MutationCancelBidArgs = {
+  id?: InputMaybe<Scalars["String"]>;
+};
+
 export type MutationChangeWalletArgs = {
   signedXDR: Scalars["String"];
+};
+
+export type MutationCreateBidArgs = {
+  equityToBuy: Scalars["Float"];
+  id: Scalars["String"];
+  price: Scalars["Int"];
 };
 
 export type MutationCreateEntryArgs = {
@@ -148,6 +172,10 @@ export type MutationCreateUserWithEmailArgs = {
   email: Scalars["String"];
   signedXDR?: InputMaybe<Scalars["String"]>;
   username: Scalars["String"];
+};
+
+export type MutationHideBidArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationIndexEntryArgs = {
@@ -181,9 +209,10 @@ export type MutationSignInWithXdrArgs = {
 };
 
 export type MutationUpdatePricingArgs = {
-  equityForSale: Scalars["Int"];
+  equityForSale: Scalars["Float"];
   forSale: Scalars["Boolean"];
   id: Scalars["String"];
+  offerID: Scalars["String"];
   price: Scalars["Int"];
 };
 
@@ -200,6 +229,16 @@ export type MutationWithdrawToExternalWalletArgs = {
   amount: Scalars["Int"];
 };
 
+export type Offer = {
+  __typename?: "Offer";
+  amount: Scalars["String"];
+  buying: Asset;
+  id: Scalars["String"];
+  price: Scalars["String"];
+  seller: Scalars["String"];
+  selling: Asset;
+};
+
 export type PublicUser = {
   __typename?: "PublicUser";
   avatarUrl: Scalars["String"];
@@ -212,6 +251,7 @@ export type PublicUser = {
 export type Query = {
   __typename?: "Query";
   authenticatedUser: User;
+  bids: Array<Offer>;
   entry: EntryDetails;
   entryLikes: EntryLikes;
   entryPrice: EntryPrice;
@@ -221,6 +261,11 @@ export type Query = {
   userEntries: Array<Entry>;
   userLikes: Array<Entry>;
   xlmPrice: Scalars["String"];
+};
+
+export type QueryBidsArgs = {
+  assetCode: Scalars["String"];
+  assetIssuer: Scalars["String"];
 };
 
 export type QueryEntryArgs = {
@@ -264,6 +309,20 @@ export type User = {
   version?: Maybe<Scalars["Int"]>;
 };
 
+export type AcceptBidMutationVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type AcceptBidMutation = {
+  __typename?: "Mutation";
+  acceptBid: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success: boolean;
+    submitted: boolean;
+  };
+};
+
 export type BuyEntryMutationVariables = Exact<{
   id: Scalars["String"];
   amount: Scalars["Float"];
@@ -273,6 +332,20 @@ export type BuyEntryMutationVariables = Exact<{
 export type BuyEntryMutation = {
   __typename?: "Mutation";
   buyEntry: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success: boolean;
+    submitted: boolean;
+  };
+};
+
+export type CancelBidMutationVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type CancelBidMutation = {
+  __typename?: "Mutation";
+  cancelBid: {
     __typename?: "ConditionalXDR";
     xdr?: string | null;
     success: boolean;
@@ -299,6 +372,22 @@ export type ChangeWalletMutation = {
     description?: string | null;
     publicKey: string;
     managed: boolean;
+  };
+};
+
+export type CreateBidMutationVariables = Exact<{
+  id: Scalars["String"];
+  price: Scalars["Int"];
+  equityToBuy: Scalars["Float"];
+}>;
+
+export type CreateBidMutation = {
+  __typename?: "Mutation";
+  createBid: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success: boolean;
+    submitted: boolean;
   };
 };
 
@@ -360,6 +449,12 @@ export type CreateUserWithEmailMutation = {
     } | null;
   };
 };
+
+export type HideBidMutationVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type HideBidMutation = { __typename?: "Mutation"; hideBid: boolean };
 
 export type IndexEntryMutationVariables = Exact<{
   issuer: Scalars["String"];
@@ -470,6 +565,24 @@ export type SignInWithXdrMutation = {
   };
 };
 
+export type UpdatePricingMutationVariables = Exact<{
+  id: Scalars["String"];
+  price: Scalars["Int"];
+  forSale: Scalars["Boolean"];
+  equityForSale: Scalars["Float"];
+  offerID: Scalars["String"];
+}>;
+
+export type UpdatePricingMutation = {
+  __typename?: "Mutation";
+  updatePricing: {
+    __typename?: "ConditionalXDR";
+    xdr?: string | null;
+    success: boolean;
+    submitted: boolean;
+  };
+};
+
 export type UpdateUserMutationVariables = Exact<{
   avatarUrl?: InputMaybe<Scalars["String"]>;
   displayName?: InputMaybe<Scalars["String"]>;
@@ -506,6 +619,34 @@ export type WithdrawToExternalWalletMutation = {
   withdrawToExternalWallet: boolean;
 };
 
+export type AssetBidsQueryVariables = Exact<{
+  assetCode: Scalars["String"];
+  assetIssuer: Scalars["String"];
+}>;
+
+export type AssetBidsQuery = {
+  __typename?: "Query";
+  bids: Array<{
+    __typename?: "Offer";
+    id: string;
+    seller: string;
+    amount: string;
+    price: string;
+    selling: {
+      __typename?: "Asset";
+      asset_type: string;
+      asset_code?: string | null;
+      asset_issuer?: string | null;
+    };
+    buying: {
+      __typename?: "Asset";
+      asset_type: string;
+      asset_code?: string | null;
+      asset_issuer?: string | null;
+    };
+  }>;
+};
+
 export type EntryDetailsQueryVariables = Exact<{
   id: Scalars["String"];
 }>;
@@ -528,19 +669,6 @@ export type EntryDetailsQuery = {
       balance: string;
     }> | null;
     history?: Array<{
-      __typename?: "EntryActivity";
-      id: string;
-      type: number;
-      ts: number;
-      accounts?: Array<string | null> | null;
-      assets?: Array<string | null> | null;
-      tx: string;
-      offer?: string | null;
-      amount?: string | null;
-      sourceAmount?: string | null;
-      price?: { __typename?: "ActivityPrice"; n: number; d: number } | null;
-    }> | null;
-    offers?: Array<{
       __typename?: "EntryActivity";
       id: string;
       type: number;
@@ -650,6 +778,57 @@ export type UserLikesQuery = {
   }>;
 };
 
+export const AcceptBidDocument = gql`
+  mutation AcceptBid($id: String!) {
+    acceptBid(id: $id) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type AcceptBidMutationFn = Apollo.MutationFunction<
+  AcceptBidMutation,
+  AcceptBidMutationVariables
+>;
+
+/**
+ * __useAcceptBidMutation__
+ *
+ * To run a mutation, you first call `useAcceptBidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptBidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptBidMutation, { data, loading, error }] = useAcceptBidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAcceptBidMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AcceptBidMutation,
+    AcceptBidMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AcceptBidMutation, AcceptBidMutationVariables>(
+    AcceptBidDocument,
+    options
+  );
+}
+export type AcceptBidMutationHookResult = ReturnType<
+  typeof useAcceptBidMutation
+>;
+export type AcceptBidMutationResult = Apollo.MutationResult<AcceptBidMutation>;
+export type AcceptBidMutationOptions = Apollo.BaseMutationOptions<
+  AcceptBidMutation,
+  AcceptBidMutationVariables
+>;
 export const BuyEntryDocument = gql`
   mutation BuyEntry($id: String!, $amount: Float!, $price: Float!) {
     buyEntry(id: $id, amount: $amount, price: $price) {
@@ -700,6 +879,57 @@ export type BuyEntryMutationResult = Apollo.MutationResult<BuyEntryMutation>;
 export type BuyEntryMutationOptions = Apollo.BaseMutationOptions<
   BuyEntryMutation,
   BuyEntryMutationVariables
+>;
+export const CancelBidDocument = gql`
+  mutation CancelBid($id: String!) {
+    cancelBid(id: $id) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type CancelBidMutationFn = Apollo.MutationFunction<
+  CancelBidMutation,
+  CancelBidMutationVariables
+>;
+
+/**
+ * __useCancelBidMutation__
+ *
+ * To run a mutation, you first call `useCancelBidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelBidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelBidMutation, { data, loading, error }] = useCancelBidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCancelBidMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CancelBidMutation,
+    CancelBidMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CancelBidMutation, CancelBidMutationVariables>(
+    CancelBidDocument,
+    options
+  );
+}
+export type CancelBidMutationHookResult = ReturnType<
+  typeof useCancelBidMutation
+>;
+export type CancelBidMutationResult = Apollo.MutationResult<CancelBidMutation>;
+export type CancelBidMutationOptions = Apollo.BaseMutationOptions<
+  CancelBidMutation,
+  CancelBidMutationVariables
 >;
 export const ChangeWalletDocument = gql`
   mutation changeWallet($signedXDR: String!) {
@@ -760,6 +990,59 @@ export type ChangeWalletMutationResult =
 export type ChangeWalletMutationOptions = Apollo.BaseMutationOptions<
   ChangeWalletMutation,
   ChangeWalletMutationVariables
+>;
+export const CreateBidDocument = gql`
+  mutation CreateBid($id: String!, $price: Int!, $equityToBuy: Float!) {
+    createBid(id: $id, price: $price, equityToBuy: $equityToBuy) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type CreateBidMutationFn = Apollo.MutationFunction<
+  CreateBidMutation,
+  CreateBidMutationVariables
+>;
+
+/**
+ * __useCreateBidMutation__
+ *
+ * To run a mutation, you first call `useCreateBidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBidMutation, { data, loading, error }] = useCreateBidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      price: // value for 'price'
+ *      equityToBuy: // value for 'equityToBuy'
+ *   },
+ * });
+ */
+export function useCreateBidMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateBidMutation,
+    CreateBidMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateBidMutation, CreateBidMutationVariables>(
+    CreateBidDocument,
+    options
+  );
+}
+export type CreateBidMutationHookResult = ReturnType<
+  typeof useCreateBidMutation
+>;
+export type CreateBidMutationResult = Apollo.MutationResult<CreateBidMutation>;
+export type CreateBidMutationOptions = Apollo.BaseMutationOptions<
+  CreateBidMutation,
+  CreateBidMutationVariables
 >;
 export const CreateEntryDocument = gql`
   mutation CreateEntry(
@@ -917,6 +1200,51 @@ export type CreateUserWithEmailMutationResult =
 export type CreateUserWithEmailMutationOptions = Apollo.BaseMutationOptions<
   CreateUserWithEmailMutation,
   CreateUserWithEmailMutationVariables
+>;
+export const HideBidDocument = gql`
+  mutation HideBid($id: String!) {
+    hideBid(id: $id)
+  }
+`;
+export type HideBidMutationFn = Apollo.MutationFunction<
+  HideBidMutation,
+  HideBidMutationVariables
+>;
+
+/**
+ * __useHideBidMutation__
+ *
+ * To run a mutation, you first call `useHideBidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useHideBidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [hideBidMutation, { data, loading, error }] = useHideBidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useHideBidMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    HideBidMutation,
+    HideBidMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<HideBidMutation, HideBidMutationVariables>(
+    HideBidDocument,
+    options
+  );
+}
+export type HideBidMutationHookResult = ReturnType<typeof useHideBidMutation>;
+export type HideBidMutationResult = Apollo.MutationResult<HideBidMutation>;
+export type HideBidMutationOptions = Apollo.BaseMutationOptions<
+  HideBidMutation,
+  HideBidMutationVariables
 >;
 export const IndexEntryDocument = gql`
   mutation IndexEntry($issuer: String!) {
@@ -1258,6 +1586,74 @@ export type SignInWithXdrMutationOptions = Apollo.BaseMutationOptions<
   SignInWithXdrMutation,
   SignInWithXdrMutationVariables
 >;
+export const UpdatePricingDocument = gql`
+  mutation UpdatePricing(
+    $id: String!
+    $price: Int!
+    $forSale: Boolean!
+    $equityForSale: Float!
+    $offerID: String!
+  ) {
+    updatePricing(
+      id: $id
+      price: $price
+      forSale: $forSale
+      equityForSale: $equityForSale
+      offerID: $offerID
+    ) {
+      xdr
+      success
+      submitted
+    }
+  }
+`;
+export type UpdatePricingMutationFn = Apollo.MutationFunction<
+  UpdatePricingMutation,
+  UpdatePricingMutationVariables
+>;
+
+/**
+ * __useUpdatePricingMutation__
+ *
+ * To run a mutation, you first call `useUpdatePricingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePricingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePricingMutation, { data, loading, error }] = useUpdatePricingMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      price: // value for 'price'
+ *      forSale: // value for 'forSale'
+ *      equityForSale: // value for 'equityForSale'
+ *      offerID: // value for 'offerID'
+ *   },
+ * });
+ */
+export function useUpdatePricingMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdatePricingMutation,
+    UpdatePricingMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdatePricingMutation,
+    UpdatePricingMutationVariables
+  >(UpdatePricingDocument, options);
+}
+export type UpdatePricingMutationHookResult = ReturnType<
+  typeof useUpdatePricingMutation
+>;
+export type UpdatePricingMutationResult =
+  Apollo.MutationResult<UpdatePricingMutation>;
+export type UpdatePricingMutationOptions = Apollo.BaseMutationOptions<
+  UpdatePricingMutation,
+  UpdatePricingMutationVariables
+>;
 export const UpdateUserDocument = gql`
   mutation updateUser(
     $avatarUrl: String
@@ -1384,6 +1780,73 @@ export type WithdrawToExternalWalletMutationOptions =
     WithdrawToExternalWalletMutation,
     WithdrawToExternalWalletMutationVariables
   >;
+export const AssetBidsDocument = gql`
+  query AssetBids($assetCode: String!, $assetIssuer: String!) {
+    bids(assetCode: $assetCode, assetIssuer: $assetIssuer) {
+      id
+      seller
+      selling {
+        asset_type
+        asset_code
+        asset_issuer
+      }
+      buying {
+        asset_type
+        asset_code
+        asset_issuer
+      }
+      amount
+      price
+    }
+  }
+`;
+
+/**
+ * __useAssetBidsQuery__
+ *
+ * To run a query within a React component, call `useAssetBidsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAssetBidsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAssetBidsQuery({
+ *   variables: {
+ *      assetCode: // value for 'assetCode'
+ *      assetIssuer: // value for 'assetIssuer'
+ *   },
+ * });
+ */
+export function useAssetBidsQuery(
+  baseOptions: Apollo.QueryHookOptions<AssetBidsQuery, AssetBidsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AssetBidsQuery, AssetBidsQueryVariables>(
+    AssetBidsDocument,
+    options
+  );
+}
+export function useAssetBidsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AssetBidsQuery,
+    AssetBidsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AssetBidsQuery, AssetBidsQueryVariables>(
+    AssetBidsDocument,
+    options
+  );
+}
+export type AssetBidsQueryHookResult = ReturnType<typeof useAssetBidsQuery>;
+export type AssetBidsLazyQueryHookResult = ReturnType<
+  typeof useAssetBidsLazyQuery
+>;
+export type AssetBidsQueryResult = Apollo.QueryResult<
+  AssetBidsQuery,
+  AssetBidsQueryVariables
+>;
 export const EntryDetailsDocument = gql`
   query entryDetails($id: String!) {
     entry(id: $id) {
@@ -1400,21 +1863,6 @@ export const EntryDetailsDocument = gql`
         balance
       }
       history {
-        id
-        type
-        ts
-        accounts
-        assets
-        tx
-        offer
-        amount
-        price {
-          n
-          d
-        }
-        sourceAmount
-      }
-      offers {
         id
         type
         ts

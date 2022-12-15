@@ -54,6 +54,12 @@ export function ClientContextProvider({
   const [initialized, setInitialized] = useState<boolean>(false);
   const user = useRecoilValue(userAtom);
 
+  useEffect(() => {
+    if (client && user && initialized && session === undefined) {
+      tryRestoreSession(client);
+    }
+  }, [client, user, initialized, session]);
+
   const reset = useCallback(() => {
     setSession(undefined);
     setAccounts([]);
@@ -171,10 +177,21 @@ export function ClientContextProvider({
         const restoredSession = newClient.session.get(
           newClient.session.keys[lastKeyIndex]!
         );
-        await onSessionConnected(restoredSession);
+        const publicKey = Object.values(
+          restoredSession.namespaces
+        )[0]?.accounts[0]!.replace(`${Config.CHAIN_ID}:`, "");
+        // disconnect in case the session is wrong
+        if (publicKey !== user?.publicKey) {
+          await newClient.disconnect({
+            topic: restoredSession.topic,
+            reason: getSdkError("USER_DISCONNECTED"),
+          });
+        } else {
+          await onSessionConnected(restoredSession);
+        }
       }
     },
-    [onSessionConnected]
+    [onSessionConnected, user, disconnect]
   );
 
   const createClient = useCallback(async () => {
@@ -191,7 +208,6 @@ export function ClientContextProvider({
         metadata,
       });
       setClient(newClient);
-      await tryRestoreSession(newClient);
       await subscribeToEvents(newClient);
       setInitialized(true);
     } catch (err) {

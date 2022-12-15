@@ -5,6 +5,7 @@ import { tw } from "app/design-system/tailwind";
 import EditProfileScreen from "app/features/dashboard/profile/edit";
 import LikesScreen from "app/features/dashboard/profile/likes";
 import CollectionScreen from "app/features/dashboard/profile/collection";
+import { BidsScreen } from "app/features/dashboard/profile/bids/index";
 
 const ProfileStack = createNativeStackNavigator<{
   "user-details": undefined;
@@ -12,6 +13,7 @@ const ProfileStack = createNativeStackNavigator<{
   edit: undefined;
   likes: undefined;
   collection: undefined;
+  bids: undefined;
 }>();
 
 export function ProfileNavigation() {
@@ -75,6 +77,21 @@ export function ProfileNavigation() {
         component={CollectionScreen}
         options={{
           title: "Collection",
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: tw.color("blue-dark"),
+          },
+          headerTintColor: tw.color("white"),
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <ProfileStack.Screen
+        name="bids"
+        component={BidsScreen}
+        options={{
+          title: "Bids",
           headerBackTitleVisible: false,
           headerStyle: {
             backgroundColor: tw.color("blue-dark"),
