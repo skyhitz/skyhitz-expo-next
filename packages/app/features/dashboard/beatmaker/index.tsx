@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { ShareButton } from "app/ui/buttons/ShareButton";
 import { Config } from "app/config";
 import { useUserWithId } from "app/hooks/algolia/useUserWithId";
+import { CollectionSkeleton } from "app/ui/skeletons/CollectionSkeleton";
 
 export default function BeatmakerScreen() {
   const id = useBeatmakerParam();
@@ -60,11 +61,13 @@ export default function BeatmakerScreen() {
       <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg">
         Beatmaker collection
       </Text>
-      <ProfileBeatsList
-        beats={entries}
-        loading={collection.loading}
-        emptyStateText="They don't have any beats in their collection yet"
-      />
+      {collection.loading && <CollectionSkeleton duplicates={3} />}
+      {!collection.loading && (
+        <ProfileBeatsList
+          beats={entries}
+          emptyStateText="They don't have any beats in their collection yet"
+        />
+      )}
     </View>
   );
 }
