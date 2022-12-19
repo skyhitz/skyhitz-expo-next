@@ -5,7 +5,6 @@ import { useRecoilValue } from "recoil";
 import { userAtom } from "app/state/user";
 import * as assert from "assert";
 import ProfileBeatsList from "app/features/dashboard/profile/profileBeatsList";
-import { CollectionSkeleton } from "app/ui/skeletons/CollectionSkeleton";
 
 export default function CollectionScreen() {
   const user = useRecoilValue(userAtom);
@@ -20,13 +19,11 @@ export default function CollectionScreen() {
   return (
     <View className="flex-1 w-full">
       <Text className="text-lg ml-8 font-bold hidden web:flex">Collection</Text>
-      {loading && <CollectionSkeleton duplicates={3} />}
-      {!loading && (
-        <ProfileBeatsList
-          beats={entries}
-          emptyStateText="You don't have beats in your collection yet"
-        />
-      )}
+      <ProfileBeatsList
+        beats={entries}
+        emptyStateText="You don't have beats in your collection yet"
+        loading={loading}
+      />
     </View>
   );
 }

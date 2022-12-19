@@ -6,7 +6,6 @@ import { useErrorReport } from "app/hooks/useErrorReport";
 import { useEffect } from "react";
 import { Config } from "app/config";
 import { useUserWithId } from "app/hooks/algolia/useUserWithId";
-import { CollectionSkeleton } from "app/ui/skeletons/CollectionSkeleton";
 import { ProfileHeader } from "app/features/dashboard/profile/ProfileHeader";
 import { tw } from "app/design-system/tailwind";
 
@@ -75,13 +74,11 @@ export default function BeatmakerScreen() {
       <Text className="w-full max-w-6xl mx-auto pl-4 mt-6 mb-4 text-lg font-bold">
         Beatmaker collection
       </Text>
-      {collection.loading && <CollectionSkeleton duplicates={3} />}
-      {!collection.loading && (
-        <ProfileBeatsList
-          beats={entries}
-          emptyStateText="They don't have any beats in their collection yet"
-        />
-      )}
+      <ProfileBeatsList
+        beats={entries}
+        emptyStateText="They don't have any beats in their collection yet"
+        loading={collection.loading}
+      />
     </View>
   );
 }
