@@ -18,7 +18,7 @@ export function StellarExpertLink({
   className,
 }: Props) {
   return (
-    <View className={`${className} h-3`}>
+    <View className={`${className ?? ""} h-3`}>
       <Pressable
         onPress={() => {
           Linking.openURL(`${Config.STELLAR_EXPERT_URL}/${path}/${id}`);

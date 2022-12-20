@@ -55,7 +55,11 @@ export function ChangeWallet() {
         <Text className="font-bold text-sm">Change Wallet</Text>
         <View className="flex-row mt-8">
           <Text className="text-sm">Current Account: </Text>
-          <StellarExpertLink id={user?.publicKey!} path="account" />
+          <StellarExpertLink
+            id={user?.publicKey!}
+            path="account"
+            className="w-50"
+          />
         </View>
         {user?.managed && (
           <>

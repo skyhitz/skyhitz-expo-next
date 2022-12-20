@@ -10,7 +10,7 @@
     "build:analyze": "ANALYZE=true next build"
   },
   "dependencies": {
-    "@expo/next-adapter": "^3.1.20",
+    "@expo/next-adapter": "^4.0.13",
     "app": "*",
     "dotenv": "^16.0.2",
     "next": "12.2.2",
