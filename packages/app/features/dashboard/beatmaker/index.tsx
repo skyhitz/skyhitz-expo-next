@@ -76,8 +76,8 @@ export default function BeatmakerScreen() {
       </Text>
       <ProfileBeatsList
         beats={entries}
-        loading={collection.loading}
         emptyStateText="They don't have any beats in their collection yet"
+        loading={collection.loading}
       />
     </View>
   );

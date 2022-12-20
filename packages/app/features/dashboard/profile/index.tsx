@@ -62,13 +62,11 @@ export function ProfileScreen() {
           </Link>
         </View>
         {!!credits?.userCredits && (
-          <View className="flex-1">
-            <View className="flex-row items-center my-2">
-              <Dollar size={22} color={tw.color("white")} />
-              <Text className="font-bold ml-1 mr-2.5">
-                {credits.userCredits.toFixed(2)}
-              </Text>
-            </View>
+          <View className="flex-row items-center my-2">
+            <Dollar size={22} color={tw.color("white")} />
+            <Text className="font-bold ml-1 mr-2.5">
+              {credits.userCredits.toFixed(2)}
+            </Text>
           </View>
         )}
         <View className="-ml-1.5 mt-2">

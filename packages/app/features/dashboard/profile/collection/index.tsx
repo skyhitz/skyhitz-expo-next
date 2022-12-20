@@ -21,8 +21,8 @@ export default function CollectionScreen() {
       <Text className="text-lg ml-8 font-bold hidden web:flex">Collection</Text>
       <ProfileBeatsList
         beats={entries}
-        loading={loading}
         emptyStateText="You don't have beats in your collection yet"
+        loading={loading}
       />
     </View>
   );
