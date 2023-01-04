@@ -47,7 +47,7 @@ export type WithdrawForm = {
   amount: number;
 };
 
-export type ChangeAvatarImg = {
+export type ChangeImage = {
   blob?: Blob;
   url: string;
 };
@@ -63,7 +63,10 @@ export type MediaFileInfo =
 
 export type Maybe<T> = T | null | undefined;
 
-export type EditProfileForm = Omit<UpdateUserMutationVariables, "avatarUrl">;
+export type EditProfileForm = Omit<
+  UpdateUserMutationVariables,
+  "avatarUrl" | "backgroundUrl"
+>;
 
 export type Offer = {
   id: number;

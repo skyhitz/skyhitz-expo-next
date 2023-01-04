@@ -14,7 +14,7 @@ type usePickMediaReturn = {
 
 export default function usePickMedia(
   type: "other" | "image",
-  validateFile: (_file: MediaFileInfo) => string | null
+  validateFile: (file: MediaFileInfo) => string | null
 ): usePickMediaReturn {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");

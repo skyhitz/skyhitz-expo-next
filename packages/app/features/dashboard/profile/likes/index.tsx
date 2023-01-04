@@ -12,8 +12,8 @@ export default function LikesScreen() {
       <Text className="text-lg ml-8 font-bold hidden web:flex">Likes</Text>
       <ProfileBeatsList
         beats={entries}
-        loading={loading}
         emptyStateText="You don't have beats in your favorites list yet"
+        loading={loading}
       />
     </View>
   );
