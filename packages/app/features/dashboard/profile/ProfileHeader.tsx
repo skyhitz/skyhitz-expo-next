@@ -32,7 +32,7 @@ export function ProfileHeader({
           resizeMode="cover"
         />
       ) : (
-        <View className="bg-grey w-full h-40 md:h-80" />
+        <View className="bg-blue-field w-full h-40 md:h-80" />
       )}
 
       <View className="absolute bottom-0 left-5 md:left-20 flex-row items-end">
