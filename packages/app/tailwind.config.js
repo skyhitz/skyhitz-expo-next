@@ -27,7 +27,7 @@ module.exports = {
           dark: "#1A1B20",
           field: "#292b33",
           transparent: "#292b33e6",
-          track: "#1e4aff4d",
+          track: "#292b33",
           light: "#00aeefe6",
           brand: "#1dadff",
         },
