@@ -2,7 +2,7 @@
   "expo": {
     "name": "skyhitz",
     "slug": "skyhitz",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "scheme": "skyhitz",
     "orientation": "portrait",
     "icon": "./icon.png",
@@ -10,10 +10,7 @@
       "image": "./splash.png",
       "backgroundColor": "#1A1B1F"
     },
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "plugins": [
       [
         "expo-image-picker",
@@ -31,7 +28,7 @@
     ],
     "ios": {
       "bundleIdentifier": "io.skyhitz.skyhitz",
-      "buildNumber": "1.1.5",
+      "buildNumber": "1.1.6",
       "associatedDomains": [
         "applinks:skyhitz.io",
         "applinks:skyhitz-expo-next.vercel.app"
@@ -40,7 +37,7 @@
     },
     "android": {
       "package": "io.skyhitz.skyhitz",
-      "versionCode": 7,
+      "versionCode": 8,
       "intentFilters": [
         {
           "action": "VIEW",
@@ -54,10 +51,7 @@
               "host": "skyhitz-expo-next.vercel.app"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
     },
