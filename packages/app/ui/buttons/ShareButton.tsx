@@ -37,7 +37,6 @@ export function ShareButton({ url, title }: Props) {
     <>
       <Pressable className="flex-row items-center" onPress={onShare}>
         <ShareIcon color={tw.color("white")} />
-        <Text className="text-grey-light ml-1">Share</Text>
       </Pressable>
       <Modal visible={modalVisible} transparent>
         <SafeAreaView className="flex-1 flex items-center justify-center bg-blue-field/70 px-2">

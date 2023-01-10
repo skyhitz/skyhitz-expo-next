@@ -30,7 +30,7 @@ export function ChangeImages({
         activeSubmission={activeSubmission}
       />
       <ChangeImageButton
-        text="Change Background Photo"
+        text="Change Background"
         onChange={onBackgroundChange}
         validator={validateBackgroundImage}
         activeSubmission={activeSubmission}
