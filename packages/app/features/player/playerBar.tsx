@@ -9,7 +9,7 @@ export function PlayerBar() {
 
   return (
     <View
-      className={`flex flex-row justify-between items-center h-20 bg-blue-transparent ${
+      className={`flex flex-row justify-between items-center h-20 bg-blue-field bg-opacity-50 ${
         playbackState === "IDLE" || playbackState === "ERROR" ? "hidden" : ""
       }`}
     >
