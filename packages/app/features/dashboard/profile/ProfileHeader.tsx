@@ -42,7 +42,7 @@ export function ProfileHeader({
           size="xlarge"
         />
       </View>
-      <View className="-bottom-4 flex flex-row-reverse">
+      <View className="-bottom-4 flex flex-row-reverse items-center">
         {!!twitter && (
           <Pressable
             className="ml-3 mr-3"
