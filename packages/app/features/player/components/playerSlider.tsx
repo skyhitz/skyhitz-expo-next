@@ -12,6 +12,8 @@ export function PlayerSlider() {
   const currentTime =
     playbackState === "SEEKING" ? seekPosition / 1000 : position / 1000;
 
+  // slider won't go above 1 as maximum value so we need to map values greater than that.
+
   return (
     <View className="flex flex-row items-center justify-between w-full">
       <Text className="text-white text-xs mr-3 w-10 text-right">
@@ -31,8 +33,8 @@ export function PlayerSlider() {
       >
         <SkyhitzSlider
           minimumValue={0}
-          maximumValue={max(duration, 1)}
-          value={position}
+          maximumValue={max(duration, 1) / 10000}
+          value={1 / position}
           onValueChange={setSeekPosition}
           onSlidingStart={startSeeking}
           onSlidingComplete={onSeekCompleted}

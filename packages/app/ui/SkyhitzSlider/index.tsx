@@ -31,6 +31,7 @@ export function SkyhitzSlider({
   const x = useSharedValue(0);
   const dragStart = useSharedValue(x.value);
   const isSliding = useSharedValue(false);
+  console.log(maximumValue);
 
   useEffect(() => {
     const worklet = (num: number) => {
