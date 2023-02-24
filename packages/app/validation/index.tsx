@@ -35,10 +35,12 @@ export const editProfileFormSchema: SchemaOf<EditProfileForm> = object().shape({
   email: emailSchema,
   twitter: string()
     .min(4, "Twitter username cannot be shorter than 4 characters")
-    .max(15, "Twitter username cannot be longer than 15 characters"),
+    .max(15, "Twitter username cannot be longer than 15 characters")
+    .nullable(),
   instagram: string()
     .min(1, "Instagram username cannot be shorter than 1 character")
-    .max(30, "Instagram username cannot be longer than 30 characters"),
+    .max(30, "Instagram username cannot be longer than 30 characters")
+    .nullable(),
 });
 
 export const signInFormSchema: SchemaOf<SignInForm> = Yup.object().shape({

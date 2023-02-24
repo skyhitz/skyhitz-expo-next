@@ -25,14 +25,15 @@ export function ProfileHeader({
 }: Props) {
   return (
     <View className="h-50 md:h-90 w-full">
-      {background && (
+      {background ? (
         <Image
           uri={imageSrc(background)}
           className="w-full h-40 md:h-80"
           resizeMode="cover"
         />
+      ) : (
+        <View className="bg-blue-field w-full h-40 md:h-80" />
       )}
-      {!background && <View className="bg-grey w-full h-40 md:h-80" />}
 
       <View className="absolute bottom-0 left-5 md:left-20 flex-row items-end">
         <UserAvatar
@@ -41,8 +42,8 @@ export function ProfileHeader({
           size="xlarge"
         />
       </View>
-      <View className="-bottom-4 flex flex-row-reverse">
-        {twitter && (
+      <View className="-bottom-4 flex flex-row-reverse items-center">
+        {!!twitter && (
           <Pressable
             className="ml-3 mr-3"
             onPress={() => Linking.openURL(`https://twitter.com/${twitter}`)}
@@ -50,7 +51,7 @@ export function ProfileHeader({
             <Twitter size={20} color={tw.color("white")} />
           </Pressable>
         )}
-        {instagram && (
+        {!!instagram && (
           <Pressable
             className="ml-3 mr-3"
             onPress={() =>
@@ -60,7 +61,7 @@ export function ProfileHeader({
             <Instagram size={20} color={tw.color("white")} />
           </Pressable>
         )}
-        {profileUrl && (
+        {!!profileUrl && (
           <View className="mr-3">
             <ShareButton url={profileUrl} title="Share profile" />
           </View>

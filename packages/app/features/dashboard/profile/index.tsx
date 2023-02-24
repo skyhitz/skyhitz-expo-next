@@ -69,28 +69,31 @@ export function ProfileScreen() {
             </Text>
           </View>
         )}
-        <View className="-ml-1.5 mt-2">
+        <View className="my-4">
           <CopyWalletPublicKeyButton walletPublicKey={user.publicKey} />
         </View>
       </View>
-      <ProfileRow
-        icon={<Like size={24} color={tw.color("blue")} />}
-        trailingNumber={userLikesData?.userLikes?.length}
-        title="Likes"
-        onPress={() => push("/dashboard/profile/likes")}
-      />
-      <ProfileRow
-        icon={<StarBorder size={24} color={tw.color("blue")} />}
-        trailingNumber={userCollectionData?.userEntries?.length}
-        title="Collections"
-        onPress={() => push("/dashboard/profile/collection")}
-      />
-      <ProfileRow
-        icon={<StarBorder size={24} color={tw.color("blue")} />}
-        trailingNumber={bids.length}
-        title="Your bids"
-        onPress={() => push("/dashboard/profile/bids")}
-      />
+
+      <View className="flex flex-col mx-2">
+        <ProfileRow
+          icon={<Like size={24} color={tw.color("blue")} />}
+          trailingNumber={userLikesData?.userLikes?.length}
+          title="Likes"
+          onPress={() => push("/dashboard/profile/likes")}
+        />
+        <ProfileRow
+          icon={<StarBorder size={24} color={tw.color("blue")} />}
+          trailingNumber={userCollectionData?.userEntries?.length}
+          title="Collections"
+          onPress={() => push("/dashboard/profile/collection")}
+        />
+        <ProfileRow
+          icon={<StarBorder size={24} color={tw.color("blue")} />}
+          trailingNumber={bids.length}
+          title="Your bids"
+          onPress={() => push("/dashboard/profile/bids")}
+        />
+      </View>
       {/* <Button
         text="Buy XLM"
         onPress={startCheckout}
