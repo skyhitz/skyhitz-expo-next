@@ -75,11 +75,11 @@ export default function EditProfileScreen() {
 
   const initialValues: EditProfileForm = {
     displayName: user.displayName,
-    description: user.description,
+    description: user.description ?? "",
     username: user.username,
     email: user.email,
-    twitter: user.twitter,
-    instagram: user.instagram,
+    twitter: user.twitter ?? "",
+    instagram: user.instagram ?? "",
   };
 
   return (

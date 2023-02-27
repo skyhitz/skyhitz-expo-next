@@ -24,15 +24,15 @@ export function ProfileHeader({
   profileUrl,
 }: Props) {
   return (
-    <View className="h-50 md:h-90 w-full">
+    <View className="h-50 md:h-70 w-full">
       {background ? (
         <Image
           uri={imageSrc(background)}
-          className="w-full h-40 md:h-80"
+          className="w-full h-40 md:h-60"
           resizeMode="cover"
         />
       ) : (
-        <View className="bg-blue-field w-full h-40 md:h-80" />
+        <View className="bg-blue-field w-full h-40 md:h-60" />
       )}
 
       <View className="absolute bottom-0 left-5 md:left-20 flex-row items-end">

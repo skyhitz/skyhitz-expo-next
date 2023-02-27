@@ -134,17 +134,14 @@ export function SkyhitzSlider({
   return (
     <GestureDetector gesture={gestureHandler}>
       <View
-        className="flex-1 flex-row rounded-md bg-blue-track max-h-2 min-h-2"
+        className="flex-1 flex-row rounded-md max-h-2 min-h-2"
         onLayout={(e) => {
           setSliderWidth(e.nativeEvent.layout.width);
           setSliderHeight(e.nativeEvent.layout.height);
         }}
       >
         <Animated.View
-          style={[
-            tw.style("max-h-2 min-h-2 rounded-l-md bg-blue"),
-            sliderStyle,
-          ]}
+          style={[tw.style("max-h-2 min-h-2 rounded-l-md"), sliderStyle]}
         />
 
         <Animated.View

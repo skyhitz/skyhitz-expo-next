@@ -33,9 +33,10 @@ export default function usePickMedia(
         base64: true,
         exif: true,
       });
-      if (!file || file.cancelled) return;
+      if (!file || !file.assets || file.assets.length !== 1 || !file.assets[0])
+        return;
 
-      result = { image: true, ...file };
+      result = { image: true, ...file.assets[0] };
     } else {
       const file = await DocumentPicker.getDocumentAsync({
         type: SUPPORTED_MIME_TYPES,
