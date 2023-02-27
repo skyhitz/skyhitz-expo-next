@@ -81,7 +81,7 @@ function ChangeImageButton({
       onPress={pickMedia}
       text={text}
       variant="primary"
-      className={`p-2 h-10 w-50 ${classNames}`}
+      className={`p-2 h-10 w-50 ${classNames ?? ""}`}
     />
   );
 }

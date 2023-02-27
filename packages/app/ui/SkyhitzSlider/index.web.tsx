@@ -15,7 +15,7 @@ export function SkyhitzSlider(props: Props) {
     <Slider
       style={{ flex: 1 }}
       minimumTrackTintColor={tw.color("blue")}
-      maximumTrackTintColor={tw.color("blue-track")}
+      maximumTrackTintColor={tw.color("white")}
       thumbTintColor={tw.color("white")}
       {...props}
     />
