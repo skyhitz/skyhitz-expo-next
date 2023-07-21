@@ -34,7 +34,9 @@ export const getNetworkPassphrase = () => {
 };
 
 const getAccountData = async (address: string) => {
-  const res = await fetch(`${Config.HORIZON_URL}/accounts/${address}`);
+  const res = await fetch(
+    `${Config.HORIZON_URL}/accounts/${address.toUpperCase()}`
+  );
   const json = await res.json();
   return json;
 };
