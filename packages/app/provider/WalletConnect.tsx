@@ -283,7 +283,7 @@ export function ClientContextProvider({
       if (!publicKey) {
         throw new Error("Invalid public key");
       }
-      const xdr = await buildTransactionForAuth(publicKey);
+      const xdr = await buildTransactionForAuth(publicKey.toUpperCase());
       const result = await client.request({
         topic: sessionToAuth.topic,
         chainId: Config.CHAIN_ID,
