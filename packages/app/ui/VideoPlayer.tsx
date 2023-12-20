@@ -13,6 +13,7 @@ type Props = {
   maxHeight?: number;
   fixedSize?: number;
   style?: ViewStyle;
+  className?: string;
 };
 
 const windowWidth = Dimensions.get("window").width;
@@ -21,6 +22,7 @@ export function VideoPlayer({
   fixedSize,
   maxHeight = windowWidth,
   style,
+  className,
 }: Props) {
   const user = useRecoilValue(userAtom);
   const [aspectRatio, setAspectRatio] = useState<number>(0);
@@ -89,7 +91,7 @@ export function VideoPlayer({
   }, [posterSize, entry]);
 
   return (
-    <View style={[tw.style("justify-center items-center"), style]}>
+    <View style={[tw.style("justify-center items-center", className), style]}>
       <Image
         source={{
           uri: posterUri,
@@ -98,6 +100,7 @@ export function VideoPlayer({
           {
             width: posterSize,
             height: posterSize,
+            borderRadius: fixedSize ? 6 : 0,
           },
         ]}
       />
@@ -115,7 +118,10 @@ export function VideoPlayer({
           width: playerWidth,
           alignItems: "center",
           justifyContent: "center",
+          borderRadius: fixedSize ? 6 : 0,
+          backgroundColor: "black",
         }}
+        videoStyle={[tw.style("w-full h-full")]}
         onReadyForDisplay={(event: any) => {
           let videoAspectRatio = 0;
           if (event.naturalSize) {

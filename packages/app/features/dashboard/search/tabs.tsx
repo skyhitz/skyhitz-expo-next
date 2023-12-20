@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "app/design-system";
 
-export type Tabs = "Beats" | "Beatmakers";
+export type Tabs = "MFTs" | "Collectors";
 
 type TabBarProps = {
   selected: Tabs;
@@ -10,25 +10,25 @@ type TabBarProps = {
 export function TabBar({ onTabClick, selected }: TabBarProps) {
   return (
     <View className="w-full flex flex-row">
-      <Pressable className="grow py-4" onPress={() => onTabClick?.("Beats")}>
+      <Pressable className="grow py-4" onPress={() => onTabClick?.("MFTs")}>
         <Text
           className={`${
-            selected === "Beats" ? "text-white" : "text-neutral-500"
+            selected === "MFTs" ? "text-white" : "text-neutral-500"
           } text-sm mx-auto`}
         >
-          Beats
+          MFTs
         </Text>
       </Pressable>
       <Pressable
         className="grow py-4"
-        onPress={() => onTabClick?.("Beatmakers")}
+        onPress={() => onTabClick?.("Collectors")}
       >
         <Text
           className={`${
-            selected === "Beatmakers" ? "text-white" : "text-neutral-500"
+            selected === "Collectors" ? "text-white" : "text-neutral-500"
           } text-sm mx-auto`}
         >
-          Beatmakers
+          Collectors
         </Text>
       </Pressable>
     </View>

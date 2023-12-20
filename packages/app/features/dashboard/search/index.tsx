@@ -10,7 +10,7 @@ import BeatmakersEmptyState from "app/features/dashboard/search/beatmakersEmptyS
 
 export function SearchScreen() {
   const [searchPhrase, setSearchPhrase] = useState("");
-  const [tab, setTab] = useState<Tabs>("Beats");
+  const [tab, setTab] = useState<Tabs>("MFTs");
 
   return (
     <SafeAreaView
@@ -27,12 +27,12 @@ export function SearchScreen() {
         }}
       />
       <TabBar selected={tab} onTabClick={setTab} />
-      {!searchPhrase && tab === "Beats" && <RecentlyAddedList />}
-      {!searchPhrase && tab === "Beatmakers" && <BeatmakersEmptyState />}
-      {!!searchPhrase && tab === "Beats" && (
+      {!searchPhrase && tab === "MFTs" && <RecentlyAddedList />}
+      {!searchPhrase && tab === "Collectors" && <BeatmakersEmptyState />}
+      {!!searchPhrase && tab === "MFTs" && (
         <BeatsSearchResultList searchPhrase={searchPhrase} />
       )}
-      {!!searchPhrase && tab === "Beatmakers" && (
+      {!!searchPhrase && tab === "Collectors" && (
         <BeatmakersSearchResultList searchPhrase={searchPhrase} />
       )}
     </SafeAreaView>

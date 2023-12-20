@@ -68,6 +68,11 @@ export type EditProfileForm = Omit<
   "avatarUrl" | "backgroundUrl"
 >;
 
+export type SubmitMusicForm = Omit<
+  UpdateUserMutationVariables,
+  "avatarUrl" | "backgroundUrl"
+>;
+
 export type Offer = {
   id: number;
   seller: string;
@@ -96,3 +101,8 @@ export type Offer = {
 };
 
 export type EnrichedEntry = Entry & { offer: Offer };
+
+export type MetaProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};

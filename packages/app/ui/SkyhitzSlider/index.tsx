@@ -121,6 +121,8 @@ export function SkyhitzSlider({
     };
   }, [sliderWidth]);
 
+  console.log(sliderStyle);
+
   const thumbStyle = useAnimatedStyle(() => {
     return {
       transform: [

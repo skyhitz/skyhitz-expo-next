@@ -603,6 +603,11 @@ export type UpdateUserMutationVariables = Exact<{
   instagram?: InputMaybe<Scalars["String"]>;
 }>;
 
+export type SubmitMusicMutationVariables = Exact<{
+  contractId?: InputMaybe<Scalars["String"]>;
+  contractToken?: InputMaybe<Scalars["String"]>;
+}>;
+
 export type UpdateUserMutation = {
   __typename?: "Mutation";
   updateUser: {

@@ -14,7 +14,7 @@ export function PlayerBar() {
       }`}
     >
       <View className="p-4 w-52 flex flex-row items-center">
-        <VideoPlayer fixedSize={40} />
+        <VideoPlayer fixedSize={60} />
         <View className="pl-4 h-full justify-end">
           <Text
             className="text-sm text-left font-bold text-white"
@@ -37,7 +37,7 @@ export function PlayerBar() {
           <Text className="text-red">Something went wrong. Try again.</Text>
         </View>
       ) : (
-        <View className="items-center justify-evenly w-100">
+        <View className="items-center justify-evenly w-full md:max-w-xl max-w-sm">
           <PlayerButtonsRow />
           <PlayerSlider />
         </View>

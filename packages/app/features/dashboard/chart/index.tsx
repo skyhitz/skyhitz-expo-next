@@ -31,7 +31,7 @@ export function ChartScreen() {
       edges={["top"]}
       className="w-full max-w-6xl mx-auto flex-1 flex pl-2 bg-blue-dark pt-4"
     >
-      <Text className="text-2xl mb-4">Top Beats</Text>
+      <Text className="text-2xl mb-4">Top Chart</Text>
       <Content />
     </SafeAreaView>
   );

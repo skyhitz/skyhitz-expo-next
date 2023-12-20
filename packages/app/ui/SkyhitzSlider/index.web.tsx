@@ -17,6 +17,8 @@ export function SkyhitzSlider(props: Props) {
       minimumTrackTintColor={tw.color("blue")}
       maximumTrackTintColor={tw.color("white")}
       thumbTintColor={tw.color("white")}
+      // @ts-ignore
+      thumbSize={12}
       {...props}
     />
   );
