@@ -10,6 +10,16 @@ const nextConfig = {
       },
     ];
   },
+  transpilePackages: [
+    "react-native",
+    "react-native-web",
+    "solito",
+    "dripsy",
+    "app",
+    "twrnc",
+    "react-native-reanimated",
+    "react-native-gesture-handler",
+  ],
 };
 
 const { withExpo } = require("@expo/next-adapter");

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useSx, Image as ImageDripsy } from "dripsy";
 import { tw as tailwind } from "app/design-system/tailwind";

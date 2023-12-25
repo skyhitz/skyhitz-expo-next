@@ -4,6 +4,8 @@ import React from "react";
 import "raf/polyfill";
 import "../global";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { Provider } from "app/provider";
+import { WebNavigation } from "app/navigation/web";
 
 const description =
   "Upload, buy or sell music NFTs on the Stellar Network. Join a music community of beatmakers!";
@@ -48,8 +50,12 @@ export default function RootLayout({
   console.log("hello");
   return (
     <html lang="en">
-      <body>{children}</body>
-      <GoogleTagManager gtmId="GTM-5HR7H3L" />
+      <body>
+        <Provider>
+          <WebNavigation>{children}</WebNavigation>
+        </Provider>
+        <GoogleTagManager gtmId="GTM-5HR7H3L" />
+      </body>
     </html>
   );
 }

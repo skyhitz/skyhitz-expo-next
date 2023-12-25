@@ -55,7 +55,7 @@ export default function DashboardTabBar({
               ? tw`w-8 h-8 rounded-full border-2 border-tab border-blue`
               : tw`w-8 h-8 rounded-full border-2 border-tab`
           }
-          source={require("app/assets/images/icon.png")}
+          source={{ uri: "app/assets/images/icon.png" }}
         />
       </Link>
       {user && (
