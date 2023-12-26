@@ -101,7 +101,7 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
         />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="theme-color" content="#000" />
-        <title>Skyhitz - Music NFTs on Stellar</title>
+        <title>Skyhitz - Join the future of music ownership</title>
         <link rel="canonical" href="https://skyhitz.io" />
         <link rel="icon" href="/icon.png" />
       </Head>
