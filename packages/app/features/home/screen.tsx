@@ -41,11 +41,13 @@ export function HomeScreen() {
       <Navbar />
       <View className="mx-auto text-center flex-1 max-w-xs mt-6 sm:max-w-xl sm:mt-10">
         <H1 className="mt-4 text-center font-raleway text-4xl sm:text-6xl sm:leading-tight">
-          Music NFTs on Stellar
+          Join the future of music ownership
         </H1>
         <P className="mx-auto text-center mb-9 max-w-lg font-raleway font-semibold tracking-0.5 text-sm leading-6 mt-9 sm:text-lg sm:mt-8">
-          Upload, buy or sell music NFTs on the Stellar Network. Join a
-          community of beatmakers!
+          The ultimate destination for music fans, collectors, and creators to
+          experience a new way to experience music. We are a blockchain-powered
+          platform that enables music enthusiasts to discover and collect unique
+          creations through a decentralized framework.
         </P>
         <View className="android:w-60 ios:w-60 mx-auto">
           {!!user && (
