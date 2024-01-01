@@ -44,10 +44,11 @@ export function HomeScreen() {
           Join the future of music ownership
         </H1>
         <P className="mx-auto text-center mb-9 max-w-lg font-raleway font-semibold tracking-0.5 text-sm leading-6 mt-9 sm:text-lg sm:mt-8">
-          The ultimate destination for music fans, collectors, and creators to
-          experience a new way to experience music. We are a blockchain-powered
-          platform that enables music enthusiasts to discover and collect unique
-          creations through a decentralized framework.
+          The ultimate destination for music fans, collectors, and creators,
+          offering a novel way to immerse in and experience music like never
+          before. We are a blockchain-powered platform that enables music
+          enthusiasts to discover and collect unique creations through a
+          decentralized framework.
         </P>
         <View className="android:w-60 ios:w-60 mx-auto">
           {!!user && (
